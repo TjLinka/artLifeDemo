@@ -1,5 +1,4 @@
 <template>
-  <div class="home">
     <div class="container">
       <div class="auth__page">
         <h1 class="page__title">
@@ -27,7 +26,6 @@
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -53,7 +51,6 @@ export default {
 
 <style lang="scss" scoped>
 .auth__page {
-  margin-top: 100px;
   & .page__title {
     text-align: center;
     margin-bottom: 70px;

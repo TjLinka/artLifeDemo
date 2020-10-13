@@ -8,7 +8,7 @@
 
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="ml-auto">
-            <div v-if="isAuth" class="d-lg-flex">
+            <div v-if="true" class="d-lg-flex">
               <b-nav-item-dropdown text="Профиль" right>
                 <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
                 <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
@@ -41,7 +41,11 @@
         </b-collapse>
       </b-navbar>
     </div>
-    <router-view />
+    <main>
+      <transition name="fade" mode="out-in">
+        <router-view />
+      </transition>
+    </main>
   </div>
 </template>
 
@@ -63,7 +67,17 @@ export default {
   box-sizing: border-box;
 }
 .navbar {
-  background-color: #32AAA7 !important;
+  background-color: #32aaa7 !important;
   // height: 70px;
+}
+main {
+  margin-top: 40px;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+  opacity: 0;
 }
 </style>

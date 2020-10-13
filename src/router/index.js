@@ -14,6 +14,11 @@ const routes = [
     name: 'MyInfo',
     component: () => import('../views/MyInfo.vue'),
   },
+  {
+    path: '/ls',
+    name: 'DvizeniePoLicevomySchety',
+    component: () => import('../views/DvizeniePoLicevomySchety.vue'),
+  },
 ];
 
 const router = new VueRouter({
