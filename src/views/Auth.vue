@@ -1,30 +1,27 @@
 <template>
-  <div class="home">
-    <div class="container">
-      <div class="auth__page">
-        <h1 class="auth__page__title">
-          Авторизация
-        </h1>
-        <div class="auth__page__form">
-          <form>
-            <input type="text" placeholder="Логин" v-model="log.login" />
-            <input type="password" placeholder="Пароль" v-model="log.password" />
-            <button class="btn__login" v-on:click.prevent="sf">Войти</button>
-          </form>
-        </div>
-        <div class="auth__page__help">
-          <p>Забыли пароль? <a href="#">Напомнить</a> на email</p>
-        </div>
-        <div class="auth__page__copy">
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam id asperiores quae
-            voluptatibus, in quas iste est nemo inventore animi rerum labore dicta maiores
-            voluptate! Veniam quaerat voluptates nemo tenetur maiores voluptas, quis minus natus
-            voluptatum pariatur illo facilis ut consequatur eos nam animi omnis. Quaerat ab debitis
-            assumenda minima voluptatum eius necessitatibus dolor! Impedit ducimus ad ipsam adipisci
-            harum.
-          </p>
-        </div>
+  <div class="container">
+    <div class="auth__page">
+      <h1 class="page__title">
+        Авторизация
+      </h1>
+      <div class="auth__page__form">
+        <form>
+          <input type="text" placeholder="Логин" v-model="log.login" />
+          <input type="password" placeholder="Пароль" v-model="log.password" />
+          <button class="btn__login" v-on:click.prevent="sf">Войти</button>
+        </form>
+      </div>
+      <div class="auth__page__help">
+        <p>Забыли пароль? <a href="#">Напомнить</a> на email</p>
+      </div>
+      <div class="auth__page__copy">
+        <p>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam id asperiores quae
+          voluptatibus, in quas iste est nemo inventore animi rerum labore dicta maiores voluptate!
+          Veniam quaerat voluptates nemo tenetur maiores voluptas, quis minus natus voluptatum
+          pariatur illo facilis ut consequatur eos nam animi omnis. Quaerat ab debitis assumenda
+          minima voluptatum eius necessitatibus dolor! Impedit ducimus ad ipsam adipisci harum.
+        </p>
       </div>
     </div>
   </div>
@@ -32,6 +29,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import md5 from 'md5';
 
 export default {
   name: 'Home',
@@ -41,20 +39,27 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['loggining']),
     sf() {
-      this.loggining();
+      if (this.log.login !== '' && this.log.password !== '') {
+        const data = {
+          login: this.log.login,
+          pwd_hash: String(md5(this.log.password)),
+        };
+        console.log(data);
+        this.loggining('1234');
+      } else {
+        console.log('no');
+      }
     },
   },
-  computed: {
-    ...mapActions('auth', ['loggining']),
-  },
+  computed: {},
 };
 </script>
 
 <style lang="scss" scoped>
 .auth__page {
-  margin-top: 100px;
-  &__title {
+  & .page__title {
     text-align: center;
     margin-bottom: 70px;
   }
