@@ -1,7 +1,7 @@
 <template>
   <div class="licevoischet__page">
     <div class="container">
-      <h2 class="page__title">Движение по лицевому счету</h2>
+      <h2 class="page__title">История баллов</h2>
       <div>
         DATA PICKER
       </div>
@@ -11,20 +11,25 @@
         <span class="mr-3">Экспорт в pdf</span>
       </p>
       <b-table :fields="fields" :items="items" head-variant="light"> </b-table>
-      <h2 class="licevoischet__page__summ">СУММА = {{ summ }}</h2>
+      <h2 class="licevoischet__page__summ">ЛО = {{ lo }} РЕЗЕРВ = {{ res }}</h2>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'DvizeniePoLicevomySchety',
+  name: 'BallHistory',
   data() {
     return {
       fields: [
         {
           key: 'data',
           label: 'Дата операции',
+          sortable: true,
+        },
+        {
+          key: 'period',
+          label: 'Период',
           sortable: true,
         },
         {
@@ -43,69 +48,89 @@ export default {
           sortable: true,
         },
         {
-          key: 'comments',
-          label: 'Комментарий',
+          key: 'ball_type',
+          label: 'Тип баллов',
           sortable: true,
         },
         {
-          key: 'summ',
-          label: 'Итого на лицевом счете',
+          key: 'comments',
+          label: 'Комментарий',
           sortable: true,
         },
       ],
       items: [
         {
           data: '01.03.2020',
+          period: 'Март 2020',
           naschet: '33547,9',
-          type: 'Розничное вознаграждение',
+          soschet: '31316,1',
+          ball_type: 'Баллы Резерва',
+          type: 'Трансферт баллов в МП',
           comments: 'Розничное вознаграждение',
-          summ: 2334567,
         },
         {
           data: '01.03.2020',
+          period: 'Март 2020',
           naschet: '33547,9',
-          type: 'Розничное вознаграждение',
+          soschet: '31316,1',
+          ball_type: 'Баллы Резерва',
+          type: 'Трансферт баллов в МП',
           comments: 'Розничное вознаграждение',
-          summ: 2334567,
         },
         {
           data: '01.03.2020',
+          period: 'Март 2020',
           naschet: '33547,9',
-          type: 'Розничное вознаграждение',
+          soschet: '31316,1',
+          ball_type: 'Баллы Резерва',
+          type: 'Трансферт баллов в МП',
           comments: 'Розничное вознаграждение',
-          summ: 2334567,
         },
         {
           data: '01.03.2020',
+          period: 'Март 2020',
           naschet: '33547,9',
-          type: 'Розничное вознаграждение',
+          soschet: '31316,1',
+          ball_type: 'Баллы Резерва',
+          type: 'Трансферт баллов в МП',
           comments: 'Розничное вознаграждение',
-          summ: 2334567,
         },
         {
           data: '01.03.2020',
+          period: 'Март 2020',
           naschet: '33547,9',
-          type: 'Розничное вознаграждение',
+          soschet: '31316,1',
+          ball_type: 'Баллы Резерва',
+          type: 'Трансферт баллов в МП',
           comments: 'Розничное вознаграждение',
-          summ: 2334567,
         },
         {
           data: '01.03.2020',
+          period: 'Март 2020',
           naschet: '33547,9',
-          type: 'Розничное вознаграждение',
+          soschet: '31316,1',
+          ball_type: 'Баллы Резерва',
+          type: 'Трансферт баллов в МП',
           comments: 'Розничное вознаграждение',
-          summ: 2334567,
+        },
+        {
+          data: '01.03.2020',
+          period: 'Март 2020',
+          naschet: '33547,9',
+          soschet: '31316,1',
+          ball_type: 'Баллы Резерва',
+          type: 'Трансферт баллов в МП',
+          comments: 'Розничное вознаграждение',
         },
       ],
     };
   },
   computed: {
-    summ() {
-      let summ = 0;
-      this.items.forEach((item) => {
-        summ += item.summ;
-      });
-      return summ;
+    lo() {
+      return 200;
+    },
+    res() {
+      return 100;
     },
   },
 };
@@ -119,7 +144,6 @@ export default {
     font-size: 12px;
     padding: 10px 0px;
   }
-
   & .exp_print {
     span {
       color: #32aaa7;

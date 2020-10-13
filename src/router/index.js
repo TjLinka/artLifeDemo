@@ -19,6 +19,11 @@ const routes = [
     name: 'DvizeniePoLicevomySchety',
     component: () => import('../views/DvizeniePoLicevomySchety.vue'),
   },
+  {
+    path: '/ball-history',
+    name: 'BallHistory',
+    component: () => import('../views/BallHistory.vue'),
+  },
 ];
 
 const router = new VueRouter({
