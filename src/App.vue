@@ -63,7 +63,7 @@ export default {
   box-sizing: border-box;
 }
 .navbar {
-  background-color: darken($color: cyan, $amount: 15%);
+  background-color: #32AAA7 !important;
   // height: 70px;
 }
 </style>

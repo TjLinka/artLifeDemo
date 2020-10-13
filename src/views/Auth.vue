@@ -2,7 +2,7 @@
   <div class="home">
     <div class="container">
       <div class="auth__page">
-        <h1 class="auth__page__title">
+        <h1 class="page__title">
           Авторизация
         </h1>
         <div class="auth__page__form">
@@ -54,7 +54,7 @@ export default {
 <style lang="scss" scoped>
 .auth__page {
   margin-top: 100px;
-  &__title {
+  & .page__title {
     text-align: center;
     margin-bottom: 70px;
   }
