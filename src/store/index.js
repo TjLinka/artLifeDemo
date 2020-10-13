@@ -10,6 +10,7 @@ export default new Vuex.Store({
   actions: {},
   getters: {},
   modules: {
+    namespaced: true,
     auth: authModule,
   },
 });

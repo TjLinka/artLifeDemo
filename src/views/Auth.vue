@@ -42,11 +42,11 @@ export default {
   },
   methods: {
     sf() {
-      this.logging();
+      this.loggining();
     },
   },
   computed: {
-    ...mapActions('auth', ['logging']),
+    ...mapActions('auth', ['loggining']),
   },
 };
 </script>

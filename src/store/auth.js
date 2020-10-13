@@ -1,7 +1,6 @@
 import backApi from '../assets/backApi';
 
 export default {
-  namespaced: true,
   state: {
     auth_status: '',
     is_authorized: localStorage.getItem('access_token'),
@@ -11,7 +10,7 @@ export default {
   },
   mutations: {},
   actions: {
-    logging(state, user) {
+    loggining(state, user) {
       console.log('hello', user);
       return new Promise((resolve, reject) => {
         backApi
