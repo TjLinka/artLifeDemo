@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import md5 from 'md5';
+// import backApi from '../assets/backApi';
 
 export default {
   name: 'Home',
@@ -39,18 +39,12 @@ export default {
     };
   },
   methods: {
-    ...mapActions(['loggining']),
     sf() {
-      if (this.log.login !== '' && this.log.password !== '') {
-        const data = {
-          login: this.log.login,
-          pwd_hash: String(md5(this.log.password)),
-        };
-        console.log(data);
-        this.loggining('1234');
-      } else {
-        console.log('no');
-      }
+      const data = {
+        login: this.log.login,
+        pwd_hash: md5(this.log.password),
+      };
+      this.$store.dispatch('login', data);
     },
   },
   computed: {},

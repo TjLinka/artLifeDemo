@@ -18,20 +18,21 @@ export default {
   actions: {
     login({ commit }, user) {
       return new Promise((resolve, reject) => {
-        commit('auth_request');
         backApi
-          .post('/login', { data: user })
+          .post('/login', user)
           .then((resp) => {
-            const token = resp.data;
+            const token = resp.data.access_token;
             const user = resp.data;
-            localStorage.setItem('token', token);
-            backApi.defaults.headers.common.Authorization = token;
-            commit('auth_success', token, user);
+            console.log(user);
+            console.log(token);
+            localStorage.setItem('access-token', token);
+            backApi.defaults.headers.common.access_token = token;
+            backApi.get('/secret');
             resolve(resp);
           })
           .catch((err) => {
             commit('auth_error');
-            localStorage.removeItem('token');
+            localStorage.removeItem('access-token');
             reject(err);
           });
       });
