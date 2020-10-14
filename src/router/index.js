@@ -24,6 +24,11 @@ const routes = [
     name: 'Registration',
     component: () => import('../views/Registration.vue'),
   },
+  {
+    path: '/sponsorcard',
+    name: 'SponsorCard',
+    component: () => import('../views/SponsorCard.vue'),
+  },
 ];
 
 const router = new VueRouter({
