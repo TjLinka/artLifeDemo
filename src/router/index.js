@@ -14,6 +14,11 @@ const routes = [
     name: 'MyInfo',
     component: () => import('../views/MyInfo.vue'),
   },
+  {
+    path: '/myinfoedit',
+    name: 'MyInfoEdit',
+    component: () => import('../views/MyInfoEdit.vue'),
+  },
 ];
 
 const router = new VueRouter({
