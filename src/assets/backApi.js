@@ -1,7 +1,12 @@
-import axios from 'axios';
+import Axios from 'axios';
 
-const backApi = axios.create({
-  baseURL: 'https://jsonplaceholder.typicode.com/users',
+const backAPI = Axios.create({
+  baseURL: process.env.VUE_APP_BASEURL,
+  headers: {
+    post: {
+      'Content-Type': 'application/json',
+      'access-token': localStorage.getItem('access-token') || null,
+    },
+  },
 });
-
-export default backApi;
+export default backAPI;
