@@ -26,8 +26,10 @@ export default {
             console.log(user);
             console.log(token);
             localStorage.setItem('access-token', token);
-            backApi.defaults.headers.common.access_token = token;
-            backApi.get('/secret');
+            backApi.defaults.headers.common['access-token'] = token;
+            backApi.get('/agent/profile').then((Response) => {
+              console.log(Response.data);
+            });
             resolve(resp);
           })
           .catch((err) => {
