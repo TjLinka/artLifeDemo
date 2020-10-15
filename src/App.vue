@@ -1,32 +1,80 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div class="container-fluid p-0">
+      <b-navbar toggleable="lg" type="dark" variant="info">
+        <b-navbar-brand href="#"><h3>Artlife</h3></b-navbar-brand>
+
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+        <b-collapse id="nav-collapse" is-nav>
+          <b-navbar-nav class="ml-auto">
+            <div v-if="is_authorized" class="d-lg-flex">
+              <b-nav-item-dropdown text="Профиль" right>
+                <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
+                <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
+              </b-nav-item-dropdown>
+              <b-nav-item-dropdown text="Структура" right>
+                <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
+                <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
+              </b-nav-item-dropdown>
+              <b-nav-item-dropdown text="Маркетинг" right>
+                <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
+                <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
+              </b-nav-item-dropdown>
+              <b-nav-item-dropdown text="Лицевой счёт" right>
+                <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
+                <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
+              </b-nav-item-dropdown>
+              <b-nav-item-dropdown text="История покупок" right>
+                <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
+                <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
+              </b-nav-item-dropdown>
+            </div>
+            <b-nav-item-dropdown right>
+              <template v-slot:button-content>
+                <em>{{ agentname }}</em>
+              </template>
+              <b-dropdown-item href="#">Profile</b-dropdown-item>
+              <b-dropdown-item href="#" v-on:click="out">Sign Out</b-dropdown-item>
+            </b-nav-item-dropdown>
+          </b-navbar-nav>
+        </b-collapse>
+      </b-navbar>
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
+<script>
+import { mapActions, mapState } from 'vuex';
+
+export default {
+  data() {
+    return {};
+  },
+  created: () => {},
+  computed: {
+    ...mapState('auth', ['is_authorized', 'agentname']),
+  },
+  methods: {
+    ...mapActions('auth', ['logout']),
+    out() {
+      this.logout().then(() => {
+        this.$router.push('/login');
+      });
+    },
+  },
+};
+</script>
+
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.navbar {
+  background-color: darken($color: cyan, $amount: 15%);
+  // height: 70px;
 }
 </style>
