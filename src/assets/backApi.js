@@ -3,9 +3,9 @@ import Axios from 'axios';
 const backAPI = Axios.create({
   baseURL: process.env.VUE_APP_BASEURL,
   headers: {
-    post: {
+    common: {
       'Content-Type': 'application/json',
-      'access-token': localStorage.getItem('access-token') || null,
+      'access-token': localStorage.getItem('access_token') || null,
     },
   },
 });
