@@ -3,6 +3,7 @@
 import backApi from '../assets/backApi';
 
 export default {
+  namespaced: true,
   state: {
     auth_request_status: '',
     is_authorized: localStorage.getItem('access_token'),
@@ -26,6 +27,7 @@ export default {
     },
     AUTH_LOGOUT: (state) => {
       state.auth_request_status = '';
+      state.is_authorized = false;
     },
   },
   actions: {
@@ -35,9 +37,7 @@ export default {
         backApi
           .post('/login', user)
           .then((resp) => {
-            console.log(resp);
             const token = resp.data.access_token;
-            // const user = resp.data.user;
             localStorage.setItem('access_token', token);
             backApi.defaults.headers.common['access-token'] = token;
             commit('AUTH_SUCCESS', token);
@@ -57,7 +57,6 @@ export default {
           .post('/register', { data: user })
           .then((resp) => {
             const token = resp.data.token;
-            // const user = resp.data.user;
             localStorage.setItem('access_token', token);
             backApi.defaults.headers.common['access-token'] = token;
             commit('AUTH_SUCCESS');

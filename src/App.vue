@@ -35,7 +35,7 @@
                 <em>User</em>
               </template>
               <b-dropdown-item href="#">Profile</b-dropdown-item>
-              <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+              <b-dropdown-item href="#" v-on:click="out">Sign Out</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
         </b-collapse>
@@ -46,16 +46,23 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
   data() {
-    return {
-    };
+    return {};
   },
   created: () => {},
   computed: {
-    ...mapState(['is_authorized']),
+    ...mapState('auth', ['is_authorized']),
+  },
+  methods: {
+    ...mapActions('auth', ['logout']),
+    out() {
+      this.logout().then(() => {
+        this.$router.push('/login');
+      });
+    },
   },
 };
 </script>

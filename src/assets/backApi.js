@@ -1,7 +1,6 @@
 import Axios from 'axios';
 
 const backAPI = Axios.create({
-  // withCredentials: true,
   baseURL: 'http://95.165.131.51:8020',
   headers: {
     post: {

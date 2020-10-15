@@ -29,7 +29,7 @@
 
 <script>
 import md5 from 'md5';
-// import backApi from '../assets/backApi';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'Home',
@@ -39,12 +39,15 @@ export default {
     };
   },
   methods: {
+    ...mapActions('auth', ['login']),
     sf() {
       const data = {
         login: this.log.login,
         pwd_hash: md5(this.log.password),
       };
-      this.$store.dispatch('login', data);
+      this.login(data).then(() => {
+        this.$router.push('/');
+      });
     },
   },
   computed: {},
