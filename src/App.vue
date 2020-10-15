@@ -32,7 +32,7 @@
             </div>
             <b-nav-item-dropdown right>
               <template v-slot:button-content>
-                <em>User</em>
+                <em>{{ agentname }}</em>
               </template>
               <b-dropdown-item href="#">Profile</b-dropdown-item>
               <b-dropdown-item href="#" v-on:click="out">Sign Out</b-dropdown-item>
@@ -54,7 +54,7 @@ export default {
   },
   created: () => {},
   computed: {
-    ...mapState('auth', ['is_authorized']),
+    ...mapState('auth', ['is_authorized', 'agentname']),
   },
   methods: {
     ...mapActions('auth', ['logout']),
