@@ -8,7 +8,7 @@
 
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="ml-auto">
-            <div v-if="isAuth" class="d-lg-flex">
+            <div v-if="is_authorized" class="d-lg-flex">
               <b-nav-item-dropdown text="Профиль" right>
                 <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
                 <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
@@ -46,13 +46,17 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   data() {
     return {
-      isAuth: this.$store.state.auth.is_authorized,
     };
   },
   created: () => {},
+  computed: {
+    ...mapState(['is_authorized']),
+  },
 };
 </script>
 
