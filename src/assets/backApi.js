@@ -1,7 +1,7 @@
 import Axios from 'axios';
 
 const backAPI = Axios.create({
-  baseURL: 'http://95.165.131.51:8020',
+  baseURL: process.env.VUE_APP_BASEURL,
   headers: {
     post: {
       'Content-Type': 'application/json',
