@@ -21,6 +21,12 @@ const routes = [
     component: () => import('../views/AccountDetail.vue'),
     meta: { requiresAuth: true },
   },
+  {
+    path: '/points-history',
+    name: 'PointsHistory',
+    component: () => import('../views/PointsHistory.vue'),
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = new VueRouter({
