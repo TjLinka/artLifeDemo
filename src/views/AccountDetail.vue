@@ -5,7 +5,7 @@
       <date-picker
         v-model="rangeDate"
         range
-        @change="getSelectDataRange"
+        @change="getSelectedDataRange"
         valueType="format"
       ></date-picker>
       <p>
@@ -79,9 +79,9 @@ export default {
     },
   },
   methods: {
-    getSelectDataRange() {
+    getSelectedDataRange() {
       // eslint-disable-next-line max-len
-      if (this.rangeDate[0] < this.rangeDate[1] && this.rangeDate[0] != null && this.rangeDate[1] != null) {
+      if (this.rangeDate[0] != null && this.rangeDate[1] != null) {
         backApi
           .get('agent/account-detail', {
             params: {
