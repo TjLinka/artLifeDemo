@@ -6,10 +6,16 @@ export default {
   namespaced: true,
   state: {
     auth_request_status: '',
-    is_authorized: '',
-    access_token: '',
-    agentname: '',
-    role: '',
+    is_authorized: localStorage.getItem('access_token'),
+    access_token: JSON.parse(localStorage.getItem('access_token'))
+      ? JSON.parse(localStorage.getItem('access_token')).access_token
+      : '',
+    agentname: JSON.parse(localStorage.getItem('access_token'))
+      ? JSON.parse(localStorage.getItem('access_token')).agentname
+      : '',
+    role: JSON.parse(localStorage.getItem('access_token'))
+      ? JSON.parse(localStorage.getItem('access_token')).role
+      : '',
   },
   mutations: {
     AUTH_REQUEST: (state) => {

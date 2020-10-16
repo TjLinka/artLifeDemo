@@ -5,7 +5,7 @@ const backAPI = Axios.create({
   headers: {
     common: {
       'Content-Type': 'application/json',
-      'access-token': localStorage.getItem('access_token') || null,
+      'access-token': JSON.parse(localStorage.getItem('access_token')) ? JSON.parse(localStorage.getItem('access_token')).access_token : null,
     },
   },
 });
