@@ -10,47 +10,47 @@
           <div class="row">
             <div class="col-6">
               <p>Номер соглашения:</p>
-              <p>456789</p>
+              <p>{{ userinfo.id }}</p>
             </div>
             <div class="col-6">
               <p>ФИО:</p>
-              <p>Васильев Андрей Петрович</p>
+              <p>{{ userinfo.name }}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-6">
               <p>E-mail:</p>
-              <p>supernameemail@gmail.com.</p>
+              <p>{{ userinfo.email }}</p>
             </div>
             <div class="col-6">
               <p>Телефон:</p>
-              <p>+7 (960) 947-43-55</p>
+              <p>{{ userinfo.phone }}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-6">
               <p>Страна:</p>
-              <p>Россия</p>
+              <p>{{ userinfo.country }}</p>
             </div>
             <div class="col-6">
               <p>Адрес:</p>
-              <p>ул. Самая лучшая 76-23</p>
+              <p>{{ userinfo.address }}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-6">
               <p>Паспорт (серия, номер, кем и когда выдан):</p>
-              <p>Номер: 327467, Серия 6478, Выдан 30.07.2010 г.</p>
+              <p>{{ userinfo.passport }}</p>
             </div>
             <div class="col-6">
               <p>Дата рождения:</p>
-              <p>21.12.1988 г</p>
+              <p>{{ userinfo.bthdte }}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-6">
               <p>Skype:</p>
-              <p>SkypeName</p>
+              <p>{{ userinfo.skype }}</p>
             </div>
             <div class="col-6">
               <p>Доп. телефон:</p>
@@ -58,57 +58,77 @@
             </div>
           </div>
         </div>
-        <div v-if="boss" class="transfert">
+        <div v-if="transfertAccess" class="transfert">
           <h2 class="page__caption">Дополнительная информация для трансферта</h2>
           <div class="container transfert__info" v-if="showTransfertInfo">
             <div class="row">
               <div class="col-6">
-                <p>Номер соглашения:</p>
-                <p>456789</p>
+                <p>Нективность:</p>
+                <p>{{ userinfo.noact }}</p>
               </div>
               <div class="col-6">
-                <p>ФИО:</p>
-                <p>Васильев Андрей Петрович</p>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-6">
-                <p>E-mail:</p>
-                <p>supernameemail@gmail.com.</p>
-              </div>
-              <div class="col-6">
-                <p>Телефон:</p>
-                <p>+7 (960) 947-43-55</p>
+                <p>Личный объем (ЛО):</p>
+                <p>{{ userinfo.lo }}</p>
               </div>
             </div>
             <div class="row">
               <div class="col-6">
-                <p>Страна:</p>
+                <p>Групповой объем (ГО):</p>
+                <p>{{ userinfo.go }}</p>
+              </div>
+              <div class="col-6">
+                <p>Накопленный групповой объем (НГО):</p>
+                <p>{{ userinfo.ngo }}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <p>Организационный объем (ОО):</p>
                 <p>Россия</p>
               </div>
               <div class="col-6">
-                <p>Адрес:</p>
-                <p>ул. Самая лучшая 76-23</p>
+                <p>Квалификационный объем (КО):</p>
+                <p>{{ userinfo.ko }}</p>
               </div>
             </div>
             <div class="row">
               <div class="col-6">
-                <p>Паспорт (серия, номер, кем и когда выдан):</p>
-                <p>Номер: 327467, Серия 6478, Выдан 30.07.2010 г.</p>
+                <p>Баллы в резерве:</p>
+                <p>{{ userinfo.reserve }}</p>
               </div>
               <div class="col-6">
-                <p>Дата рождения:</p>
-                <p>21.12.1988 г</p>
+                <p>Ранг на начало:</p>
+                <p>{{ userinfo.rank_beg }}</p>
               </div>
             </div>
             <div class="row">
               <div class="col-6">
-                <p>Skype:</p>
-                <p>SkypeName</p>
+                <p>Расчетный ранг:</p>
+                <p>{{ userinfo.rank_calc }}</p>
               </div>
               <div class="col-6">
-                <p>Доп. телефон:</p>
-                <p>+7 (912) 537-33-78</p>
+                <p>Ранг на конец месяца:</p>
+                <p>{{ userinfo.rank_end }}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <p>Максимально достигнутый ранг:</p>
+                <p>{{ userinfo.rank_max }}</p>
+              </div>
+              <div class="col-6">
+                <p>Дата достижения максимального ранга:</p>
+                <p>{{ userinfo.rank_max_date }}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <p>Дата регистрации:</p>
+                <p>{{ userinfo.credte }}</p>
+              </div>
+              <div class="col-6">
+                <p>Дата окончания лидерской программы:</p>
+                <p>{{ userinfo.leader_date }}</p>
               </div>
             </div>
           </div>
@@ -129,17 +149,31 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import backApi from '../assets/backApi';
+
 export default {
   name: 'MyInfo',
   data() {
     return {
-      boss: true,
       showTransfertInfo: false,
+      userinfo: {},
     };
   },
   methods: {
     toggleTransfertVisible() {
       this.showTransfertInfo = !this.showTransfertInfo;
+    },
+  },
+  mounted() {
+    backApi.get('/agent/profile').then((Response) => {
+      this.userinfo = Response.data;
+    });
+  },
+  computed: {
+    ...mapState('auth', ['role']),
+    transfertAccess() {
+      return !this.role === 'Клиент';
     },
   },
 };
