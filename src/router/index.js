@@ -22,9 +22,10 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: '/ball-history',
-    name: 'BallHistory',
-    component: () => import('../views/BallHistory.vue'),
+    path: '/points-history',
+    name: 'PointsHistory',
+    component: () => import('../views/PointsHistory.vue'),
+    meta: { requiresAuth: true },
   },
 ];
 

@@ -2,20 +2,9 @@
   <div class="licevoischet__page">
     <div class="container">
       <h2 class="page__title">Движение по лицевому счету</h2>
-<<<<<<< HEAD:src/views/DvizeniePoLicevomySchety.vue
-      <div>
-        DATA PICKER
-      </div>
-      <p class="exp_print">
-=======
-      <date-picker
-        v-model="rangeDate"
-        range
-        @change="getSelectedDataRange"
-        valueType="format"
-      ></date-picker>
+      <date-picker v-model="rangeDate" range @change="getSelectedDataRange" valueType="format">
+      </date-picker>
       <p>
->>>>>>> origin/dev:src/views/AccountDetail.vue
         <span class="mr-3">Печать</span>
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>

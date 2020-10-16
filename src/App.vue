@@ -6,9 +6,9 @@
 
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-        <b-collapse id="nav-collapse" is-nav>
+        <b-collapse v-if="is_authorized" id="nav-collapse" is-nav>
           <b-navbar-nav class="ml-auto">
-            <div v-if="is_authorized" class="d-lg-flex">
+            <div class="d-lg-flex">
               <b-nav-item-dropdown text="Профиль" right>
                 <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
                 <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>

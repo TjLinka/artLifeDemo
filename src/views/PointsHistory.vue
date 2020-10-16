@@ -2,27 +2,33 @@
   <div class="licevoischet__page">
     <div class="container">
       <h2 class="page__title">История баллов</h2>
-      <div>
-        DATA PICKER
-      </div>
+      <date-picker v-model="rangeDate" range @change="getSelectedDataRange" valueType="format">
+      </date-picker>
       <p class="exp_print">
         <span class="mr-3">Печать</span>
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
       <b-table :fields="fields" :items="entries" head-variant="light"> </b-table>
-      <h2 class="licevoischet__page__summ">ЛО = {{ lo }} РЕЗЕРВ = {{ res }}</h2>
+      <h2 class="licevoischet__page__summ">
+        СУММА СПИСАНИЙ = {{ summIncome }} , СУММА НАЧИСЛЕНИЙ = {{ summOutcome }}
+      </h2>
     </div>
   </div>
 </template>
 
 <script>
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
+import 'vue2-datepicker/locale/en';
 import backApi from '../assets/backApi';
 
 export default {
-  name: 'BallHistory',
+  name: 'PointsHistory',
+  components: { DatePicker },
   data() {
     return {
+      rangeDate: {},
       entries: [],
       fields: [
         {
@@ -37,12 +43,12 @@ export default {
         },
         {
           key: 'income',
-          label: 'На счёт',
+          label: 'Списание',
           sortable: true,
         },
         {
           key: 'outcome',
-          label: 'Со счёта',
+          label: 'Начисление',
           sortable: true,
         },
         {
@@ -64,11 +70,47 @@ export default {
     };
   },
   mounted() {
-    backApi.get('/agent/points-detail').then((Response) => {
+    backApi.get('agent/points-detail').then((Response) => {
       this.entries = Response.data.entries;
     });
   },
-  computed: {},
+  computed: {
+    summIncome() {
+      let summIncome = 0;
+      this.entries.forEach((item) => {
+        summIncome += item.income;
+      });
+      return summIncome.toFixed(2);
+    },
+    summOutcome() {
+      let summOutcome = 0;
+      this.entries.forEach((item) => {
+        summOutcome += item.outcome;
+      });
+      return summOutcome.toFixed(2);
+    },
+  },
+  methods: {
+    getSelectedDataRange() {
+      // eslint-disable-next-line max-len
+      if (this.rangeDate[0] != null && this.rangeDate[1] != null) {
+        backApi
+          .get('agent/points-detail', {
+            params: {
+              beg_dte: String(this.rangeDate[0]),
+              end_dte: String(this.rangeDate[1]),
+            },
+          })
+          .then((Response) => {
+            this.entries = Response.data.entries;
+          });
+      } else {
+        backApi.get('agent/points-detail').then((Response) => {
+          this.entries = Response.data.entries;
+        });
+      }
+    },
+  },
 };
 </script>
 
