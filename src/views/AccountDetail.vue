@@ -2,10 +2,20 @@
   <div class="licevoischet__page">
     <div class="container">
       <h2 class="page__title">Движение по лицевому счету</h2>
+<<<<<<< HEAD:src/views/DvizeniePoLicevomySchety.vue
       <div>
         DATA PICKER
       </div>
       <p class="exp_print">
+=======
+      <date-picker
+        v-model="rangeDate"
+        range
+        @change="getSelectedDataRange"
+        valueType="format"
+      ></date-picker>
+      <p>
+>>>>>>> origin/dev:src/views/AccountDetail.vue
         <span class="mr-3">Печать</span>
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
@@ -17,12 +27,20 @@
 </template>
 
 <script>
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
+import 'vue2-datepicker/locale/en';
 import backApi from '../assets/backApi';
 
 export default {
-  name: 'DvizeniePoLicevomySchety',
+  name: 'AccountDetail',
+  components: { DatePicker },
   data() {
     return {
+      lang: {
+        monthBeforeYear: false,
+      },
+      rangeDate: {},
       entries: [],
       fields: [
         {
@@ -55,9 +73,7 @@ export default {
   },
   mounted() {
     backApi.get('agent/account-detail').then((Response) => {
-      console.log(Response.data.entries);
       this.entries = Response.data.entries;
-      console.log(this.entries);
     });
   },
   computed: {
@@ -67,6 +83,27 @@ export default {
         summ += item.balance;
       });
       return summ;
+    },
+  },
+  methods: {
+    getSelectedDataRange() {
+      // eslint-disable-next-line max-len
+      if (this.rangeDate[0] != null && this.rangeDate[1] != null) {
+        backApi
+          .get('agent/account-detail', {
+            params: {
+              beg_dte: String(this.rangeDate[0]),
+              end_dte: String(this.rangeDate[1]),
+            },
+          })
+          .then((Response) => {
+            this.entries = Response.data.entries;
+          });
+      } else {
+        backApi.get('agent/account-detail').then((Response) => {
+          this.entries = Response.data.entries;
+        });
+      }
     },
   },
 };

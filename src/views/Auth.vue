@@ -46,7 +46,7 @@ export default {
         pwd_hash: md5(this.log.password),
       };
       this.login(data).then(() => {
-        this.$router.push('/ls');
+        this.$router.push('/');
       });
     },
   },

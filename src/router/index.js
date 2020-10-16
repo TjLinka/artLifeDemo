@@ -13,11 +13,13 @@ const routes = [
     path: '/',
     name: 'MyInfo',
     component: () => import('../views/MyInfo.vue'),
+    meta: { requiresAuth: true },
   },
   {
-    path: '/ls',
-    name: 'DvizeniePoLicevomySchety',
-    component: () => import('../views/DvizeniePoLicevomySchety.vue'),
+    path: '/account-detail',
+    name: 'AccountDetail',
+    component: () => import('../views/AccountDetail.vue'),
+    meta: { requiresAuth: true },
   },
   {
     path: '/ball-history',
@@ -30,6 +32,20 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!localStorage.getItem('access_token')) {
+      next({
+        path: '/login',
+      });
+    } else {
+      next();
+    }
+  } else {
+    next(); // всегда так или иначе нужно вызвать next()!
+  }
 });
 
 export default router;
