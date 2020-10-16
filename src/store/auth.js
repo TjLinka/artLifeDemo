@@ -6,7 +6,9 @@ export default {
   namespaced: true,
   state: {
     auth_request_status: '',
-    is_authorized: localStorage.getItem('access_token'),
+    is_authorized: JSON.parse(localStorage.getItem('access_token'))
+      ? JSON.parse(localStorage.getItem('access_token')).access_token
+      : false,
     access_token: JSON.parse(localStorage.getItem('access_token'))
       ? JSON.parse(localStorage.getItem('access_token')).access_token
       : '',
