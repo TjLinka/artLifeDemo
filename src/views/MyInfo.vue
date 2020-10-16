@@ -167,7 +167,6 @@ export default {
   },
   mounted() {
     backApi.get('/agent/profile').then((Response) => {
-      console.log(Response.data);
       this.userinfo = Response.data;
     });
   },
