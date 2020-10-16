@@ -6,8 +6,8 @@ export default {
   namespaced: true,
   state: {
     auth_request_status: '',
-    is_authorized: localStorage.getItem('access_token'),
-    access_token: localStorage.getItem('access_token') || '',
+    is_authorized: '',
+    access_token: '',
     agentname: '',
     role: '',
   },
@@ -22,8 +22,8 @@ export default {
       state.auth_request_status = 'success';
       state.is_authorized = payload.access_token;
       state.access_token = payload.access_token;
-      state.agentname = payload.agentname;
-      state.role = payload.role;
+      state.agentname = JSON.parse(localStorage.getItem('access_token')).agentname;
+      state.role = JSON.parse(localStorage.getItem('access_token')).role;
     },
     AUTH_ERROR: (state) => {
       state.auth_request_status = 'error';
@@ -42,10 +42,11 @@ export default {
         backApi
           .post('/login', user)
           .then((resp) => {
+            const data = JSON.stringify(resp.data);
             const token = resp.data.access_token;
-            commit('AUTH_SUCCESS', resp.data);
-            localStorage.setItem('access_token', token);
+            localStorage.setItem('access_token', data);
             backApi.defaults.headers.common['access-token'] = token;
+            commit('AUTH_SUCCESS', resp.data);
             resolve(resp);
           })
           .catch((err) => {
