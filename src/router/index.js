@@ -17,8 +17,8 @@ const routes = [
   },
   {
     path: '/account-detail',
-    name: 'DvizeniePoLicevomySchety',
-    component: () => import('../views/DvizeniePoLicevomySchety.vue'),
+    name: 'AccountDetail',
+    component: () => import('../views/AccountDetail.vue'),
     meta: { requiresAuth: true },
   },
 ];

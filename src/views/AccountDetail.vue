@@ -26,7 +26,7 @@ import 'vue2-datepicker/locale/en';
 import backApi from '../assets/backApi';
 
 export default {
-  name: 'DvizeniePoLicevomySchety',
+  name: 'AccountDetail',
   components: { DatePicker },
   data() {
     return {
