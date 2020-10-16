@@ -8,7 +8,7 @@
 
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="ml-auto">
-            <div v-if="true" class="d-lg-flex">
+            <div v-if="is_authorized" class="d-lg-flex">
               <b-nav-item-dropdown text="Профиль" right>
                 <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
                 <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
@@ -32,10 +32,10 @@
             </div>
             <b-nav-item-dropdown right>
               <template v-slot:button-content>
-                <em>User</em>
+                <em>{{ agentname }}</em>
               </template>
               <b-dropdown-item href="#">Profile</b-dropdown-item>
-              <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+              <b-dropdown-item href="#" v-on:click="out">Sign Out</b-dropdown-item>
             </b-nav-item-dropdown>
           </b-navbar-nav>
         </b-collapse>
@@ -50,13 +50,24 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex';
+
 export default {
   data() {
-    return {
-      isAuth: this.$store.state.auth.is_authorized,
-    };
+    return {};
   },
   created: () => {},
+  computed: {
+    ...mapState('auth', ['is_authorized', 'agentname']),
+  },
+  methods: {
+    ...mapActions('auth', ['logout']),
+    out() {
+      this.logout().then(() => {
+        this.$router.push('/login');
+      });
+    },
+  },
 };
 </script>
 

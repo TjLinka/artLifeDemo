@@ -10,100 +10,61 @@
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
-      <b-table :fields="fields" :items="items" head-variant="light"> </b-table>
+      <b-table :fields="fields" :items="entries" head-variant="light"> </b-table>
       <h2 class="licevoischet__page__summ">СУММА = {{ summ }}</h2>
     </div>
   </div>
 </template>
 
 <script>
+import backApi from '../assets/backApi';
+
 export default {
   name: 'DvizeniePoLicevomySchety',
   data() {
     return {
+      entries: [],
       fields: [
         {
-          key: 'data',
+          key: 'dte',
           label: 'Дата операции',
           sortable: true,
         },
         {
-          key: 'naschet',
-          label: 'На счет',
+          key: 'amount',
+          label: 'На счет / Со счета',
           sortable: true,
         },
         {
-          key: 'soschet',
-          label: 'Со счета',
-          sortable: true,
-        },
-        {
-          key: 'type',
+          key: 'account_type',
           label: 'Тип операции',
           sortable: true,
         },
         {
-          key: 'comments',
+          key: 'comm',
           label: 'Комментарий',
           sortable: true,
         },
         {
-          key: 'summ',
+          key: 'balance',
           label: 'Итого на лицевом счете',
           sortable: true,
         },
       ],
-      items: [
-        {
-          data: '01.03.2020',
-          naschet: '33547,9',
-          type: 'Розничное вознаграждение',
-          comments: 'Розничное вознаграждение',
-          summ: 2334567,
-        },
-        {
-          data: '01.03.2020',
-          naschet: '33547,9',
-          type: 'Розничное вознаграждение',
-          comments: 'Розничное вознаграждение',
-          summ: 2334567,
-        },
-        {
-          data: '01.03.2020',
-          naschet: '33547,9',
-          type: 'Розничное вознаграждение',
-          comments: 'Розничное вознаграждение',
-          summ: 2334567,
-        },
-        {
-          data: '01.03.2020',
-          naschet: '33547,9',
-          type: 'Розничное вознаграждение',
-          comments: 'Розничное вознаграждение',
-          summ: 2334567,
-        },
-        {
-          data: '01.03.2020',
-          naschet: '33547,9',
-          type: 'Розничное вознаграждение',
-          comments: 'Розничное вознаграждение',
-          summ: 2334567,
-        },
-        {
-          data: '01.03.2020',
-          naschet: '33547,9',
-          type: 'Розничное вознаграждение',
-          comments: 'Розничное вознаграждение',
-          summ: 2334567,
-        },
-      ],
     };
+  },
+  mounted() {
+    backApi.get('agent/account-detail').then((Response) => {
+      console.log(Response.data.entries);
+      this.entries = Response.data.entries;
+      console.log(this.entries);
+    });
   },
   computed: {
     summ() {
       let summ = 0;
-      this.items.forEach((item) => {
-        summ += item.summ;
+      this.entries.forEach((item) => {
+        summ += item.balance;
       });
       return summ;
     },
