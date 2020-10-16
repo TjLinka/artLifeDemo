@@ -2,9 +2,12 @@
   <div class="licevoischet__page">
     <div class="container">
       <h2 class="page__title">Движение по лицевому счету</h2>
-      <div>
-        DATA PICKER
-      </div>
+      <date-picker
+        v-model="rangeDate"
+        range
+        @change="getSelectDataRange"
+        valueType="format"
+      ></date-picker>
       <p>
         <span class="mr-3">Печать</span>
         <span class="mr-3">Экспорт в xls</span>
@@ -17,12 +20,20 @@
 </template>
 
 <script>
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
+import 'vue2-datepicker/locale/en';
 import backApi from '../assets/backApi';
 
 export default {
   name: 'DvizeniePoLicevomySchety',
+  components: { DatePicker },
   data() {
     return {
+      lang: {
+        monthBeforeYear: false,
+      },
+      rangeDate: {},
       entries: [],
       fields: [
         {
@@ -55,9 +66,7 @@ export default {
   },
   mounted() {
     backApi.get('agent/account-detail').then((Response) => {
-      console.log(Response.data.entries);
       this.entries = Response.data.entries;
-      console.log(this.entries);
     });
   },
   computed: {
@@ -67,6 +76,27 @@ export default {
         summ += item.balance;
       });
       return summ;
+    },
+  },
+  methods: {
+    getSelectDataRange() {
+      // eslint-disable-next-line max-len
+      if (this.rangeDate[0] < this.rangeDate[1] && this.rangeDate[0] != null && this.rangeDate[1] != null) {
+        backApi
+          .get('agent/account-detail', {
+            params: {
+              beg_dte: String(this.rangeDate[0]),
+              end_dte: String(this.rangeDate[1]),
+            },
+          })
+          .then((Response) => {
+            this.entries = Response.data.entries;
+          });
+      } else {
+        backApi.get('agent/account-detail').then((Response) => {
+          this.entries = Response.data.entries;
+        });
+      }
     },
   },
 };
