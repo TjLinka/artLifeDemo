@@ -15,7 +15,7 @@ const routes = [
     component: () => import('../views/MyInfo.vue'),
   },
   {
-    path: '/ls',
+    path: '/account-detail',
     name: 'DvizeniePoLicevomySchety',
     component: () => import('../views/DvizeniePoLicevomySchety.vue'),
   },
