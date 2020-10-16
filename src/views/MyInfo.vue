@@ -181,8 +181,6 @@ export default {
 
 <style lang="scss" scoped>
 .myinfo__page {
-  margin-top: 40px;
-
   & .page__title {
     color: #383a41;
     font-size: 32px;
