@@ -8,11 +8,7 @@
 
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="ml-auto">
-<<<<<<< HEAD
-            <div v-if="true" class="d-lg-flex">
-=======
             <div v-if="is_authorized" class="d-lg-flex">
->>>>>>> origin/dev
               <b-nav-item-dropdown text="Профиль" right>
                 <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
                 <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>

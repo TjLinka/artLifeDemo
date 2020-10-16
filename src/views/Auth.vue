@@ -1,31 +1,4 @@
 <template>
-<<<<<<< HEAD
-    <div class="container">
-      <div class="auth__page">
-        <h1 class="page__title">
-          Авторизация
-        </h1>
-        <div class="auth__page__form">
-          <form>
-            <input type="text" placeholder="Логин" v-model="log.login" />
-            <input type="password" placeholder="Пароль" v-model="log.password" />
-            <button class="btn__login" v-on:click.prevent="sf">Войти</button>
-          </form>
-        </div>
-        <div class="auth__page__help">
-          <p>Забыли пароль? <a href="#">Напомнить</a> на email</p>
-        </div>
-        <div class="auth__page__copy">
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam id asperiores quae
-            voluptatibus, in quas iste est nemo inventore animi rerum labore dicta maiores
-            voluptate! Veniam quaerat voluptates nemo tenetur maiores voluptas, quis minus natus
-            voluptatum pariatur illo facilis ut consequatur eos nam animi omnis. Quaerat ab debitis
-            assumenda minima voluptatum eius necessitatibus dolor! Impedit ducimus ad ipsam adipisci
-            harum.
-          </p>
-        </div>
-=======
   <div class="container">
     <div class="auth__page">
       <h1 class="page__title">
@@ -49,9 +22,9 @@
           pariatur illo facilis ut consequatur eos nam animi omnis. Quaerat ab debitis assumenda
           minima voluptatum eius necessitatibus dolor! Impedit ducimus ad ipsam adipisci harum.
         </p>
->>>>>>> origin/dev
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -73,7 +46,7 @@ export default {
         pwd_hash: md5(this.log.password),
       };
       this.login(data).then(() => {
-        this.$router.push('/');
+        this.$router.push('/ls');
       });
     },
   },
