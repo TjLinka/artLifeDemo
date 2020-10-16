@@ -10,129 +10,65 @@
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
-      <b-table :fields="fields" :items="items" head-variant="light"> </b-table>
+      <b-table :fields="fields" :items="entries" head-variant="light"> </b-table>
       <h2 class="licevoischet__page__summ">ЛО = {{ lo }} РЕЗЕРВ = {{ res }}</h2>
     </div>
   </div>
 </template>
 
 <script>
+import backApi from '../assets/backApi';
+
 export default {
   name: 'BallHistory',
   data() {
     return {
+      entries: [],
       fields: [
         {
-          key: 'data',
+          key: 'dte',
           label: 'Дата операции',
           sortable: true,
         },
         {
-          key: 'period',
+          key: 'comdte',
           label: 'Период',
           sortable: true,
         },
         {
-          key: 'naschet',
-          label: 'На счет',
+          key: 'income',
+          label: 'На счёт',
           sortable: true,
         },
         {
-          key: 'soschet',
-          label: 'Со счета',
+          key: 'outcome',
+          label: 'Со счёта',
           sortable: true,
         },
         {
-          key: 'type',
+          key: 'opertype',
           label: 'Тип операции',
           sortable: true,
         },
         {
-          key: 'ball_type',
+          key: 'pointstype',
           label: 'Тип баллов',
           sortable: true,
         },
         {
-          key: 'comments',
+          key: 'comm',
           label: 'Комментарий',
           sortable: true,
         },
       ],
-      items: [
-        {
-          data: '01.03.2020',
-          period: 'Март 2020',
-          naschet: '33547,9',
-          soschet: '31316,1',
-          ball_type: 'Баллы Резерва',
-          type: 'Трансферт баллов в МП',
-          comments: 'Розничное вознаграждение',
-        },
-        {
-          data: '01.03.2020',
-          period: 'Март 2020',
-          naschet: '33547,9',
-          soschet: '31316,1',
-          ball_type: 'Баллы Резерва',
-          type: 'Трансферт баллов в МП',
-          comments: 'Розничное вознаграждение',
-        },
-        {
-          data: '01.03.2020',
-          period: 'Март 2020',
-          naschet: '33547,9',
-          soschet: '31316,1',
-          ball_type: 'Баллы Резерва',
-          type: 'Трансферт баллов в МП',
-          comments: 'Розничное вознаграждение',
-        },
-        {
-          data: '01.03.2020',
-          period: 'Март 2020',
-          naschet: '33547,9',
-          soschet: '31316,1',
-          ball_type: 'Баллы Резерва',
-          type: 'Трансферт баллов в МП',
-          comments: 'Розничное вознаграждение',
-        },
-        {
-          data: '01.03.2020',
-          period: 'Март 2020',
-          naschet: '33547,9',
-          soschet: '31316,1',
-          ball_type: 'Баллы Резерва',
-          type: 'Трансферт баллов в МП',
-          comments: 'Розничное вознаграждение',
-        },
-        {
-          data: '01.03.2020',
-          period: 'Март 2020',
-          naschet: '33547,9',
-          soschet: '31316,1',
-          ball_type: 'Баллы Резерва',
-          type: 'Трансферт баллов в МП',
-          comments: 'Розничное вознаграждение',
-        },
-        {
-          data: '01.03.2020',
-          period: 'Март 2020',
-          naschet: '33547,9',
-          soschet: '31316,1',
-          ball_type: 'Баллы Резерва',
-          type: 'Трансферт баллов в МП',
-          comments: 'Розничное вознаграждение',
-        },
-      ],
     };
   },
-  computed: {
-    lo() {
-      return 200;
-    },
-    res() {
-      return 100;
-    },
+  mounted() {
+    backApi.get('/agent/points-detail').then((Response) => {
+      this.entries = Response.data.entries;
+    });
   },
+  computed: {},
 };
 </script>
 
