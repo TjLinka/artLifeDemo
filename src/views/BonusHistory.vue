@@ -4,13 +4,14 @@
       <h2 class="page__title">История бонусов(КЕ)</h2>
       <div class="row">
         <div class="col-2 perioad__picker">
-          <span class="mr-1"
-                @click="periodIndex = (periodIndex - 1) >= 0? periodIndex - 1: periods.length - 1">
-            &lt;</span>
-          <span>{{ currentPeriod.slice(0,-3)}}</span>
-          <span class="ml-1"
-                @click="periodIndex = (periodIndex+1)  % periods.length">
-            &gt;</span>
+          <span
+            class="mr-1"
+            @click="periodIndex = periodIndex - 1 >= 0 ? periodIndex - 1 : periods.length - 1"
+          >
+            &lt;</span
+          >
+          <span>{{ currentPeriod.slice(0, -3) }}</span>
+          <span class="ml-1" @click="periodIndex = (periodIndex + 1) % periods.length"> &gt;</span>
         </div>
       </div>
       <p class="exp_print">
@@ -18,6 +19,7 @@
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
+      <b-table :fields="topFields" :items="testDataTopTable" head-variant="light"></b-table>
       <b-table :fields="mainFields" :items="bonus" head-variant="light">
         <template v-slot:cell(show_details)="row">
           <b-button size="sm" @click="row.toggleDetails" class="mr-2">
@@ -44,6 +46,52 @@ export default {
       periodIndex: 0,
       bonus: [],
       returnItems: [],
+      testDataTopTable: [
+        {
+          period: '2020 Февраль',
+          bonusAll: 200,
+          lo: 10,
+          go: 15,
+          ngo: 2,
+          oo: 10,
+          ko: 2000,
+          rank: 'Директор',
+        },
+      ],
+      topFields: [
+        {
+          key: 'period',
+          label: 'Период',
+        },
+        {
+          key: 'bonusAll',
+          label: 'Бонусов всего',
+        },
+        {
+          key: 'lo',
+          label: 'ЛО',
+        },
+        {
+          key: 'go',
+          label: 'ГО',
+        },
+        {
+          key: 'ngo',
+          label: 'НГО',
+        },
+        {
+          key: 'oo',
+          label: 'ОО',
+        },
+        {
+          key: 'ko',
+          label: 'КО',
+        },
+        {
+          key: 'rank',
+          label: 'Расчетный ранг ',
+        },
+      ],
       mainFields: [
         'show_details',
         {
@@ -90,7 +138,8 @@ export default {
         return result;
       });
       this.periodIndex = this.periods.length - 1;
-      backApi.get('agent/bonus-detail', { params: { comdte: this.currentPeriod } })
+      backApi
+        .get('agent/bonus-detail', { params: { comdte: this.currentPeriod } })
         .then((response) => {
           this.bonus = response.data;
         });
@@ -107,10 +156,9 @@ export default {
   },
   watch: {
     currentPeriod(v) {
-      backApi.get('agent/bonus-detail', { params: { comdte: v } })
-        .then((response) => {
-          this.bonus = response.data;
-        });
+      backApi.get('agent/bonus-detail', { params: { comdte: v } }).then((response) => {
+        this.bonus = response.data;
+      });
     },
   },
   methods: {},

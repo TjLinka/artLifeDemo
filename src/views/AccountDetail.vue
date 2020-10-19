@@ -10,7 +10,7 @@
         <span class="mr-3">Экспорт в pdf</span>
       </p>
       <b-table :fields="fields" :items="entries" head-variant="light"> </b-table>
-      <h2 class="licevoischet__page__summ">СУММА = {{ summ }}</h2>
+      <h2 class="licevoischet__page__summ">Изменение лицевого счета за период = {{ summ }}</h2>
     </div>
   </div>
 </template>
@@ -69,9 +69,9 @@ export default {
     summ() {
       let summ = 0;
       this.entries.forEach((item) => {
-        summ += item.balance;
+        summ += item.amount;
       });
-      return summ;
+      return summ.toFixed(2);
     },
   },
   methods: {
@@ -103,7 +103,7 @@ export default {
   &__summ {
     text-align: center;
     background-color: #dee2f3;
-    font-size: 12px;
+    font-size: 20px;
     padding: 10px 0px;
   }
 
