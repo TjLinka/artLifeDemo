@@ -40,19 +40,10 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: '/myinfoedit',
-    name: 'MyInfoEdit',
-    component: () => import('../views/MyInfoEdit.vue'),
-  },
-  {
-    path: '/registration',
-    name: 'Registration',
-    component: () => import('../views/Registration.vue'),
-  },
-  {
     path: '/sponsorcard',
     name: 'SponsorCard',
     component: () => import('../views/SponsorCard.vue'),
+    meta: { requiresAuth: true },
   },
 ];
 

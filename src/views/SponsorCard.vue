@@ -10,151 +10,49 @@
           <div class="row">
             <div class="col-6">
               <p>Номер соглашения:</p>
-              <p>456789</p>
+              <p>{{userInfo.id}}</p>
             </div>
-            <!-- <div class="col-6">
-              <p>ФИО:</p>
-              <p>Васильев Андрей Петрович</p>
-            </div> -->
             <div class="col-6">
               <p>E-mail:</p>
-              <p>supernameemail@gmail.com.</p>
+              <p>{{userInfo.email}}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-6">
               <p>ФИО:</p>
-              <p>Васильев Андрей Петрович</p>
+              <p>{{userInfo.name}}</p>
             </div>
             <div class="col-6">
               <p>Skype:</p>
-              <p>SK</p>
+              <p>{{userInfo.skype}}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-6">
               <p>Телефон:</p>
-              <p>+7 (960) 947-43-55</p>
-            </div>
-            <!-- <div class="col-6">
-              <p>Skype:</p>
-              <p>SK</p>
-            </div> -->
-          </div>
-          <!-- <div class="row">
-            <div class="col-6">
-              <p>Страна:</p>
-              <p>Россия</p>
-            </div>
-            <div class="col-6">
-              <p>Адрес:</p>
-              <p>ул. Самая лучшая 76-23</p>
+              <p>{{userInfo.phone}}</p>
             </div>
           </div>
-          <div class="row">
-            <div class="col-6">
-              <p>Паспорт (серия, номер, кем и когда выдан):</p>
-              <p>Номер: 327467, Серия 6478, Выдан 30.07.2010 г.</p>
-            </div>
-            <div class="col-6">
-              <p>Дата рождения:</p>
-              <p>21.12.1988 г</p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-6">
-              <p>Skype:</p>
-              <p>SkypeName</p>
-            </div>
-            <div class="col-6">
-              <p>Доп. телефон:</p>
-              <p>+7 (912) 537-33-78</p>
-            </div>
-          </div> -->
         </div>
-        <!-- <div v-if="boss" class="transfert">
-          <h2 class="page__caption">Дополнительная информация для трансферта</h2>
-          <div class="container transfert__info" v-if="showTransfertInfo">
-            <div class="row">
-              <div class="col-6">
-                <p>Номер соглашения:</p>
-                <p>456789</p>
-              </div>
-              <div class="col-6">
-                <p>ФИО:</p>
-                <p>Васильев Андрей Петрович</p>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-6">
-                <p>E-mail:</p>
-                <p>supernameemail@gmail.com.</p>
-              </div>
-              <div class="col-6">
-                <p>Телефон:</p>
-                <p>+7 (960) 947-43-55</p>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-6">
-                <p>Страна:</p>
-                <p>Россия</p>
-              </div>
-              <div class="col-6">
-                <p>Адрес:</p>
-                <p>ул. Самая лучшая 76-23</p>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-6">
-                <p>Паспорт (серия, номер, кем и когда выдан):</p>
-                <p>Номер: 327467, Серия 6478, Выдан 30.07.2010 г.</p>
-              </div>
-              <div class="col-6">
-                <p>Дата рождения:</p>
-                <p>21.12.1988 г</p>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-6">
-                <p>Skype:</p>
-                <p>SkypeName</p>
-              </div>
-              <div class="col-6">
-                <p>Доп. телефон:</p>
-                <p>+7 (912) 537-33-78</p>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-6">
-              <p class="show__transfert p-0" v-on:click="toggleTransfertVisible">
-                {{ showTransfertInfo ? 'Свернуть' : 'Раскрыть' }}
-              </p>
-            </div>
-            <div class="col-6">
-              <button v-if="showTransfertInfo" class="transfert__btn">ТРАНСФЕРТ</button>
-            </div>
-          </div>
-        </div> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import backApi from '../assets/backApi';
+
 export default {
   name: 'SponsorCard',
   data() {
     return {
-      boss: true,
-      showTransfertInfo: false,
+      userInfo: {},
     };
   },
-  methods: {
-    toggleTransfertVisible() {
-      this.showTransfertInfo = !this.showTransfertInfo;
-    },
+  mounted() {
+    backApi.get('agent/sponsor').then((Response) => {
+      this.userInfo = Response.data;
+    });
   },
 };
 </script>
