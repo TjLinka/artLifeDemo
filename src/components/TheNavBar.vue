@@ -10,7 +10,7 @@
           <div class="d-lg-flex">
             <b-nav-item-dropdown text="Профиль" right>
               <b-dropdown-item to="/">Карточка партнера</b-dropdown-item>
-              <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
+              <b-dropdown-item href="/sponsorcard">Данные спонсора</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item-dropdown text="Структура" right>
               <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
@@ -26,7 +26,7 @@
             </b-nav-item-dropdown>
             <b-nav-item-dropdown text="История покупок" right>
               <b-dropdown-item href="/returns-history">История возвартов</b-dropdown-item>
-              <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
+              <b-dropdown-item href="/">Lorem, ipsum.</b-dropdown-item>
             </b-nav-item-dropdown>
           </div>
           <b-nav-item-dropdown right>
