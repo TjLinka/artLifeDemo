@@ -9,7 +9,7 @@
         <b-navbar-nav class="ml-auto">
           <div class="d-lg-flex">
             <b-nav-item-dropdown text="Профиль" right>
-              <b-dropdown-item to="/" href="#">Карточка партнера</b-dropdown-item>
+              <b-dropdown-item to="/">Карточка партнера</b-dropdown-item>
               <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item-dropdown text="Структура" right>
@@ -17,12 +17,12 @@
               <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item-dropdown text="Маркетинг" right>
-              <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
-              <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
+              <b-dropdown-item to="/points-history">История баллов</b-dropdown-item>
+              <b-dropdown-item to="/bonus-history">История бонусов</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item-dropdown text="Лицевой счёт" right>
-              <b-dropdown-item to="/points-history" href="#">История баллов</b-dropdown-item>
-              <b-dropdown-item to="/bonus-history" href="#">История бонусов</b-dropdown-item>
+              <b-dropdown-item to="/account-detail">Движение по лицевому счету</b-dropdown-item>
+              <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item-dropdown text="История покупок" right>
               <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
