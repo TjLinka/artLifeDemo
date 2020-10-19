@@ -154,7 +154,7 @@ export default {
         row.toggleDetails();
       } else if (!this.return_details[row.item.webshop_id]) {
         backApi
-          .get('/agent/refunds-detail', { params: { return_id: row.item.webshop_id } })
+          .get('/agent/refunds-detail', { params: { id: row.item.webshop_id } })
           .then((response) => {
             this.return_details[row.item.webshop_id] = response.data.entries;
             row.toggleDetails();

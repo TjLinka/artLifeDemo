@@ -113,7 +113,7 @@ export default {
     };
   },
   mounted() {
-    backApi.get('agent/refunds').then((Response) => {
+    backApi.get('agent/sales').then((Response) => {
       this.entries = Response.data.entries;
       this.return_details = new Array(this.total_rows).fill(undefined);
     });
@@ -132,7 +132,7 @@ export default {
       // eslint-disable-next-line max-len
       if (this.rangeDate[0] != null && this.rangeDate[1] != null) {
         backApi
-          .get('agent/refunds', {
+          .get('agent/sales', {
             params: {
               beg_dte: String(this.rangeDate[0]),
               end_dte: String(this.rangeDate[1]),
@@ -143,7 +143,7 @@ export default {
             this.return_details = new Array(this.total_rows).fill(undefined);
           });
       } else {
-        backApi.get('agent/refunds').then((Response) => {
+        backApi.get('agent/sales').then((Response) => {
           this.entries = Response.data.entries;
           this.return_details = new Array(this.total_rows).fill(undefined);
         });
@@ -154,7 +154,7 @@ export default {
         row.toggleDetails();
       } else if (!this.return_details[row.item.webshop_id]) {
         backApi
-          .get('/agent/refunds-detail', { params: { return_id: row.item.webshop_id } })
+          .get('/agent/sales-detail', { params: { id: row.item.webshop_id } })
           .then((response) => {
             this.return_details[row.item.webshop_id] = response.data.entries;
             row.toggleDetails();
