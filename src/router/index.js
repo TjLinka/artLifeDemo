@@ -33,6 +33,12 @@ const routes = [
     component: () => import('../views/BonusHistory.vue'),
     meta: { requiresAuth: true },
   },
+  {
+    path: '/returns-history',
+    name: 'ReturnsHistory',
+    component: () => import('../views/ReturnsHistory.vue'),
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = new VueRouter({
