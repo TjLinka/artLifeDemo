@@ -26,10 +26,6 @@ export default {
   margin: 0;
   box-sizing: border-box;
 }
-.navbar {
-  background-color: #32aaa7 !important;
-  // height: 70px;
-}
 main {
   margin-top: 40px;
 }

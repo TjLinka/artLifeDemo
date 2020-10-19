@@ -61,6 +61,9 @@ export default {
 };
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+  .navbar {
+    background-color: #32aaa7 !important;
+  // height: 70px;
+  }
 </style>
