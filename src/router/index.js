@@ -51,6 +51,12 @@ const routes = [
     component: () => import('../views/SponsorCard.vue'),
     meta: { requiresAuth: true },
   },
+  {
+    path: '/organization-period',
+    name: 'OrganizationPeriod',
+    component: () => import('../views/OrganizationPeriod.vue'),
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = new VueRouter({
