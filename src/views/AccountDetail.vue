@@ -1,7 +1,7 @@
 <template>
   <div class="licevoischet__page">
     <div class="container">
-      <h2 class="page__title">Движение по лицевому счету</h2>
+      <h2 class="page__title">Изменение лицевого счета за период</h2>
       <date-picker v-model="rangeDate" range @change="getSelectedDataRange" valueType="format">
       </date-picker>
       <p>
@@ -69,9 +69,9 @@ export default {
     summ() {
       let summ = 0;
       this.entries.forEach((item) => {
-        summ += item.balance;
+        summ += item.amount;
       });
-      return summ;
+      return summ.toFixed(2);
     },
   },
   methods: {
