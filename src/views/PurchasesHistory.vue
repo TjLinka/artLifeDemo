@@ -1,7 +1,7 @@
 <template>
   <div class="licevoischet__page">
     <div class="container">
-      <h2 class="page__title">История возвартов</h2>
+      <h2 class="page__title">История покупок</h2>
       <date-picker v-model="rangeDate" range @change="getSelectedDataRange" valueType="format">
       </date-picker>
       <p>
