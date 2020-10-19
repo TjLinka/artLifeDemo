@@ -34,6 +34,12 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: '/purchases-history',
+    name: 'PurchasesHistory',
+    component: () => import('../views/PurchasesHistory.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
     path: '/returns-history',
     name: 'ReturnsHistory',
     component: () => import('../views/ReturnsHistory.vue'),
