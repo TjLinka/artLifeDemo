@@ -10,11 +10,11 @@
           <div class="d-lg-flex">
             <b-nav-item-dropdown text="Профиль" right>
               <b-dropdown-item to="/">Карточка партнера</b-dropdown-item>
-              <b-dropdown-item href="/sponsorcard">Данные спонсора</b-dropdown-item>
+              <b-dropdown-item to="/sponsorcard">Данные спонсора</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item-dropdown text="Структура" right>
-              <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
-              <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
+              <b-dropdown-item to="#">Lorem, ipsum.</b-dropdown-item>
+              <b-dropdown-item to="#">Lorem, ipsum.</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item-dropdown text="Маркетинг" right>
               <b-dropdown-item to="/points-history">История баллов</b-dropdown-item>
@@ -22,19 +22,19 @@
             </b-nav-item-dropdown>
             <b-nav-item-dropdown text="Лицевой счёт" right>
               <b-dropdown-item to="/account-detail">Движение по лицевому счету</b-dropdown-item>
-              <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
+              <b-dropdown-item to="#">Lorem, ipsum.</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item-dropdown text="История покупок" right>
-              <b-dropdown-item href="/returns-history">История возвартов</b-dropdown-item>
-              <b-dropdown-item href="/">Lorem, ipsum.</b-dropdown-item>
+              <b-dropdown-item to="/returns-history">История возвартов</b-dropdown-item>
+              <b-dropdown-item to="/purchases-history">История покупок</b-dropdown-item>
             </b-nav-item-dropdown>
           </div>
           <b-nav-item-dropdown right>
             <template v-slot:button-content>
               <em>{{ agentname }}</em>
             </template>
-            <b-dropdown-item href="#">Profile</b-dropdown-item>
-            <b-dropdown-item href="#" v-on:click="out">Sign Out</b-dropdown-item>
+            <b-dropdown-item to="#">Profile</b-dropdown-item>
+            <b-dropdown-item to="#" v-on:click="out">Sign Out</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
