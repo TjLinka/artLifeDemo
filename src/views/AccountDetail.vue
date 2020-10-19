@@ -1,7 +1,7 @@
 <template>
   <div class="licevoischet__page">
     <div class="container">
-      <h2 class="page__title">Изменение лицевого счета за период</h2>
+      <h2 class="page__title">Движение по лицевому счету</h2>
       <date-picker v-model="rangeDate" range @change="getSelectedDataRange" valueType="format">
       </date-picker>
       <p>
@@ -10,7 +10,7 @@
         <span class="mr-3">Экспорт в pdf</span>
       </p>
       <b-table :fields="fields" :items="entries" head-variant="light"> </b-table>
-      <h2 class="licevoischet__page__summ">СУММА = {{ summ }}</h2>
+      <h2 class="licevoischet__page__summ">Изменение лицевого счета за период = {{ summ }}</h2>
     </div>
   </div>
 </template>
@@ -103,7 +103,7 @@ export default {
   &__summ {
     text-align: center;
     background-color: #dee2f3;
-    font-size: 12px;
+    font-size: 20px;
     padding: 10px 0px;
   }
 
