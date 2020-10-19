@@ -25,7 +25,7 @@
               <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item-dropdown text="История покупок" right>
-              <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
+              <b-dropdown-item href="/returns-history">История возвартов</b-dropdown-item>
               <b-dropdown-item href="#">Lorem, ipsum.</b-dropdown-item>
             </b-nav-item-dropdown>
           </div>
