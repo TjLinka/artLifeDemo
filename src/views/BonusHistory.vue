@@ -4,8 +4,13 @@
       <h2 class="page__title">История бонусов(КЕ)</h2>
       <div class="row">
         <div class="col-2 perioad__picker">
-          <span class="mr-1">Left</span><span>{{ currentPeriod }}</span
-          ><span class="ml-1">Right</span>
+          <span class="mr-1"
+                @click="periodIndex = (periodIndex - 1) >= 0? periodIndex - 1: periods.length - 1">
+            &lt;</span>
+          <span>{{ currentPeriod.slice(0,-3)}}</span>
+          <span class="ml-1"
+                @click="periodIndex = (periodIndex+1)  % periods.length">
+            &gt;</span>
         </div>
       </div>
       <p class="exp_print">
@@ -16,7 +21,7 @@
       <b-table :fields="mainFields" :items="bonus" head-variant="light">
         <template v-slot:cell(show_details)="row">
           <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-            {{ row.detailsShowing ? 'Hide' : 'Show' }} Details
+            {{ row.detailsShowing ? '-' : '+' }}
           </b-button>
         </template>
         <template v-slot:row-details="row">
@@ -36,7 +41,7 @@ export default {
   data() {
     return {
       periods: [],
-      currentPeriod: '',
+      periodIndex: 0,
       bonus: [],
       returnItems: [],
       mainFields: [
@@ -80,14 +85,34 @@ export default {
   },
   mounted() {
     backApi.get('agent/bonus-detail/periods').then((Response) => {
-      this.periods = Response.data.entries;
-      console.log(this.periods[1].comdte);
-    });
-    backApi.get('agent/bonus-detail', { params: { comdte: '2020-01-01' } }).then((Response) => {
-      this.bonus = Response.data;
+      this.periods = Response.data.entries.sort((a, b) => {
+        const result = a.comdte > b.comdte ? 1 : -1;
+        return result;
+      });
+      this.periodIndex = this.periods.length - 1;
+      backApi.get('agent/bonus-detail', { params: { comdte: this.currentPeriod } })
+        .then((response) => {
+          this.bonus = response.data;
+        });
     });
   },
-  computed: {},
+  computed: {
+    currentPeriod() {
+      try {
+        return this.periods[this.periodIndex].comdte;
+      } catch (e) {
+        return '';
+      }
+    },
+  },
+  watch: {
+    currentPeriod(v) {
+      backApi.get('agent/bonus-detail', { params: { comdte: v } })
+        .then((response) => {
+          this.bonus = response.data;
+        });
+    },
+  },
   methods: {},
 };
 </script>
