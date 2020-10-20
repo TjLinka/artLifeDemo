@@ -51,6 +51,12 @@ const routes = [
     component: () => import('../views/SponsorCard.vue'),
     meta: { requiresAuth: true },
   },
+  {
+    path: '/client-bonus',
+    name: 'ClientBonus',
+    component: () => import('../views/ClientBonus.vue'),
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = new VueRouter({
