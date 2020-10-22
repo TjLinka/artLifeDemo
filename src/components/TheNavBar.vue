@@ -13,7 +13,8 @@
               <b-dropdown-item to="/sponsorcard">Данные спонсора</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item-dropdown text="Структура" right>
-              <b-dropdown-item to="#">Lorem, ipsum.</b-dropdown-item>
+              <b-dropdown-item to="/organization-period">Организация текущего периода
+              </b-dropdown-item>
               <b-dropdown-item to="#">Lorem, ipsum.</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item-dropdown text="Маркетинг" right>
