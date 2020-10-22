@@ -1,7 +1,7 @@
 <template>
   <div class="licevoischet__page">
     <div class="container">
-      <h2 class="page__title">Организация текущего периода</h2>
+      <h2 class="page__title">История оргназации по периодам</h2>
       <el-tag
         v-for="tag in tags"
         :key="tag.name"
@@ -33,10 +33,21 @@
           :prop="column.property"
           :key="index"
           :label="column.title"
+          :fixed="column.property == 'id' ? true : false"
+          :width="col_width(column)"
         >
-      <template slot-scope="scope">
-        {{ column.formater(scope.row)}}
-      </template>
+          <!--  -->
+
+          <template slot-scope="scope">
+            <!-- {{column.property}} -->
+            <span v-if="column.property != 'id'">{{ column.formater(scope.row) }}</span>
+            <span v-else>
+              УР {{ scope.row.depth }}<br />
+              {{ scope.row.rank_beg }}<br />
+              {{ scope.row.id }}<br />
+              {{ scope.row.name }}
+            </span>
+          </template>
         </el-table-column>
       </el-table>
       <div class="row">
@@ -46,6 +57,14 @@
       </div>
       <div v-if="searchActive" class="organization__modal">
         <h3>Поиск партнера</h3>
+        <span
+            class="mr-1"
+            @click="periodIndex = periodIndex - 1 >= 0 ? periodIndex - 1 : periods.length - 1"
+          >
+            &lt;</span
+          >
+          <span>{{ currentPeriod.slice(0, -3) }}</span>
+          <span class="ml-1" @click="periodIndex = (periodIndex + 1) % periods.length"> &gt;</span>
         <div class="row">
           <div class="col-md-12">
             <b-form-group label="Выбор дерева">
@@ -63,11 +82,7 @@
                 class="d-inline mr-3"
                 >Директорское</b-form-radio
               >
-              <b-form-radio
-                v-model="tree_type"
-                name="some-radios-1"
-                value="active"
-                class="d-inline"
+              <b-form-radio v-model="tree_type" name="some-radios-1" value="active" class="d-inline"
                 >Своя группа</b-form-radio
               >
             </b-form-group>
@@ -91,30 +106,60 @@
 import backApi from '../assets/backApi';
 
 export default {
-  name: 'OrganizationPeriod',
+  name: 'OrganizationByPeriod',
   components: {},
   data() {
     const rows = [];
     const columns = [
       {
-        property: 'has_children',
-        title: 'Уровень',
-        formater: (item) => `${item.depth} УР`,
-      },
-      {
         property: 'id',
-        title: 'Р/Номер',
-        formater: (item) => item.id,
+        title: 'P/номер / Ранг / ФИО',
+        formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
       },
       {
-        has_children: 'name',
-        title: 'ФИО',
-        formater: (item) => item.name,
+        property: 'noact',
+        title: 'не активность',
+        formater: (item) => item.noact,
       },
       {
-        property: 'rank_end',
-        title: 'Ранг',
-        formater: (item) => item.rank_end,
+        property: 'lo',
+        title: 'ЛО',
+        formater: (item) => item.lo,
+      },
+      {
+        property: 'go',
+        title: 'ГО',
+        formater: (item) => item.go,
+      },
+      {
+        property: 'ngo',
+        title: 'НГО',
+        formater: (item) => item.ngo,
+      },
+      {
+        property: 'oo',
+        title: 'ОО',
+        formater: (item) => item.oo,
+      },
+      {
+        property: 'ko',
+        title: 'КО',
+        formater: (item) => item.ko,
+      },
+      {
+        property: 'rank_beg',
+        title: 'ранг на начало',
+        formater: (item) => item.rank_beg,
+      },
+      {
+        property: 'rank_calc',
+        title: 'расчетный ранг',
+        formater: (item) => item.rank_calc,
+      },
+      {
+        property: 'reserve',
+        title: 'балы в резерве',
+        formater: (item) => item.reserve,
       },
     ];
     return {
@@ -127,42 +172,75 @@ export default {
       rows,
       columns,
       tree_key: 0,
+      periods: [],
+      periodIndex: 0,
     };
   },
   mounted() {
-    const data = { params: { filter: this.tree_type, get_root: true } };
-    backApi.get('/agents-tree-hist', data).then((response) => {
-      this.rows = response.data.entries;
-      this.rows.forEach((e) => {
-        e.depth = 0;
-        e.children = [];
+    backApi.get('agent/bonus-detail/periods').then((Response) => {
+      this.periods = Response.data.entries.sort((a, b) => {
+        const result = a.comdte > b.comdte ? 1 : -1;
+        return result;
+      });
+      this.periodIndex = this.periods.length - 1;
+      const data = {
+        params: {
+          filter: this.tree_type,
+          get_root: true,
+          period: this.currentPeriod,
+        },
+      };
+      backApi.get('/agents-tree-hist/period', data).then((response) => {
+        this.rows = response.data.entries;
+        this.rows.forEach((e) => {
+          e.depth = 0;
+          e.children = [];
+        });
       });
     });
   },
-  computed: {},
+  computed: {
+    currentPeriod() {
+      try {
+        return this.periods[this.periodIndex].comdte;
+      } catch (e) {
+        return '';
+      }
+    },
+  },
   methods: {
+    col_width(col) {
+      if (col.property === 'id') {
+        return 250;
+      }
+      return null;
+    },
     tableRowClassName({ row }) {
       return `depth-${row.depth}`;
     },
     handleClose(event, tag) {
+      // this.tags.splice(this.dynamicTags.indexOf(tag), 1);
       this.tags.splice(this.tags.indexOf(tag), 1);
       if (tag.key === 'tree_type') {
-        this.tree_type = null;
-        this.updateData();
+        this.tree_type = 'full';
       } else if (tag.key === 'agent_id') {
         this.agent_id = null;
-        this.updateData();
+      } else if (tag.key === 'period') {
+        console.log(this.currentPeriod);
+        this.periodIndexl = this.periods.length - 1;
+        console.log(this.currentPeriod);
       }
+      this.updateData();
     },
     load(tree, treeNode, resolve) {
       const data = {
         params: {
           agent_id: tree.id,
-          filter: this.tree_type === null ? 'full' : this.tree_type,
+          filter: this.tree_type,
           get_root: false,
         },
       };
-      backApi.get('/agents-tree-hist', data).then((Response) => {
+      backApi.get('/agents-tree-hist/period', data).then((Response) => {
         Response.data.entries.forEach((e) => {
           e.depth = tree.depth + 1;
           e.children = [];
@@ -181,7 +259,7 @@ export default {
           get_root: true,
         },
       };
-      backApi.get('/agents-tree-hist', data).then((Response) => {
+      backApi.get('/agents-tree-hist/period', data).then((Response) => {
         this.rows = Response.data.entries;
         this.rows.forEach((e) => {
           e.depth = 0;
@@ -190,14 +268,24 @@ export default {
       this.searchActive = !this.searchActive;
     },
     updateData() {
-      const data = { params: { filter: this.tree_type === null ? 'full' : this.tree_type, get_root: true } };
-      const treeNameTranslate = { active: 'Своя группа', full: 'Полное дерево', director: 'Директорское' };
+      const data = {
+        params: {
+          filter: this.tree_type,
+          get_root: true,
+          period: this.currentPeriod,
+        },
+      };
+      const treeNameTranslate = {
+        active: 'Своя группа',
+        full: 'Полное дерево',
+        director: 'Директорское',
+      };
       if (this.tree_type !== null) {
         const treeName = treeNameTranslate[this.tree_type];
         const tag = this.tags.find((t) => t.key === 'tree_type');
         if (tag) {
           tag.name = treeName;
-        } else {
+        } else if (this.tree_type !== 'full') {
           this.tags.push({ name: treeName, key: 'tree_type' });
         }
       }
@@ -210,8 +298,15 @@ export default {
         }
         data.params.agent_id = this.agent_id;
       }
+      const tag = this.tags.find((t) => t.key === 'period');
+      if (tag) {
+        tag.name = this.currentPeriod;
+      } else if (this.currentPeriod !== this.periods[this.periods.length - 1]) {
+        this.tags.push({ name: this.currentPeriod, key: 'period' });
+      }
+      console.log(this.tags);
       this.searchActive = !this.searchActive;
-      backApi.get('/agents-tree-hist', data).then((response) => {
+      backApi.get('/agents-tree-hist/period', data).then((response) => {
         this.rows = response.data.entries;
         this.rows.forEach((e) => {
           e.depth = 0;
@@ -284,35 +379,40 @@ export default {
 .el-table__indent {
   padding-left: 0 !important;
 }
-.el-icon-arrow-right{
+.el-icon-arrow-right {
   color: white;
 }
-.depth-0{
-  background-color: #32AAA7 !important;
+.depth-0 {
+  background-color: #32aaa7 !important;
   color: white;
 }
-.depth-1{
-  background-color: #BEBEBE !important;
+.depth-1 {
+  background-color: #bebebe !important;
   color: black;
 }
-.depth-2{
-  background-color: #C4C5C6 !important;
+.depth-2 {
+  background-color: #c4c5c6 !important;
   color: black;
 }
-.depth-3{
-  background-color: #CECFD0 !important;
+.depth-3 {
+  background-color: #cecfd0 !important;
   color: black;
 }
-.depth-4{
-  background-color: #D4D5D7 !important;
+.depth-4 {
+  background-color: #d4d5d7 !important;
   color: black;
 }
-.depth-5{
-  background-color: #E3E3E4 !important;
+.depth-5 {
+  background-color: #e3e3e4 !important;
   color: black;
 }
-.depth-6{
-  background-color: #EBEDF4 !important;
+.depth-6 {
+  background-color: #ebedf4 !important;
   color: black;
+}
+.el-table .cell {
+  word-break: normal;
+  overflow: unset;
+  text-overflow: unset;
 }
 </style>

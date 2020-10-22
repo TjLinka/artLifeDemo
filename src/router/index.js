@@ -57,6 +57,12 @@ const routes = [
     component: () => import('../views/OrganizationPeriod.vue'),
     meta: { requiresAuth: true },
   },
+  {
+    path: '/organization-by-period',
+    name: 'OrganizationByPeriod',
+    component: () => import('../views/OrganizationByPeriod.vue'),
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = new VueRouter({
