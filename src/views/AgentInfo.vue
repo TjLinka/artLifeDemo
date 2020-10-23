@@ -168,12 +168,10 @@ export default {
   mounted() {
     if (this.$route.params.id) {
       backApi.get('/agent/profile', { params: { another_agent_id: this.$route.params.id } }).then((Response) => {
-        console.log(Response.data);
         this.userinfo = Response.data;
       });
     } else {
       backApi.get('/agent/profile').then((Response) => {
-        console.log(Response.data);
         this.userinfo = Response.data;
       });
     }
