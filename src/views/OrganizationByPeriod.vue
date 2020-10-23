@@ -45,7 +45,7 @@
               УР {{ scope.row.depth }}<br />
               {{ scope.row.rank_beg }}<br />
               {{ scope.row.id }}<br />
-              {{ scope.row.name }}
+              <router-link :to="`/agent/${scope.row.id}`">{{scope.row.name}}</router-link>
             </span>
           </template>
         </el-table-column>
@@ -413,5 +413,21 @@ export default {
   word-break: normal;
   overflow: unset;
   text-overflow: unset;
+}
+.el-table__body tr.hover-row.current-row>td,
+.el-table__body tr.hover-row.el-table__row--striped.current-row>td,
+.el-table__body tr.hover-row.el-table__row--striped>td,
+.el-table__body tr.hover-row>td{
+  background-color: unset;
+}
+a{
+  color: black;
+}
+.depth-0 a{
+  color: white;
+}
+a:hover{
+  color: unset;
+  text-decoration: none;
 }
 </style>

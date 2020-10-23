@@ -35,7 +35,10 @@
           :label="column.title"
         >
       <template slot-scope="scope">
-        {{ column.formater(scope.row)}}
+        <span v-if="column.property === 'name'">
+          <router-link :to="`/agent/${scope.row.id}`">{{scope.row.name}}</router-link>
+        </span>
+        <span v-else>{{ column.formater(scope.row)}}</span>
       </template>
         </el-table-column>
       </el-table>
@@ -107,7 +110,7 @@ export default {
         formater: (item) => item.id,
       },
       {
-        has_children: 'name',
+        property: 'name',
         title: 'ФИО',
         formater: (item) => item.name,
       },
@@ -314,5 +317,18 @@ export default {
 .depth-6{
   background-color: #EBEDF4 !important;
   color: black;
+}
+.el-table--enable-row-hover .el-table__body tr:hover>td {
+    background-color: unset;
+}
+a{
+  color: black;
+}
+.depth-0 a{
+  color: white;
+}
+a:hover{
+  color: unset;
+  text-decoration: none;
 }
 </style>
