@@ -45,10 +45,10 @@
           <span class="ml-1" @click="nextPeriod(1)"> &gt;</span>
         <div class="row edit">
           <div class="col-sm-6">
-            <input type="text" name="" id="" placeholder="Артикул" v-model="articul" />
+            <input type="text" name="" id="art" placeholder="Артикул" v-model="articul" />
           </div>
           <div class="col-sm-6">
-            <input type="text" name="" id="" placeholder="Наименование" v-model="name" />
+            <input type="text" name="" id="name" placeholder="Наименование" v-model="name" />
           </div>
         </div>
         <!-- <div class="row edit">
