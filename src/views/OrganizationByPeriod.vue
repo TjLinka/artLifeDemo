@@ -226,9 +226,9 @@ export default {
       } else if (tag.key === 'agent_id') {
         this.agent_id = null;
       } else if (tag.key === 'period') {
-        console.log(this.currentPeriod);
-        this.periodIndexl = this.periods.length - 1;
-        console.log(this.currentPeriod);
+        console.log(1, this.currentPeriod);
+        this.periodIndex = this.periods.length - 1;
+        console.log(2, this.currentPeriod);
       }
       this.updateData();
     },
@@ -300,12 +300,11 @@ export default {
       }
       const tag = this.tags.find((t) => t.key === 'period');
       if (tag) {
-        tag.name = this.currentPeriod;
-      } else if (this.currentPeriod !== this.periods[this.periods.length - 1]) {
-        this.tags.push({ name: this.currentPeriod, key: 'period' });
+        tag.name = this.currentPeriod.slice(0, -3);
+      } else if (this.currentPeriod !== this.periods[this.periods.length - 1].comdte) {
+        this.tags.push({ name: this.currentPeriod.slice(0, -3), key: 'period' });
       }
-      console.log(this.tags);
-      this.searchActive = !this.searchActive;
+      this.searchActive = false;
       backApi.get('/agents-tree-hist/period', data).then((response) => {
         this.rows = response.data.entries;
         this.rows.forEach((e) => {
