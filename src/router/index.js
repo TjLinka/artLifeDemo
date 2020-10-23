@@ -11,8 +11,14 @@ const routes = [
   },
   {
     path: '/',
-    name: 'MyInfo',
-    component: () => import('../views/MyInfo.vue'),
+    name: 'AgentInfo',
+    component: () => import('../views/AgentInfo.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/agent/:id',
+    name: 'AgentInfo',
+    component: () => import('../views/AgentInfo.vue'),
     meta: { requiresAuth: true },
   },
   {
@@ -55,6 +61,12 @@ const routes = [
     path: '/organization-period',
     name: 'OrganizationPeriod',
     component: () => import('../views/OrganizationPeriod.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/organization-by-period',
+    name: 'OrganizationByPeriod',
+    component: () => import('../views/OrganizationByPeriod.vue'),
     meta: { requiresAuth: true },
   },
 ];
