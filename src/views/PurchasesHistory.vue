@@ -168,7 +168,6 @@ export default {
     });
 
     backApi.get('agent/sales').then((Response) => {
-      console.log(Response.data);
       this.entries = Response.data.entries;
       this.return_details = new Array(this.total_rows).fill(undefined);
     });
@@ -234,7 +233,6 @@ export default {
       }
       // const params = { name: this.name, articul: this.articul, saleid: this.number };
       backApi.get('agent/sales', data).then((Response) => {
-        console.log(Response.data);
         this.entries = Response.data.entries;
         this.return_details = new Array(this.total_rows).fill(undefined);
       });
@@ -259,7 +257,6 @@ export default {
         backApi
           .get('/agent/sales-detail', { params: { id: row.item.webshop_id } })
           .then((response) => {
-            console.log(response.data);
             this.return_details[row.item.webshop_id] = response.data.entries;
             row.toggleDetails();
           });
