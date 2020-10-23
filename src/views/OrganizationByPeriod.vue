@@ -226,9 +226,7 @@ export default {
       } else if (tag.key === 'agent_id') {
         this.agent_id = null;
       } else if (tag.key === 'period') {
-        console.log(1, this.currentPeriod);
         this.periodIndex = this.periods.length - 1;
-        console.log(2, this.currentPeriod);
       }
       this.updateData();
     },
