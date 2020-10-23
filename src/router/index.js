@@ -11,7 +11,7 @@ const routes = [
   },
   {
     path: '/',
-    name: 'AgentInfo',
+    name: 'MyInfo',
     component: () => import('../views/AgentInfo.vue'),
     meta: { requiresAuth: true },
   },
