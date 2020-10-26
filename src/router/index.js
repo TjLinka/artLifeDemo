@@ -12,7 +12,19 @@ const routes = [
   {
     path: '/',
     name: 'MyInfo',
-    component: () => import('../views/MyInfo.vue'),
+    component: () => import('../views/AgentInfo.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/myinfoedit',
+    name: 'MyInfoEdit',
+    component: () => import('../views/MyInfoEdit.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/agent/:id',
+    name: 'AgentInfo',
+    component: () => import('../views/AgentInfo.vue'),
     meta: { requiresAuth: true },
   },
   {
@@ -55,6 +67,29 @@ const routes = [
     path: '/client-bonus',
     name: 'ClientBonus',
     component: () => import('../views/ClientBonus.vue'),
+  },
+  {
+    path: '/organization-period',
+    name: 'OrganizationPeriod',
+    component: () => import('../views/OrganizationPeriod.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/organization-by-period',
+    name: 'OrganizationByPeriod',
+    component: () => import('../views/OrganizationByPeriod.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/indicators',
+    name: 'Indicators',
+    component: () => import('../views/Indicators.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/transfert',
+    name: 'Transfert',
+    component: () => import('../views/Transfert.vue'),
     meta: { requiresAuth: true },
   },
 ];

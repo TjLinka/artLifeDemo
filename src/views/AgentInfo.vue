@@ -139,7 +139,9 @@
               </p>
             </div>
             <div class="col-6">
-              <button v-if="showTransfertInfo" class="transfert__btn">ТРАНСФЕРТ</button>
+              <router-link to='/transfert'>
+                <button v-if="showTransfertInfo" class="transfert__btn">ТРАНСФЕРТ</button>
+              </router-link>
             </div>
           </div>
         </div>
@@ -166,14 +168,20 @@ export default {
     },
   },
   mounted() {
-    backApi.get('/agent/profile').then((Response) => {
-      this.userinfo = Response.data;
-    });
+    if (this.$route.params.id) {
+      backApi.get('/agent/profile', { params: { another_agent_id: this.$route.params.id } }).then((Response) => {
+        this.userinfo = Response.data;
+      });
+    } else {
+      backApi.get('/agent/profile').then((Response) => {
+        this.userinfo = Response.data;
+      });
+    }
   },
   computed: {
     ...mapState('auth', ['role']),
     transfertAccess() {
-      return !this.role === 'Клиент';
+      return !this.role !== 'Клиент';
     },
   },
 };

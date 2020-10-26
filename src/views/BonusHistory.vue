@@ -19,9 +19,9 @@
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
-      <b-table :fields="topFields" :items="testDataTopTable" head-variant="light"></b-table>
+      <b-table :fields="topFields " :items="topTableData" head-variant="light"></b-table>
       <b-table :fields="mainFields" :items="bonus" head-variant="light">
-        <template v-slot:cell(show_details)="row">
+        <template v-slot:cell(Детали)="row">
           <b-button size="sm" @click="row.toggleDetails" class="mr-2">
             {{ row.detailsShowing ? '-' : '+' }}
           </b-button>
@@ -46,25 +46,14 @@ export default {
       periodIndex: 0,
       bonus: [],
       returnItems: [],
-      testDataTopTable: [
-        {
-          period: '2020 Февраль',
-          bonusAll: 200,
-          lo: 10,
-          go: 15,
-          ngo: 2,
-          oo: 10,
-          ko: 2000,
-          rank: 'Директор',
-        },
-      ],
+      topTableData: [],
       topFields: [
         {
           key: 'period',
           label: 'Период',
         },
         {
-          key: 'bonusAll',
+          key: 'bonus',
           label: 'Бонусов всего',
         },
         {
@@ -93,7 +82,7 @@ export default {
         },
       ],
       mainFields: [
-        'show_details',
+        'Детали',
         {
           key: 'bonusname',
           label: 'Наименование бонуса',
@@ -141,7 +130,10 @@ export default {
       backApi
         .get('agent/bonus-detail', { params: { comdte: this.currentPeriod } })
         .then((response) => {
-          this.bonus = response.data;
+          this.bonus = response.data.entries;
+          // eslint-disable-next-line no-param-reassign
+          response.data.header.period = this.currentPeriod;
+          this.topTableData = [response.data.header];
         });
     });
   },
@@ -157,7 +149,10 @@ export default {
   watch: {
     currentPeriod(v) {
       backApi.get('agent/bonus-detail', { params: { comdte: v } }).then((response) => {
-        this.bonus = response.data;
+        this.bonus = response.data.entries;
+        // eslint-disable-next-line no-param-reassign
+        response.data.header.period = this.currentPeriod;
+        this.topTableData = [response.data.header];
       });
     },
   },
