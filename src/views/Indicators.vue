@@ -96,7 +96,11 @@
                 class="d-inline mr-3"
                 >Правило по умолчанию по выбору склада</b-form-radio
               >
-              <b-form-radio v-model="points_rule" name="some-radios-1" value="null" class="d-inline"
+              <b-form-radio
+                v-model="points_rule"
+                name="some-radios-1"
+                :value="null"
+                class="d-inline"
                 >Баллы в резерв</b-form-radio
               >
             </b-form-group>
@@ -104,12 +108,12 @@
         </div>
         <div class="row edit">
           <div class="col-sm-6">
-            <input type="text" name="" id="" placeholder="Номер" v-model="autoship" />
+            <input type="text" name="" id="" placeholder="Сумма" v-model="autoship" />
           </div>
         </div>
         <div class="row edit mt-3">
           <div class="col-sm-6">
-            <button class="mr-2" @click="updateData">Показать</button>
+            <button class="mr-2" @click="updateData">Изменить</button>
           </div>
         </div>
       </div>
@@ -136,6 +140,11 @@ export default {
   mounted() {
     backApi.get('/agent/get-current-period').then((Response) => {
       this.currentPeriodTop = Response.data;
+      backApi
+        .get('agent/period-indicators', { params: { comdte: this.currentPeriodTop.comdte } })
+        .then((response) => {
+          this.userInfo = response.data;
+        });
     });
     backApi.get('agent/bonus-detail/periods').then((Response) => {
       this.periods = Response.data.entries.sort((a, b) => {
@@ -144,9 +153,9 @@ export default {
       });
       this.periodIndex = this.periods.length - 1;
     });
-    backApi.get('agent/period-indicators', { params: { comdte: '2020-03-01' } }).then((Response) => {
-      console.log(Response.data);
-      this.userInfo = Response.data;
+    backApi.get('/agent/points-rule').then((Response) => {
+      this.autoship = Response.data.autoship;
+      this.points_rule = Response.data.points_rule;
     });
   },
   methods: {
@@ -158,7 +167,10 @@ export default {
       this.searchActive = !this.searchActive;
     },
     updateData() {
-      console.log('Update Data');
+      backApi.post('/agent/points-rule', {
+        points_rule: this.points_rule,
+        autoship: this.autoship === '' ? null : this.autoship,
+      });
     },
     closeModal() {
       this.searchActive = !this.searchActive;
@@ -174,6 +186,13 @@ export default {
     },
     periodStatus() {
       return this.currentPeriodTop.prev_status === 'не выплачен' ? 'red' : 'green';
+    },
+  },
+  watch: {
+    currentPeriod(val) {
+      backApi.get('agent/period-indicators', { params: { comdte: val } }).then((response) => {
+        this.userInfo = response.data;
+      });
     },
   },
 };
