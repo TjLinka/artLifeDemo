@@ -11,6 +11,7 @@
             <b-nav-item-dropdown text="Профиль" right>
               <b-dropdown-item to="/">Карточка партнера</b-dropdown-item>
               <b-dropdown-item to="/sponsorcard">Данные спонсора</b-dropdown-item>
+              <b-dropdown-item to="/indicators">Показатели</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item-dropdown text="Структура" right>
               <b-dropdown-item to="/organization-period">Организация текущего периода
@@ -19,6 +20,7 @@
               </b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item-dropdown text="Маркетинг" right>
+              <b-dropdown-item to="/transfert">Трансферт</b-dropdown-item>
               <b-dropdown-item to="/points-history">История баллов</b-dropdown-item>
               <b-dropdown-item to="/bonus-history">История бонусов</b-dropdown-item>
             </b-nav-item-dropdown>

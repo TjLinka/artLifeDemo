@@ -70,6 +70,12 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: '/indicators',
+    name: 'Indicators',
+    component: () => import('../views/Indicators.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
     path: '/transfert',
     name: 'Transfert',
     component: () => import('../views/Transfert.vue'),
