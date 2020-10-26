@@ -27,7 +27,7 @@
         </div>
       </div>
       <div class="bot__info mt-5">
-        <div class="row edit">
+        <!-- <div class="row edit">
           <div class="col">
             <p>Смена адреса почтового ящика</p>
             <input type="text" value="supernameemail@gmail.com" />
@@ -36,7 +36,7 @@
             <p>Смена телефона</p>
             <input type="text" value="+7 (960) 947-43-55" />
           </div>
-        </div>
+        </div> -->
         <p class="mt-5">Смена пароля</p>
         <div class="row edit">
           <div class="col"><input type="text" value="supernparoli345" /></div>
@@ -52,6 +52,8 @@
 </template>
 
 <script>
+import backApi from '../assets/backApi';
+
 export default {
   name: 'MyInfoEdit',
   data() {
@@ -66,9 +68,17 @@ export default {
       },
     };
   },
+  mounted() {
+    backApi.get('/agent/profile').then((Response) => {
+      console.log(Response.data);
+    });
+  },
   methods: {
-    saveEdit() {
-      console.log(this.user);
+    saveTopEdit() {
+      console.log('Top');
+    },
+    saveBotEdit() {
+      console.log('Bot');
     },
   },
 };
