@@ -75,6 +75,12 @@ const routes = [
     component: () => import('../views/Indicators.vue'),
     meta: { requiresAuth: true },
   },
+  {
+    path: '/transfert',
+    name: 'Transfert',
+    component: () => import('../views/Transfert.vue'),
+    meta: { requiresAuth: true },
+  },
 ];
 
 const router = new VueRouter({
