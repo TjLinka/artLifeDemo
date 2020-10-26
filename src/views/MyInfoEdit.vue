@@ -67,16 +67,13 @@ export default {
   },
   mounted() {
     backApi.get('/agent/profile').then((Response) => {
-      console.log(Response.data);
       this.userInfo = Response.data;
     });
   },
   methods: {
     saveTopEdit() {
-      console.log('Top');
     },
     saveBotEdit() {
-      console.log('Bot');
     },
   },
 };
