@@ -52,7 +52,7 @@
       </el-table>
       <div class="row">
         <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
-          Поиск партнера <i class="el-icon-search search_icon"></i>
+          Фильтр <i class="el-icon-search search_icon"></i>
         </div>
       </div>
       <div v-if="searchActive" class="organization__modal">
