@@ -5,14 +5,19 @@
       <div class="row">
         <div class="col">
           <p>
-            <strong>Текущий период: Март 2020.</strong>
-            Статус предыдущего года: не выплачен
+            <strong>Текущий период: {{ currentPeriodTop.comdte }}</strong>
+            Статус предыдущего года:
+            <span :style="`color: ${periodStatus}`">
+              {{ currentPeriodTop.prev_status }}
+            </span>
           </p>
         </div>
       </div>
       <div class="sponsor__page__description">
         <h2>Текущие показатели</h2>
-        <p>Период</p>
+        <span class="mr-1" @click="nextPeriod(-1)"> &lt;</span>
+        <span>{{ currentPeriod.slice(0, -3) }}</span>
+        <span class="ml-1" @click="nextPeriod(1)"> &gt;</span>
         <div class="container top__info">
           <div class="row">
             <div class="col-6">
@@ -102,11 +107,11 @@
             <input type="text" name="" id="" placeholder="Номер" v-model="agent_id" />
           </div>
         </div>
-          <div class="row edit mt-3">
-            <div class="col-sm-6">
-              <button class="mr-2" @click="updateData">Показать</button>
-            </div>
+        <div class="row edit mt-3">
+          <div class="col-sm-6">
+            <button class="mr-2" @click="updateData">Показать</button>
           </div>
+        </div>
       </div>
     </div>
   </div>
@@ -119,19 +124,36 @@ export default {
   name: 'SponsorCard',
   data() {
     return {
+      currentPeriodTop: {},
       userInfo: {},
       tree_type: null,
       agent_id: null,
       searchActive: false,
+      periods: [],
+      periodIndex: 0,
     };
   },
   mounted() {
+    backApi.get('/agent/get-current-period').then((Response) => {
+      this.currentPeriodTop = Response.data;
+    });
+    backApi.get('agent/bonus-detail/periods').then((Response) => {
+      this.periods = Response.data.entries.sort((a, b) => {
+        const result = a.comdte > b.comdte ? 1 : -1;
+        return result;
+      });
+      this.periodIndex = this.periods.length - 1;
+    });
     backApi.get('agent/period-indicators', { params: { comdte: '2020-03-01' } }).then((Response) => {
       console.log(Response.data);
       this.userInfo = Response.data;
     });
   },
   methods: {
+    nextPeriod(x) {
+      this.period_enabled = true;
+      this.periodIndex = (this.periodIndex + this.periods.length + x) % this.periods.length;
+    },
     toggleSearch() {
       this.searchActive = !this.searchActive;
     },
@@ -142,20 +164,32 @@ export default {
       this.searchActive = !this.searchActive;
     },
   },
+  computed: {
+    currentPeriod() {
+      try {
+        return this.periods[this.periodIndex].comdte;
+      } catch (e) {
+        return '';
+      }
+    },
+    periodStatus() {
+      return this.currentPeriodTop.prev_status === 'не выплачен' ? 'red' : 'green';
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-.organization__modal{
+.organization__modal {
   position: relative;
 
-  & .close_btn{
+  & .close_btn {
     position: absolute;
     right: 0;
     top: 0px;
     font-size: 25px;
     font-weight: bold;
-    color: #32AAA7;
+    color: #32aaa7;
     cursor: pointer;
   }
 }
