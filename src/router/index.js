@@ -16,6 +16,12 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: '/myinfoedit',
+    name: 'MyInfoEdit',
+    component: () => import('../views/MyInfoEdit.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
     path: '/agent/:id',
     name: 'AgentInfo',
     component: () => import('../views/AgentInfo.vue'),

@@ -10,17 +10,17 @@
       <div class="top__info mt-5">
         <div class="row edit mt-5">
           <div class="col-6">
-            <input type="text" name="country" v-model="user.country" />
+            <input type="text" name="country" v-model="userInfo.country"/>
           </div>
-          <div class="col-6"><input type="text" name="city" v-model="user.city" /></div>
+          <div class="col-6"><input type="text" name="city" v-model="userInfo.city" /></div>
         </div>
         <div class="row edit mt-5">
-          <div class="col-6"><input type="text" name="address" v-model="user.address" /></div>
-          <div class="col-6"><input type="text" name="passport" v-model="user.passport" /></div>
+          <div class="col-6"><input type="text" name="address" v-model="userInfo.address" /></div>
+          <div class="col-6"><input type="text" name="passport" v-model="userInfo.passport" /></div>
         </div>
         <div class="row edit mt-5">
-          <div class="col-6"><input type="text" name="date" v-model="user.date" /></div>
-          <div class="col-6"><input type="text" name="skype" v-model="user.skype" /></div>
+          <div class="col-6"><input type="text" name="date" v-model="userInfo.bthdte" /></div>
+          <div class="col-6"><input type="text" name="skype" v-model="userInfo.skype" /></div>
         </div>
         <div class="row edit mt-5">
           <button class="save__newinfo" v-on:click="saveTopEdit">Сохранить изменения</button>
@@ -40,8 +40,10 @@
         <p class="mt-5">Смена пароля</p>
         <div class="row edit">
           <div class="col"><input type="text" value="supernparoli345" /></div>
-          <div class="col"><input type="text" placeholder="Введите новый пароль" /></div>
-          <div class="col"><input type="text" placeholder="Подтвердите новый пароль" /></div>
+          <div class="col"><input type="password"
+          placeholder="Введите новый пароль" v-model="newPass" /></div>
+          <div class="col"><input type="password"
+          placeholder="Подтвердите новый пароль" v-model="newPassRepeat"/></div>
         </div>
         <div class="row edit mt-5">
           <button class="save__newinfo" v-on:click="saveBotEdit">Сохранить изменения</button>
@@ -58,19 +60,15 @@ export default {
   name: 'MyInfoEdit',
   data() {
     return {
-      user: {
-        country: 'Россия',
-        city: 'Москва',
-        address: 'ул. Зорге 88, кв. 24',
-        passport: 'Номер: 327467, Серия 6478, Выдан 30.07.2010 г.',
-        date: '21.12.1988 г',
-        skype: 'SkypeName',
-      },
+      userInfo: {},
+      newPass: null,
+      newPassRepeat: null,
     };
   },
   mounted() {
     backApi.get('/agent/profile').then((Response) => {
       console.log(Response.data);
+      this.userInfo = Response.data;
     });
   },
   methods: {
