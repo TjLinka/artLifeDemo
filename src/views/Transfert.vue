@@ -53,7 +53,6 @@ export default {
   },
   mounted() {
     backApi.get('/agent/profile').then((Response) => {
-      console.log(Response.data);
       this.transfertInfo = Response.data;
     });
   },
@@ -74,16 +73,13 @@ export default {
             sum: this.sum,
             direction: 'lo2reserve',
           })
-          .catch((error) => {
-            console.log(error);
+          .catch(() => {
             this.$bvToast.show('my-toast');
           });
         backApi.get('/agent/profile').then((Response) => {
-          console.log(Response.data);
           this.transfertInfo = Response.data;
         });
       }
-      console.log('l2r');
     },
     async reserve2lo() {
       if (this.sum !== null && this.sum !== '') {
@@ -92,16 +88,13 @@ export default {
             sum: this.sum,
             direction: 'reserve2lo',
           })
-          .catch((error) => {
-            console.log(error);
+          .catch(() => {
             this.$bvToast.show('my-toast');
           });
         backApi.get('/agent/profile').then((Response) => {
-          console.log(Response.data);
           this.transfertInfo = Response.data;
         });
       }
-      console.log('r2l');
     },
   },
 };
