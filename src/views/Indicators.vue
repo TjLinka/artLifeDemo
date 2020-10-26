@@ -17,51 +17,51 @@
           <div class="row">
             <div class="col-6">
               <p>Ранг на начало:</p>
-              <p>{{ userInfo.id }}</p>
+              <p>{{ userInfo.rank_beg }}</p>
             </div>
             <div class="col-6">
               <p>Расчетный ранг:</p>
-              <p>{{ userInfo.email }}</p>
+              <p>{{ userInfo.rank_calc }}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-6">
               <p>Ранг на конец:</p>
-              <p>{{ userInfo.name }}</p>
+              <p>{{ userInfo.rank_end }}</p>
             </div>
             <div class="col-6">
               <p>ЛО:</p>
-              <p>{{ userInfo.skype }}</p>
+              <p>{{ userInfo.lo }}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-6">
               <p>ГО:</p>
-              <p>{{ userInfo.id }}</p>
+              <p>{{ userInfo.go }}</p>
             </div>
             <div class="col-6">
               <p>НГО:</p>
-              <p>{{ userInfo.email }}</p>
+              <p>{{ userInfo.ngo }}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-6">
               <p>ОО:</p>
-              <p>{{ userInfo.name }}</p>
+              <p>{{ userInfo.oo }}</p>
             </div>
             <div class="col-6">
               <p>КО:</p>
-              <p>{{ userInfo.skype }}</p>
+              <p>{{ userInfo.ko }}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-6">
               <p>Резерв:</p>
-              <p>{{ userInfo.name }}</p>
+              <p>{{ userInfo.reserve }}</p>
             </div>
             <div class="col-6">
               <p>Неакт.:</p>
-              <p>{{ userInfo.skype }}</p>
+              <p>{{ userInfo.noact }}</p>
             </div>
           </div>
         </div>
@@ -126,7 +126,8 @@ export default {
     };
   },
   mounted() {
-    backApi.get('agent/sponsor').then((Response) => {
+    backApi.get('agent/period-indicators', { params: { comdte: '2020-03-01' } }).then((Response) => {
+      console.log(Response.data);
       this.userInfo = Response.data;
     });
   },
