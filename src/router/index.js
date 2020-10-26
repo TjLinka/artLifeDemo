@@ -64,6 +64,11 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: '/client-bonus',
+    name: 'ClientBonus',
+    component: () => import('../views/ClientBonus.vue'),
+  },
+  {
     path: '/organization-period',
     name: 'OrganizationPeriod',
     component: () => import('../views/OrganizationPeriod.vue'),
