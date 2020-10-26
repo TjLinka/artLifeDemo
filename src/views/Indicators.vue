@@ -83,20 +83,20 @@
           <div class="col-md-12">
             <b-form-group label="Выбор дерева">
               <b-form-radio
-                v-model="tree_type"
+                v-model="points_rule"
                 name="some-radios-1"
-                value="full"
+                value="0"
                 class="d-inline mr-3"
                 >Все баллы в трансферт</b-form-radio
               >
               <b-form-radio
-                v-model="tree_type"
+                v-model="points_rule"
                 name="some-radios-1"
-                value="director"
+                value="1"
                 class="d-inline mr-3"
                 >Правило по умолчанию по выбору склада</b-form-radio
               >
-              <b-form-radio v-model="tree_type" name="some-radios-1" value="active" class="d-inline"
+              <b-form-radio v-model="points_rule" name="some-radios-1" value="null" class="d-inline"
                 >Баллы в резерв</b-form-radio
               >
             </b-form-group>
@@ -104,7 +104,7 @@
         </div>
         <div class="row edit">
           <div class="col-sm-6">
-            <input type="text" name="" id="" placeholder="Номер" v-model="agent_id" />
+            <input type="text" name="" id="" placeholder="Номер" v-model="autoship" />
           </div>
         </div>
         <div class="row edit mt-3">
@@ -126,8 +126,8 @@ export default {
     return {
       currentPeriodTop: {},
       userInfo: {},
-      tree_type: null,
-      agent_id: null,
+      points_rule: null,
+      autoship: null,
       searchActive: false,
       periods: [],
       periodIndex: 0,
