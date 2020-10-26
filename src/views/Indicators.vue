@@ -73,7 +73,7 @@
       </div>
       <div class="row">
         <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
-          Поиск партнера <i class="el-icon-search search_icon"></i>
+          Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
         </div>
       </div>
       <div v-if="searchActive" class="organization__modal">

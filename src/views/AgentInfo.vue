@@ -139,7 +139,9 @@
               </p>
             </div>
             <div class="col-6">
-              <button v-if="showTransfertInfo" class="transfert__btn">ТРАНСФЕРТ</button>
+              <router-link to='/transfert'>
+                <button v-if="showTransfertInfo" class="transfert__btn">ТРАНСФЕРТ</button>
+              </router-link>
             </div>
           </div>
         </div>
