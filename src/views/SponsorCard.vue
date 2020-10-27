@@ -8,27 +8,27 @@
         </div>
         <div class="container top__info">
           <div class="row">
-            <div class="col-6">
+            <div class="col-md-6 mt-3">
               <p>Номер соглашения:</p>
               <p>{{userInfo.id}}</p>
             </div>
-            <div class="col-6">
+            <div class="col-md-6 mt-3">
               <p>E-mail:</p>
               <p>{{userInfo.email}}</p>
             </div>
           </div>
           <div class="row">
-            <div class="col-6">
+            <div class="col-md-6 mt-3">
               <p>ФИО:</p>
               <p>{{userInfo.name}}</p>
             </div>
-            <div class="col-6">
+            <div class="col-md-6 mt-3">
               <p>Skype:</p>
               <p>{{userInfo.skype}}</p>
             </div>
           </div>
           <div class="row">
-            <div class="col-6">
+            <div class="col-md-6 mt-3">
               <p>Телефон:</p>
               <p>{{userInfo.phone}}</p>
             </div>
@@ -88,7 +88,7 @@ export default {
       margin-top: 32px;
 
       & .row {
-        margin-bottom: 32px;
+        // margin-bottom: 32px;
       }
 
       & p {
@@ -120,6 +120,15 @@ export default {
         border: none;
         border-radius: 4px;
         // float: right;
+      }
+    }
+  }
+}
+@media (min-width: 768px) {
+  .sponsor__page{
+    .top__info{
+      & > .row{
+        margin-bottom: 32px;
       }
     }
   }
