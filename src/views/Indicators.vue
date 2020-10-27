@@ -86,21 +86,21 @@
                 v-model="points_rule"
                 name="some-radios-1"
                 value="0"
-                class="d-inline mr-3"
+                class="radio mr-3"
                 >Все баллы в трансферт</b-form-radio
               >
               <b-form-radio
                 v-model="points_rule"
                 name="some-radios-1"
                 value="1"
-                class="d-inline mr-3"
+                class="radio mr-3"
                 >Правило по умолчанию по выбору склада</b-form-radio
               >
               <b-form-radio
                 v-model="points_rule"
                 name="some-radios-1"
                 :value="null"
-                class="d-inline"
+                class="radio"
                 >Баллы в резерв</b-form-radio
               >
             </b-form-group>
@@ -113,7 +113,7 @@
         </div>
         <div class="row edit mt-3">
           <div class="col-sm-6">
-            <button class="mr-2" @click="updateData">Изменить</button>
+            <button class="mr-2 update" @click="updateData">Изменить</button>
           </div>
         </div>
       </div>
@@ -225,6 +225,7 @@ export default {
     border: 0;
     padding: 5px 30px;
     font-size: 16px;
+    margin-bottom: 20px;
     &:nth-of-type(1) {
       background-color: #32aaa7;
       color: white;
@@ -266,7 +267,7 @@ export default {
     & .top__info,
     & .transfert__info {
       padding: 0;
-      margin-top: 32px;
+      // margin-top: 32px;
 
       & .row {
         // margin-bottom: 32px;
@@ -323,6 +324,17 @@ export default {
         margin-bottom: 32px;
       }
     }
+  }
+}
+@media (min-width: 760px) {
+  .radio{
+    display: inline;
+  }
+}
+@media (max-width: 760px) {
+  .update{
+    margin-bottom: 20px;
+    width: 100% !important;
   }
 }
 </style>
