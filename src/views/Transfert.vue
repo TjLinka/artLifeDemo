@@ -2,8 +2,8 @@
   <div class="licevoischet__page">
     <div class="container">
       <h2 class="page__title">Трансферт</h2>
-      <h3>Текущее состояние</h3>
-      <div class="row">
+      <h3 class="mt-5">Текущее состояние</h3>
+      <div class="row transfert">
         <div class="col">
           <p>ЛО:</p>
           <p>{{ transfertInfo.lo }}</p>
@@ -15,12 +15,12 @@
       </div>
       <h3>Перевод количества баллов</h3>
       <div class="row edit">
-        <div class="col-sm-6">
+        <div class="col-md-6">
           <input type="text" name="" id="number" placeholder="Номер" v-model="sum" />
         </div>
       </div>
       <div class="row edit mt-3">
-        <div class="col-sm-6 d-flex justify-content-between">
+        <div class="col-md-6 d-flex justify-content-between">
           <button @click="lo2reserve">Перевести в резерв</button>
           <button @click="reserve2lo">Перевести в трансферт</button>
         </div>
@@ -100,6 +100,19 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.transfert{
+  margin-bottom: 40px;
+  margin-top: 40px;
+  & p{
+    padding: 0;
+    margin: 0;
+  }
+  & > .col{
+    p:nth-of-type(1){
+      color: #9A9A9A;
+    }
+  }
+}
 .licevoischet__page {
 }
 .edit {
