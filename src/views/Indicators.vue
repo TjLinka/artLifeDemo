@@ -4,7 +4,7 @@
       <h2 class="page__title">Показатели</h2>
       <div class="row">
         <div class="col">
-          <p>
+          <p class="current_period">
             <strong>Текущий период: {{ currentPeriodTop.comdte }}</strong>
             Статус предыдущего года:
             <span :style="`color: ${periodStatus}`">
@@ -14,57 +14,57 @@
         </div>
       </div>
       <div class="sponsor__page__description">
-        <h2>Текущие показатели</h2>
+        <h2>Мои текущие показатели</h2>
         <span class="mr-1" @click="nextPeriod(-1)"> &lt;</span>
         <span>{{ currentPeriod.slice(0, -3) }}</span>
         <span class="ml-1" @click="nextPeriod(1)"> &gt;</span>
         <div class="container top__info">
           <div class="row">
-            <div class="col-6">
+            <div class="col-md-6 mt-3">
               <p>Ранг на начало:</p>
               <p>{{ userInfo.rank_beg }}</p>
             </div>
-            <div class="col-6">
+            <div class="col-md-6 mt-3">
               <p>Расчетный ранг:</p>
               <p>{{ userInfo.rank_calc }}</p>
             </div>
           </div>
           <div class="row">
-            <div class="col-6">
+            <div class="col-md-6 mt-3">
               <p>Ранг на конец:</p>
               <p>{{ userInfo.rank_end }}</p>
             </div>
-            <div class="col-6">
+            <div class="col-md-6 mt-3">
               <p>ЛО:</p>
               <p>{{ userInfo.lo }}</p>
             </div>
           </div>
           <div class="row">
-            <div class="col-6">
+            <div class="col-md-6 mt-3">
               <p>ГО:</p>
               <p>{{ userInfo.go }}</p>
             </div>
-            <div class="col-6">
+            <div class="col-md-6 mt-3">
               <p>НГО:</p>
               <p>{{ userInfo.ngo }}</p>
             </div>
           </div>
           <div class="row">
-            <div class="col-6">
+            <div class="col-md-6 mt-3">
               <p>ОО:</p>
               <p>{{ userInfo.oo }}</p>
             </div>
-            <div class="col-6">
+            <div class="col-md-6 mt-3">
               <p>КО:</p>
               <p>{{ userInfo.ko }}</p>
             </div>
           </div>
           <div class="row">
-            <div class="col-6">
+            <div class="col-md-6 mt-3">
               <p>Резерв:</p>
               <p>{{ userInfo.reserve }}</p>
             </div>
-            <div class="col-6">
+            <div class="col-md-6 mt-3">
               <p>Неакт.:</p>
               <p>{{ userInfo.noact }}</p>
             </div>
@@ -245,6 +245,9 @@ export default {
   }
 
   &__description {
+    & h2{
+      font-size: 24px;
+    }
     & .page__caption {
       font-size: 20px;
     }
@@ -266,7 +269,7 @@ export default {
       margin-top: 32px;
 
       & .row {
-        margin-bottom: 32px;
+        // margin-bottom: 32px;
       }
 
       & p {
@@ -298,6 +301,26 @@ export default {
         border: none;
         border-radius: 4px;
         // float: right;
+      }
+    }
+  }
+}
+.el-icon-s-tools:before{
+  color: #32AAA7;
+  position: relative;
+  top: 2px;
+}
+.current_period{
+  background-color: #EBEEFA;
+  padding: 16px 12px;
+  display: inline-block;
+  border-radius: 1px;
+}
+@media (min-width: 768px) {
+  .sponsor__page{
+    .top__info{
+      & > .row{
+        margin-bottom: 32px;
       }
     }
   }
