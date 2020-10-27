@@ -3,7 +3,7 @@
     <div class="container">
       <h2 class="page__title">История бонусов(КЕ)</h2>
       <div class="row">
-        <div class="col-2 perioad__picker">
+        <div class="col-6 perioad__picker">
           <span
             class="mr-1"
             @click="periodIndex = periodIndex - 1 >= 0 ? periodIndex - 1 : periods.length - 1"
@@ -19,8 +19,8 @@
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
-      <b-table :fields="topFields " :items="topTableData" head-variant="light"></b-table>
-      <b-table :fields="mainFields" :items="bonus" head-variant="light">
+      <b-table :fields="topFields " :items="topTableData" head-variant="light" responsive></b-table>
+      <b-table :fields="mainFields" :items="bonus" head-variant="light" responsive>
         <template v-slot:cell(Детали)="row">
           <b-button size="sm" @click="row.toggleDetails" class="mr-2">
             {{ row.detailsShowing ? '-' : '+' }}
