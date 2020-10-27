@@ -72,24 +72,24 @@
                 v-model="tree_type"
                 name="some-radios-1"
                 value="full"
-                class="d-inline mr-3"
+                class="radio mr-3"
                 >Полное дерево</b-form-radio
               >
               <b-form-radio
                 v-model="tree_type"
                 name="some-radios-1"
                 value="director"
-                class="d-inline mr-3"
+                class="radio mr-3"
                 >Директорское</b-form-radio
               >
-              <b-form-radio v-model="tree_type" name="some-radios-1" value="active" class="d-inline"
+              <b-form-radio v-model="tree_type" name="some-radios-1" value="active" class="radio"
                 >Своя группа</b-form-radio
               >
             </b-form-group>
           </div>
         </div>
         <div class="row edit">
-          <div class="col-sm-6">
+          <div class="col-sm-6 mb-4">
             <input type="text" name="" id="" placeholder="Номер" v-model="agent_id" />
           </div>
           <div class="col-sm-6">
@@ -316,6 +316,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media (min-width: 760px) {
+  .radio{
+    display: inline;
+  }
+}
 .licevoischet__page {
   position: relative;
   &__summ {
