@@ -2,6 +2,7 @@
   <div class="licevoischet__page">
     <div class="container">
       <h2 class="page__title">История возвартов</h2>
+      <p class="p-0 m-0">Период от и до</p>
       <date-picker v-model="rangeDate" range @change="getSelectedDataRange" valueType="format">
       </date-picker>
       <p>
@@ -9,7 +10,7 @@
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
-      <b-table :fields="fields" :items="entries" head-variant="light">
+      <b-table :fields="fields" :items="entries" head-variant="light" responsive>
         <template v-slot:cell(show_details)="row">
           <b-button size="sm" @click="show_details(row)" class="mr-2">
             {{ row.detailsShowing ? '-' : '+' }}
@@ -182,5 +183,10 @@ export default {
       cursor: pointer;
     }
   }
+}
+</style>
+<style>
+.mx-datepicker svg{
+  color: #32AAA7;
 }
 </style>
