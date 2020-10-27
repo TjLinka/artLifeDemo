@@ -7,26 +7,32 @@
       <div class="myfoto">
         <img src="../assets/imgs/unnamed 1.png" alt="" />
       </div>
-      <div class="top__info mt-5">
-        <div class="row edit mt-5">
-          <div class="col-6">
+      <div class="top__info mt-3">
+        <div class="row edit ">
+          <div class="col-md-6 mt-3">
             <input type="text" name="country" v-model="userInfo.country" />
           </div>
-          <div class="col-6"><input type="text" name="city" v-model="userInfo.city" /></div>
+          <div class="col-md-6 mt-3"><input type="text" name="city" v-model="userInfo.city" /></div>
         </div>
-        <div class="row edit mt-5">
-          <div class="col-6"><input type="text" name="address" v-model="userInfo.address" /></div>
-          <div class="col-6"><input type="text" name="passport" v-model="userInfo.passport" /></div>
+        <div class="row edit ">
+          <div class="col-md-6 mt-3"><input type="text"
+          name="address" v-model="userInfo.address" /></div>
+          <div class="col-md-6 mt-3"><input type="text"
+          name="passport" v-model="userInfo.passport" /></div>
         </div>
-        <div class="row edit mt-5">
-          <div class="col-6"><input type="text" name="date" v-model="userInfo.bthdte" /></div>
-          <div class="col-6"><input type="text" name="skype" v-model="userInfo.skype" /></div>
+        <div class="row edit ">
+          <div class="col-md-6 mt-3"><input type="text"
+          name="date" v-model="userInfo.bthdte" /></div>
+          <div class="col-md-6 mt-3"><input type="text"
+          name="skype" v-model="userInfo.skype" /></div>
         </div>
-        <div class="row edit mt-5">
-          <button class="save__newinfo" v-on:click="saveTopEdit">Сохранить изменения</button>
+        <div class="row edit mt-3">
+          <div class="col-md-6">
+            <button class="save__newinfo" v-on:click="saveTopEdit">Сохранить изменения</button>
+          </div>
         </div>
       </div>
-      <div class="bot__info mt-5">
+      <div class="bot__info mt-3">
         <!-- <div class="row edit">
           <div class="col">
             <p>Смена адреса почтового ящика</p>
@@ -37,18 +43,22 @@
             <input type="text" value="+7 (960) 947-43-55" />
           </div>
         </div> -->
-        <p class="mt-5">Смена пароля</p>
+        <p class="mt-3">Смена пароля</p>
         <div class="row edit">
-          <div class="col"><input type="password" value="supernparoli345" v-model="oldPass" /></div>
-          <div class="col">
+          <div class="col-md mt-3">
+            <input type="password" value="supernparoli345" v-model="oldPass" />
+          </div>
+          <div class="col-md mt-3">
             <input type="password" placeholder="Введите новый пароль" v-model="newPass" />
           </div>
-          <div class="col">
+          <div class="col-md mt-3">
             <input type="password" placeholder="Подтвердите новый пароль" v-model="newPassRepeat" />
           </div>
         </div>
-        <div class="row edit mt-5">
-          <button class="save__newinfo" v-on:click="saveBotEdit">Сохранить изменения</button>
+        <div class="row edit mt-3">
+          <div class="col-md-6">
+            <button class="save__newinfo" v-on:click="saveBotEdit">Сохранить изменения</button>
+          </div>
         </div>
       </div>
     </div>
@@ -140,6 +150,11 @@ export default {
     color: #32aaa7;
     font-size: 14px;
     font-weight: bold;
+  }
+}
+@media (max-width: 760px) {
+  .save__newinfo{
+    width: 100%;
   }
 }
 </style>
