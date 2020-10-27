@@ -36,4 +36,22 @@ main {
 .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
   opacity: 0;
 }
+.mx-datepicker svg {
+  color: #32aaa7;
+}
+.mx-input{
+  border: 0;
+  border-bottom: 1px solid #DEE2F3;
+  border-radius: 0;
+  box-shadow: none !important;
+}
+.mx-input:hover, .mx-input:focus{
+  border-color: #DEE2F3 !important;
+}
+.mx-calendar-content .cell.active{
+  background-color: #32aaa7 !important;
+}
+.mx-calendar-content .cell.in-range{
+  background-color: lighten($color:#32aaa7, $amount: 40%) !important;
+}
 </style>

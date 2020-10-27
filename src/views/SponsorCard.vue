@@ -4,7 +4,8 @@
       <h2 class="page__title">Данные спонсора</h2>
       <div class="sponsor__page__description">
         <div class="myfoto">
-          <img src="../assets/imgs/unnamed 1.png" alt="" />
+          <div><img src="../assets/imgs/unnamed 1.png" alt="" /></div>
+          <p>{{userInfo.name}}</p>
         </div>
         <div class="container top__info">
           <div class="row">
@@ -14,7 +15,7 @@
             </div>
             <div class="col-md-6 mt-3">
               <p>E-mail:</p>
-              <p>{{userInfo.email}}</p>
+              <p><a class="mail" :href="`mailto:${userInfo.email}`">{{userInfo.email}}</a></p>
             </div>
           </div>
           <div class="row">
@@ -71,11 +72,21 @@ export default {
       font-size: 20px;
     }
     & .myfoto {
-      display: inline-block;
+      display: flex;
+      align-items: center;
       margin-top: 30px;
-      border-radius: 50%;
       overflow: hidden;
-
+      & div{
+        border-radius: 50%;
+        overflow: hidden;
+      }
+      & p{
+        margin-top: 15px;
+        margin-left: 15px;
+        font-weight: bold;
+        font-size: 20px;
+        text-transform: uppercase;
+      }
       & img {
         width: 100%;
         height: 100%;
@@ -123,6 +134,9 @@ export default {
       }
     }
   }
+}
+.mail{
+  color: #32AAA7;
 }
 @media (min-width: 768px) {
   .sponsor__page{

@@ -143,4 +143,9 @@ export default {
 .mx-datepicker svg {
   color: #32aaa7;
 }
+.mx-input{
+  border: 0;
+  border-bottom: 1px solid #DEE2F3;
+  border-radius: 0;
+}
 </style>

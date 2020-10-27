@@ -153,6 +153,7 @@
 <script>
 import { mapState } from 'vuex';
 import backApi from '../assets/backApi';
+import { ReplaceNull } from '../assets/utils';
 
 export default {
   name: 'MyInfo',
@@ -170,11 +171,13 @@ export default {
   mounted() {
     if (this.$route.params.id) {
       backApi.get('/agent/profile', { params: { another_agent_id: this.$route.params.id } }).then((Response) => {
-        this.userinfo = Response.data;
+        const data = ReplaceNull(Response.data);
+        this.userinfo = data;
       });
     } else {
       backApi.get('/agent/profile').then((Response) => {
-        this.userinfo = Response.data;
+        const data = ReplaceNull(Response.data);
+        this.userinfo = data;
       });
     }
   },

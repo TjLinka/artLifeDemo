@@ -4,23 +4,24 @@
       <h2 class="page__title">Трансферт</h2>
       <h3 class="mt-5">Текущее состояние</h3>
       <div class="row transfert">
-        <div class="col">
-          <p>ЛО:</p>
-          <p>{{ transfertInfo.lo }}</p>
-        </div>
-        <div class="col">
-          <p>Резерв:</p>
-          <p>{{ transfertInfo.reserve }}</p>
-        </div>
-      </div>
-      <h3>Перевод количества баллов</h3>
-      <div class="row edit">
         <div class="col-md-6">
-          <input type="text" name="" id="number" placeholder="Номер" v-model="sum" />
+          <p>ЛО:</p>
+          <p>{{ transfertInfo.lo }} баллов</p>
+        </div>
+        <div class="col-md-6 mt-4">
+          <p>Резерв:</p>
+          <p>{{ transfertInfo.reserve }} баллов</p>
         </div>
       </div>
-      <div class="row edit mt-3">
-        <div class="col-md-6 d-flex justify-content-between">
+      <h3 class="perevod">Перевод количества баллов</h3>
+      <div class="row edit">
+        <div class="col-md-6 mt-4">
+          <input type="text" name="" id="number"
+          placeholder="Введите количество баллов" v-model="sum" />
+        </div>
+      </div>
+      <div class="row edit mt-4">
+        <div class="col-md-6 trans_btns">
           <button @click="lo2reserve">Перевести в резерв</button>
           <button @click="reserve2lo">Перевести в трансферт</button>
         </div>
@@ -107,7 +108,7 @@ export default {
     padding: 0;
     margin: 0;
   }
-  & > .col{
+  & > .col-md-6{
     p:nth-of-type(1){
       color: #9A9A9A;
     }
@@ -125,13 +126,30 @@ export default {
   }
 
   & button {
-    width: 49%;
-    padding: 2px 0px;
+    width: 48%;
+    padding: 8px 0px;
     background: white;
     color: #32aaa7;
     border: 1px solid #32aaa7;
     border-radius: 2px;
+    font-weight: bold;
+  }
+}
+.trans_btns{
+  display: flex;
+  justify-content: space-between;
+}
+@media (max-width: 425px) {
+  .perevod{
+    font-size: 18px;
+    text-transform: uppercase;
+  }
+  .trans_btns{
+    flex-direction: column;
+    button{
+      width: 100%;
+      margin-bottom: 20px;
+    }
   }
 }
 </style>
-<style></style>

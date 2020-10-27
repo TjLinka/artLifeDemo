@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col">
           <p class="current_period">
-            <strong>Текущий период: {{ currentPeriodTop.comdte }}</strong>
+            <strong>Текущий период: {{ currentPeriodTop.comdte }}</strong><br>
             Статус предыдущего года:
             <span :style="`color: ${periodStatus}`">
               {{ currentPeriodTop.prev_status }}
@@ -123,6 +123,7 @@
 
 <script>
 import backApi from '../assets/backApi';
+import { ReplaceNull } from '../assets/utils';
 
 export default {
   name: 'SponsorCard',
@@ -143,7 +144,8 @@ export default {
       backApi
         .get('agent/period-indicators', { params: { comdte: this.currentPeriodTop.comdte } })
         .then((response) => {
-          this.userInfo = response.data;
+          const data = ReplaceNull(response.data);
+          this.userInfo = data;
         });
     });
     backApi.get('agent/bonus-detail/periods').then((Response) => {
@@ -191,7 +193,8 @@ export default {
   watch: {
     currentPeriod(val) {
       backApi.get('agent/period-indicators', { params: { comdte: val } }).then((response) => {
-        this.userInfo = response.data;
+        const data = ReplaceNull(response.data);
+        this.userInfo = data;
       });
     },
   },
@@ -201,7 +204,6 @@ export default {
 <style lang="scss" scoped>
 .organization__modal {
   position: relative;
-
   & .close_btn {
     position: absolute;
     right: 0;
@@ -316,6 +318,10 @@ export default {
   padding: 16px 12px;
   display: inline-block;
   border-radius: 1px;
+
+  & br{
+    display: none;
+  }
 }
 @media (min-width: 768px) {
   .sponsor__page{
@@ -335,6 +341,17 @@ export default {
   .update{
     margin-bottom: 20px;
     width: 100% !important;
+  }
+  .organization__modal{
+    margin-top: 20px;
+    h3{
+      font-size: 20px;
+    }
+  }
+  .current_period{
+    & br{
+      display: block;
+    }
   }
 }
 </style>
