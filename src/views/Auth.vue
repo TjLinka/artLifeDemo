@@ -104,4 +104,16 @@ export default {
     color: grey;
   }
 }
+@media (max-width: 760px) {
+  .auth__page{
+    form{
+      input{
+        width: 100%;
+      }
+      .btn__login{
+        width: 100%;
+      }
+    }
+  }
+}
 </style>
