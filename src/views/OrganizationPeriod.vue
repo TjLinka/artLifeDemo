@@ -56,21 +56,21 @@
                 v-model="tree_type"
                 name="some-radios-1"
                 value="full"
-                class="d-inline mr-3"
+                class="radio mr-3"
                 >Полное дерево</b-form-radio
               >
               <b-form-radio
                 v-model="tree_type"
                 name="some-radios-1"
                 value="director"
-                class="d-inline mr-3"
+                class="radio mr-3"
                 >Директорское</b-form-radio
               >
               <b-form-radio
                 v-model="tree_type"
                 name="some-radios-1"
                 value="active"
-                class="d-inline"
+                class="radio"
                 >Своя группа</b-form-radio
               >
             </b-form-group>
@@ -280,6 +280,11 @@ export default {
         }
       }
     }
+  }
+}
+@media (min-width: 760px) {
+  .radio{
+    display: inline;
   }
 }
 </style>
