@@ -17,7 +17,7 @@
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
-      <b-table :fields="fields" :items="entries" head-variant="light">
+      <b-table :fields="fields" :items="entries" head-variant="light" responsive>
         <template v-slot:cell(show_details)="row">
           <b-button size="sm" @click="show_details(row)" class="mr-2">
             {{ row.detailsShowing ? '-' : '+' }}
@@ -246,6 +246,7 @@ export default {
         this.entries = Response.data.entries;
         this.return_details = new Array(this.total_rows).fill(undefined);
       });
+      this.searchActive = !this.searchActive;
     },
     toggleSearch() {
       this.searchActive = !this.searchActive;

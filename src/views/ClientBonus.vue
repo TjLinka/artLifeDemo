@@ -7,11 +7,11 @@
       <div class="sponsor__page__description">
         <div class="container top__info">
           <div class="row">
-            <div class="col-6">
+            <div class="col-md-6 mt-3">
               <p>Объем покупок:</p>
               <p>{{bonusInfo.ngo}}</p>
             </div>
-            <div class="col-6">
+            <div class="col-md-6 mt-3">
               <p>Скидка:</p>
               <p>{{bonusInfo.discount}}</p>
             </div>
