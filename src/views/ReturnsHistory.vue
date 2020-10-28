@@ -2,7 +2,7 @@
   <div class="licevoischet__page">
     <div class="container">
       <h2 class="page__title">История возвартов</h2>
-      <p class="p-0 m-0">Период от и до</p>
+      <p class="p-0 m-0 history_title">Период от и до</p>
       <date-picker v-model="rangeDate" range @change="getSelectedDataRange" valueType="format">
       </date-picker>
       <p>

@@ -80,4 +80,8 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance:textfield;
 }
+.history_title{
+  color: #9A9A9A;
+  font-size: 13px;
+}
 </style>
