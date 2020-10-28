@@ -3,14 +3,12 @@
     <div class="container">
       <h2 class="page__title">Показатели</h2>
       <div class="row">
-        <div class="col">
-          <p class="current_period">
+        <div class="col-sm-6 current_period">
             <strong>Текущий период: {{ currentPeriodTop.comdte }}</strong><br>
             Статус предыдущего года:
             <span :style="`color: ${periodStatus}`">
               {{ currentPeriodTop.prev_status }}
             </span>
-          </p>
         </div>
       </div>
       <div class="sponsor__page__description">
@@ -108,7 +106,8 @@
         </div>
         <div class="row edit">
           <div class="col-sm-6">
-            <input type="text" name="" id="" placeholder="Сумма" v-model="autoship" />
+            <el-input type="number" name="" id="" placeholder="Сумма"
+            clearable v-model="autoship" />
           </div>
         </div>
         <div class="row edit mt-3">

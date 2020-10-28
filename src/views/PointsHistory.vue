@@ -15,7 +15,7 @@
           <col
             v-for="field in scope.fields"
             :key="field.key"
-            :style="{ width: field.key === 'dte' ? '200px' : '120px' }"
+            :style="{ width: field.key === 'dte' ? '130px' : '120px' }"
           />
         </template>
       </b-table>

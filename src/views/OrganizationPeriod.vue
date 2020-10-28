@@ -78,7 +78,8 @@
         </div>
         <div class="row edit">
           <div class="col-sm-6">
-            <input type="text" name="" id="" placeholder="Номер" v-model="agent_id" />
+            <el-input type="number" name="" id="" placeholder="Номер"
+            clearable v-model="agent_id" />
           </div>
           <div class="col-sm-6">
             <button class="mr-2" @click="updateData">Показать</button

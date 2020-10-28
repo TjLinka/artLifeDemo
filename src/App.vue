@@ -54,4 +54,30 @@ main {
 .mx-calendar-content .cell.in-range{
   background-color: lighten($color:#32aaa7, $amount: 40%) !important;
 }
+.el-input .el-input__clear{
+  color: #32AAA7;
+  margin-top: 0px;
+}
+.el-input .el-input__clear:hover{
+  color: #32AAA7;
+}
+.el-input__inner{
+  border: 0;
+  border-bottom: 1px solid #DCDFE6;
+  border-radius: 0;
+  padding: 0;
+}
+.el-input.is-active .el-input__inner, .el-input__inner:focus{
+  border-color:  #32AAA7;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type=number] {
+  -moz-appearance:textfield;
+}
 </style>

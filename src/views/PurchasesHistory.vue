@@ -45,10 +45,12 @@
           <span class="ml-1" @click="nextPeriod(1)"> &gt;</span>
         <div class="row edit">
           <div class="col-sm-6">
-            <input type="text" name="" id="art" placeholder="Артикул" v-model="articul" />
+            <el-input type="number" name="" id="art" placeholder="Артикул"
+            clearable v-model="articul" />
           </div>
           <div class="col-sm-6">
-            <input type="text" name="" id="name" placeholder="Наименование" v-model="name" />
+            <el-input type="text" name="" id="name" placeholder="Наименование"
+            clearable v-model="name" />
           </div>
         </div>
         <!-- <div class="row edit">
@@ -110,11 +112,11 @@ export default {
           label: 'Кол-во',
         },
         {
-          key: 'points_cnt  ',
+          key: 'points_all',
           label: 'Сумма балов',
         },
         {
-          key: 'price_cnt',
+          key: 'price_total',
           label: 'Стоимость',
         },
       ],
@@ -258,6 +260,7 @@ export default {
         backApi
           .get('/agent/sales-detail', { params: { id: row.item.webshop_id } })
           .then((response) => {
+            console.log(response.data);
             this.return_details[row.item.webshop_id] = response.data.entries;
             row.toggleDetails();
           });

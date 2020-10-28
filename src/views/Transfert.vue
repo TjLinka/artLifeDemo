@@ -16,8 +16,8 @@
       <h3 class="perevod">Перевод количества баллов</h3>
       <div class="row edit">
         <div class="col-md-6 mt-4">
-          <input type="text" name="" id="number"
-          placeholder="Введите количество баллов" v-model="sum" />
+          <el-input placeholder="Сумма" type="number" v-model="sum" clearable class="count">
+          </el-input>
         </div>
       </div>
       <div class="row edit mt-4">
@@ -101,16 +101,16 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.transfert{
+.transfert {
   margin-bottom: 40px;
   margin-top: 40px;
-  & p{
+  & p {
     padding: 0;
     margin: 0;
   }
-  & > .col-md-6{
-    p:nth-of-type(1){
-      color: #9A9A9A;
+  & > .col-md-6 {
+    p:nth-of-type(1) {
+      color: #9a9a9a;
     }
   }
 }
@@ -135,21 +135,24 @@ export default {
     font-weight: bold;
   }
 }
-.trans_btns{
+.trans_btns {
   display: flex;
   justify-content: space-between;
 }
 @media (max-width: 425px) {
-  .perevod{
+  .perevod {
     font-size: 18px;
     text-transform: uppercase;
   }
-  .trans_btns{
+  .trans_btns {
     flex-direction: column;
-    button{
+    button {
       width: 100%;
       margin-bottom: 20px;
     }
   }
 }
+</style>
+<style>
+
 </style>

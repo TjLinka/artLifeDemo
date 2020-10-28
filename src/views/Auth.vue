@@ -6,8 +6,10 @@
       </h1>
       <div class="auth__page__form">
         <form>
-          <input type="text" placeholder="Логин" v-model="log.login" />
-          <input type="password" placeholder="Пароль" v-model="log.password" />
+          <el-input type="text" placeholder="Логин" v-model="log.login"
+          class="log_in" clearable/>
+          <el-input type="password" placeholder="Пароль" v-model="log.password"
+          class="log_in" show-password />
           <button class="btn__login" v-on:click.prevent="sf">Войти</button>
         </form>
       </div>
@@ -68,13 +70,13 @@ export default {
       flex-direction: column;
       align-items: center;
 
-      input {
+      .log_in {
         width: 60%;
-        height: 45px;
-        border: 0;
-        border-bottom: 1px solid lightgray;
+        // height: 45px;
+        // border: 0;
+        // border-bottom: 1px solid lightgray;
         margin-bottom: 30px;
-        outline: none;
+        // outline: none;
       }
 
       .btn__login {
