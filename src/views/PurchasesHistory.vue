@@ -99,22 +99,52 @@ export default {
         {
           key: 'points',
           label: 'Баллы',
+          fomratter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
           key: 'price',
           label: 'Цена',
+          fomratter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
           key: 'cnt',
           label: 'Кол-во',
+          fomratter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
           key: 'points_all',
           label: 'Сумма балов',
+          fomratter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
           key: 'price_total',
           label: 'Стоимость',
+          fomratter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
       ],
       fields: [
@@ -128,11 +158,20 @@ export default {
           key: 'amount',
           label: 'Сумма',
           sortable: true,
+          fomratter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
           key: 'dte',
           label: 'Дата',
           sortable: true,
+          formatter(v) {
+            return new Date(v).toLocaleDateString();
+          },
         },
         {
           key: 'delivery',

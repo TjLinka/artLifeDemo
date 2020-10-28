@@ -18,6 +18,9 @@
             :style="{ width: field.key === 'dte' ? '130px' : '120px' }"
           />
         </template>
+          <template #cell(comdte)="data">
+            <p>{{ data.value }}</p>
+          </template>
       </b-table>
       <h2 class="licevoischet__page__summ">
         СУММА СПИСАНИЙ = {{ summIncome }} , СУММА НАЧИСЛЕНИЙ = {{ summOutcome }}
@@ -49,6 +52,9 @@ export default {
           key: 'comdte',
           label: 'Период',
           sortable: true,
+          formatter(v) {
+            return new Date(v).toLocaleDateString();
+          },
         },
         {
           key: 'income',

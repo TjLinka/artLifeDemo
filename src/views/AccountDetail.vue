@@ -37,11 +37,20 @@ export default {
           key: 'dte',
           label: 'Дата операции',
           sortable: true,
+          formatter(v) {
+            return new Date(v).toLocaleDateString();
+          },
         },
         {
           key: 'amount',
           label: 'На счет / Со счета',
           sortable: true,
+          formatter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
           key: 'account_type',
@@ -57,6 +66,12 @@ export default {
           key: 'balance',
           label: 'Итого на лицевом счете',
           sortable: true,
+          formatter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
       ],
     };
