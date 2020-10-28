@@ -2,7 +2,7 @@
   <div class="licevoischet__page">
     <div class="container">
       <h2 class="page__title">Трансферт</h2>
-      <h3 class="mt-5">Текущее состояние</h3>
+      <h4 class="mt-4">Текущее состояние</h4>
       <div class="row transfert">
         <div class="col-md-6">
           <p>ЛО:</p>
@@ -102,8 +102,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .transfert {
-  margin-bottom: 40px;
-  margin-top: 40px;
+  margin-bottom: 30px;
+  margin-top: 30px;
   & p {
     padding: 0;
     margin: 0;
@@ -111,6 +111,9 @@ export default {
   & > .col-md-6 {
     p:nth-of-type(1) {
       color: #9a9a9a;
+    }
+    p:nth-of-type(2) {
+      font-weight: bold;
     }
   }
 }

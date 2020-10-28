@@ -9,27 +9,27 @@
         </div>
         <div class="container top__info">
           <div class="row">
-            <div class="col-md-6 mt-3">
+            <div class="col-md-6 mt-4">
               <p>Номер соглашения:</p>
               <p>{{userInfo.id}}</p>
             </div>
-            <div class="col-md-6 mt-3">
+            <div class="col-md-6 mt-4">
               <p>E-mail:</p>
               <p><a class="mail" :href="`mailto:${userInfo.email}`">{{userInfo.email}}</a></p>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6 mt-3">
+            <div class="col-md-6 mt-4">
               <p>ФИО:</p>
               <p>{{userInfo.name}}</p>
             </div>
-            <div class="col-md-6 mt-3">
+            <div class="col-md-6 mt-4">
               <p>Skype:</p>
               <p>{{userInfo.skype}}</p>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6 mt-3">
+            <div class="col-md-6 mt-4">
               <p>Телефон:</p>
               <p>{{userInfo.phone}}</p>
             </div>
@@ -111,6 +111,9 @@ export default {
         &:nth-of-type(1) {
           color: #9a9a9a;
           font-size: 14px;
+        }
+        &:nth-of-type(2) {
+          font-weight: bold;
         }
       }
     }

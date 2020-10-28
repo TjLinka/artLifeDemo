@@ -2,7 +2,7 @@
   <div class="sponsor__page">
     <div class="container">
       <h2 class="page__title">Показатели</h2>
-      <div class="row">
+      <div class="row cur_p">
         <div class="col-sm-6 current_period">
             <strong>Текущий период:
               {{ months[new Date(currentPeriodTop.comdte).getMonth()] }}
@@ -14,72 +14,77 @@
         </div>
       </div>
       <div class="sponsor__page__description">
-        <h2>Мои текущие показатели</h2>
+        <div class="row mobile_trans mt-4">
+          <div class="col search__btn" @click="toggleSearch" v-if="!searchActive">
+            Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
+          </div>
+        </div>
+        <h2 class="mt-4 mb-4">Мои текущие показатели</h2>
         <i class="mr-1 el-icon-arrow-left" @click="nextPeriod(-1)"></i>
         <span>{{ months[new Date(currentPeriod).getMonth()] }} </span>
         <span>{{ new Date(currentPeriod).getFullYear() }}</span>
         <i class="ml-1 el-icon-arrow-right" @click="nextPeriod(1)"></i>
         <div class="container top__info">
           <div class="row">
-            <div class="col-md-6 mt-3">
+            <div class="col-md-6 mt-4">
               <p>Ранг на начало:</p>
               <p>{{ userInfo.rank_beg }}</p>
             </div>
-            <div class="col-md-6 mt-3">
+            <div class="col-md-6 mt-4">
               <p>Расчетный ранг:</p>
               <p>{{ userInfo.rank_calc }}</p>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6 mt-3">
+            <div class="col-md-6 mt-4">
               <p>Ранг на конец:</p>
               <p>{{ userInfo.rank_end }}</p>
             </div>
-            <div class="col-md-6 mt-3">
+            <div class="col-md-6 mt-4">
               <p>ЛО:</p>
               <p>{{ userInfo.lo }}</p>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6 mt-3">
+            <div class="col-md-6 mt-4">
               <p>ГО:</p>
               <p>{{ userInfo.go }}</p>
             </div>
-            <div class="col-md-6 mt-3">
+            <div class="col-md-6 mt-4">
               <p>НГО:</p>
               <p>{{ userInfo.ngo }}</p>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6 mt-3">
+            <div class="col-md-6 mt-4">
               <p>ОО:</p>
               <p>{{ userInfo.oo }}</p>
             </div>
-            <div class="col-md-6 mt-3">
+            <div class="col-md-6 mt-4">
               <p>КО:</p>
               <p>{{ userInfo.ko }}</p>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6 mt-3">
+            <div class="col-md-6 mt-4">
               <p>Резерв:</p>
               <p>{{ userInfo.reserve }}</p>
             </div>
-            <div class="col-md-6 mt-3">
+            <div class="col-md-6 mt-4">
               <p>Неакт.:</p>
               <p>{{ userInfo.noact }}</p>
             </div>
           </div>
         </div>
       </div>
-      <div class="row">
+      <div class="row desk_trans">
         <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
           Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
         </div>
       </div>
       <div v-if="searchActive" class="organization__modal">
         <span @click="closeModal" class="close_btn">X</span>
-        <h3>Настройка автоматической подачи баллов в трансферт</h3>
+        <h3 class="mt-4">Настройка автоматической подачи баллов в трансферт</h3>
         <div class="row">
           <div class="col-md-12">
             <b-form-group label="Выбор дерева">
@@ -113,7 +118,7 @@
             clearable v-model="autoship" />
           </div>
         </div>
-        <div class="row edit mt-3">
+        <div class="row edit mt-4">
           <div class="col-sm-6">
             <button class="mr-2 update" @click="updateData">Изменить</button>
           </div>
@@ -242,6 +247,16 @@ export default {
     }
   }
 }
+.mobile_trans{
+  display: none;
+  text-align: left;
+  font-weight: bold;
+  font-size: 20px;
+  & .search_icon{
+    position: relative;
+    right: 0;
+  }
+}
 .sponsor__page {
   margin-top: 40px;
 
@@ -287,6 +302,9 @@ export default {
         &:nth-of-type(1) {
           color: #9a9a9a;
           font-size: 14px;
+        }
+        &:nth-of-type(2) {
+          font-weight: bold;
         }
       }
     }
@@ -351,10 +369,30 @@ export default {
       font-size: 20px;
     }
   }
+  .cur_p{
+    margin: 0;
+  }
   .current_period{
+    margin: 0;
     & br{
       display: block;
     }
+  }
+}
+@media (max-width: 500px) {
+  .mobile_trans{
+    display: block;
+  }
+  .desk_trans{
+    display: none;
+  }
+  .organization__modal{
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    background-color: white;
   }
 }
 </style>

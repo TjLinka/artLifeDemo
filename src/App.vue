@@ -98,4 +98,10 @@ input[type=number] {
   position: relative;
   right: -10px;
 }
+@media (max-width: 450px) {
+  .page__title{
+    font-size: 23px;
+    margin-top: -20px;
+  }
+}
 </style>

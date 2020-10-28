@@ -59,7 +59,7 @@
           </div>
         </div>
         <div v-if="transfertAccess" class="transfert">
-          <h2 class="page__caption">Дополнительная информация для трансферта</h2>
+          <h2 class="page__caption mt-5">Дополнительная информация для трансферта</h2>
           <div class="container transfert__info" v-if="showTransfertInfo">
             <div class="row">
               <div class="col-md-6 mt-3">
@@ -232,6 +232,9 @@ export default {
         &:nth-of-type(1) {
           color: #9a9a9a;
           font-size: 14px;
+        }
+        &:nth-of-type(2) {
+          font-weight: bold;
         }
       }
     }
