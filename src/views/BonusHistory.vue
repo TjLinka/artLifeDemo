@@ -4,14 +4,14 @@
       <h2 class="page__title">История бонусов(КЕ)</h2>
       <div class="row">
         <div class="col-6 perioad__picker">
-          <span
-            class="mr-1"
-            @click="periodIndex = periodIndex - 1 >= 0 ? periodIndex - 1 : periods.length - 1"
-          >
-            &lt;</span
-          >
-          <span>{{ currentPeriod.slice(0, -3) }}</span>
-          <span class="ml-1" @click="periodIndex = (periodIndex + 1) % periods.length"> &gt;</span>
+          <i
+          class="mr-1 el-icon-arrow-left"
+          @click="periodIndex = periodIndex - 1 >= 0 ? periodIndex - 1 : periods.length - 1">
+          </i>
+          <span>{{ months[new Date(currentPeriod).getMonth()] }} </span>
+          <span>{{ new Date(currentPeriod).getFullYear() }}</span>
+          <i class="ml-1 el-icon-arrow-right"
+          @click="periodIndex = (periodIndex + 1) % periods.length"></i>
         </div>
       </div>
       <p class="exp_print">
@@ -44,6 +44,7 @@ export default {
     return {
       periods: [],
       periodIndex: 0,
+      months: ['Январь', 'Ферваль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
       bonus: [],
       returnItems: [],
       topTableData: [],

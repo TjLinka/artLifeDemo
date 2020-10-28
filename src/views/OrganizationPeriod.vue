@@ -293,9 +293,10 @@ export default {
 .el-table__indent {
   padding-left: 0 !important;
 }
-.el-icon-arrow-right{
-  color: white;
-}
+.el-table__expand-icon > .el-icon-arrow-right {
+        color: white;
+        left: 0;
+      }
 .depth-0{
   background-color: #32AAA7 !important;
   color: white;

@@ -57,14 +57,15 @@
       </div>
       <div v-if="searchActive" class="organization__modal">
         <h3>Поиск партнера</h3>
-        <span
-            class="mr-1"
-            @click="periodIndex = periodIndex - 1 >= 0 ? periodIndex - 1 : periods.length - 1"
-          >
-            &lt;</span
-          >
-          <span>{{ currentPeriod.slice(0, -3) }}</span>
-          <span class="ml-1" @click="periodIndex = (periodIndex + 1) % periods.length"> &gt;</span>
+        <i
+          class="mr-1 el-icon-arrow-left"
+          @click="periodIndex = periodIndex - 1 >= 0 ? periodIndex - 1 : periods.length - 1"
+        >
+        </i>
+        <span>{{ months[new Date(currentPeriod).getMonth()] }} </span>
+        <span>{{ new Date(currentPeriod).getFullYear() }}</span>
+          <i class="ml-1 el-icon-arrow-right"
+          @click="periodIndex = (periodIndex + 1) % periods.length"></i>
         <div class="row">
           <div class="col-md-12">
             <b-form-group label="Выбор дерева">
@@ -165,6 +166,7 @@ export default {
     ];
     return {
       searchActive: false,
+      months: ['Январь', 'Ферваль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
       tree_type: 'full',
       agent_id: null,
       get_root: true,
@@ -299,9 +301,9 @@ export default {
       }
       const tag = this.tags.find((t) => t.key === 'period');
       if (tag) {
-        tag.name = this.currentPeriod.slice(0, -3);
+        tag.name = `${this.months[new Date(this.currentPeriod).getMonth()]} ${new Date(this.currentPeriod).getFullYear()}`;
       } else if (this.currentPeriod !== this.periods[this.periods.length - 1].comdte) {
-        this.tags.push({ name: this.currentPeriod.slice(0, -3), key: 'period' });
+        this.tags.push({ name: `${this.months[new Date(this.currentPeriod).getMonth()]} ${new Date(this.currentPeriod).getFullYear()}`, key: 'period' });
       }
       this.searchActive = false;
       backApi.get('/agents-tree-hist/period', data).then((response) => {
@@ -379,11 +381,13 @@ export default {
 }
 </style>
 <style>
+
+.el-table__expand-icon > .el-icon-arrow-right {
+        color: white;
+        left: 0;
+      }
 .el-table__indent {
   padding-left: 0 !important;
-}
-.el-icon-arrow-right {
-  color: white;
 }
 .depth-0 {
   background-color: #32aaa7 !important;

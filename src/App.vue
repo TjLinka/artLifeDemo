@@ -84,4 +84,18 @@ input[type=number] {
   color: #9A9A9A;
   font-size: 13px;
 }
+.el-icon-arrow-left,
+.el-icon-arrow-right{
+  color: #32AAA7;
+  cursor: pointer;
+  font-weight: bold;
+}
+.el-icon-arrow-left{
+  position: relative;
+  left: -10px;
+}
+.el-icon-arrow-right{
+  position: relative;
+  right: -10px;
+}
 </style>

@@ -44,7 +44,7 @@
             </div>
             <div class="col-md-6 mt-3">
               <p>Дата рождения:</p>
-              <p>{{ userinfo.bthdte }}</p>
+              <p>{{ new Date(userinfo.bthdte).toLocaleDateString() }}</p>
             </div>
           </div>
           <div class="row">
@@ -118,13 +118,13 @@
               </div>
               <div class="col-md-6 mt-3">
                 <p>Дата достижения максимального ранга:</p>
-                <p>{{ userinfo.rank_max_date }}</p>
+                <p>{{ new Date(userinfo.rank_max_date).toLocaleDateString() }}</p>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 mt-3">
                 <p>Дата регистрации:</p>
-                <p>{{ userinfo.credte }}</p>
+                <p>{{ new Date(userinfo.credte).toLocaleDateString() }}</p>
               </div>
               <div class="col-md-6 mt-3">
                 <p>Дата окончания лидерской программы:</p>
@@ -176,6 +176,7 @@ export default {
       });
     } else {
       backApi.get('/agent/profile').then((Response) => {
+        console.log(Response.data);
         const data = ReplaceNull(Response.data);
         this.userinfo = data;
       });

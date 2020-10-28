@@ -4,7 +4,9 @@
       <h2 class="page__title">Показатели</h2>
       <div class="row">
         <div class="col-sm-6 current_period">
-            <strong>Текущий период: {{ currentPeriodTop.comdte }}</strong><br>
+            <strong>Текущий период:
+              {{ months[new Date(currentPeriodTop.comdte).getMonth()] }}
+              {{new Date(currentPeriodTop.comdte).getFullYear()}}</strong><br>
             Статус предыдущего года:
             <span :style="`color: ${periodStatus}`">
               {{ currentPeriodTop.prev_status }}
@@ -13,9 +15,10 @@
       </div>
       <div class="sponsor__page__description">
         <h2>Мои текущие показатели</h2>
-        <span class="mr-1" @click="nextPeriod(-1)"> &lt;</span>
-        <span>{{ currentPeriod.slice(0, -3) }}</span>
-        <span class="ml-1" @click="nextPeriod(1)"> &gt;</span>
+        <i class="mr-1 el-icon-arrow-left" @click="nextPeriod(-1)"></i>
+        <span>{{ months[new Date(currentPeriod).getMonth()] }} </span>
+        <span>{{ new Date(currentPeriod).getFullYear() }}</span>
+        <i class="ml-1 el-icon-arrow-right" @click="nextPeriod(1)"></i>
         <div class="container top__info">
           <div class="row">
             <div class="col-md-6 mt-3">
@@ -129,6 +132,7 @@ export default {
   data() {
     return {
       currentPeriodTop: {},
+      months: ['Январь', 'Ферваль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
       userInfo: {},
       points_rule: null,
       autoship: null,

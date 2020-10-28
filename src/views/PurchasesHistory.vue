@@ -35,14 +35,10 @@
       </div>
       <div v-if="searchActive" class="organization__modal">
         <h3>Фильтр</h3>
-        <span
-            class="mr-1"
-            @click="nextPeriod(-1)"
-          >
-            &lt;</span
-          >
-          <span>{{ currentPeriod.slice(0, -3) }}</span>
-          <span class="ml-1" @click="nextPeriod(1)"> &gt;</span>
+        <i class="mr-1 el-icon-arrow-left" @click="nextPeriod(-1)"></i>
+        <span>{{ months[new Date(currentPeriod).getMonth()] }} </span>
+        <span>{{ new Date(currentPeriod).getFullYear() }}</span>
+        <i class="ml-1 el-icon-arrow-right" @click="nextPeriod(1)"></i>
         <div class="row edit">
           <div class="col-sm-6">
             <el-input type="number" name="" id="art" placeholder="Артикул"
@@ -79,6 +75,7 @@ export default {
       lang: {
         monthBeforeYear: false,
       },
+      months: ['Январь', 'Ферваль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
       periods: [],
       periodIndex: 0,
       period_enabled: true,
@@ -229,9 +226,9 @@ export default {
       }
       const tag = this.tags.find((t) => t.key === 'period');
       if (tag) {
-        tag.name = this.currentPeriod.slice(0, -3);
-      } else if (this.period_enabled) {
-        this.tags.push({ name: this.currentPeriod.slice(0, -3), key: 'period' });
+        tag.name = `${this.months[new Date(this.currentPeriod).getMonth()]} ${new Date(this.currentPeriod).getFullYear()}`;
+      } else if (this.currentPeriod !== this.periods[this.periods.length - 1].comdte) {
+        this.tags.push({ name: `${this.months[new Date(this.currentPeriod).getMonth()]} ${new Date(this.currentPeriod).getFullYear()}`, key: 'period' });
       }
       // const params = { name: this.name, articul: this.articul, saleid: this.number };
       backApi.get('agent/sales', data).then((Response) => {
