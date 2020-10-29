@@ -35,7 +35,7 @@
       </div>
       <div v-if="searchActive" class="organization__modal">
         <h3>Фильтр</h3>
-        <BasePeriodPicker :currentPeriod="currentPeriod" v-on:next-period="nextPeriod"/>
+          <BasePeriodPicker :currentPeriod="currentPeriod" v-on:next-period="nextPeriod"/>
         <div class="row edit">
           <div class="col-sm-6">
             <el-input type="number" name="" id="art" placeholder="Артикул"
