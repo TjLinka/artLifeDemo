@@ -176,7 +176,6 @@ export default {
       });
     } else {
       backApi.get('/agent/profile').then((Response) => {
-        console.log(Response.data);
         const data = ReplaceNull(Response.data);
         this.userinfo = data;
       });
@@ -185,7 +184,7 @@ export default {
   computed: {
     ...mapState('auth', ['role']),
     transfertAccess() {
-      return !this.role !== 'Клиент';
+      return this.role !== 'Клиент';
     },
   },
 };

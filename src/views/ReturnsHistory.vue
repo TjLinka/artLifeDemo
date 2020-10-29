@@ -166,7 +166,6 @@ export default {
         backApi
           .get('/agent/refunds-detail', { params: { id: row.item.webshop_id } })
           .then((response) => {
-            console.log(response.data);
             this.return_details[row.item.webshop_id] = response.data.entries;
             row.toggleDetails();
           });

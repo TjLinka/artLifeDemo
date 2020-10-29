@@ -4,14 +4,7 @@
       <h2 class="page__title">История бонусов(КЕ)</h2>
       <div class="row">
         <div class="col-6 perioad__picker">
-          <i
-          class="mr-1 el-icon-arrow-left"
-          @click="periodIndex = periodIndex - 1 >= 0 ? periodIndex - 1 : periods.length - 1">
-          </i>
-          <span>{{ months[new Date(currentPeriod).getMonth()] }} </span>
-          <span>{{ new Date(currentPeriod).getFullYear() }}</span>
-          <i class="ml-1 el-icon-arrow-right"
-          @click="periodIndex = (periodIndex + 1) % periods.length"></i>
+        <BasePeriodPicker :currentPeriod="currentPeriod" v-on:next-period="nextPeriod"/>
         </div>
       </div>
       <p class="exp_print">
@@ -42,9 +35,13 @@
 <script>
 // import DatePicker from 'vue2-datepicker';
 import backApi from '../assets/backApi';
+import BasePeriodPicker from '../components/BasePeriodPicker.vue';
 
 export default {
   name: 'BonusHistory',
+  components: {
+    BasePeriodPicker,
+  },
   data() {
     return {
       periods: [],
@@ -214,7 +211,12 @@ export default {
       });
     },
   },
-  methods: {},
+  methods: {
+    nextPeriod(x) {
+      this.period_enabled = true;
+      this.periodIndex = (this.periodIndex + this.periods.length + x) % this.periods.length;
+    },
+  },
 };
 </script>
 

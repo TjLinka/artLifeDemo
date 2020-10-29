@@ -117,8 +117,6 @@ export default {
     }
   }
 }
-.licevoischet__page {
-}
 .edit {
   & input {
     width: 100%;

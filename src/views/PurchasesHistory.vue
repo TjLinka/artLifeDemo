@@ -35,10 +35,7 @@
       </div>
       <div v-if="searchActive" class="organization__modal">
         <h3>Фильтр</h3>
-        <i class="mr-1 el-icon-arrow-left" @click="nextPeriod(-1)"></i>
-        <span>{{ months[new Date(currentPeriod).getMonth()] }} </span>
-        <span>{{ new Date(currentPeriod).getFullYear() }}</span>
-        <i class="ml-1 el-icon-arrow-right" @click="nextPeriod(1)"></i>
+        <BasePeriodPicker :currentPeriod="currentPeriod" v-on:next-period="nextPeriod"/>
         <div class="row edit">
           <div class="col-sm-6">
             <el-input type="number" name="" id="art" placeholder="Артикул"
@@ -296,7 +293,6 @@ export default {
         backApi
           .get('/agent/sales-detail', { params: { id: row.item.webshop_id } })
           .then((response) => {
-            console.log(response.data);
             this.return_details[row.item.webshop_id] = response.data.entries;
             row.toggleDetails();
           });

@@ -20,10 +20,7 @@
           </div>
         </div>
         <h2 class="mt-4 mb-4">Мои текущие показатели</h2>
-        <i class="mr-1 el-icon-arrow-left" @click="nextPeriod(-1)"></i>
-        <span>{{ months[new Date(currentPeriod).getMonth()] }} </span>
-        <span>{{ new Date(currentPeriod).getFullYear() }}</span>
-        <i class="ml-1 el-icon-arrow-right" @click="nextPeriod(1)"></i>
+        <BasePeriodPicker :currentPeriod="currentPeriod" v-on:next-period="nextPeriod"/>
         <div class="container top__info">
           <div class="row">
             <div class="col-md-6 mt-4">
@@ -130,20 +127,37 @@
 
 <script>
 import backApi from '../assets/backApi';
+import BasePeriodPicker from '../components/BasePeriodPicker.vue';
 import { ReplaceNull } from '../assets/utils';
 
 export default {
   name: 'SponsorCard',
+  components: {
+    BasePeriodPicker,
+  },
   data() {
     return {
       currentPeriodTop: {},
-      months: ['Январь', 'Ферваль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
       userInfo: {},
       points_rule: null,
       autoship: null,
       searchActive: false,
       periods: [],
       periodIndex: 0,
+      months: [
+        'Январь',
+        'Ферваль',
+        'Март',
+        'Апрель',
+        'Май',
+        'Июнь',
+        'Июль',
+        'Августь',
+        'Сентябрь',
+        'Октябрь',
+        'Ноябрь',
+        'Декабрь',
+      ],
     };
   },
   mounted() {
