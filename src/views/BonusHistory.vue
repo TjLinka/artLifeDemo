@@ -19,7 +19,8 @@
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
-      <b-table :fields="topFields " :items="topTableData" head-variant="light" responsive>
+      <b-table :fields="topFields " :items="topTableData" head-variant="light"
+      responsive class="bonus_history_table">
           <template #cell(period)="data">
             <p>{{ data.value }}</p>
           </template>

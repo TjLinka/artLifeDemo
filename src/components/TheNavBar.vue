@@ -12,6 +12,7 @@
               <b-dropdown-item to="/">Карточка партнера</b-dropdown-item>
               <b-dropdown-item to="/sponsorcard">Данные спонсора</b-dropdown-item>
               <b-dropdown-item to="/indicators">Показатели</b-dropdown-item>
+              <b-dropdown-item to="/myinfoedit">Редактирование личных данных</b-dropdown-item>
               <b-dropdown-item v-if="role === 'Клиент'"
               to="/client-bonus">Количество бонусных баллов</b-dropdown-item>
             </b-nav-item-dropdown>
@@ -20,6 +21,7 @@
               </b-dropdown-item>
               <b-dropdown-item to="/organization-by-period">История организации по периодам
               </b-dropdown-item>
+              <b-dropdown-item to="/sponsorcard">Данные спонсора</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item-dropdown text="Маркетинг" right>
               <b-dropdown-item to="/transfert">Трансферт</b-dropdown-item>
@@ -28,7 +30,6 @@
             </b-nav-item-dropdown>
             <b-nav-item-dropdown text="Лицевой счёт" right>
               <b-dropdown-item to="/account-detail">Движение по лицевому счету</b-dropdown-item>
-              <b-dropdown-item to="#">Lorem, ipsum.</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item-dropdown text="История покупок" right>
               <b-dropdown-item to="/returns-history">История возвартов</b-dropdown-item>

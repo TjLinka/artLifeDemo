@@ -130,6 +130,11 @@ export default {
     }
   }
 }
+@media (max-width: 450px) {
+  .licevoischet__page__summ{
+    font-size: 1em;
+  }
+}
 </style>
 <style>
 .mx-datepicker svg{

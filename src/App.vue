@@ -104,4 +104,22 @@ input[type=number] {
     margin-top: -20px;
   }
 }
+.table thead th{
+  vertical-align: middle;
+}
+.points_history_table .table th, .table td{
+  // vertical-align: middle;
+}
+th[role='columnheader']{
+  text-align: center !important;
+}
+.el-table .cell {
+  word-break: normal;
+  // overflow: unset;
+  text-overflow: unset;
+  padding-left: 4px;
+}
+.points_history_table td[role='cell']{
+  word-break: break-word;
+}
 </style>

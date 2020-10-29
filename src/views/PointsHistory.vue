@@ -10,7 +10,8 @@
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
-      <b-table fixed responsive :fields="fields" :items="entries" head-variant="light">
+      <b-table fixed responsive :fields="fields" :items="entries" head-variant="light"
+      class="points_history_table">
         <template #table-colgroup="scope">
           <col
             v-for="field in scope.fields"
@@ -34,6 +35,7 @@ import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/en';
 import backApi from '../assets/backApi';
+// import { ReplaceNull } from '../assets/utils';
 
 export default {
   name: 'PointsHistory',
@@ -47,6 +49,9 @@ export default {
           key: 'dte',
           label: 'Дата операции',
           sortable: true,
+          formatter(v) {
+            return new Date(v).toLocaleDateString();
+          },
         },
         {
           key: 'comdte',
@@ -86,6 +91,7 @@ export default {
   },
   mounted() {
     backApi.get('agent/points-detail').then((Response) => {
+      console.log(Response.data);
       this.entries = Response.data.entries;
     });
   },
