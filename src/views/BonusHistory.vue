@@ -3,15 +3,8 @@
     <div class="container">
       <h2 class="page__title">История бонусов(КЕ)</h2>
       <div class="row">
-        <div class="col-2 perioad__picker">
-          <span
-            class="mr-1"
-            @click="periodIndex = periodIndex - 1 >= 0 ? periodIndex - 1 : periods.length - 1"
-          >
-            &lt;</span
-          >
-          <span>{{ currentPeriod.slice(0, -3) }}</span>
-          <span class="ml-1" @click="periodIndex = (periodIndex + 1) % periods.length"> &gt;</span>
+        <div class="col-6 perioad__picker">
+        <BasePeriodPicker :currentPeriod="currentPeriod" v-on:next-period="nextPeriod"/>
         </div>
       </div>
       <p class="exp_print">
@@ -19,8 +12,13 @@
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
-      <b-table :fields="topFields " :items="topTableData" head-variant="light"></b-table>
-      <b-table :fields="mainFields" :items="bonus" head-variant="light">
+      <b-table :fields="topFields " :items="topTableData" head-variant="light"
+      responsive class="bonus_history_table">
+          <template #cell(period)="data">
+            <p>{{ data.value }}</p>
+          </template>
+      </b-table>
+      <b-table :fields="mainFields" :items="bonus" head-variant="light" responsive>
         <template v-slot:cell(Детали)="row">
           <b-button size="sm" @click="row.toggleDetails" class="mr-2">
             {{ row.detailsShowing ? '-' : '+' }}
@@ -37,13 +35,18 @@
 <script>
 // import DatePicker from 'vue2-datepicker';
 import backApi from '../assets/backApi';
+import BasePeriodPicker from '../components/BasePeriodPicker.vue';
 
 export default {
   name: 'BonusHistory',
+  components: {
+    BasePeriodPicker,
+  },
   data() {
     return {
       periods: [],
       periodIndex: 0,
+      months: ['Январь', 'Ферваль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
       bonus: [],
       returnItems: [],
       topTableData: [],
@@ -51,30 +54,70 @@ export default {
         {
           key: 'period',
           label: 'Период',
+          formatter(v) {
+            const months = ['Январь', 'Ферваль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+            return `${new Date(v).getFullYear()} ${months[new Date(v).getMonth()]}`;
+          },
         },
         {
           key: 'bonus',
           label: 'Бонусов всего',
+          formatter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
           key: 'lo',
           label: 'ЛО',
+          formatter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
           key: 'go',
           label: 'ГО',
+          formatter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
           key: 'ngo',
           label: 'НГО',
+          formatter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
           key: 'oo',
           label: 'ОО',
+          formatter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
           key: 'ko',
           label: 'КО',
+          formatter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
           key: 'rank',
@@ -90,6 +133,12 @@ export default {
         {
           key: 'sum',
           label: 'Бонус',
+          formatter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
       ],
       returnFields: [
@@ -112,6 +161,12 @@ export default {
         {
           key: 'percent',
           label: 'Процент',
+          formatter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
           key: 'bonus_value',
@@ -156,7 +211,12 @@ export default {
       });
     },
   },
-  methods: {},
+  methods: {
+    nextPeriod(x) {
+      this.period_enabled = true;
+      this.periodIndex = (this.periodIndex + this.periods.length + x) % this.periods.length;
+    },
+  },
 };
 </script>
 

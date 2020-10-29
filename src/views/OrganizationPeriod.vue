@@ -56,21 +56,21 @@
                 v-model="tree_type"
                 name="some-radios-1"
                 value="full"
-                class="d-inline mr-3"
+                class="radio mr-3"
                 >Полное дерево</b-form-radio
               >
               <b-form-radio
                 v-model="tree_type"
                 name="some-radios-1"
                 value="director"
-                class="d-inline mr-3"
+                class="radio mr-3"
                 >Директорское</b-form-radio
               >
               <b-form-radio
                 v-model="tree_type"
                 name="some-radios-1"
                 value="active"
-                class="d-inline"
+                class="radio"
                 >Своя группа</b-form-radio
               >
             </b-form-group>
@@ -78,7 +78,8 @@
         </div>
         <div class="row edit">
           <div class="col-sm-6">
-            <input type="text" name="" id="" placeholder="Номер" v-model="agent_id" />
+            <el-input type="number" name="" id="" placeholder="Номер"
+            clearable v-model="agent_id" />
           </div>
           <div class="col-sm-6">
             <button class="mr-2" @click="updateData">Показать</button
@@ -282,14 +283,20 @@ export default {
     }
   }
 }
+@media (min-width: 760px) {
+  .radio{
+    display: inline;
+  }
+}
 </style>
 <style>
 .el-table__indent {
   padding-left: 0 !important;
 }
-.el-icon-arrow-right{
-  color: white;
-}
+.el-table__expand-icon > .el-icon-arrow-right {
+        color: white;
+        left: 0;
+      }
 .depth-0{
   background-color: #32AAA7 !important;
   color: white;

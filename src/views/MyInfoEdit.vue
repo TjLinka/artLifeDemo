@@ -7,48 +7,64 @@
       <div class="myfoto">
         <img src="../assets/imgs/unnamed 1.png" alt="" />
       </div>
-      <div class="top__info mt-5">
-        <div class="row edit mt-5">
-          <div class="col-6">
-            <input type="text" name="country" v-model="userInfo.country" />
+      <div class="top__info mt-3">
+        <div class="row edit ">
+          <div class="col-md-6 mt-3">
+            <el-input clearable type="text" name="country"
+            v-model="userInfo.country" placeholder="Страна" />
           </div>
-          <div class="col-6"><input type="text" name="city" v-model="userInfo.city" /></div>
+          <div class="col-md-6 mt-3"><el-input clearable type="text" name="city"
+          v-model="userInfo.city" placeholder="Город" /></div>
         </div>
-        <div class="row edit mt-5">
-          <div class="col-6"><input type="text" name="address" v-model="userInfo.address" /></div>
-          <div class="col-6"><input type="text" name="passport" v-model="userInfo.passport" /></div>
+        <div class="row edit ">
+          <div class="col-md-6 mt-3"><el-input clearable type="text"
+          name="address" v-model="userInfo.address" placeholder="Адрес" /></div>
+          <div class="col-md-6 mt-3"><el-input clearable type="text"
+          name="passport" v-model="userInfo.passport" placeholder="Парспорт" /></div>
         </div>
-        <div class="row edit mt-5">
-          <div class="col-6"><input type="text" name="date" v-model="userInfo.bthdte" /></div>
-          <div class="col-6"><input type="text" name="skype" v-model="userInfo.skype" /></div>
+        <div class="row edit ">
+          <div class="col-md-6 mt-3"><el-input clearable type="text"
+          name="date" v-model="userInfo.bthdte" placeholder="Дата рождения" /></div>
+          <div class="col-md-6 mt-3"><el-input clearable type="text"
+          name="skype" v-model="userInfo.skype" placeholder="Skype" /></div>
         </div>
-        <div class="row edit mt-5">
-          <button class="save__newinfo" v-on:click="saveTopEdit">Сохранить изменения</button>
+        <div class="row edit mt-3">
+          <div class="col-md-6">
+            <button class="save__newinfo" v-on:click="saveTopEdit">Сохранить изменения</button>
+          </div>
         </div>
       </div>
-      <div class="bot__info mt-5">
+      <div class="bot__info mt-3">
         <!-- <div class="row edit">
           <div class="col">
             <p>Смена адреса почтового ящика</p>
-            <input type="text" value="supernameemail@gmail.com" />
+            <el-input clearable type="text" value="supernameemail@gmail.com" />
           </div>
           <div class="col">
             <p>Смена телефона</p>
-            <input type="text" value="+7 (960) 947-43-55" />
+            <el-input clearable type="text" value="+7 (960) 947-43-55" />
           </div>
         </div> -->
-        <p class="mt-5">Смена пароля</p>
+        <p class="mt-3">Смена пароля</p>
         <div class="row edit">
-          <div class="col"><input type="password" value="supernparoli345" v-model="oldPass" /></div>
-          <div class="col">
-            <input type="password" placeholder="Введите новый пароль" v-model="newPass" />
+          <div class="col-md mt-3">
+            <el-input type="password" value="supernparoli345"
+            show-password v-model="oldPass" />
           </div>
-          <div class="col">
-            <input type="password" placeholder="Подтвердите новый пароль" v-model="newPassRepeat" />
+          <div class="col-md mt-3">
+            <el-input type="password"
+            placeholder="Введите новый пароль" show-password v-model="newPass" />
+          </div>
+          <div class="col-md mt-3">
+            <el-input type="password" show-password
+            placeholder="Подтвердите новый пароль"
+            v-model="newPassRepeat" />
           </div>
         </div>
-        <div class="row edit mt-5">
-          <button class="save__newinfo" v-on:click="saveBotEdit">Сохранить изменения</button>
+        <div class="row edit mt-3">
+          <div class="col-md-6">
+            <button class="save__newinfo" v-on:click="saveBotEdit">Сохранить изменения</button>
+          </div>
         </div>
       </div>
     </div>
@@ -61,6 +77,26 @@
         </div>
       </template>
       Данные указаны не верно
+    </b-toast>
+    <b-toast id="my-toast-bad" variant="warning" solid>
+      <template #toast-title>
+        <div class="d-flex flex-grow-1 align-items-baseline">
+          <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
+          <strong class="mr-auto">Ошибка!</strong>
+          <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
+        </div>
+      </template>
+      Данные указаны не верно
+    </b-toast>
+    <b-toast id="my-toast-good" variant="success" solid>
+      <template #toast-title>
+        <div class="d-flex flex-grow-1 align-items-baseline">
+          <b-img blank blank-color="#32aaa7" class="mr-2" width="12" height="12"></b-img>
+          <strong class="mr-auto">Успех!</strong>
+          <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
+        </div>
+      </template>
+      Ваши данные сохранены
     </b-toast>
   </div>
 </template>
@@ -99,6 +135,7 @@ export default {
       backApi.get('/agent/profile').then((Response) => {
         this.userInfo = Response.data;
       });
+      this.$bvToast.show('my-toast-good');
     },
     saveBotEdit() {
       if (this.newPass !== null && this.newPass === this.newPassRepeat) {
@@ -124,7 +161,7 @@ export default {
   }
 }
 .edit {
-  input {
+  el-input clearable {
     width: 95%;
     height: 30px;
     border: 0;
@@ -140,6 +177,11 @@ export default {
     color: #32aaa7;
     font-size: 14px;
     font-weight: bold;
+  }
+}
+@media (max-width: 760px) {
+  .save__newinfo{
+    width: 100%;
   }
 }
 </style>

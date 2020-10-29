@@ -2,83 +2,86 @@
   <div class="sponsor__page">
     <div class="container">
       <h2 class="page__title">Показатели</h2>
-      <div class="row">
-        <div class="col">
-          <p>
-            <strong>Текущий период: {{ currentPeriodTop.comdte }}</strong>
+      <div class="row cur_p">
+        <div class="col-sm-6 current_period">
+            <strong>Текущий период:
+              {{ months[new Date(currentPeriodTop.comdte).getMonth()] }}
+              {{new Date(currentPeriodTop.comdte).getFullYear()}}</strong><br>
             Статус предыдущего года:
             <span :style="`color: ${periodStatus}`">
               {{ currentPeriodTop.prev_status }}
             </span>
-          </p>
         </div>
       </div>
       <div class="sponsor__page__description">
-        <h2>Текущие показатели</h2>
-        <span class="mr-1" @click="nextPeriod(-1)"> &lt;</span>
-        <span>{{ currentPeriod.slice(0, -3) }}</span>
-        <span class="ml-1" @click="nextPeriod(1)"> &gt;</span>
+        <div class="row mobile_trans mt-4">
+          <div class="col search__btn" @click="toggleSearch" v-if="!searchActive">
+            Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
+          </div>
+        </div>
+        <h2 class="mt-4 mb-4">Мои текущие показатели</h2>
+        <BasePeriodPicker :currentPeriod="currentPeriod" v-on:next-period="nextPeriod"/>
         <div class="container top__info">
           <div class="row">
-            <div class="col-6">
+            <div class="col-md-6 mt-4">
               <p>Ранг на начало:</p>
               <p>{{ userInfo.rank_beg }}</p>
             </div>
-            <div class="col-6">
+            <div class="col-md-6 mt-4">
               <p>Расчетный ранг:</p>
               <p>{{ userInfo.rank_calc }}</p>
             </div>
           </div>
           <div class="row">
-            <div class="col-6">
+            <div class="col-md-6 mt-4">
               <p>Ранг на конец:</p>
               <p>{{ userInfo.rank_end }}</p>
             </div>
-            <div class="col-6">
+            <div class="col-md-6 mt-4">
               <p>ЛО:</p>
               <p>{{ userInfo.lo }}</p>
             </div>
           </div>
           <div class="row">
-            <div class="col-6">
+            <div class="col-md-6 mt-4">
               <p>ГО:</p>
               <p>{{ userInfo.go }}</p>
             </div>
-            <div class="col-6">
+            <div class="col-md-6 mt-4">
               <p>НГО:</p>
               <p>{{ userInfo.ngo }}</p>
             </div>
           </div>
           <div class="row">
-            <div class="col-6">
+            <div class="col-md-6 mt-4">
               <p>ОО:</p>
               <p>{{ userInfo.oo }}</p>
             </div>
-            <div class="col-6">
+            <div class="col-md-6 mt-4">
               <p>КО:</p>
               <p>{{ userInfo.ko }}</p>
             </div>
           </div>
           <div class="row">
-            <div class="col-6">
+            <div class="col-md-6 mt-4">
               <p>Резерв:</p>
               <p>{{ userInfo.reserve }}</p>
             </div>
-            <div class="col-6">
+            <div class="col-md-6 mt-4">
               <p>Неакт.:</p>
               <p>{{ userInfo.noact }}</p>
             </div>
           </div>
         </div>
       </div>
-      <div class="row">
+      <div class="row desk_trans">
         <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
           Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
         </div>
       </div>
       <div v-if="searchActive" class="organization__modal">
         <span @click="closeModal" class="close_btn">X</span>
-        <h3>Настройка автоматической подачи баллов в трансферт</h3>
+        <h3 class="mt-4">Настройка автоматической подачи баллов в трансферт</h3>
         <div class="row">
           <div class="col-md-12">
             <b-form-group label="Выбор дерева">
@@ -86,21 +89,21 @@
                 v-model="points_rule"
                 name="some-radios-1"
                 value="0"
-                class="d-inline mr-3"
+                class="radio mr-3"
                 >Все баллы в трансферт</b-form-radio
               >
               <b-form-radio
                 v-model="points_rule"
                 name="some-radios-1"
                 value="1"
-                class="d-inline mr-3"
+                class="radio mr-3"
                 >Правило по умолчанию по выбору склада</b-form-radio
               >
               <b-form-radio
                 v-model="points_rule"
                 name="some-radios-1"
                 :value="null"
-                class="d-inline"
+                class="radio"
                 >Баллы в резерв</b-form-radio
               >
             </b-form-group>
@@ -108,12 +111,13 @@
         </div>
         <div class="row edit">
           <div class="col-sm-6">
-            <input type="text" name="" id="" placeholder="Сумма" v-model="autoship" />
+            <el-input type="number" name="" id="" placeholder="Сумма"
+            clearable v-model="autoship" />
           </div>
         </div>
-        <div class="row edit mt-3">
+        <div class="row edit mt-4">
           <div class="col-sm-6">
-            <button class="mr-2" @click="updateData">Изменить</button>
+            <button class="mr-2 update" @click="updateData">Изменить</button>
           </div>
         </div>
       </div>
@@ -123,9 +127,14 @@
 
 <script>
 import backApi from '../assets/backApi';
+import BasePeriodPicker from '../components/BasePeriodPicker.vue';
+import { ReplaceNull } from '../assets/utils';
 
 export default {
   name: 'SponsorCard',
+  components: {
+    BasePeriodPicker,
+  },
   data() {
     return {
       currentPeriodTop: {},
@@ -135,6 +144,20 @@ export default {
       searchActive: false,
       periods: [],
       periodIndex: 0,
+      months: [
+        'Январь',
+        'Ферваль',
+        'Март',
+        'Апрель',
+        'Май',
+        'Июнь',
+        'Июль',
+        'Августь',
+        'Сентябрь',
+        'Октябрь',
+        'Ноябрь',
+        'Декабрь',
+      ],
     };
   },
   mounted() {
@@ -143,7 +166,8 @@ export default {
       backApi
         .get('agent/period-indicators', { params: { comdte: this.currentPeriodTop.comdte } })
         .then((response) => {
-          this.userInfo = response.data;
+          const data = ReplaceNull(response.data);
+          this.userInfo = data;
         });
     });
     backApi.get('agent/bonus-detail/periods').then((Response) => {
@@ -191,7 +215,8 @@ export default {
   watch: {
     currentPeriod(val) {
       backApi.get('agent/period-indicators', { params: { comdte: val } }).then((response) => {
-        this.userInfo = response.data;
+        const data = ReplaceNull(response.data);
+        this.userInfo = data;
       });
     },
   },
@@ -201,7 +226,6 @@ export default {
 <style lang="scss" scoped>
 .organization__modal {
   position: relative;
-
   & .close_btn {
     position: absolute;
     right: 0;
@@ -225,6 +249,7 @@ export default {
     border: 0;
     padding: 5px 30px;
     font-size: 16px;
+    margin-bottom: 20px;
     &:nth-of-type(1) {
       background-color: #32aaa7;
       color: white;
@@ -236,6 +261,16 @@ export default {
     }
   }
 }
+.mobile_trans{
+  display: none;
+  text-align: left;
+  font-weight: bold;
+  font-size: 20px;
+  & .search_icon{
+    position: relative;
+    right: 0;
+  }
+}
 .sponsor__page {
   margin-top: 40px;
 
@@ -245,6 +280,9 @@ export default {
   }
 
   &__description {
+    & h2{
+      font-size: 24px;
+    }
     & .page__caption {
       font-size: 20px;
     }
@@ -263,10 +301,10 @@ export default {
     & .top__info,
     & .transfert__info {
       padding: 0;
-      margin-top: 32px;
+      // margin-top: 32px;
 
       & .row {
-        margin-bottom: 32px;
+        // margin-bottom: 32px;
       }
 
       & p {
@@ -278,6 +316,9 @@ export default {
         &:nth-of-type(1) {
           color: #9a9a9a;
           font-size: 14px;
+        }
+        &:nth-of-type(2) {
+          font-weight: bold;
         }
       }
     }
@@ -300,6 +341,72 @@ export default {
         // float: right;
       }
     }
+  }
+}
+.el-icon-s-tools:before{
+  color: #32AAA7;
+  position: relative;
+  top: 2px;
+}
+.current_period{
+  background-color: #EBEEFA;
+  padding: 16px 12px;
+  display: inline-block;
+  border-radius: 1px;
+
+  & br{
+    display: none;
+  }
+}
+@media (min-width: 768px) {
+  .sponsor__page{
+    .top__info{
+      & > .row{
+        margin-bottom: 32px;
+      }
+    }
+  }
+}
+@media (min-width: 760px) {
+  .radio{
+    display: inline;
+  }
+}
+@media (max-width: 760px) {
+  .update{
+    margin-bottom: 20px;
+    width: 100% !important;
+  }
+  .organization__modal{
+    margin-top: 20px;
+    h3{
+      font-size: 20px;
+    }
+  }
+  .cur_p{
+    margin: 0;
+  }
+  .current_period{
+    margin: 0;
+    & br{
+      display: block;
+    }
+  }
+}
+@media (max-width: 500px) {
+  .mobile_trans{
+    display: block;
+  }
+  .desk_trans{
+    display: none;
+  }
+  .organization__modal{
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    background-color: white;
   }
 }
 </style>

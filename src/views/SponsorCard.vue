@@ -4,31 +4,32 @@
       <h2 class="page__title">Данные спонсора</h2>
       <div class="sponsor__page__description">
         <div class="myfoto">
-          <img src="../assets/imgs/unnamed 1.png" alt="" />
+          <div><img src="../assets/imgs/unnamed 1.png" alt="" /></div>
+          <p>{{userInfo.name}}</p>
         </div>
         <div class="container top__info">
           <div class="row">
-            <div class="col-6">
+            <div class="col-md-6 mt-4">
               <p>Номер соглашения:</p>
               <p>{{userInfo.id}}</p>
             </div>
-            <div class="col-6">
+            <div class="col-md-6 mt-4">
               <p>E-mail:</p>
-              <p>{{userInfo.email}}</p>
+              <p><a class="mail" :href="`mailto:${userInfo.email}`">{{userInfo.email}}</a></p>
             </div>
           </div>
           <div class="row">
-            <div class="col-6">
+            <div class="col-md-6 mt-4">
               <p>ФИО:</p>
               <p>{{userInfo.name}}</p>
             </div>
-            <div class="col-6">
+            <div class="col-md-6 mt-4">
               <p>Skype:</p>
               <p>{{userInfo.skype}}</p>
             </div>
           </div>
           <div class="row">
-            <div class="col-6">
+            <div class="col-md-6 mt-4">
               <p>Телефон:</p>
               <p>{{userInfo.phone}}</p>
             </div>
@@ -71,11 +72,21 @@ export default {
       font-size: 20px;
     }
     & .myfoto {
-      display: inline-block;
+      display: flex;
+      align-items: center;
       margin-top: 30px;
-      border-radius: 50%;
       overflow: hidden;
-
+      & div{
+        border-radius: 50%;
+        overflow: hidden;
+      }
+      & p{
+        margin-top: 15px;
+        margin-left: 15px;
+        font-weight: bold;
+        font-size: 20px;
+        text-transform: uppercase;
+      }
       & img {
         width: 100%;
         height: 100%;
@@ -88,7 +99,7 @@ export default {
       margin-top: 32px;
 
       & .row {
-        margin-bottom: 32px;
+        // margin-bottom: 32px;
       }
 
       & p {
@@ -100,6 +111,9 @@ export default {
         &:nth-of-type(1) {
           color: #9a9a9a;
           font-size: 14px;
+        }
+        &:nth-of-type(2) {
+          font-weight: bold;
         }
       }
     }
@@ -120,6 +134,18 @@ export default {
         border: none;
         border-radius: 4px;
         // float: right;
+      }
+    }
+  }
+}
+.mail{
+  color: #32AAA7;
+}
+@media (min-width: 768px) {
+  .sponsor__page{
+    .top__info{
+      & > .row{
+        margin-bottom: 32px;
       }
     }
   }

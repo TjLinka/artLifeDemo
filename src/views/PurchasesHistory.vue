@@ -17,7 +17,7 @@
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
-      <b-table :fields="fields" :items="entries" head-variant="light">
+      <b-table :fields="fields" :items="entries" head-variant="light" responsive>
         <template v-slot:cell(show_details)="row">
           <b-button size="sm" @click="show_details(row)" class="mr-2">
             {{ row.detailsShowing ? '-' : '+' }}
@@ -30,25 +30,20 @@
       </b-table>
       <div class="row">
         <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
-          Поиск партнера <i class="el-icon-search search_icon"></i>
+          Фильтр <i class="el-icon-search search_icon"></i>
         </div>
       </div>
       <div v-if="searchActive" class="organization__modal">
-        <h3>Поиск партнера</h3>
-        <span
-            class="mr-1"
-            @click="nextPeriod(-1)"
-          >
-            &lt;</span
-          >
-          <span>{{ currentPeriod.slice(0, -3) }}</span>
-          <span class="ml-1" @click="nextPeriod(1)"> &gt;</span>
+        <h3>Фильтр</h3>
+        <BasePeriodPicker :currentPeriod="currentPeriod" v-on:next-period="nextPeriod"/>
         <div class="row edit">
           <div class="col-sm-6">
-            <input type="text" name="" id="art" placeholder="Артикул" v-model="articul" />
+            <el-input type="number" name="" id="art" placeholder="Артикул"
+            clearable v-model="articul" />
           </div>
           <div class="col-sm-6">
-            <input type="text" name="" id="name" placeholder="Наименование" v-model="name" />
+            <el-input type="text" name="" id="name" placeholder="Наименование"
+            clearable v-model="name" />
           </div>
         </div>
         <!-- <div class="row edit">
@@ -77,6 +72,7 @@ export default {
       lang: {
         monthBeforeYear: false,
       },
+      months: ['Январь', 'Ферваль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
       periods: [],
       periodIndex: 0,
       period_enabled: true,
@@ -100,22 +96,52 @@ export default {
         {
           key: 'points',
           label: 'Баллы',
+          fomratter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
           key: 'price',
           label: 'Цена',
+          fomratter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
           key: 'cnt',
           label: 'Кол-во',
+          fomratter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
-          key: 'points_cnt  ',
+          key: 'points_all',
           label: 'Сумма балов',
+          fomratter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
-          key: 'price_cnt',
+          key: 'price_total',
           label: 'Стоимость',
+          fomratter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
       ],
       fields: [
@@ -129,11 +155,20 @@ export default {
           key: 'amount',
           label: 'Сумма',
           sortable: true,
+          fomratter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
           key: 'dte',
           label: 'Дата',
           sortable: true,
+          formatter(v) {
+            return new Date(v).toLocaleDateString();
+          },
         },
         {
           key: 'delivery',
@@ -227,9 +262,9 @@ export default {
       }
       const tag = this.tags.find((t) => t.key === 'period');
       if (tag) {
-        tag.name = this.currentPeriod.slice(0, -3);
-      } else if (this.period_enabled) {
-        this.tags.push({ name: this.currentPeriod.slice(0, -3), key: 'period' });
+        tag.name = `${this.months[new Date(this.currentPeriod).getMonth()]} ${new Date(this.currentPeriod).getFullYear()}`;
+      } else if (this.currentPeriod !== this.periods[this.periods.length - 1].comdte) {
+        this.tags.push({ name: `${this.months[new Date(this.currentPeriod).getMonth()]} ${new Date(this.currentPeriod).getFullYear()}`, key: 'period' });
       }
       // const params = { name: this.name, articul: this.articul, saleid: this.number };
       backApi.get('agent/sales', data).then((Response) => {
@@ -246,6 +281,7 @@ export default {
         this.entries = Response.data.entries;
         this.return_details = new Array(this.total_rows).fill(undefined);
       });
+      this.searchActive = !this.searchActive;
     },
     toggleSearch() {
       this.searchActive = !this.searchActive;

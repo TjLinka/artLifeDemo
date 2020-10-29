@@ -2,6 +2,7 @@
   <div class="licevoischet__page">
     <div class="container">
       <h2 class="page__title">Движение по лицевому счету</h2>
+      <p class="p-0 m-0 history_title">Период от и до</p>
       <date-picker v-model="rangeDate" range @change="getSelectedDataRange" valueType="format">
       </date-picker>
       <p>
@@ -9,7 +10,7 @@
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
-      <b-table :fields="fields" :items="entries" head-variant="light"> </b-table>
+      <b-table :fields="fields" :items="entries" head-variant="light" responsive> </b-table>
       <h2 class="licevoischet__page__summ">Изменение лицевого счета за период = {{ summ }}</h2>
     </div>
   </div>
@@ -36,11 +37,20 @@ export default {
           key: 'dte',
           label: 'Дата операции',
           sortable: true,
+          formatter(v) {
+            return new Date(v).toLocaleDateString();
+          },
         },
         {
           key: 'amount',
           label: 'На счет / Со счета',
           sortable: true,
+          formatter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
           key: 'account_type',
@@ -56,6 +66,12 @@ export default {
           key: 'balance',
           label: 'Итого на лицевом счете',
           sortable: true,
+          formatter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
       ],
     };
@@ -113,5 +129,15 @@ export default {
       cursor: pointer;
     }
   }
+}
+@media (max-width: 450px) {
+  .licevoischet__page__summ{
+    font-size: 1em;
+  }
+}
+</style>
+<style>
+.mx-datepicker svg{
+  color: #32AAA7;
 }
 </style>
