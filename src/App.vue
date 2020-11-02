@@ -36,4 +36,90 @@ main {
 .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
   opacity: 0;
 }
+.mx-datepicker svg {
+  color: #32aaa7;
+}
+.mx-input{
+  border: 0;
+  border-bottom: 1px solid #DEE2F3;
+  border-radius: 0;
+  box-shadow: none !important;
+}
+.mx-input:hover, .mx-input:focus{
+  border-color: #DEE2F3 !important;
+}
+.mx-calendar-content .cell.active{
+  background-color: #32aaa7 !important;
+}
+.mx-calendar-content .cell.in-range{
+  background-color: lighten($color:#32aaa7, $amount: 40%) !important;
+}
+.el-input .el-input__clear{
+  color: #32AAA7;
+  margin-top: 0px;
+}
+.el-input .el-input__clear:hover{
+  color: #32AAA7;
+}
+.el-input__inner{
+  border: 0;
+  border-bottom: 1px solid #DCDFE6;
+  border-radius: 0;
+  padding: 0;
+}
+.el-input.is-active .el-input__inner, .el-input__inner:focus{
+  border-color:  #32AAA7;
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type=number] {
+  -moz-appearance:textfield;
+}
+.history_title{
+  color: #9A9A9A;
+  font-size: 13px;
+}
+.el-icon-arrow-left,
+.el-icon-arrow-right{
+  color: #32AAA7;
+  cursor: pointer;
+  font-weight: bold;
+}
+.el-icon-arrow-left{
+  position: relative;
+  left: -10px;
+}
+.el-icon-arrow-right{
+  position: relative;
+  right: -10px;
+}
+@media (max-width: 450px) {
+  .page__title{
+    font-size: 23px;
+    margin-top: -20px;
+  }
+}
+.table thead th{
+  vertical-align: middle;
+}
+.points_history_table .table th, .table td{
+  // vertical-align: middle;
+}
+th[role='columnheader']{
+  text-align: center !important;
+}
+.el-table .cell {
+  word-break: normal;
+  // overflow: unset;
+  text-overflow: unset;
+  padding-left: 4px;
+}
+.points_history_table td[role='cell']{
+  word-break: break-word;
+}
 </style>

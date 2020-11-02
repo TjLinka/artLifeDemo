@@ -2,14 +2,22 @@
   <div class="licevoischet__page">
     <div class="container">
       <h2 class="page__title">История покупок</h2>
-      <date-picker v-model="rangeDate" range @change="getSelectedDataRange" valueType="format">
-      </date-picker>
+        <el-tag
+        v-for="tag in tags"
+        :key="tag.name"
+        closable
+        @close="handleClose($event, tag)"
+        :type="tag.type"
+        :disable-transitions="true"
+      >
+        {{ tag.name }}
+      </el-tag>
       <p>
         <span class="mr-3">Печать</span>
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
-      <b-table :fields="fields" :items="entries" head-variant="light">
+      <b-table :fields="fields" :items="entries" head-variant="light" responsive>
         <template v-slot:cell(show_details)="row">
           <b-button size="sm" @click="show_details(row)" class="mr-2">
             {{ row.detailsShowing ? '-' : '+' }}
@@ -20,28 +28,62 @@
            head-variant="light"> </b-table>
         </template>
       </b-table>
-      <!-- <h2 class="licevoischet__page__summ">СУММА = {{ summ }}</h2> -->
+      <div class="row">
+        <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
+          Фильтр <i class="el-icon-search search_icon"></i>
+        </div>
+      </div>
+      <div v-if="searchActive" class="organization__modal">
+        <h3>Фильтр</h3>
+          <BasePeriodPicker :currentPeriod="currentPeriod" v-on:next-period="nextPeriod"/>
+        <div class="row edit">
+          <div class="col-sm-6">
+            <el-input type="number" name="" id="art" placeholder="Артикул"
+            clearable v-model="articul" />
+          </div>
+          <div class="col-sm-6">
+            <el-input type="text" name="" id="name" placeholder="Наименование"
+            clearable v-model="name" />
+          </div>
+        </div>
+        <!-- <div class="row edit">
+          <div class="col-sm-6">
+            <input type="text" name="" id="" placeholder="Номер накладной" v-model="number" />
+          </div>
+        </div> -->
+        <div class="row edit">
+          <div class="col-sm-6">
+            <button class="mr-2" @click="updateData">Показать</button
+            ><button @click="clearSelectedFilters">Сбросить</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import DatePicker from 'vue2-datepicker';
-import 'vue2-datepicker/index.css';
-import 'vue2-datepicker/locale/en';
 import backApi from '../assets/backApi';
 
 export default {
   name: 'AccountDetail',
-  components: { DatePicker },
   data() {
     return {
       lang: {
         monthBeforeYear: false,
       },
+      months: ['Январь', 'Ферваль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+      periods: [],
+      periodIndex: 0,
+      period_enabled: true,
+      searchActive: false,
+      name: null,
+      articul: null,
+      saleid: null,
       rangeDate: {},
       entries: [],
       return_details: [],
+      tags: [],
       returnFields: [
         {
           key: 'articul',
@@ -54,22 +96,52 @@ export default {
         {
           key: 'points',
           label: 'Баллы',
+          fomratter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
           key: 'price',
           label: 'Цена',
+          fomratter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
           key: 'cnt',
           label: 'Кол-во',
+          fomratter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
-          key: 'points_cnt  ',
+          key: 'points_all',
           label: 'Сумма балов',
+          fomratter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
-          key: 'price_cnt',
+          key: 'price_total',
           label: 'Стоимость',
+          fomratter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
       ],
       fields: [
@@ -83,11 +155,20 @@ export default {
           key: 'amount',
           label: 'Сумма',
           sortable: true,
+          fomratter(v) {
+            if (v !== null) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
         },
         {
           key: 'dte',
           label: 'Дата',
           sortable: true,
+          formatter(v) {
+            return new Date(v).toLocaleDateString();
+          },
         },
         {
           key: 'delivery',
@@ -113,41 +194,97 @@ export default {
     };
   },
   mounted() {
+    backApi.get('agent/bonus-detail/periods').then((Response) => {
+      this.periods = Response.data.entries.sort((a, b) => {
+        const result = a.comdte > b.comdte ? 1 : -1;
+        return result;
+      });
+      this.periodIndex = this.periods.length - 1;
+    });
+
     backApi.get('agent/sales').then((Response) => {
       this.entries = Response.data.entries;
       this.return_details = new Array(this.total_rows).fill(undefined);
     });
   },
   computed: {
-    summ() {
-      let summ = 0;
-      this.entries.forEach((item) => {
-        summ += item.balance;
-      });
-      return summ;
+    currentPeriod() {
+      try {
+        return this.periods[this.periodIndex].comdte;
+      } catch (e) {
+        return '';
+      }
     },
   },
   methods: {
-    getSelectedDataRange() {
-      // eslint-disable-next-line max-len
-      if (this.rangeDate[0] != null && this.rangeDate[1] != null) {
-        backApi
-          .get('agent/sales', {
-            params: {
-              beg_dte: String(this.rangeDate[0]),
-              end_dte: String(this.rangeDate[1]),
-            },
-          })
-          .then((Response) => {
-            this.entries = Response.data.entries;
-            this.return_details = new Array(this.total_rows).fill(undefined);
-          });
-      } else {
-        backApi.get('agent/sales').then((Response) => {
-          this.entries = Response.data.entries;
-          this.return_details = new Array(this.total_rows).fill(undefined);
-        });
+    nextPeriod(x) {
+      this.period_enabled = true;
+      this.periodIndex = (this.periodIndex + this.periods.length + x)
+      % this.periods.length;
+    },
+    handleClose(event, tag) {
+      // this.tags.splice(this.dynamicTags.indexOf(tag), 1);
+      this.tags.splice(this.tags.indexOf(tag), 1);
+      if (tag.key === 'articul') {
+        this.articul = null;
+      } else if (tag.key === 'name') {
+        this.name = null;
+      } else if (tag.key === 'period') {
+        this.period_enabled = false;
       }
+      this.updateData();
+    },
+    updateData() {
+      const data = {
+        params: {
+          name: this.name,
+          articul: this.articul,
+          saleid: this.saleid,
+          comdte: this.period_enabled ? this.currentPeriod : null,
+        },
+      };
+      if (this.articul !== null) {
+        const tag = this.tags.find((t) => t.key === 'articul');
+        if (tag) {
+          tag.name = this.articul;
+        } else if (this.tree_type !== 'full') {
+          this.tags.push({ name: this.articul, key: 'articul' });
+        }
+      }
+      if (this.name !== null && this.name !== '') {
+        const tag = this.tags.find((t) => t.key === 'name');
+        if (tag) {
+          tag.name = this.name;
+        } else {
+          this.tags.push({ name: this.name, key: 'name' });
+        }
+        data.params.agent_id = this.agent_id;
+      }
+      const tag = this.tags.find((t) => t.key === 'period');
+      if (tag) {
+        tag.name = `${this.months[new Date(this.currentPeriod).getMonth()]} ${new Date(this.currentPeriod).getFullYear()}`;
+      } else if (this.currentPeriod !== this.periods[this.periods.length - 1].comdte) {
+        this.tags.push({ name: `${this.months[new Date(this.currentPeriod).getMonth()]} ${new Date(this.currentPeriod).getFullYear()}`, key: 'period' });
+      }
+      // const params = { name: this.name, articul: this.articul, saleid: this.number };
+      backApi.get('agent/sales', data).then((Response) => {
+        this.entries = Response.data.entries;
+        this.return_details = new Array(this.total_rows).fill(undefined);
+      });
+    },
+    clearSelectedFilters() {
+      this.name = null;
+      this.articul = null;
+      this.number = null;
+      this.tags = [];
+      backApi.get('agent/sales').then((Response) => {
+        this.entries = Response.data.entries;
+        this.return_details = new Array(this.total_rows).fill(undefined);
+      });
+      this.searchActive = !this.searchActive;
+    },
+    toggleSearch() {
+      this.searchActive = !this.searchActive;
     },
     show_details(row) {
       if (row.detailsShowing === true) {
@@ -169,17 +306,59 @@ export default {
 
 <style lang="scss" scoped>
 .licevoischet__page {
+  position: relative;
   &__summ {
     text-align: center;
     background-color: #dee2f3;
     font-size: 12px;
     padding: 10px 0px;
   }
-
   & .exp_print {
     span {
       color: #32aaa7;
       cursor: pointer;
+    }
+  }
+  & .search__btn {
+    cursor: pointer;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    font-weight: bold;
+
+    & .search_icon {
+      color: #32aaa7;
+    }
+  }
+  & .organization__modal {
+    //   position: absolute;
+    width: 100%;
+    bottom: 0;
+
+    & .edit {
+      input {
+        width: 100%;
+        border: 0;
+        border-bottom: 1px solid #dee2f3;
+        padding-bottom: 10px;
+        outline: none;
+        margin-bottom: 20px;
+      }
+      button {
+        margin-top: 20px;
+        width: 48%;
+        border: 0;
+        padding: 5px 30px;
+        font-size: 16px;
+        &:nth-of-type(1) {
+          background-color: #32aaa7;
+          color: white;
+        }
+        &:nth-of-type(2) {
+          background-color: white;
+          color: #32aaa7;
+          border: 2px solid #32aaa7;
+        }
+      }
     }
   }
 }
