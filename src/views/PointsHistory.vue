@@ -1,7 +1,13 @@
 <template>
   <div class="licevoischet__page">
-    <div class="container">
-      <h2 class="page__title">История баллов</h2>
+    <div class="container-fluid table_container">
+      <h2 class="page__title">
+                              <p class="mobile_back">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" style="margin-right: 30px;" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
+        </svg>
+      </p>
+        История баллов</h2>
       <p class="p-0 m-0 history_title">Период от и до</p>
       <date-picker v-model="rangeDate" range @change="getSelectedDataRange" valueType="format">
       </date-picker>
@@ -10,17 +16,17 @@
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
-      <b-table fixed responsive :fields="fields" :items="entries" head-variant="light"
-      class="points_history_table">
+      <b-table responsive :fields="fields" :items="entries" head-variant="light"
+      class="points_history_table" outlined>
         <template #table-colgroup="scope">
           <col
             v-for="field in scope.fields"
             :key="field.key"
-            :style="{ width: field.key === 'dte' ? '130px' : '120px' }"
+            :style="{ width: field.width }"
           />
         </template>
           <template #cell(comdte)="data">
-            <p>{{ data.value }}</p>
+            {{ data.value }}
           </template>
       </b-table>
       <h2 class="licevoischet__page__summ">
@@ -56,6 +62,7 @@ export default {
         {
           key: 'comdte',
           label: 'Период',
+          width: '150px',
           sortable: true,
           formatter(v) {
             return new Date(v).toLocaleDateString();
@@ -84,6 +91,7 @@ export default {
         {
           key: 'comm',
           label: 'Комментарий',
+          width: '300px',
           sortable: true,
         },
       ],

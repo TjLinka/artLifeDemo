@@ -1,7 +1,14 @@
 <template>
   <div class="licevoischet__page">
-    <div class="container">
-      <h2 class="page__title">Движение по лицевому счету</h2>
+    <div class="container-fluid table_container">
+      <h2 class="page__title">
+                      <p class="mobile_back">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" style="margin-right: 30px;" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
+        </svg>
+      </p>
+        Движение по лицевому счету
+        </h2>
       <p class="p-0 m-0 history_title">Период от и до</p>
       <date-picker v-model="rangeDate" range @change="getSelectedDataRange" valueType="format">
       </date-picker>
@@ -10,7 +17,8 @@
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
-      <b-table :fields="fields" :items="entries" head-variant="light" responsive> </b-table>
+      <b-table :fields="fields" :items="entries" head-variant="light"
+      responsive outlined> </b-table>
       <h2 class="licevoischet__page__summ">Изменение лицевого счета за период = {{ summ }}</h2>
     </div>
   </div>
@@ -132,7 +140,7 @@ export default {
 }
 @media (max-width: 450px) {
   .licevoischet__page__summ{
-    font-size: 1em;
+    font-size: 18px;
   }
 }
 </style>

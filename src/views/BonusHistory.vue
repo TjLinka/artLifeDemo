@@ -1,7 +1,14 @@
 <template>
   <div class="licevoischet__page">
-    <div class="container">
-      <h2 class="page__title">История бонусов(КЕ)</h2>
+    <div class="container-fluid table_container">
+      <h2 class="page__title">
+                              <p class="mobile_back">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" style="margin-right: 30px;" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
+        </svg>
+      </p>
+        История бонусов(КЕ)
+        </h2>
       <div class="row">
         <div class="col-6 perioad__picker">
         <BasePeriodPicker :currentPeriod="currentPeriod" v-on:next-period="nextPeriod"/>
@@ -12,22 +19,27 @@
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
-      <b-table :fields="topFields " :items="topTableData" head-variant="light"
-      responsive class="bonus_history_table">
+      <div class="bonus_hist_table">
+              <b-table :fields="topFields " :items="topTableData" head-variant="light"
+      responsive outlined class="bonus_history_table">
           <template #cell(period)="data">
-            <p>{{ data.value }}</p>
+            <span>{{ data.value }}</span>
           </template>
       </b-table>
-      <b-table :fields="mainFields" :items="bonus" head-variant="light" responsive>
+      <b-table :fields="mainFields" :items="bonus" head-variant="light"
+      class="sub_2" responsive outlined>
         <template v-slot:cell(Детали)="row">
           <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-            {{ row.detailsShowing ? '-' : '+' }}
+            <span>{{ row.detailsShowing ? '-' : '+' }}</span>
           </b-button>
+          <span>{{ row.item.bonusname }}</span>
         </template>
         <template v-slot:row-details="row">
-          <b-table :fields="returnFields" :items="row.item.detail" head-variant="light"> </b-table>
+          <b-table :fields="returnFields"
+          :items="row.item.detail" head-variant="light"> </b-table>
         </template>
       </b-table>
+      </div>
     </div>
   </div>
 </template>
@@ -126,10 +138,10 @@ export default {
       ],
       mainFields: [
         'Детали',
-        {
-          key: 'bonusname',
-          label: 'Наименование бонуса',
-        },
+        // {
+        //   key: 'bonusname',
+        //   label: 'Наименование',
+        // },
         {
           key: 'sum',
           label: 'Бонус',
@@ -242,5 +254,60 @@ export default {
       }
     }
   }
+}
+.btn{
+  border: 0 !important;
+}
+.btn-secondary {
+  color: black;
+  background: none;
+  border: 0;
+  outline: none !important;
+  box-shadow: none;
+  font-weight: bold;
+  font-size: 18px;
+}
+.btn-secondary:not(:disabled):not(.disabled):active,
+.btn-secondary:not(:disabled):not(.disabled).active,
+.show > .btn-secondary.dropdown-toggle{
+  background-color: unset;
+  outline: none;
+}
+.btn-secondary:not(:disabled):not(.disabled):active:focus,
+.btn-secondary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-secondary.dropdown-toggle:focus{
+  box-shadow: none;
+}
+</style>
+<style>
+.bonus_hist_table table[aria-colcount="8"] td{
+  /* background: #32AAA7; */
+  /* color: white !important; */
+}
+.bonus_hist_table table[aria-colcount="6"]{
+  margin-bottom: 0;
+}
+.bonus_hist_table table[aria-colcount="6"] td{
+  background-color: #D4D5D7;
+}
+.bonus_hist_table table[aria-colcount="6"] td[aria-colindex='1']{
+  width: 350px;
+}
+.bonus_hist_table table[aria-colcount="2"] td[aria-colindex='1']{
+  width: 350px;
+}
+th[aria-colindex='1']{
+  width: 350px;
+}
+.bonus_hist_table table[aria-colcount="2"] > thead > tr > th[role="columnheader"]:nth-of-type(1){
+  width: 350px;
+}
+.bonus_hist_table table[aria-colcount="2"] tr[tabindex='-1'] > td{
+  padding: 0;
+  /* padding-top: 10px !important; */
+}
+tr.b-table-has-details > td{
+ background: #32AAA7;
+ color: white !important;
 }
 </style>

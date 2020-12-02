@@ -1,7 +1,14 @@
 <template>
   <div class="licevoischet__page">
-    <div class="container">
-      <h2 class="page__title">История оргназации по периодам</h2>
+    <div class="container-fluid table_container">
+      <h2 class="page__title">
+                              <p class="mobile_back">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" style="margin-right: 30px;" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
+        </svg>
+      </p>
+        История оргназации по периодам
+        </h2>
       <el-tag
         v-for="tag in tags"
         :key="tag.name"
@@ -50,7 +57,8 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="row">
+      <footer class="cust_modal">
+              <div class="row">
         <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
           Фильтр <i class="el-icon-search search_icon"></i>
         </div>
@@ -100,6 +108,7 @@
           </div>
         </div>
       </div>
+      </footer>
     </div>
   </div>
 </template>
@@ -339,6 +348,7 @@ export default {
     }
   }
   & .search__btn {
+    padding-top: 20px;
     cursor: pointer;
     margin-bottom: 30px;
     text-transform: uppercase;
@@ -350,6 +360,7 @@ export default {
   }
   & .organization__modal {
     //   position: absolute;
+    padding: 60px;
     width: 100%;
     bottom: 0;
 
@@ -378,6 +389,17 @@ export default {
       }
     }
   }
+}
+.cust_modal{
+  position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    padding-left: 120px;
+    box-sizing: border-box;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);
 }
 </style>
 <style>
