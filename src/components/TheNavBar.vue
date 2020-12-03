@@ -111,6 +111,7 @@ export default {
           this.classList.remove('active');
         } else {
           console.log(this.parentNode.parentNode.children);
+          console.log('hi');
           // eslint-disable-next-line no-restricted-syntax
           for (const i of this.parentNode.parentNode.children) {
             i.firstChild.classList.remove('active');

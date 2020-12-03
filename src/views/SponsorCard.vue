@@ -2,7 +2,7 @@
   <div class="sponsor__page">
     <div class="container">
       <h2 class="page__title">
-                              <p class="mobile_back">
+                              <p class="mobile_back" @click="back">
         <svg width="18" height="12" viewBox="0 0 18 12" fill="none" style="margin-right: 30px;" xmlns="http://www.w3.org/2000/svg">
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
@@ -22,7 +22,7 @@
             </div>
             <div class="col-md-6 mt-4">
               <p>E-mail:</p>
-              <p><a class="mail" :href="`mailto:${userInfo.email}`">{{userInfo.email}}</a></p>
+              <p>{{userInfo.email}}</p>
             </div>
           </div>
           <div class="row">
@@ -62,6 +62,11 @@ export default {
       this.userInfo = Response.data;
     });
   },
+  methods: {
+    back() {
+      this.$router.go(-1);
+    },
+  },
 };
 </script>
 
@@ -90,7 +95,7 @@ export default {
       & p{
         margin-top: 15px;
         margin-left: 15px;
-        font-weight: bold;
+        font-weight: 500;
         font-size: 20px;
         text-transform: uppercase;
       }
@@ -120,7 +125,7 @@ export default {
           font-size: 14px;
         }
         &:nth-of-type(2) {
-          font-weight: bold;
+          font-weight: 500;
         }
       }
     }

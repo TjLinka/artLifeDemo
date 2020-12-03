@@ -34,9 +34,42 @@ export default {
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
 }
+*:focus,
+*:active{
+  outline: none !important;
+  box-shadow: none !important;
+}
+input[type='radio']{
+  outline: none !important;
+}
+.custom-control-input:checked ~ .custom-control-label::before{
+    color: #fff;
+    border: 2px solid black;
+    border-color: #32aaa7;
+    background-color: white;
+    box-shadow: none;
+}
+.custom-radio .custom-control-input:checked ~ .custom-control-label::after{
+  background: #32aaa7 !important;
+}
+.custom-control-label::after{
+    position: absolute;
+    top: 0.47rem;
+    left: -1.25rem;
+    display: block;
+    border-radius: 50%;
+    width: 8px;
+    background: white;
+    height: 8px;
+    content: "";
+    background: no-repeat 50% / 50% 50%;
+}
+.custom-control-input{
+  outline: none;
+}
 main {
   margin-top: 40px;
-  padding-bottom: 40px;
+  padding-bottom: 70px;
   padding-left: 120px;
 }
 .no_scroll {
@@ -107,7 +140,7 @@ input[type='number'] {
 .el-icon-arrow-right {
   color: #32aaa7;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 500;
 }
 .el-icon-arrow-left {
   position: relative;

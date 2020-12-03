@@ -2,7 +2,7 @@
   <div class="sponsor__page">
     <div class="container">
       <h2 class="page__title">
-                              <p class="mobile_back">
+                              <p class="mobile_back" @click="back">
         <svg width="18" height="12" viewBox="0 0 18 12" fill="none" style="margin-right: 30px;" xmlns="http://www.w3.org/2000/svg">
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
@@ -81,6 +81,7 @@
           </div>
         </div>
       </div>
+      <footer class="container-fluid cust_modal">
       <div class="row desk_trans">
         <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
           Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
@@ -128,6 +129,7 @@
           </div>
         </div>
       </div>
+      </footer>
     </div>
   </div>
 </template>
@@ -190,6 +192,9 @@ export default {
     });
   },
   methods: {
+    back() {
+      this.$router.go(-1);
+    },
     nextPeriod(x) {
       this.period_enabled = true;
       this.periodIndex = (this.periodIndex + this.periods.length + x) % this.periods.length;
@@ -238,7 +243,7 @@ export default {
     right: 0;
     top: 0px;
     font-size: 25px;
-    font-weight: bold;
+    font-weight: 500;
     color: #32aaa7;
     cursor: pointer;
   }
@@ -268,10 +273,21 @@ export default {
     }
   }
 }
+.search__btn {
+    padding-top: 20px;
+    cursor: pointer;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    font-weight: 500;
+
+    & .search_icon {
+      color: #32aaa7;
+    }
+  }
 .mobile_trans{
   display: none;
   text-align: left;
-  font-weight: bold;
+  font-weight: 500;
   font-size: 20px;
   & .search_icon{
     position: relative;
@@ -325,7 +341,7 @@ export default {
           font-size: 14px;
         }
         &:nth-of-type(2) {
-          font-weight: bold;
+          font-weight: 500;
         }
       }
     }
@@ -349,6 +365,17 @@ export default {
       }
     }
   }
+}
+.cust_modal{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  padding-left: 120px;
+  box-sizing: border-box;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);
 }
 .el-icon-s-tools:before{
   color: #32AAA7;

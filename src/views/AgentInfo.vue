@@ -2,7 +2,7 @@
   <div class="myinfo__page">
     <div class="container">
       <h2 class="page__title">
-              <p class="mobile_back">
+              <p class="mobile_back" @click="back">
         <svg width="18" height="12" viewBox="0 0 18 12" fill="none" style="margin-right: 30px;" xmlns="http://www.w3.org/2000/svg">
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
@@ -45,20 +45,20 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6 mt-3">
+            <!-- <div class="col-md-6 mt-3">
               <p>Паспорт (серия, номер, кем и когда выдан):</p>
               <p>{{ userinfo.passport }}</p>
-            </div>
+            </div> -->
             <div class="col-md-6 mt-3">
               <p>Дата рождения:</p>
               <p>{{ new Date(userinfo.bthdte).toLocaleDateString() }}</p>
             </div>
-          </div>
-          <div class="row">
             <div class="col-md-6 mt-3">
               <p>Skype:</p>
               <p>{{ userinfo.skype }}</p>
             </div>
+          </div>
+          <div class="row">
             <div class="col-md-6 mt-3">
               <p>Доп. телефон:</p>
               <p>+7 (912) 537-33-78</p>
@@ -146,24 +146,33 @@
               </p>
             </div>
             <div class="col-md-6 mt-3">
-              <router-link to='/transfert'>
-                <button v-if="showTransfertInfo" class="transfert__btn">ТРАНСФЕРТ</button>
-              </router-link>
+                <button v-if="showTransfertInfo"
+                v-b-modal.modal-center class="transfert__btn">ТРАНСФЕРТ</button>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <div>
+  <b-modal id="modal-center" hide-footer size="xl" centered title="BootstrapVue">
+    <template #modal-title>
+      Трансферт
+    </template>
+    <Transfert/>
+  </b-modal>
+</div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+import Transfert from './Transfert.vue';
 import backApi from '../assets/backApi';
 import { ReplaceNull } from '../assets/utils';
 
 export default {
   name: 'MyInfo',
+  components: { Transfert },
   data() {
     return {
       showTransfertInfo: false,
@@ -171,6 +180,9 @@ export default {
     };
   },
   methods: {
+    back() {
+      this.$router.go(-1);
+    },
     toggleTransfertVisible() {
       this.showTransfertInfo = !this.showTransfertInfo;
     },
@@ -242,7 +254,7 @@ export default {
           font-size: 14px;
         }
         &:nth-of-type(2) {
-          font-weight: bold;
+          font-weight: 500;
         }
       }
     }

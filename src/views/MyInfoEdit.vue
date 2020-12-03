@@ -2,7 +2,7 @@
   <div class="myinfoedit__page">
     <div class="container">
       <h2 class="page__title">
-                              <p class="mobile_back">
+                              <p class="mobile_back" @click="back">
         <svg width="18" height="12" viewBox="0 0 18 12" fill="none" style="margin-right: 30px;" xmlns="http://www.w3.org/2000/svg">
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
@@ -34,22 +34,24 @@
           name="skype" v-model="userInfo.skype" placeholder="Skype" /></div>
         </div>
         <div class="row edit mt-3">
-          <div class="col-md-6">
+          <div class="col-md">
             <button class="save__newinfo" v-on:click="saveTopEdit">Сохранить изменения</button>
           </div>
         </div>
       </div>
       <div class="bot__info mt-3">
-        <!-- <div class="row edit">
+        <div class="row edit">
           <div class="col">
             <p>Смена адреса почтового ящика</p>
-            <el-input clearable type="text" value="supernameemail@gmail.com" />
+            <el-input clearable type="text" v-model="email" />
+            <button class="save__newinfo mt-3" v-on:click="saveBotEdit">Сохранить изменения</button>
           </div>
           <div class="col">
             <p>Смена телефона</p>
-            <el-input clearable type="text" value="+7 (960) 947-43-55" />
+            <el-input clearable type="text" v-model="phone" />
+            <button class="save__newinfo mt-3" v-on:click="saveBotEdit">Сохранить изменения</button>
           </div>
-        </div> -->
+        </div>
         <p class="mt-3">Смена пароля</p>
         <div class="row edit">
           <div class="col-md mt-3">
@@ -67,7 +69,7 @@
           </div>
         </div>
         <div class="row edit mt-3">
-          <div class="col-md-6">
+          <div class="col-md">
             <button class="save__newinfo" v-on:click="saveBotEdit">Сохранить изменения</button>
           </div>
         </div>
@@ -114,6 +116,8 @@ export default {
   name: 'MyInfoEdit',
   data() {
     return {
+      email: '',
+      phone: '',
       userInfo: {},
       newPass: null,
       newPassRepeat: null,
@@ -126,6 +130,9 @@ export default {
     });
   },
   methods: {
+    back() {
+      this.$router.go(-1);
+    },
     makeToast(append = false) {
       // eslint-disable-next-line no-plusplus
       this.toastCount++;
@@ -175,13 +182,14 @@ export default {
     padding-bottom: 5px;
   }
   .save__newinfo {
-    border: 2px solid #32aaa7;
+    float: right;
+    border: 1px solid #32aaa7;
     background-color: #fff;
-    border-radius: 4px;
+    border-radius: 0px;
     padding: 5px 60px;
     color: #32aaa7;
     font-size: 14px;
-    font-weight: bold;
+    font-weight: 500;
   }
 }
 @media (max-width: 760px) {

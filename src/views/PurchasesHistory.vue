@@ -2,7 +2,7 @@
   <div class="licevoischet__page">
     <div class="container-fluid table_container">
       <h2 class="page__title">
-        <p class="mobile_back">
+        <p class="mobile_back" @click="back">
           <svg
             width="18"
             height="12"
@@ -271,6 +271,9 @@ export default {
     },
   },
   methods: {
+    back() {
+      this.$router.go(-1);
+    },
     nextPeriod(x) {
       this.period_enabled = true;
       this.periodIndex = (this.periodIndex + this.periods.length + x) % this.periods.length;
@@ -384,7 +387,7 @@ export default {
     cursor: pointer;
     margin-bottom: 30px;
     text-transform: uppercase;
-    font-weight: bold;
+    font-weight: 500;
 
     & .search_icon {
       color: #32aaa7;
@@ -433,7 +436,7 @@ export default {
   border: 0;
   outline: none !important;
   box-shadow: none;
-  font-weight: bold;
+  font-weight: 500;
   font-size: 18px;
 }
 .btn-secondary:not(:disabled):not(.disabled):active,

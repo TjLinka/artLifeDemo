@@ -2,7 +2,7 @@
   <div class="licevoischet__page">
     <div class="container-fluid table_container">
       <h2 class="page__title">
-                      <p class="mobile_back">
+                      <p class="mobile_back" @click="back">
         <svg width="18" height="12" viewBox="0 0 18 12" fill="none" style="margin-right: 30px;" xmlns="http://www.w3.org/2000/svg">
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
@@ -18,9 +18,49 @@
         <span class="mr-3">Экспорт в pdf</span>
       </p>
       <b-table :fields="fields" :items="entries" head-variant="light"
-      responsive outlined> </b-table>
-      <h2 class="licevoischet__page__summ">Изменение лицевого счета за период = {{ summ }}</h2>
+      responsive outlined>
+      <template #cell(amount)="data">
+        <b class="text-info">{{ data.value }}</b>
+      </template>
+      </b-table>
+      <h2 class="licevoischet__page__summ">
+        <span>НАЧИСЛЕНИЕ = {{ incomes }}</span>,
+        <span>СПИСАНИЕ = {{ outcomes }}</span>,
+        <span>ИЗМЕНЕНИЕ  = {{ changes }}</span>
+        </h2>
     </div>
+      <footer class="container-fluid cust_modal">
+        <div class="row">
+          <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
+            Фильтр <i class="el-icon-search search_icon"></i>
+          </div>
+        </div>
+        <div v-if="searchActive" class="organization__modal">
+          <h3>Фильтр</h3>
+          <!-- <BasePeriodPicker :currentPeriod="currentPeriod" v-on:next-period="nextPeriod" /> -->
+          <div class="row edit">
+            <div class="col-sm-6">
+              <input type="text" placeholder="Тип операции" v-model="filter">
+            </div>
+            <div class="col-sm-6">
+              <input type="text" placeholder="Коментарий">
+            </div>
+          </div>
+          <!-- <div class="row edit">
+          <div class="col-sm-6">
+            <input type="text" name="" id="" placeholder="Номер накладной" v-model="number" />
+          </div>
+        </div> -->
+          <div class="row edit">
+            <div class="col-sm-6">
+              <input type="text" placeholder="Пользователь">
+            </div>
+            <div class="col-sm-6">
+              <button class="mr-2" @click="updateData">Показать</button>
+            </div>
+          </div>
+        </div>
+      </footer>
   </div>
 </template>
 
@@ -35,9 +75,13 @@ export default {
   components: { DatePicker },
   data() {
     return {
+      filter: '',
+      searchActive: false,
       lang: {
         monthBeforeYear: false,
       },
+      income: [],
+      outcome: [],
       rangeDate: {},
       entries: [],
       fields: [
@@ -50,11 +94,22 @@ export default {
           },
         },
         {
-          key: 'amount',
-          label: 'На счет / Со счета',
+          key: 'income',
+          label: 'Начисление',
           sortable: true,
           formatter(v) {
-            if (v !== null) {
+            if (v > 0) {
+              return v.toFixed(2);
+            }
+            return null;
+          },
+        },
+        {
+          key: 'outcome',
+          label: 'Списание',
+          sortable: true,
+          formatter(v) {
+            if (v < 0) {
               return v.toFixed(2);
             }
             return null;
@@ -72,11 +127,11 @@ export default {
         },
         {
           key: 'balance',
-          label: 'Итого на лицевом счете',
+          label: 'Пользователь',
           sortable: true,
           formatter(v) {
             if (v !== null) {
-              return v.toFixed(2);
+              return 'Пользователь';
             }
             return null;
           },
@@ -86,11 +141,35 @@ export default {
   },
   mounted() {
     backApi.get('agent/account-detail').then((Response) => {
+      console.log(Response.data.entries);
       this.entries = Response.data.entries;
+      this.income = this.entries.filter((i) => i.amount > 0);
+      this.outcome = this.entries.filter((i) => i.amount < 0);
+      this.entries.forEach((i) => {
+        // eslint-disable-next-line no-param-reassign
+        i.income = i.amount;
+        // eslint-disable-next-line no-param-reassign
+        i.outcome = i.amount;
+      });
+      console.log(this.entries);
     });
   },
   computed: {
-    summ() {
+    incomes() {
+      let summ = 0;
+      this.income.forEach((item) => {
+        summ += item.amount;
+      });
+      return summ;
+    },
+    outcomes() {
+      let summ = 0;
+      this.outcome.forEach((item) => {
+        summ += item.amount;
+      });
+      return summ;
+    },
+    changes() {
       let summ = 0;
       this.entries.forEach((item) => {
         summ += item.amount;
@@ -99,6 +178,14 @@ export default {
     },
   },
   methods: {
+    updateData() {
+    },
+    toggleSearch() {
+      this.searchActive = !this.searchActive;
+    },
+    back() {
+      this.$router.go(-1);
+    },
     getSelectedDataRange() {
       // eslint-disable-next-line max-len
       if (this.rangeDate[0] != null && this.rangeDate[1] != null) {
@@ -138,11 +225,66 @@ export default {
     }
   }
 }
+.search__btn {
+    padding-top: 20px;
+    cursor: pointer;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    font-weight: bold;
+
+    & .search_icon {
+      color: #32aaa7;
+    }
+  }
 @media (max-width: 450px) {
   .licevoischet__page__summ{
     font-size: 18px;
   }
 }
+.cust_modal{
+  position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    padding-left: 120px;
+    box-sizing: border-box;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);
+}
+.organization__modal {
+    //   position: absolute;
+    padding: 60px;
+    width: 100%;
+    bottom: 0;
+
+    & .edit {
+      input {
+        width: 100%;
+        border: 0;
+        border-bottom: 1px solid #dee2f3;
+        padding-bottom: 10px;
+        outline: none;
+        margin-bottom: 20px;
+      }
+      button {
+        margin-top: 20px;
+        width: 48%;
+        border: 0;
+        padding: 5px 30px;
+        font-size: 16px;
+        &:nth-of-type(1) {
+          background-color: #32aaa7;
+          color: white;
+        }
+        &:nth-of-type(2) {
+          background-color: white;
+          color: #32aaa7;
+          border: 2px solid #32aaa7;
+        }
+      }
+    }
+  }
 </style>
 <style>
 .mx-datepicker svg{

@@ -1,14 +1,6 @@
 <template>
   <div class="licevoischet__page">
     <div class="container">
-      <h2 class="page__title">
-                              <p class="mobile_back">
-        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" style="margin-right: 30px;" xmlns="http://www.w3.org/2000/svg">
-          <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
-        </svg>
-      </p>
-        Трансферт
-        </h2>
       <h4 class="mt-4">Текущее состояние</h4>
       <div class="row transfert">
         <div class="col-md-6">
@@ -65,6 +57,9 @@ export default {
     });
   },
   methods: {
+    back() {
+      this.$router.go(-1);
+    },
     makeToast(append = false) {
       // eslint-disable-next-line no-plusplus
       this.toastCount++;
@@ -120,7 +115,7 @@ export default {
       color: #9a9a9a;
     }
     p:nth-of-type(2) {
-      font-weight: bold;
+      font-weight: 500;
     }
   }
 }
@@ -140,7 +135,7 @@ export default {
     color: #32aaa7;
     border: 1px solid #32aaa7;
     border-radius: 2px;
-    font-weight: bold;
+    font-weight: 500;
   }
 }
 .trans_btns {

@@ -2,7 +2,7 @@
   <div class="licevoischet__page">
     <div class="container-fluid table_container">
       <h2 class="page__title">
-                              <p class="mobile_back">
+                              <p class="mobile_back" @click="back">
         <svg width="18" height="12" viewBox="0 0 18 12" fill="none" style="margin-right: 30px;" xmlns="http://www.w3.org/2000/svg">
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
@@ -33,6 +33,63 @@
         СУММА СПИСАНИЙ = {{ summIncome }} , СУММА НАЧИСЛЕНИЙ = {{ summOutcome }}
       </h2>
     </div>
+      <footer class="container-fluid cust_modal">
+      <div class="row desk_trans">
+        <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
+          Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
+        </div>
+      </div>
+      <div v-if="searchActive" class="organization__modal">
+        <span @click="closeModal" class="close_btn">X</span>
+        <h3 class="mt-4">Настройка автоматической подачи баллов в трансферт</h3>
+        <div class="row">
+          <div class="col-md-12">
+            <b-form-group label="Выбор дерева" class="flex-radio">
+              <b-form-radio
+                v-model="points_rule"
+                name="some-radios-1"
+                value="0"
+                class="radio mr-3"
+                >Все баллы в трансферт</b-form-radio
+              >
+              <b-form-radio
+                v-model="points_rule"
+                name="some-radios-1"
+                value="1"
+                class="radio mr-3"
+                >Правило по умолчанию по выбору склада</b-form-radio
+              >
+              <b-form-radio
+                v-model="points_rule"
+                name="some-radios-1"
+                :value="null"
+                class="radio"
+                >Баллы в резерв</b-form-radio
+              >
+            </b-form-group>
+          </div>
+        </div>
+        <div class="row edit">
+          <div class="col-sm-6">
+            <el-input type="number" name="" id="" placeholder="Сумма"
+            clearable v-model="operType" />
+          </div>
+          <div class="col-sm-6">
+            <el-input type="number" name="" id="" placeholder="Сумма"
+            clearable v-model="user" />
+          </div>
+        </div>
+        <div class="row edit mt-4">
+          <div class="col-sm-6">
+            <el-input type="number" name="" id="" placeholder="Сумма"
+            clearable v-model="comment" />
+          </div>
+          <div class="col-sm-6">
+            <button class="mr-2 update" @click="updateData">Изменить</button>
+          </div>
+        </div>
+      </div>
+      </footer>
   </div>
 </template>
 
@@ -48,6 +105,30 @@ export default {
   components: { DatePicker },
   data() {
     return {
+      comment: null,
+      user: null,
+      operType: null,
+      currentPeriodTop: {},
+      userInfo: {},
+      points_rule: null,
+      autoship: null,
+      searchActive: false,
+      periods: [],
+      periodIndex: 0,
+      months: [
+        'Январь',
+        'Ферваль',
+        'Март',
+        'Апрель',
+        'Май',
+        'Июнь',
+        'Июль',
+        'Августь',
+        'Сентябрь',
+        'Октябрь',
+        'Ноябрь',
+        'Декабрь',
+      ],
       rangeDate: {},
       entries: [],
       fields: [
@@ -119,6 +200,21 @@ export default {
     },
   },
   methods: {
+    closeModal() {
+      this.searchActive = !this.searchActive;
+    },
+    toggleSearch() {
+      this.searchActive = !this.searchActive;
+    },
+    updateData() {
+      backApi.post('/agent/points-rule', {
+        points_rule: this.points_rule,
+        autoship: this.autoship === '' ? null : this.autoship,
+      });
+    },
+    back() {
+      this.$router.go(-1);
+    },
     getSelectedDataRange() {
       // eslint-disable-next-line max-len
       if (this.rangeDate[0] != null && this.rangeDate[1] != null) {
@@ -157,6 +253,65 @@ export default {
     }
   }
 }
+.organization__modal {
+  position: relative;
+  & .close_btn {
+    position: absolute;
+    right: 0;
+    top: 0px;
+    font-size: 25px;
+    font-weight: 500;
+    color: #32aaa7;
+    cursor: pointer;
+  }
+}
+.edit {
+  input {
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid #dee2f3;
+    padding-bottom: 10px;
+    outline: none;
+  }
+  button {
+    width: 48%;
+    border: 0;
+    padding: 5px 30px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    &:nth-of-type(1) {
+      background-color: #32aaa7;
+      color: white;
+    }
+    &:nth-of-type(2) {
+      background-color: white;
+      color: #32aaa7;
+      border: 2px solid #32aaa7;
+    }
+  }
+}
+.search__btn {
+    padding-top: 20px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-weight: 500;
+
+    & .search_icon {
+      color: #32aaa7;
+    }
+  }
+.cust_modal{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  padding-left: 120px;
+  box-sizing: border-box;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);
+}
 </style>
 <style>
 .mx-datepicker svg {
@@ -166,5 +321,8 @@ export default {
   border: 0;
   border-bottom: 1px solid #DEE2F3;
   border-radius: 0;
+}
+.flex-radio div[role='group']{
+    display: flex;
 }
 </style>

@@ -2,7 +2,7 @@
   <div class="licevoischet__page">
     <div class="container-fluid table_container">
       <h2 class="page__title">
-                              <p class="mobile_back">
+        <p class="mobile_back" @click="back">
         <svg width="18" height="12" viewBox="0 0 18 12" fill="none" style="margin-right: 30px;" xmlns="http://www.w3.org/2000/svg">
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
@@ -129,6 +129,16 @@ export default {
         title: 'Ранг',
         formater: (item) => item.rank_end,
       },
+      {
+        property: 'lo',
+        title: 'ЛО',
+        formater: (item) => item.lo,
+      },
+      {
+        property: 'ngo',
+        title: 'НГО',
+        formater: (item) => item.ngo,
+      },
     ];
     return {
       searchActive: false,
@@ -143,6 +153,7 @@ export default {
     };
   },
   mounted() {
+    console.log(this.$router);
     const data = { params: { filter: this.tree_type, get_root: true } };
     backApi.get('/agents-tree-hist', data).then((response) => {
       this.rows = response.data.entries;
@@ -154,6 +165,9 @@ export default {
   },
   computed: {},
   methods: {
+    back() {
+      this.$router.go(-1);
+    },
     tableRowClassName({ row }) {
       return `depth-${row.depth}`;
     },
@@ -256,7 +270,7 @@ export default {
     cursor: pointer;
     margin-bottom: 30px;
     text-transform: uppercase;
-    font-weight: bold;
+    font-weight: 500;
 
     & .search_icon {
       color: #32aaa7;
