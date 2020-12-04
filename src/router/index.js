@@ -101,13 +101,6 @@ const routes = [
     meta: { requiresAuth: true, requiresRole: 'Дистрибьютор' },
     // Видит только Дистрибьютор +
   },
-  {
-    path: '/transfert',
-    name: 'Transfert',
-    component: () => import('../views/Transfert.vue'),
-    meta: { requiresAuth: true, requiresRole: 'Дистрибьютор' },
-    // Видит только Дистрибьютор +
-  },
 ];
 
 const router = new VueRouter({

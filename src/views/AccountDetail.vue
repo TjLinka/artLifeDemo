@@ -141,7 +141,6 @@ export default {
   },
   mounted() {
     backApi.get('agent/account-detail').then((Response) => {
-      console.log(Response.data.entries);
       this.entries = Response.data.entries;
       this.income = this.entries.filter((i) => i.amount > 0);
       this.outcome = this.entries.filter((i) => i.amount < 0);
@@ -151,7 +150,6 @@ export default {
         // eslint-disable-next-line no-param-reassign
         i.outcome = i.amount;
       });
-      console.log(this.entries);
     });
   },
   computed: {

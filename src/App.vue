@@ -163,7 +163,8 @@ input[type='number'] {
 }
 @media (max-width: 540px) {
   main {
-    padding-left: 0px !important;
+    padding-left: 15px !important;
+    padding-right: 15px;
     padding-bottom: 70px !important;
   }
   .mobile_back{

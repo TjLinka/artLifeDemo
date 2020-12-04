@@ -153,7 +153,6 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$router);
     const data = { params: { filter: this.tree_type, get_root: true } };
     backApi.get('/agents-tree-hist', data).then((response) => {
       this.rows = response.data.entries;

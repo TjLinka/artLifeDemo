@@ -1,7 +1,10 @@
 <template>
   <div class="licevoischet__page">
     <div class="container">
-      <h4 class="mt-4">Текущее состояние</h4>
+      <h4 class="mt-4">Текущее состояние
+        <span v-on:click="$emit('enlarge-text')"
+        style="display: inline-block; float: right; color: #32aaa7; cursor: pointer">X</span>
+      </h4>
       <div class="row transfert">
         <div class="col-md-6">
           <p>ЛО:</p>

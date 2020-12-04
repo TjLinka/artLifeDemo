@@ -110,8 +110,6 @@ export default {
         if (this.classList.contains('active')) {
           this.classList.remove('active');
         } else {
-          console.log(this.parentNode.parentNode.children);
-          console.log('hi');
           // eslint-disable-next-line no-restricted-syntax
           for (const i of this.parentNode.parentNode.children) {
             i.firstChild.classList.remove('active');
@@ -320,8 +318,8 @@ ul {
 .mobilis {
   display: none;
 }
-@media all and (min-width: 320px) and (max-width: 800px) {
-  ul {
+@media (min-width: 320px) and (max-width: 800px) {
+  nav ul {
     width: 100%;
     display: flex;
     justify-content: space-around;

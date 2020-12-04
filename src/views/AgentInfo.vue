@@ -1,19 +1,36 @@
 <template>
-  <div class="myinfo__page">
-    <div class="container">
+  <div class="myinfo__page" v-if="loaded">
+    <div class="container" v-if="!success">
       <h2 class="page__title">
-              <p class="mobile_back" @click="back">
-        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" style="margin-right: 30px;" xmlns="http://www.w3.org/2000/svg">
-          <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
-        </svg>
-      </p>
+        <p class="mobile_back" @click="back">
+          <svg
+            width="18"
+            height="12"
+            viewBox="0 0 18 12"
+            fill="none"
+            style="margin-right: 30px;"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
+          </svg>
+        </p>
         Карточка партнера
-        </h2>
+      </h2>
       <div class="myinfo__page__description">
         <div class="myfoto">
           <img src="../assets/imgs/unnamed 1.png" alt="" />
         </div>
         <div class="container top__info">
+          <div class="row" v-if="transfertAccess">
+            <div class="col-md mt-1">
+              <span class="modal_btn" @click="showTransfModal1">
+                Перевести между лицевыми счетами
+              </span>
+              <span class="modal_btn" @click="showTransfModal2">
+                Перевести баллы между партнерами
+              </span>
+            </div>
+          </div>
           <div class="row">
             <div class="col-md-6 mt-3">
               <p>Номер соглашения:</p>
@@ -146,40 +163,114 @@
               </p>
             </div>
             <div class="col-md-6 mt-3">
-                <button v-if="showTransfertInfo"
-                v-b-modal.modal-center class="transfert__btn">ТРАНСФЕРТ</button>
+              <button v-if="showTransfertInfo" class="transfert__btn" @click="showTransfModal">
+                ТРАНСФЕРТ
+              </button>
+            </div>
+          </div>
+          <div class="row" v-if="transfertAccess">
+            <div class="col">
+              <p class="show__transfert p-0 mt-5" @click="becomePartner">
+                Стать партнёром
+              </p>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div>
-  <b-modal id="modal-center" hide-footer size="xl" centered title="BootstrapVue">
-    <template #modal-title>
-      Трансферт
-    </template>
-    <Transfert/>
-  </b-modal>
-</div>
+    <div v-else>
+      <h2 class="page__title">
+        <p class="mobile_back" @click="back">
+          <svg
+            width="18"
+            height="12"
+            viewBox="0 0 18 12"
+            fill="none"
+            style="margin-right: 30px;"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
+          </svg>
+        </p>
+        Карточка партнера
+      </h2>
+      <h2>У вас нет прав доступа</h2>
+    </div>
+     <footer class="container-fluid cust_modal" v-if="showModal">
+      <div>
+        <Transfert v-on:enlarge-text="showModal = false"/>
+      </div>
+      </footer>
+     <footer class="container-fluid cust_modal" v-if="showModal1">
+      <div>
+        <AgentInfoModalPoints v-on:enlarge-text="showModal1 = false"
+        :lo="userinfo.lo" :reserve="userinfo.reserve"/>
+      </div>
+      </footer>
+     <footer class="container-fluid cust_modal" v-if="showModal2">
+      <div>
+        <AgentInfoModalMoney v-on:enlarge-text="showModal2 = false"
+        :lo="userinfo.lo" :reserve="userinfo.reserve"/>
+      </div>
+      </footer>
+    <!-- <div>
+      <b-modal id="modal-center" hide-footer size="xl" centered title="BootstrapVue">
+        <template #modal-title>
+          Трансферт
+        </template>
+        <Transfert />
+      </b-modal>
+    </div> -->
+      <b-toast id="my-toast" variant="success" solid>
+      <template #toast-title>
+        <div class="d-flex flex-grow-1 align-items-baseline">
+          <b-img blank blank-color="green" class="mr-2" width="12" height="12"></b-img>
+          <strong class="mr-auto">Успех!</strong>
+          <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
+        </div>
+      </template>
+      Вы стали парнёром!
+    </b-toast>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import Transfert from './Transfert.vue';
+import Transfert from '../components/Transfert.vue';
+import AgentInfoModalPoints from '../components/AgentInfoModalPoints.vue';
+import AgentInfoModalMoney from '../components/AgentInfoModalMoney.vue';
 import backApi from '../assets/backApi';
 import { ReplaceNull } from '../assets/utils';
 
 export default {
   name: 'MyInfo',
-  components: { Transfert },
+  components: { Transfert, AgentInfoModalPoints, AgentInfoModalMoney },
   data() {
     return {
+      showModal: false,
+      showModal1: false,
+      showModal2: false,
+      loaded: false,
+      success: false,
       showTransfertInfo: false,
       userinfo: {},
     };
   },
   methods: {
+    becomePartner() {
+      backApi.post('/agent/become_partner').then(() => {
+        this.$bvToast.show('my-toast');
+      });
+    },
+    showTransfModal() {
+      this.showModal = !this.showModal;
+    },
+    showTransfModal1() {
+      this.showModal1 = !this.showModal1;
+    },
+    showTransfModal2() {
+      this.showModal2 = !this.showModal2;
+    },
     back() {
       this.$router.go(-1);
     },
@@ -188,15 +279,21 @@ export default {
     },
   },
   mounted() {
-    const prevLink = document.getElementsByClassName('router-link-active');
-    console.log(prevLink);
     if (this.$route.params.id) {
-      backApi.get('/agent/profile', { params: { another_agent_id: this.$route.params.id } }).then((Response) => {
-        const data = ReplaceNull(Response.data);
-        this.userinfo = data;
-      });
+      backApi
+        .get('/agent/profile/child', { params: { another_agent_id: this.$route.params.id } })
+        .then((Response) => {
+          this.loaded = !this.loaded;
+          const data = ReplaceNull(Response.data);
+          this.userinfo = data;
+        })
+        .catch(() => {
+          this.loaded = !this.loaded;
+          this.success = !this.success;
+        });
     } else {
       backApi.get('/agent/profile').then((Response) => {
+        this.loaded = !this.loaded;
         const data = ReplaceNull(Response.data);
         this.userinfo = data;
       });
@@ -212,6 +309,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.modal_btn{
+  color: #32aaa7;
+  font-weight: 500;
+  cursor: pointer;
+  &:nth-of-type(1){
+    margin-right: 30px;
+  }
+}
 .myinfo__page {
   & .page__title {
     color: #383a41;
@@ -268,7 +373,7 @@ export default {
       }
 
       & .transfert__btn {
-        background-color: #32AAA7;
+        background-color: #32aaa7;
         color: white;
         padding: 10px 80px;
         font-size: 12px;
@@ -279,24 +384,42 @@ export default {
     }
   }
 }
+.cust_modal{
+  position: fixed;
+  padding-bottom: 40px;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  padding-left: 120px;
+  box-sizing: border-box;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);
+}
 @media (min-width: 768px) {
-  .myinfo__page{
+  .myinfo__page {
     .top__info,
-    .transfert__info{
-      & > .row{
+    .transfert__info {
+      & > .row {
         margin-bottom: 32px;
       }
     }
   }
 }
 @media (max-width: 760px) {
-  .transfert{
+  .transfert {
     & > .row {
       flex-direction: column-reverse;
-      & .transfert__btn{
+      & .transfert__btn {
         width: 100%;
       }
     }
   }
+}
+@media (max-width: 450px) {
+  .cust_modal{
+padding-left: 0;
+padding-bottom: 70px
+}
 }
 </style>
