@@ -24,12 +24,12 @@
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
-      <el-table
+      <div class="orgbyhist">
+        <el-table
         :key="tree_key"
         :data="rows"
         style="width: 100%"
         row-key="id"
-        border
         lazy
         :load="load"
         :tree-props="{ children: 'children', hasChildren: 'has_children' }"
@@ -49,14 +49,15 @@
             <!-- {{column.property}} -->
             <span v-if="column.property != 'id'">{{ column.formater(scope.row) }}</span>
             <span v-else>
-              УР {{ scope.row.depth }}<br />
-              {{ scope.row.rank_beg }}<br />
-              {{ scope.row.id }}<br />
-              <router-link :to="`/agent/${scope.row.id}`">{{scope.row.name}}</router-link>
+              <img :src="`../icons/${scope.row.rank_end}.svg`" alt="" class="rank_icon">
+              <span class="user_id">{{ scope.row.id }}</span><br />
+              <router-link :to="`/agent/${scope.row.id}`"
+              class="user_name">{{scope.row.name}}</router-link>
             </span>
           </template>
         </el-table-column>
       </el-table>
+      </div>
       <footer class="cust_modal">
               <div class="row">
         <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
@@ -336,6 +337,18 @@ export default {
     display: inline;
   }
 }
+.rank_icon{
+  width: 25px;
+}
+.user_id{
+  display: inline-block;
+  float: right;
+}
+.user_name{
+  display: block;
+  text-align: right;
+  margin-top: 10px;
+}
 .licevoischet__page {
   position: relative;
   &__summ {
@@ -413,6 +426,19 @@ export default {
       }
 .el-table__indent {
   padding-left: 0 !important;
+}
+.el-table{
+  font-weight: 500;
+}
+.el-table th{
+  background-color: #DEE2F3 !important;
+  color: black;
+}
+.orgbyhist .el-table tr td:nth-of-type(1){
+  border-right: 1px solid #9A9A9A;
+}
+.orgbyhist .el-table td, .el-table th.is-leaf{
+  border-bottom: 1px solid #9A9A9A;
 }
 .depth-0 {
   background-color: #32aaa7 !important;

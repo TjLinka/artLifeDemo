@@ -32,7 +32,8 @@
         <span class="mr-3">Экспорт в pdf</span>
       </p>
       <div class="perchases_table">
-        <b-table :fields="fields" :items="entries" head-variant="light" responsive outlined>
+        <b-table :fields="fields" :items="entries"
+        head-variant="light" responsive outlined>
           <template v-slot:cell(nomer)="row">
             <b-button size="sm" @click="show_details(row)" class="mr-2">
               {{ row.detailsShowing ? '-' : '+' }}
@@ -60,7 +61,7 @@
         <div v-if="searchActive" class="organization__modal">
           <h3>Фильтр</h3>
           <BasePeriodPicker :currentPeriod="currentPeriod" v-on:next-period="nextPeriod" />
-          <div class="row edit">
+          <div class="row edit mt-5">
             <div class="col-sm-6">
               <el-input
                 type="number"
@@ -88,7 +89,7 @@
           </div>
         </div> -->
           <div class="row edit">
-            <div class="col-sm-6">
+            <div class="col-sm update">
               <button class="mr-2" @click="updateData">Показать</button
               ><button @click="clearSelectedFilters">Сбросить</button>
             </div>
@@ -100,12 +101,14 @@
 </template>
 
 <script>
+/* eslint-disable no-param-reassign */
 import backApi from '../assets/backApi';
 
 export default {
   name: 'AccountDetail',
   data() {
     return {
+      allData: [],
       lang: {
         monthBeforeYear: false,
       },
@@ -353,8 +356,7 @@ export default {
       if (row.detailsShowing === true) {
         row.toggleDetails();
       } else if (!this.return_details[row.item.webshop_id]) {
-        backApi
-          .get('/agent/sales-detail', { params: { id: row.item.webshop_id } })
+        backApi.get('/agent/sales-detail', { params: { id: row.item.webshop_id } })
           .then((response) => {
             this.return_details[row.item.webshop_id] = response.data.entries;
             row.toggleDetails();
@@ -368,6 +370,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.update{
+  text-align: right;
+  & button{
+    display: inline-block;
+    width: 20% !important;
+  }
+}
 .licevoischet__page {
   position: relative;
   &__summ {

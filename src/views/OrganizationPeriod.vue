@@ -24,12 +24,12 @@
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
-      <el-table
+      <div class="orgper">
+              <el-table
         :key="tree_key"
         :data="rows"
         style="width: 100%"
         row-key="id"
-        border
         lazy
         :load="load"
         :tree-props="{ children: 'children', hasChildren: 'has_children' }"
@@ -45,10 +45,14 @@
         <span v-if="column.property === 'name'">
           <router-link :to="`/agent/${scope.row.id}`">{{scope.row.name}}</router-link>
         </span>
+        <span v-else-if="column.property === 'rank_end'">
+              <img :src="`../icons/${scope.row.rank_end}.svg`" alt="" class="rank_icon">
+        </span>
         <span v-else>{{ column.formater(scope.row)}}</span>
       </template>
         </el-table-column>
       </el-table>
+      </div>
       <footer class="cust_modal">
               <div class="row">
         <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
@@ -115,6 +119,11 @@ export default {
         formater: (item) => `${item.depth} УР`,
       },
       {
+        property: 'rank_end',
+        title: 'Ранг',
+        formater: (item) => item.rank_end,
+      },
+      {
         property: 'id',
         title: 'Р/Номер',
         formater: (item) => item.id,
@@ -123,11 +132,6 @@ export default {
         property: 'name',
         title: 'ФИО',
         formater: (item) => item.name,
-      },
-      {
-        property: 'rank_end',
-        title: 'Ранг',
-        formater: (item) => item.rank_end,
       },
       {
         property: 'lo',
@@ -250,6 +254,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.rank_icon{
+  width: 25px;
+}
 .licevoischet__page {
   position: relative;
   &__summ {
@@ -359,6 +366,19 @@ export default {
 .depth-6{
   background-color: #EBEDF4 !important;
   color: black;
+}
+.el-table{
+  font-weight: 500;
+}
+.el-table th{
+  background-color: #DEE2F3 !important;
+  color: black;
+}
+.orgper .el-table tr td:nth-of-type(1){
+  border-right: 1px solid #9A9A9A;
+}
+.orgper .el-table td, .el-table th.is-leaf{
+  border-bottom: 1px solid #9A9A9A;
 }
 .el-table--enable-row-hover .el-table__body tr:hover>td {
     background-color: unset;

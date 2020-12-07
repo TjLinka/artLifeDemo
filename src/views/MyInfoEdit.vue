@@ -46,7 +46,7 @@
         </div>
         <div class="row edit ">
           <div class="col-md-6 mt-3">
-            <input type="text" name="bthdte" id="bthdte" required v-model="userInfo.bthdte" />
+            <input type="date" name="bthdte" id="bthdte" required v-model="userInfo.bthdte" />
             <label for="bthdte">Дата рождения:</label>
             <span class="clear_icon" @click="clearInput('bthdte')">X</span>
           </div>
@@ -214,6 +214,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+input[type='date']::after{
+  position: absolute;
+  content: '';
+  left: 0;
+  top: 0;
+  width: 80%;
+  height: 80%;
+  background-color: white;
+  z-index: 10;
+}
+input[type='date']:valid::after{
+  display: none;
+}
+input[type='date']:valid{
+  padding-right: 15px;
+  padding-top: 5px;
+}
 .col-md-6,
 .col-md {
   position: relative;
@@ -232,6 +249,7 @@ export default {
     transition: 0.15s ease-in-out;
     color: #9a9a9a;
     font-size: 14px;
+    z-index: 20;
   }
   input {
     width: 100%;

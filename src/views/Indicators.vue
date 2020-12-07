@@ -90,9 +90,9 @@
       <div v-if="searchActive" class="organization__modal">
         <span @click="closeModal" class="close_btn">X</span>
         <h3 class="mt-4">Настройка автоматической подачи баллов в трансферт</h3>
-        <div class="row">
+        <div class="row mt-4">
           <div class="col-md-12">
-            <b-form-group label="Выбор дерева">
+            <b-form-group label="">
               <b-form-radio
                 v-model="points_rule"
                 name="some-radios-1"
@@ -118,14 +118,15 @@
           </div>
         </div>
         <div class="row edit">
-          <div class="col-sm-6">
-            <el-input type="number" name="" id="" placeholder="Сумма"
-            clearable v-model="autoship" />
+          <div class="col-md-6">
+            <input type="number" name="autoship" id="autoship" required v-model="autoship" />
+            <label for="autoship">Обязательный трансферт:</label>
+            <span class="clear_icon" @click="clearInput('autoship')">X</span>
           </div>
         </div>
         <div class="row edit mt-4">
-          <div class="col-sm-6">
-            <button class="mr-2 update" @click="updateData">Изменить</button>
+          <div class="col-sm-12">
+            <button class="mr-2 update" @click="updateData">Применить</button>
           </div>
         </div>
       </div>
@@ -192,6 +193,9 @@ export default {
     });
   },
   methods: {
+    clearInput() {
+      this.autoship = null;
+    },
     back() {
       this.$router.go(-1);
     },
@@ -236,6 +240,45 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.col-md-6,
+.col-md{
+  position: relative;
+  span {
+    display: none;
+    position: absolute;
+    right: 18px;
+    top: 10px;
+    color: #32aaa7;
+    cursor: pointer;
+  }
+  label {
+    position: absolute;
+    top: 5px;
+    left: 20px;
+    transition: 0.15s ease-in-out;
+    color: #9a9a9a;
+    font-size: 14px;
+    z-index: 20;
+  }
+  input {
+    width: 100%;
+    border: 0;
+    height: 35px;
+    border-radius: 0;
+    border-bottom: 1px solid #dee2f3;
+    outline: none;
+    padding-left: 5px;
+    font-size: 14px;
+    &:focus ~ label,
+    &:valid ~ label {
+      font-size: 12px;
+      top: -10px;
+    }
+    &:valid ~ span {
+      display: block;
+    }
+  }
+}
 .organization__modal {
   position: relative;
   & .close_btn {
@@ -249,11 +292,12 @@ export default {
   }
 }
 .edit {
+  margin-top: 60px;
   input {
     width: 100%;
     border: 0;
     border-bottom: 1px solid #dee2f3;
-    padding-bottom: 10px;
+    padding-bottom: 0px;
     outline: none;
   }
   button {
@@ -391,6 +435,10 @@ export default {
   & br{
     display: none;
   }
+}
+.update{
+  display: inline-block;
+  width: 15% !important;
 }
 @media (min-width: 768px) {
   .sponsor__page{

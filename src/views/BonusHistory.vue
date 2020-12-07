@@ -28,7 +28,7 @@
       </b-table>
       <b-table :fields="mainFields" :items="bonus" head-variant="light"
       class="sub_2" responsive outlined>
-        <template v-slot:cell(Детали)="row">
+        <template v-slot:cell(Наименование)="row">
           <b-button size="sm" @click="row.toggleDetails" class="mr-2">
             <span>{{ row.detailsShowing ? '-' : '+' }}</span>
           </b-button>
@@ -137,7 +137,7 @@ export default {
         },
       ],
       mainFields: [
-        'Детали',
+        'Наименование',
         // {
         //   key: 'bonusname',
         //   label: 'Наименование',

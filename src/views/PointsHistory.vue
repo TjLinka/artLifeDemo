@@ -17,7 +17,9 @@
         <span class="mr-3">Экспорт в pdf</span>
       </p>
       <b-table responsive :fields="fields" :items="entries" head-variant="light"
-      class="points_history_table" outlined>
+      class="points_history_table" outlined :filter="filter"
+      :filter-function="filFunc"
+      >
         <template #table-colgroup="scope">
           <col
             v-for="field in scope.fields"
@@ -30,10 +32,10 @@
           </template>
       </b-table>
       <h2 class="licevoischet__page__summ">
-        СУММА СПИСАНИЙ = {{ summIncome }} , СУММА НАЧИСЛЕНИЙ = {{ summOutcome }}
+        НА СЧЁТ = {{ summIncome }} , СО СЧЕТА = {{ summOutcome }}, ИЗМЕНЕНИЯ = {{ changes }}
       </h2>
     </div>
-      <footer class="container-fluid cust_modal">
+      <footer class="container-fluid cust_modal pb-4">
       <div class="row desk_trans">
         <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
           Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
@@ -41,51 +43,57 @@
       </div>
       <div v-if="searchActive" class="organization__modal">
         <span @click="closeModal" class="close_btn">X</span>
-        <h3 class="mt-4">Настройка автоматической подачи баллов в трансферт</h3>
+        <h3 class="mt-4">Фильтры</h3>
         <div class="row">
-          <div class="col-md-12">
-            <b-form-group label="Выбор дерева" class="flex-radio">
+          <div class="col-md-12 mt-4">
+            <b-form-group label="" class="flex-radio">
               <b-form-radio
                 v-model="points_rule"
                 name="some-radios-1"
                 value="0"
                 class="radio mr-3"
-                >Все баллы в трансферт</b-form-radio
+                >Резерв</b-form-radio
               >
               <b-form-radio
                 v-model="points_rule"
                 name="some-radios-1"
                 value="1"
                 class="radio mr-3"
-                >Правило по умолчанию по выбору склада</b-form-radio
+                >ЛО</b-form-radio
               >
               <b-form-radio
                 v-model="points_rule"
                 name="some-radios-1"
                 :value="null"
                 class="radio"
-                >Баллы в резерв</b-form-radio
+                >Все</b-form-radio
               >
             </b-form-group>
           </div>
         </div>
-        <div class="row edit">
-          <div class="col-sm-6">
-            <el-input type="number" name="" id="" placeholder="Сумма"
-            clearable v-model="operType" />
+        <div class="row edit mt-4">
+          <div class="col-md-6">
+            <input type="text" name="operType"
+            id="operType" required v-model="filter.operType" />
+            <label for="operType">Тип операции:</label>
+            <span class="clear_icon" @click="clearOperType('operType')">X</span>
           </div>
-          <div class="col-sm-6">
-            <el-input type="number" name="" id="" placeholder="Сумма"
-            clearable v-model="user" />
+          <!-- <div class="col-md-6">
+           <input type="text" name="user"
+            id="user" required v-model="user" />
+            <label for="user">Пользователь:</label>
+            <span class="clear_icon" @click="clearUser('user')">X</span>
+          </div> -->
+          <div class="col-md-6">
+           <input type="text" name="comment"
+            id="comment" required v-model="filter.comment" />
+            <label for="comment">Комментарий:</label>
+            <span class="clear_icon" @click="clearComment('comment')">X</span>
           </div>
         </div>
         <div class="row edit mt-4">
-          <div class="col-sm-6">
-            <el-input type="number" name="" id="" placeholder="Сумма"
-            clearable v-model="comment" />
-          </div>
-          <div class="col-sm-6">
-            <button class="mr-2 update" @click="updateData">Изменить</button>
+          <div class="col">
+            <button class="mr-2 update" @click="updateData">Показать</button>
           </div>
         </div>
       </div>
@@ -105,9 +113,10 @@ export default {
   components: { DatePicker },
   data() {
     return {
-      comment: null,
-      user: null,
-      operType: null,
+      filter: {
+        comment: '',
+        operType: '',
+      },
       currentPeriodTop: {},
       userInfo: {},
       points_rule: null,
@@ -151,12 +160,12 @@ export default {
         },
         {
           key: 'income',
-          label: 'Списание',
+          label: 'На счёт',
           sortable: true,
         },
         {
           key: 'outcome',
-          label: 'Начисление',
+          label: 'Со счёта',
           sortable: true,
         },
         {
@@ -198,8 +207,22 @@ export default {
       });
       return summOutcome.toFixed(2);
     },
+    changes() {
+      return (this.summIncome - this.summOutcome).toFixed(2);
+    },
   },
   methods: {
+    // eslint-disable-next-line no-unused-vars
+    filFunc(row, filter) {
+      return (row.opertype.toLowerCase().search(filter.operType.toLowerCase().trim()) !== -1
+      && row.comm.toLowerCase().search(filter.comment.toLowerCase().trim()) !== -1);
+    },
+    clearComment() {
+      this.filter.comment = '';
+    },
+    clearOperType() {
+      this.filter.operType = '';
+    },
     closeModal() {
       this.searchActive = !this.searchActive;
     },
@@ -239,6 +262,50 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.update{
+  display: block;
+  float: right;
+  width: 20% !important;
+}
+.col-md-6,
+.col-md {
+  position: relative;
+  span {
+    display: none;
+    position: absolute;
+    right: 18px;
+    top: 10px;
+    color: #32aaa7;
+    cursor: pointer;
+  }
+  label {
+    position: absolute;
+    top: 5px;
+    left: 20px;
+    transition: 0.15s ease-in-out;
+    color: #9a9a9a;
+    font-size: 14px;
+    z-index: 20;
+  }
+  input {
+    width: 100%;
+    border: 0;
+    height: 35px;
+    border-radius: 0;
+    border-bottom: 1px solid #dee2f3;
+    outline: none;
+    padding-left: 5px;
+    font-size: 14px;
+    &:focus ~ label,
+    &:valid ~ label {
+      font-size: 12px;
+      top: -10px;
+    }
+    &:valid ~ span {
+      display: block;
+    }
+  }
+}
 .licevoischet__page {
   &__summ {
     text-align: center;

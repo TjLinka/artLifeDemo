@@ -18,7 +18,7 @@
         <span class="mr-3">Экспорт в pdf</span>
       </p>
       <b-table :fields="fields" :items="entries" head-variant="light"
-      responsive outlined>
+      responsive outlined :filter="filter" :filter-function="filFunc">
       <template #cell(amount)="data">
         <b class="text-info">{{ data.value }}</b>
       </template>
@@ -40,10 +40,10 @@
           <!-- <BasePeriodPicker :currentPeriod="currentPeriod" v-on:next-period="nextPeriod" /> -->
           <div class="row edit">
             <div class="col-sm-6">
-              <input type="text" placeholder="Тип операции" v-model="filter">
+              <input type="text" placeholder="Тип операции" v-model="filter.operType">
             </div>
             <div class="col-sm-6">
-              <input type="text" placeholder="Коментарий">
+              <input type="text" placeholder="Коментарий" v-model="filter.comment">
             </div>
           </div>
           <!-- <div class="row edit">
@@ -53,7 +53,7 @@
         </div> -->
           <div class="row edit">
             <div class="col-sm-6">
-              <input type="text" placeholder="Пользователь">
+              <input type="text" placeholder="Пользователь" v-model="filter.user">
             </div>
             <div class="col-sm-6">
               <button class="mr-2" @click="updateData">Показать</button>
@@ -75,7 +75,11 @@ export default {
   components: { DatePicker },
   data() {
     return {
-      filter: '',
+      filter: {
+        comment: '',
+        operType: '',
+        user: '',
+      },
       searchActive: false,
       lang: {
         monthBeforeYear: false,
@@ -176,6 +180,11 @@ export default {
     },
   },
   methods: {
+    filFunc(row, filter) {
+      return (row.account_type.toLowerCase().search(filter.operType.toLowerCase().trim()) !== -1
+      && row.comm.toLowerCase().search(filter.comment.toLowerCase().trim()) !== -1
+      && String(row.income).toLowerCase().search(filter.user.toLowerCase().trim()) !== -1);
+    },
     updateData() {
     },
     toggleSearch() {

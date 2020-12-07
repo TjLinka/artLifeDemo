@@ -19,7 +19,10 @@
       </p>
       <div class="refound_table">
       <b-table :fields="fields" :items="entries"
-      head-variant="light" responsive outlined>
+      head-variant="light" responsive outlined
+      :filter="filter"
+      :filter-function="filterFunc"
+      >
         <template v-slot:cell(nomer)="row">
           <b-button size="sm" @click="show_details(row)" class="mr-2">
             <span>{{ row.detailsShowing ? '-' : '+' }}</span>
@@ -36,6 +39,77 @@
       </div>
       <!-- <h2 class="licevoischet__page__summ">СУММА = {{ summ }}</h2> -->
     </div>
+      <footer class="container-fluid cust_modal">
+        <div class="row">
+          <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
+            Поиск <i class="el-icon-search search_icon"></i>
+          </div>
+        </div>
+        <div v-if="searchActive" class="organization__modal">
+          <h3>Поиск</h3>
+          <div class="row edit mt-5">
+            <div class="col-sm-6">
+              <el-input
+                type="number"
+                name=""
+                id="art"
+                placeholder="Артикул"
+                clearable
+                v-model="filter.articul"
+              />
+            </div>
+            <div class="col-sm-6">
+              <el-input
+                type="text"
+                name=""
+                id="name"
+                placeholder="Наименование товара"
+                clearable
+                v-model="filter.name"
+              />
+            </div>
+          </div>
+          <div class="row edit mt-5">
+            <div class="col-sm-6">
+              <el-input
+                type="number"
+                name=""
+                id="art"
+                placeholder="Номер накладной"
+                clearable
+                v-model="filter.naknum"
+              />
+            </div>
+            <div class="col-sm-6">
+              <el-input
+                type="text"
+                name=""
+                id="name"
+                placeholder="Номер документа"
+                clearable
+                v-model="filter.docnum"
+              />
+            </div>
+          </div>
+          <div class="row edit mt-5">
+            <div class="col-sm-6">
+              <el-input
+                type="number"
+                name=""
+                id="art"
+                placeholder="Пользователь"
+                clearable
+                v-model="filter.user"
+              />
+            </div>
+            <div class="col-sm-6">
+           <div class="col-sm update">
+              <button class="mr-2">Показать</button><button>Сбросить</button>
+            </div>
+            </div>
+          </div>
+        </div>
+      </footer>
   </div>
 </template>
 
@@ -50,9 +124,16 @@ export default {
   components: { DatePicker },
   data() {
     return {
+      filter: {},
+      articul: null,
+      name: null,
+      naknum: null,
+      docnum: null,
+      user: null,
       lang: {
         monthBeforeYear: false,
       },
+      searchActive: false,
       rangeDate: {},
       entries: [],
       return_details: [],
@@ -155,6 +236,13 @@ export default {
     },
   },
   methods: {
+    // eslint-disable-next-line no-unused-vars
+    filterFunc(row, filter) {
+      return 1;
+    },
+    toggleSearch() {
+      this.searchActive = !this.searchActive;
+    },
     back() {
       this.$router.go(-1);
     },
@@ -198,6 +286,61 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.organization__modal {
+    //   position: absolute;
+    padding: 60px;
+    width: 100%;
+    bottom: 0;
+
+    & .edit {
+      input {
+        width: 100%;
+        border: 0;
+        border-bottom: 1px solid #dee2f3;
+        padding-bottom: 10px;
+        outline: none;
+        margin-bottom: 20px;
+      }
+      button {
+        margin-top: 20px;
+        width: 48%;
+        border: 0;
+        padding: 5px 30px;
+        font-size: 16px;
+        &:nth-of-type(1) {
+          background-color: #32aaa7;
+          color: white;
+        }
+        &:nth-of-type(2) {
+          background-color: white;
+          color: #32aaa7;
+          border: 2px solid #32aaa7;
+        }
+      }
+    }
+  }
+.cust_modal{
+  position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    padding-left: 120px;
+    box-sizing: border-box;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);
+}
+.search__btn {
+    padding-top: 20px;
+    cursor: pointer;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    font-weight: 500;
+
+    & .search_icon {
+      color: #32aaa7;
+    }
+  }
 .licevoischet__page {
   &__summ {
     text-align: center;

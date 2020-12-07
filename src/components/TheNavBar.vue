@@ -31,7 +31,8 @@
           <ul class="sub_menu">
             <li class="mobilis"><span class="i_m">Структура</span></li>
             <li>
-              <router-link to="/organization-period">Организация текущего периода</router-link>
+              <router-link to="/organization-period"
+              v-if="role ==='Клиент'">Организация текущего периода</router-link>
             </li>
             <li>
               <router-link to="/organization-by-period">
@@ -52,6 +53,7 @@
             <li class="mobilis"><span class="i_m">Отчеты</span></li>
             <li><router-link to="/indicators">Показатели</router-link></li>
             <li><router-link to="/bonus-history">История бонусов (КЕ)</router-link></li>
+            <li><router-link to="/points-history">История баллов </router-link></li>
             <li><router-link to="account-detail">Движение по лицевому счёту</router-link></li>
             <li><a href="#">Отчёт по реферальным ссылкам</a></li>
           </ul>
