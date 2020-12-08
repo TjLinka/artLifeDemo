@@ -93,16 +93,6 @@
           </div>
           <div class="row edit mt-5">
             <div class="col-sm-6">
-              <el-input
-                type="number"
-                name=""
-                id="art"
-                placeholder="Пользователь"
-                clearable
-                v-model="filter.user"
-              />
-            </div>
-            <div class="col-sm-6">
            <div class="col-sm update">
               <button class="mr-2">Показать</button><button>Сбросить</button>
             </div>
@@ -160,7 +150,7 @@ export default {
         },
         {
           key: 'points_cnt',
-          label: 'Сумма балов',
+          label: 'Сумма баллов',
         },
         {
           key: 'price_cnt',

@@ -46,9 +46,13 @@
         </div>
         <div class="row edit ">
           <div class="col-md-6 mt-3">
-            <input type="date" name="bthdte" id="bthdte" required v-model="userInfo.bthdte" />
-            <label for="bthdte">Дата рождения:</label>
-            <span class="clear_icon" @click="clearInput('bthdte')">X</span>
+            <date-picker
+              v-model="userInfo.bthdte"
+              format="DD.MM.YYYY"
+              type="date"
+              placeholder="Дата рождения"
+              style="width: 100%"
+            ></date-picker>
           </div>
           <div class="col-md-6 mt-3">
             <input type="text" name="skype" id="skype" required v-model="userInfo.skype" />
@@ -134,10 +138,14 @@
 
 <script>
 import md5 from 'md5';
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
+import 'vue2-datepicker/locale/ru';
 import backApi from '../assets/backApi';
 
 export default {
   name: 'MyInfoEdit',
+  components: { DatePicker },
   data() {
     return {
       password: {},
@@ -249,7 +257,7 @@ input[type='date']:valid{
     transition: 0.15s ease-in-out;
     color: #9a9a9a;
     font-size: 14px;
-    z-index: 20;
+    z-index: 10;
   }
   input {
     width: 100%;
@@ -300,5 +308,20 @@ input[type='date']:valid{
   .save__newinfo {
     width: 100%;
   }
+}
+</style>
+<style>
+.mx-input{
+  border: 0 !important;
+  border-bottom: 1px solid #dee2f3 !important;
+}
+.mx-calendar-content .cell:hover{
+  color: #32aaa7;
+}
+.mx-table-date .today{
+  color: #32aaa7;
+}
+.mx-icon-calendar, .mx-icon-clear{
+  right: 0;
 }
 </style>

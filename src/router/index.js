@@ -101,6 +101,27 @@ const routes = [
     meta: { requiresAuth: true, requiresRole: 'Дистрибьютор' },
     // Видит только Дистрибьютор +
   },
+  {
+    path: '/registration',
+    name: 'Registration',
+    component: () => import('../views/Registration.vue'),
+    meta: { requiresAuth: true },
+    // Видит только Дистрибьютор +
+  },
+  {
+    path: '/rights',
+    name: 'Rights',
+    component: () => import('../views/Rights.vue'),
+    meta: { requiresAuth: true },
+    // Видит только Дистрибьютор +
+  },
+  {
+    path: '/transfermanagement',
+    name: 'TransferManagement',
+    component: () => import('../views/TransferManagement.vue'),
+    meta: { requiresAuth: true },
+    // Видит только Дистрибьютор +
+  },
 ];
 
 const router = new VueRouter({

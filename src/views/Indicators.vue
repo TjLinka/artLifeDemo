@@ -258,7 +258,7 @@ export default {
     transition: 0.15s ease-in-out;
     color: #9a9a9a;
     font-size: 14px;
-    z-index: 20;
+    z-index: 10;
   }
   input {
     width: 100%;

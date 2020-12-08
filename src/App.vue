@@ -54,7 +54,7 @@ input[type='radio']{
 }
 .custom-control-label::after{
     position: absolute;
-    top: 0.47rem;
+    top: 0.5rem;
     left: -1.25rem;
     display: block;
     border-radius: 50%;
@@ -222,5 +222,8 @@ th[aria-colindex='1']{
 }
 .table .thead-light th{
   background: #DEE2F3;
+}
+.b-table-sticky-header, .table-responsive, [class*="table-responsive-"]{
+  margin-bottom: 0;
 }
 </style>

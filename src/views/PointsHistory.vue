@@ -30,6 +30,12 @@
           <template #cell(comdte)="data">
             {{ data.value }}
           </template>
+          <template #cell(income)="data">
+            {{ data.value | localInt }}
+          </template>
+          <template #cell(outcome)="data">
+            {{ data.value | localInt}}
+          </template>
       </b-table>
       <h2 class="licevoischet__page__summ">
         НА СЧЁТ = {{ summIncome }} , СО СЧЕТА = {{ summOutcome }}, ИЗМЕНЕНИЯ = {{ changes }}
@@ -285,7 +291,7 @@ export default {
     transition: 0.15s ease-in-out;
     color: #9a9a9a;
     font-size: 14px;
-    z-index: 20;
+    z-index: 10;
   }
   input {
     width: 100%;
@@ -307,6 +313,7 @@ export default {
   }
 }
 .licevoischet__page {
+  padding-bottom: 40px;
   &__summ {
     text-align: center;
     background-color: #dee2f3;

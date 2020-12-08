@@ -13,6 +13,13 @@ Vue.use(BootstrapVue);
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
 
+Vue.filter('localInt', (value) => {
+  const formatter = new Intl.NumberFormat('ru');
+  if (!value) {
+    return '';
+  }
+  return formatter.format(value);
+});
 new Vue({
   router,
   store,

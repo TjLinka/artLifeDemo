@@ -61,11 +61,11 @@
       <footer class="cust_modal">
               <div class="row">
         <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
-          Фильтр <i class="el-icon-search search_icon"></i>
+          Настройки дерева <i class="el-icon-search search_icon"></i>
         </div>
       </div>
       <div v-if="searchActive" class="organization__modal">
-        <h3>Поиск партнера</h3>
+        <h3>Настройки дерева</h3>
         <i
           class="mr-1 el-icon-arrow-left"
           @click="periodIndex = periodIndex - 1 >= 0 ? periodIndex - 1 : periods.length - 1"
@@ -130,7 +130,7 @@ export default {
       },
       {
         property: 'noact',
-        title: 'не активность',
+        title: 'Не активность',
         formater: (item) => item.noact,
       },
       {
@@ -160,17 +160,17 @@ export default {
       },
       {
         property: 'rank_beg',
-        title: 'ранг на начало',
+        title: 'Ранг на начало',
         formater: (item) => item.rank_beg,
       },
       {
         property: 'rank_calc',
-        title: 'расчетный ранг',
+        title: 'Расчетный ранг',
         formater: (item) => item.rank_calc,
       },
       {
         property: 'reserve',
-        title: 'балы в резерве',
+        title: 'Баллы в резерве',
         formater: (item) => item.reserve,
       },
     ];

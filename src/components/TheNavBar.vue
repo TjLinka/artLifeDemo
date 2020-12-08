@@ -20,7 +20,7 @@
             <li><router-link to="/">Карточка партнера</router-link></li>
             <li><router-link to="/myinfoedit">Редактирование личных данных</router-link></li>
             <li><router-link to="/sponsorcard">Данные спонсора</router-link></li>
-            <li><router-link to="#">Передача прав</router-link></li>
+            <li><router-link to="/rights">Передача прав</router-link></li>
           </ul>
         </li>
         <li>
@@ -40,7 +40,9 @@
               </router-link>
             </li>
             <li>
-              <router-link to="#">Управление трансфертами структуры(плоское дерево)</router-link>
+              <router-link to="/transfermanagement">
+              Управление трансфертами структуры(плоское дерево)
+              </router-link>
             </li>
           </ul>
         </li>
@@ -66,7 +68,7 @@
           <ul class="sub_menu">
             <li class="mobilis"><span class="i_m">Операции</span></li>
             <li><a href="#">Создать реферальные ссылки</a></li>
-            <li><a href="#">Регистрация партнёра</a></li>
+            <li><router-link to="/registration">Регистрация партнёра</router-link></li>
           </ul>
         </li>
         <li class="hover">
@@ -77,7 +79,7 @@
           <ul class="sub_menu">
             <li class="mobilis"><span class="i_m">Покупки</span></li>
             <li><router-link to="/purchases-history">История покупок</router-link></li>
-            <li><router-link to="/returns-history">История возвартов</router-link></li>
+            <li><router-link to="/returns-history">История возвратов</router-link></li>
           </ul>
         </li>
       </ul>

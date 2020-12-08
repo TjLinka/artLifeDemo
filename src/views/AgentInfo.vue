@@ -92,17 +92,17 @@
               </div>
               <div class="col-md-6 mt-3">
                 <p>Личный объем (ЛО):</p>
-                <p>{{ userinfo.lo }}</p>
+                <p>{{ userinfo.lo | localInt }}</p>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 mt-3">
                 <p>Групповой объем (ГО):</p>
-                <p>{{ userinfo.go }}</p>
+                <p>{{ userinfo.go | localInt}}</p>
               </div>
               <div class="col-md-6 mt-3">
                 <p>Накопленный групповой объем (НГО):</p>
-                <p>{{ userinfo.ngo }}</p>
+                <p>{{ userinfo.ngo | localInt}}</p>
               </div>
             </div>
             <div class="row">
@@ -112,13 +112,13 @@
               </div>
               <div class="col-md-6 mt-3">
                 <p>Квалификационный объем (КО):</p>
-                <p>{{ userinfo.ko }}</p>
+                <p>{{ userinfo.ko | localInt}}</p>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 mt-3">
                 <p>Баллы в резерве:</p>
-                <p>{{ userinfo.reserve }}</p>
+                <p>{{ userinfo.reserve | localInt }}</p>
               </div>
               <div class="col-md-6 mt-3">
                 <p>Ранг на начало:</p>
@@ -305,6 +305,15 @@ export default {
       return this.role !== 'Клиент';
     },
   },
+  // filters: {
+  //   localInt: (value) => {
+  //     const formatter = new Intl.NumberFormat('ru');
+  //     if (!value) {
+  //       return '-';
+  //     }
+  //     return formatter.format(value);
+  //   },
+  // },
 };
 </script>
 
