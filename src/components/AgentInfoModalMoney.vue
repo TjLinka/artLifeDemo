@@ -58,7 +58,7 @@ import backApi from '../assets/backApi';
 
 export default {
   name: 'AgentInfoModalMoney',
-  props: ['lo', 'reserve'],
+  props: ['lo', 'reserve', 'id'],
   data() {
     return {
       state: '',
@@ -99,7 +99,8 @@ export default {
       if (this.sum !== null && this.sum !== '') {
         await backApi
           .post('/agent/send_money', {
-            to: this.selectedUser,
+            agent_from: this.id,
+            agent_to: this.selectedUser,
             amount: this.sum,
           })
           .catch(() => {
@@ -108,6 +109,7 @@ export default {
         backApi.get('/agent/profile').then((Response) => {
           this.transfertInfo = Response.data;
         });
+        this.$emit('enlarge-text');
       }
     },
   },

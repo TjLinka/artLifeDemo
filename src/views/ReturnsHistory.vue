@@ -46,7 +46,10 @@
           </div>
         </div>
         <div v-if="searchActive" class="organization__modal">
-          <h3>Поиск</h3>
+          <h3>Поиск
+            <span @click="searchActive = !searchActive"
+            style="display: inline-block; float: right; color: #32aaa7; cursor: pointer">X</span>
+          </h3>
           <div class="row edit mt-5">
             <div class="col-sm-6">
               <el-input
@@ -93,8 +96,11 @@
           </div>
           <div class="row edit mt-5">
             <div class="col-sm-6">
+            </div>
+            <div class="col-sm-6">
            <div class="col-sm update">
-              <button class="mr-2">Показать</button><button>Сбросить</button>
+              <button class="mr-2" @click="updateData">Показать</button>
+              <button @click="resetData">Сбросить</button>
             </div>
             </div>
           </div>
@@ -226,6 +232,39 @@ export default {
     },
   },
   methods: {
+    resetData() {
+      backApi.get('agent/refunds').then((Response) => {
+        this.entries = Response.data.entries;
+        this.return_details = new Array(this.total_rows).fill(undefined);
+      });
+      this.searchActive = !this.searchActive;
+      this.filter.articul = null;
+      this.filter.name = null;
+      this.filter.naknum = null;
+      this.filter.docnum = null;
+    },
+    updateData() {
+      const data = {
+        params: {
+          beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
+          end_dte: this.rangeDate[1] ? this.rangeDate[1] : null,
+          articul: this.filter.articul,
+          name: this.filter.name,
+          // eslint-disable-next-line radix
+          saleid: this.filter.naknum ? parseInt(this.filter.naknum) : null,
+          // eslint-disable-next-line radix
+          refund_id: this.filter.docnum ? parseInt(this.filter.docnum) : null,
+        },
+      };
+      backApi.get('/agent/refunds', data).then((Response) => {
+        this.entries = Response.data.entries;
+      });
+      this.filter.articul = null;
+      this.filter.name = null;
+      this.filter.naknum = null;
+      this.filter.docnum = null;
+      this.searchActive = !this.searchActive;
+    },
     // eslint-disable-next-line no-unused-vars
     filterFunc(row, filter) {
       return 1;

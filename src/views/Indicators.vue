@@ -10,14 +10,15 @@
         Показатели
         </h2>
       <div class="row cur_p">
-        <div class="col-sm-6 current_period">
-            <strong>Текущий период:
+        <div class="col-sm current_period">
+            <p>Текущий период:
               {{ months[new Date(currentPeriodTop.comdte).getMonth()] }}
-              {{new Date(currentPeriodTop.comdte).getFullYear()}}</strong><br>
+              {{new Date(currentPeriodTop.comdte).getFullYear()}}<br>
             Статус предыдущего года:
             <span :style="`color: ${periodStatus}`">
               {{ currentPeriodTop.prev_status }}
             </span>
+            </p>
         </div>
       </div>
       <div class="sponsor__page__description">
@@ -434,6 +435,9 @@ export default {
 
   & br{
     display: none;
+  }
+  & p {
+    margin-bottom: 0 ;
   }
 }
 .update{

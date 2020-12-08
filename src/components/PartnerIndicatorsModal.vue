@@ -1,23 +1,27 @@
 <template>
   <div class="licevoischet__page">
     <div class="container">
-      <h4 class="mt-4">Передача прав
-        <span v-on:click="$emit('enlarge-text')"
-        style="display: inline-block; float: right; color: #32aaa7; cursor: pointer">X</span>
+      <h4 class="mt-4">
+        Настройки партнера
+        <span
+          v-on:click="$emit('enlarge-text')"
+          style="display: inline-block; float: right; color: #32aaa7; cursor: pointer"
+          >X</span
+        >
       </h4>
-      <div class="row transfert mt-5 edit">
-        <div class="col-md-6">
+      <div class="row edit">
+        <div class="col-md-6 mt-4">
           <el-autocomplete
             v-model="state"
             :fetch-suggestions="querySearchAsync"
             placeholder="Партнер получатель"
             @select="handleSelect"
-            style="width: 100%"
           ></el-autocomplete>
         </div>
-        <div class="col-md-6 trans_btns">
-          <button @click="giveRights">Передать права</button>
-          <button @click="resetData">Сбросить</button>
+        <div class="col-md-6 mt-4">
+          <div class="col-md trans_btns">
+            <button v-on:click="$emit('update-data', selectedUser)">Показать</button>
+          </div>
         </div>
       </div>
     </div>
@@ -38,17 +42,16 @@
 import backApi from '../assets/backApi';
 
 export default {
-  name: 'RightsModalTake',
+  name: 'PartnerIndicatorsModal',
+  props: ['lo', 'reserve'],
   data() {
     return {
       state: '',
-      selectedUser: null,
+      links: [],
+      selectedUser: '',
     };
   },
   mounted() {
-    backApi.get('/agent/profile').then((Response) => {
-      this.transfertInfo = Response.data;
-    });
   },
   methods: {
     querySearchAsync(queryString, cb) {
@@ -63,19 +66,19 @@ export default {
     },
     handleSelect(item) {
       this.selectedUser = item.agent_id;
-    },
-    resetData() {
-      this.selectedUser = null;
-      this.$emit('enlarge-text');
-    },
-    giveRights() {
-      backApi.post('/agent/share-transfert', { agent_to: this.selectedUser });
-      this.$emit('enlarge-text');
+      console.log(this.selectedUser);
     },
   },
 };
 </script>
 <style lang="scss" scoped>
+.licevoischet__page{
+  padding-bottom: 40px;
+  padding-top: 0px;
+}
+div[role='combobox']{
+  width: 100%;
+}
 .transfert {
   margin-bottom: 30px;
   margin-top: 30px;
@@ -112,8 +115,12 @@ export default {
   }
 }
 .trans_btns {
-  display: flex;
-  justify-content: space-between;
+  // display: flex;
+  // justify-content: space-between;
+  & button{
+    display: block;
+    float: right;
+  }
 }
 @media (max-width: 425px) {
   .perevod {
@@ -128,48 +135,5 @@ export default {
     }
   }
 }
-.col-md-6,
-.col-md {
-  position: relative;
-  span {
-    display: none;
-    position: absolute;
-    right: 18px;
-    top: 10px;
-    color: #32aaa7;
-    cursor: pointer;
-  }
-  label {
-    position: absolute;
-    top: 5px;
-    left: 20px;
-    transition: 0.15s ease-in-out;
-    color: #9a9a9a;
-    font-size: 14px;
-    z-index: 10;
-  }
-  input {
-    width: 100%;
-    border: 0;
-    height: 35px;
-    border-radius: 0;
-    border-bottom: 1px solid #dee2f3;
-    outline: none;
-    padding-left: 5px;
-    font-size: 14px;
-    &:focus ~ label,
-    &:valid ~ label {
-      font-size: 12px;
-      top: -10px;
-    }
-    &:valid ~ span {
-      display: block;
-    }
-  }
-}
 </style>
-<style>
-div[role='combobox']{
-  width: 100%;
-}
-</style>
+<style></style>

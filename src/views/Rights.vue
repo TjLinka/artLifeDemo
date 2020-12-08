@@ -26,7 +26,7 @@
       </div>
       <div class="row mt-3">
         <div class="col-md-6 rights_btns">
-          <button @click="showModal2 = !showModal2">Забрать права</button>
+          <button @click="takeRight">Забрать права</button>
           <button @click="showModal1 = !showModal1">Передать права</button>
         </div>
       </div>
@@ -39,11 +39,6 @@
         </template>
       </b-table>
     </div>
-    <footer class="container-fluid cust_modal" v-if="showModal1">
-      <div>
-        <RightsModalTake v-on:enlarge-text="showModal1 = false"/>
-      </div>
-    </footer>
     <footer class="container-fluid cust_modal" v-if="showModal2">
       <div>
         <RightsModalGive v-on:enlarge-text="showModal2 = false"/>
@@ -53,35 +48,24 @@
 </template>
 
 <script>
-import RightsModalTake from '../components/RightsModalTake.vue';
+import backApi from '../assets/backApi';
 import RightsModalGive from '../components/RightsModalGive.vue';
 
 export default {
   name: 'Rights',
-  components: { RightsModalTake, RightsModalGive },
+  components: { RightsModalGive },
   data() {
     return {
       showModal1: false,
       showModal2: false,
-      entries: [
-        {
-          agent_id: '921008',
-          store_name: 'Томск-Машкина',
-          rank_beg: 'Директор',
-          rank_calc: 'Директор',
-          rank_end: 'Директор',
-          lo: 456711,
-          go: 478512,
-          reserve: 23671,
-        },
-      ],
+      entries: [],
       fields: [
         {
-          key: 'agent_id',
+          key: 'id',
           label: 'Номер партнёра',
         },
         {
-          key: 'store_name',
+          key: 'stockname',
           label: 'Склад обслуживания',
         },
         {
@@ -111,7 +95,15 @@ export default {
       ],
     };
   },
+  mounted() {
+    backApi.get('/agent/share-transfert-list').then((Response) => {
+      this.entries = Response.data.entries;
+    });
+  },
   methods: {
+    takeRight() {
+      backApi.post('/agent/share-transfert', { agent_to: null });
+    },
     back() {
       this.$router.go(-1);
     },

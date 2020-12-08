@@ -18,15 +18,18 @@
       </h2>
       <div class="myinfo__page__description">
         <div class="myfoto">
-          <img src="../assets/imgs/unnamed 1.png" alt="" />
+          <div>
+            <img v-if="userinfo.male" src="../assets/imgs/male.png" alt="" />
+            <img v-else src="../assets/imgs/female.png" alt="" />
+          </div>
         </div>
         <div class="container top__info">
           <div class="row" v-if="transfertAccess">
             <div class="col-md mt-1">
-              <span class="modal_btn" @click="showTransfModal1">
+              <span class="modal_btn" @click="showTransfModal2">
                 Перевести между лицевыми счетами
               </span>
-              <span class="modal_btn" @click="showTransfModal2">
+              <span class="modal_btn" @click="showTransfModal1">
                 Перевести баллы между партнерами
               </span>
             </div>
@@ -204,13 +207,13 @@
      <footer class="container-fluid cust_modal" v-if="showModal1">
       <div>
         <AgentInfoModalPoints v-on:enlarge-text="showModal1 = false"
-        :lo="userinfo.lo" :reserve="userinfo.reserve"/>
+        :lo="userinfo.lo" :reserve="userinfo.reserve" :id="userinfo.id"/>
       </div>
       </footer>
      <footer class="container-fluid cust_modal" v-if="showModal2">
       <div>
         <AgentInfoModalMoney v-on:enlarge-text="showModal2 = false"
-        :lo="userinfo.lo" :reserve="userinfo.reserve"/>
+        :lo="userinfo.lo" :reserve="userinfo.reserve" :id="userinfo.id"/>
       </div>
       </footer>
     <!-- <div>
@@ -283,6 +286,7 @@ export default {
       backApi
         .get('/agent/profile/child', { params: { another_agent_id: this.$route.params.id } })
         .then((Response) => {
+          console.log(Response.data);
           this.loaded = !this.loaded;
           const data = ReplaceNull(Response.data);
           this.userinfo = data;

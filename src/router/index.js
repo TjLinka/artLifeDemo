@@ -122,6 +122,20 @@ const routes = [
     meta: { requiresAuth: true },
     // Видит только Дистрибьютор +
   },
+  {
+    path: '/partnerindicators',
+    name: 'PartnerIndicators',
+    component: () => import('../views/PartnerIndicators.vue'),
+    meta: { requiresAuth: true },
+    // Видит только Дистрибьютор +
+  },
+  {
+    path: '/partnerindicators/:id',
+    name: 'PartnerIndicators',
+    component: () => import('../views/PartnerIndicators.vue'),
+    meta: { requiresAuth: true },
+    // Видит только Дистрибьютор +
+  },
 ];
 
 const router = new VueRouter({

@@ -11,7 +11,10 @@
         </h2>
       <div class="sponsor__page__description">
         <div class="myfoto">
-          <div><img src="../assets/imgs/unnamed 1.png" alt="" /></div>
+          <div>
+            <img v-if="userInfo.male" src="../assets/imgs/male.png" alt="" />
+            <img v-else src="../assets/imgs/female.png" alt="" />
+          </div>
           <p>{{userInfo.name}}</p>
         </div>
         <div class="container top__info">
@@ -59,6 +62,7 @@ export default {
   },
   mounted() {
     backApi.get('agent/sponsor').then((Response) => {
+      console.log(Response.data);
       this.userInfo = Response.data;
     });
   },

@@ -17,9 +17,7 @@
         <span class="mr-3">Экспорт в pdf</span>
       </p>
       <b-table responsive :fields="fields" :items="entries" head-variant="light"
-      class="points_history_table" outlined :filter="filter"
-      :filter-function="filFunc"
-      >
+      class="points_history_table" outlined>
         <template #table-colgroup="scope">
           <col
             v-for="field in scope.fields"
@@ -54,21 +52,21 @@
           <div class="col-md-12 mt-4">
             <b-form-group label="" class="flex-radio">
               <b-form-radio
-                v-model="points_rule"
+                v-model="points_type"
                 name="some-radios-1"
                 value="0"
                 class="radio mr-3"
                 >Резерв</b-form-radio
               >
               <b-form-radio
-                v-model="points_rule"
+                v-model="points_type"
                 name="some-radios-1"
                 value="1"
                 class="radio mr-3"
                 >ЛО</b-form-radio
               >
               <b-form-radio
-                v-model="points_rule"
+                v-model="points_type"
                 name="some-radios-1"
                 :value="null"
                 class="radio"
@@ -80,7 +78,7 @@
         <div class="row edit mt-4">
           <div class="col-md-6">
             <input type="text" name="operType"
-            id="operType" required v-model="filter.operType" />
+            id="operType" required v-model="operType" />
             <label for="operType">Тип операции:</label>
             <span class="clear_icon" @click="clearOperType('operType')">X</span>
           </div>
@@ -92,7 +90,7 @@
           </div> -->
           <div class="col-md-6">
            <input type="text" name="comment"
-            id="comment" required v-model="filter.comment" />
+            id="comment" required v-model="comment" />
             <label for="comment">Комментарий:</label>
             <span class="clear_icon" @click="clearComment('comment')">X</span>
           </div>
@@ -119,14 +117,10 @@ export default {
   components: { DatePicker },
   data() {
     return {
-      filter: {
-        comment: '',
-        operType: '',
-      },
+      operType: null,
+      comment: null,
+      points_type: null,
       currentPeriodTop: {},
-      userInfo: {},
-      points_rule: null,
-      autoship: null,
       searchActive: false,
       periods: [],
       periodIndex: 0,
@@ -219,10 +213,10 @@ export default {
   },
   methods: {
     // eslint-disable-next-line no-unused-vars
-    filFunc(row, filter) {
-      return (row.opertype.toLowerCase().search(filter.operType.toLowerCase().trim()) !== -1
-      && row.comm.toLowerCase().search(filter.comment.toLowerCase().trim()) !== -1);
-    },
+    // filFunc(row, filter) {
+    //   return (row.opertype.toLowerCase().search(filter.operType.toLowerCase().trim()) !== -1
+    //   && row.comm.toLowerCase().search(filter.comment.toLowerCase().trim()) !== -1);
+    // },
     clearComment() {
       this.filter.comment = '';
     },
@@ -236,9 +230,17 @@ export default {
       this.searchActive = !this.searchActive;
     },
     updateData() {
-      backApi.post('/agent/points-rule', {
-        points_rule: this.points_rule,
-        autoship: this.autoship === '' ? null : this.autoship,
+      const data = {
+        params: {
+          beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
+          end_dte: this.rangeDate[1] ? this.rangeDate[1] : null,
+          points_type: this.points_type,
+          operation_type: this.operType,
+          comm_find: this.comment,
+        },
+      };
+      backApi.get('/agent/points-detail', data).then((Response) => {
+        this.entries = Response.data.entries;
       });
     },
     back() {

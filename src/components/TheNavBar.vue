@@ -57,7 +57,6 @@
             <li><router-link to="/bonus-history">История бонусов (КЕ)</router-link></li>
             <li><router-link to="/points-history">История баллов </router-link></li>
             <li><router-link to="account-detail">Движение по лицевому счёту</router-link></li>
-            <li><a href="#">Отчёт по реферальным ссылкам</a></li>
           </ul>
         </li>
         <li>
@@ -67,7 +66,6 @@
           </a>
           <ul class="sub_menu">
             <li class="mobilis"><span class="i_m">Операции</span></li>
-            <li><a href="#">Создать реферальные ссылки</a></li>
             <li><router-link to="/registration">Регистрация партнёра</router-link></li>
           </ul>
         </li>
