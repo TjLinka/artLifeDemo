@@ -118,7 +118,6 @@ export default {
   },
   mounted() {
     backApi.get('/agent/share-transfert-list').then((Response) => {
-      console.log(Response.data);
       this.entries = Response.data.entries;
     });
   },
