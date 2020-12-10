@@ -1,20 +1,20 @@
 <template>
   <div class="licevoischet__page">
     <div class="container">
-      <h4 class="mt-4">Забрать права
+      <h4 class="mt-4 modal_title">Забрать права
         <span v-on:click="$emit('enlarge-text')"
         style="display: inline-block; float: right; color: #32aaa7; cursor: pointer">X</span>
       </h4>
       <div class="row transfert mt-5">
-        <div class="col-md-6">
+        <div class="col-md-6 custom_input">
             <input type="text" name="userId" id="userId" required v-model="userId" />
             <label for="userId">Номер:</label>
-            <span class="clear_icon" @click="clearID('userId')">X</span>
+            <span class="clear_icon" @click="clearID('userId')"></span>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 custom_input">
             <input type="text" name="userFio" id="userFio" required v-model="userFio" />
             <label for="userFio">Фамилия:</label>
-            <span class="clear_icon" @click="clearFio('userFio')">X</span>
+            <span class="clear_icon" @click="clearFio('userFio')"></span>
         </div>
       </div>
       <div class="row edit mt-5">

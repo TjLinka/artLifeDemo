@@ -1,13 +1,9 @@
 <template>
   <div class="licevoischet__page">
     <div class="container">
-      <h4 class="mt-4">
+      <h4 class="mt-4 modal_title">
         Перевести баллы между партнёрами
-        <span
-          v-on:click="$emit('enlarge-text')"
-          style="display: inline-block; float: right; color: #32aaa7; cursor: pointer"
-          >X</span
-        >
+        <span class="close_btn" v-on:click="$emit('enlarge-text')"></span>
       </h4>
       <div class="row transfert">
         <div class="col-md-6">
@@ -116,6 +112,11 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.close_btn{
+  display: inline-block;
+  position: absolute;
+  right: 0;
+}
 div[role='combobox']{
   width: 100%;
 }
@@ -155,24 +156,40 @@ div[role='combobox']{
   }
 }
 .trans_btns {
-  // display: flex;
-  // justify-content: space-between;
-  & button{
-    display: block;
-    float: right;
+  display: flex;
+  justify-content: space-between;
+}
+@media (max-width: 768px) {
+  .perevod {
+    font-size: 20px;
+    // text-transform: uppercase;
+    margin-bottom: 0;
   }
 }
 @media (max-width: 425px) {
   .perevod {
-    font-size: 18px;
-    text-transform: uppercase;
+    font-size: 16px;
+    // text-transform: uppercase;
+    margin-bottom: 0;
   }
   .trans_btns {
     flex-direction: column;
     button {
       width: 100%;
       margin-bottom: 20px;
+      font-size: 16px;
     }
+  }
+  .transfert {
+      & p {
+        font-size: 14px;
+      }
+      & > .col-md-6 {
+        p:nth-of-type(1) {
+        }
+        p:nth-of-type(2) {
+        }
+      }
   }
 }
 </style>

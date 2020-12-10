@@ -8,7 +8,6 @@
             height="12"
             viewBox="0 0 18 12"
             fill="none"
-            style="margin-right: 30px;"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
@@ -53,51 +52,51 @@
         <span @click="searchActive = !searchActive" class="close_btn">X</span>
         <h3 class="mt-4">Настройка автоматической подачи баллов в трансферт</h3>
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-6 custom_input">
             <input type="text" name="userFio" id="userFio" required/>
             <label for="userFio">Номер:</label>
-            <span class="clear_icon" @click="clearFio('userFio')">X</span>
+            <span class="clear_icon" @click="clearFio('userFio')"></span>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 custom_input">
             <input type="text" name="userFio" id="userFio" required/>
             <label for="userFio">Фамилия:</label>
-            <span class="clear_icon" @click="clearFio('userFio')">X</span>
+            <span class="clear_icon" @click="clearFio('userFio')"></span>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-6 custom_input">
             <input type="text" name="userFio" id="userFio" required/>
             <label for="userFio">Номер:</label>
-            <span class="clear_icon" @click="clearFio('userFio')">X</span>
+            <span class="clear_icon" @click="clearFio('userFio')"></span>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 custom_input">
             <input type="text" name="userFio" id="userFio" required/>
             <label for="userFio">Фамилия:</label>
-            <span class="clear_icon" @click="clearFio('userFio')">X</span>
+            <span class="clear_icon" @click="clearFio('userFio')"></span>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-6 custom_input">
             <input type="text" name="userFio" id="userFio" required/>
             <label for="userFio">Номер:</label>
-            <span class="clear_icon" @click="clearFio('userFio')">X</span>
+            <span class="clear_icon" @click="clearFio('userFio')"></span>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 custom_input">
             <input type="text" name="userFio" id="userFio" required/>
             <label for="userFio">Фамилия:</label>
-            <span class="clear_icon" @click="clearFio('userFio')">X</span>
+            <span class="clear_icon" @click="clearFio('userFio')"></span>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-6 custom_input">
             <input type="text" name="userFio" id="userFio" required/>
             <label for="userFio">Номер:</label>
-            <span class="clear_icon" @click="clearFio('userFio')">X</span>
+            <span class="clear_icon" @click="clearFio('userFio')"></span>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 custom_input">
             <input type="text" name="userFio" id="userFio" required/>
             <label for="userFio">Фамилия:</label>
-            <span class="clear_icon" @click="clearFio('userFio')">X</span>
+            <span class="clear_icon" @click="clearFio('userFio')"></span>
           </div>
         </div>
         <div class="row edit mt-4">
@@ -250,17 +249,6 @@ export default {
     font-weight: 500;
     color: #32aaa7;
     cursor: pointer;
-  }
-.search__btn {
-    padding-top: 20px;
-    cursor: pointer;
-    margin-bottom: 30px;
-    text-transform: uppercase;
-    font-weight: 500;
-
-    & .search_icon {
-      color: #32aaa7;
-    }
   }
 </style>
 <style>

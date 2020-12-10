@@ -3,7 +3,7 @@
     <div class="container">
       <h2 class="page__title">
                               <p class="mobile_back" @click="back">
-        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" style="margin-right: 30px;" xmlns="http://www.w3.org/2000/svg">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
@@ -22,13 +22,14 @@
         </div>
       </div>
       <div class="sponsor__page__description">
-        <div class="row mobile_trans mt-4">
-          <div class="col search__btn" @click="toggleSearch" v-if="!searchActive">
+        <div class="row mobile_trans">
+          <div class="col search__btn" @click="toggleSearch">
             Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
           </div>
         </div>
-        <h2 class="mt-4 mb-4">Мои текущие показатели</h2>
-        <BasePeriodPicker :currentPeriod="currentPeriod" v-on:next-period="nextPeriod"/>
+        <h2 class="mt-4 mb-4 page__caption">Мои текущие показатели</h2>
+        <BasePeriodPicker :currentPeriod="currentPeriod"
+        v-on:next-period="nextPeriod" class="period_picker"/>
         <div class="container top__info">
           <div class="row">
             <div class="col-md-6 mt-4">
@@ -89,45 +90,47 @@
         </div>
       </div>
       <div v-if="searchActive" class="organization__modal">
-        <span @click="closeModal" class="close_btn">X</span>
-        <h3 class="mt-4">Настройка автоматической подачи баллов в трансферт</h3>
-        <div class="row mt-4">
-          <div class="col-md-12">
-            <b-form-group label="">
-              <b-form-radio
-                v-model="points_rule"
-                name="some-radios-1"
-                value="0"
-                class="radio mr-3"
-                >Все баллы в трансферт</b-form-radio
-              >
-              <b-form-radio
-                v-model="points_rule"
-                name="some-radios-1"
-                value="1"
-                class="radio mr-3"
-                >Правило по умолчанию по выбору склада</b-form-radio
-              >
-              <b-form-radio
-                v-model="points_rule"
-                name="some-radios-1"
-                :value="null"
-                class="radio"
-                >Баллы в резерв</b-form-radio
-              >
-            </b-form-group>
+        <div class="container">
+          <h3 class="mt-4 modal_title">Настройка автоматической подачи баллов в трансферт
+            <span @click="closeModal" class="close_btn"></span></h3>
+          <div class="row mt-4">
+            <div class="col-md">
+              <b-form-group label="">
+                <b-form-radio
+                  v-model="points_rule"
+                  name="some-radios-1"
+                  value="0"
+                  class="radio mr-3"
+                  >Все баллы в трансферт</b-form-radio
+                >
+                <b-form-radio
+                  v-model="points_rule"
+                  name="some-radios-1"
+                  value="1"
+                  class="radio mr-3"
+                  >Правило по умолчанию по выбору склада</b-form-radio
+                >
+                <b-form-radio
+                  v-model="points_rule"
+                  name="some-radios-1"
+                  :value="null"
+                  class="radio"
+                  >Баллы в резерв</b-form-radio
+                >
+              </b-form-group>
+            </div>
           </div>
-        </div>
-        <div class="row edit">
-          <div class="col-md-6">
-            <input type="number" name="autoship" id="autoship" required v-model="autoship" />
-            <label for="autoship">Обязательный трансферт:</label>
-            <span class="clear_icon" @click="clearInput('autoship')">X</span>
+          <div class="row  mt-4">
+            <div class="col-md-6 custom_input">
+              <input type="number" name="autoship" id="autoship" required v-model="autoship" />
+              <label for="autoship">Количество баллов:</label>
+              <span class="clear_icon" @click="clearInput('autoship')"></span>
+            </div>
           </div>
-        </div>
-        <div class="row edit mt-4">
-          <div class="col-sm-12">
-            <button class="mr-2 update" @click="updateData">Применить</button>
+          <div class="row edit mt-4">
+            <div class="col-md-12">
+              <button class="mr-2 update" @click="updateData">Сохранить</button>
+            </div>
           </div>
         </div>
       </div>
@@ -241,55 +244,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.col-md-6,
-.col-md{
-  position: relative;
-  span {
-    display: none;
-    position: absolute;
-    right: 18px;
-    top: 10px;
-    color: #32aaa7;
-    cursor: pointer;
-  }
-  label {
-    position: absolute;
-    top: 5px;
-    left: 20px;
-    transition: 0.15s ease-in-out;
-    color: #9a9a9a;
-    font-size: 14px;
-    z-index: 10;
-  }
-  input {
-    width: 100%;
-    border: 0;
-    height: 35px;
-    border-radius: 0;
-    border-bottom: 1px solid #dee2f3;
-    outline: none;
-    padding-left: 5px;
-    font-size: 14px;
-    &:focus ~ label,
-    &:valid ~ label {
-      font-size: 12px;
-      top: -10px;
-    }
-    &:valid ~ span {
-      display: block;
-    }
-  }
-}
 .organization__modal {
-  position: relative;
-  & .close_btn {
-    position: absolute;
-    right: 0;
-    top: 0px;
-    font-size: 25px;
-    font-weight: 500;
-    color: #32aaa7;
-    cursor: pointer;
+  & > .container{
+    position: relative;
   }
 }
 .edit {
@@ -318,42 +275,20 @@ export default {
     }
   }
 }
-.search__btn {
-    padding-top: 20px;
-    cursor: pointer;
-    margin-bottom: 30px;
-    text-transform: uppercase;
-    font-weight: 500;
-
-    & .search_icon {
-      color: #32aaa7;
-    }
-  }
 .mobile_trans{
   display: none;
   text-align: left;
   font-weight: 500;
-  font-size: 20px;
+  font-size: 18px;
   & .search_icon{
     position: relative;
     right: 0;
+    top: -1px;
   }
 }
 .sponsor__page {
   margin-top: 40px;
-
-  & .page__title {
-    color: #383a41;
-    font-size: 32px;
-  }
-
   &__description {
-    & h2{
-      font-size: 24px;
-    }
-    & .page__caption {
-      font-size: 20px;
-    }
     & .myfoto {
       display: inline-block;
       margin-top: 30px;
@@ -411,17 +346,6 @@ export default {
     }
   }
 }
-.cust_modal{
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  z-index: 10;
-  width: 100%;
-  padding-left: 120px;
-  box-sizing: border-box;
-  background: #FFFFFF;
-  box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);
-}
 .el-icon-s-tools:before{
   color: #32AAA7;
   position: relative;
@@ -441,8 +365,8 @@ export default {
   }
 }
 .update{
-  display: inline-block;
-  width: 15% !important;
+  display: block;
+  // width: 15% !important;
 }
 @media (min-width: 768px) {
   .sponsor__page{
@@ -453,21 +377,14 @@ export default {
     }
   }
 }
-@media (min-width: 760px) {
+@media (min-width: 770px) {
   .radio{
     display: inline;
   }
 }
 @media (max-width: 760px) {
-  .update{
-    margin-bottom: 20px;
-    width: 100% !important;
-  }
   .organization__modal{
     margin-top: 20px;
-    h3{
-      font-size: 20px;
-    }
   }
   .cur_p{
     margin: 0;
@@ -479,20 +396,36 @@ export default {
     }
   }
 }
-@media (max-width: 500px) {
+@media (max-width: 769px) {
+  .organization__modal{
+  }
   .mobile_trans{
     display: block;
   }
   .desk_trans{
     display: none;
   }
+  .update{
+    margin-bottom: 20px;
+    width: 100% !important;
+  }
+}
+@media (max-width: 500px) {
   .organization__modal{
-    padding: 10px;
     position: fixed;
+    padding-bottom: 60px;
     bottom: 0;
     left: 0;
     z-index: 10;
     background-color: white;
+    box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);
+  }
+  .mobile_trans{
+    font-size: 16px;
+    & i{
+      float: right;
+      font-size: 22px;
+    }
   }
 }
 </style>

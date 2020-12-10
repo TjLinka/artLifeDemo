@@ -3,7 +3,7 @@
     <div class="container-fluid table_container">
       <h2 class="page__title">
         <p class="mobile_back" @click="back">
-        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" style="margin-right: 30px;" xmlns="http://www.w3.org/2000/svg">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
@@ -269,17 +269,6 @@ export default {
     span {
       color: #32aaa7;
       cursor: pointer;
-    }
-  }
-  & .search__btn {
-    padding-top: 20px;
-    cursor: pointer;
-    margin-bottom: 30px;
-    text-transform: uppercase;
-    font-weight: 500;
-
-    & .search_icon {
-      color: #32aaa7;
     }
   }
   & .organization__modal {

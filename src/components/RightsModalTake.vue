@@ -1,7 +1,7 @@
 <template>
   <div class="licevoischet__page">
     <div class="container">
-      <h4 class="mt-4">Передача прав
+      <h4 class="mt-4 modal_title">Передача прав
         <span v-on:click="$emit('enlarge-text')"
         style="display: inline-block; float: right; color: #32aaa7; cursor: pointer">X</span>
       </h4>

@@ -27,6 +27,12 @@ export default {
 </script>
 
 <style lang="scss">
+// ТЕСТОВЫЙ СТИЛЬ ДЛЯ CONTAINER
+@media (min-width: 1200px) {
+  .container, .container-sm, .container-md, .container-lg, .container-xl{
+    max-width: 1920px;
+  }
+}
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
 * {
   padding: 0;
@@ -34,14 +40,11 @@ export default {
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
 }
-*:focus,
-*:active{
-  outline: none !important;
-  box-shadow: none !important;
-}
 input[type='radio']{
   outline: none !important;
 }
+
+// СТИЛИ ДЛЯ RADIO КНОПОК
 .custom-control-input:checked ~ .custom-control-label::before{
     color: #fff;
     border: 2px solid black;
@@ -67,10 +70,89 @@ input[type='radio']{
 .custom-control-input{
   outline: none;
 }
+// КОНЕЦ СТИЛЕЙ ДЛЯ RADIO КНОПОК
+
 main {
   margin-top: 40px;
   padding-bottom: 70px;
   padding-left: 120px;
+}
+
+// СТИЛИ ДЛЯ ЗАГОЛОВКА СТРАНИЦЫ
+.page__title {
+  color: #383a41;
+  font-size: 32px;
+}
+// СТИЛИ ДЛЯ ЗАГОЛОВКА РАЗДЕЛА СТРАНИЦЫ
+.page__caption{
+  font-size: 20px;
+  font-weight: 500;
+}
+// СТИЛИ ДЛЯ ЗАГОЛОВКА МОДАЛКИ
+.modal_title{
+  position: relative;
+  font-size: 24px;
+}
+// КАСТОМНЫЕ INPUT'S
+.custom_input {
+  position: relative;
+  span {
+    display: none;
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    color: #32aaa7;
+    cursor: pointer;
+  }
+  label {
+    position: absolute;
+    top: 5px;
+    left: 20px;
+    transition: 0.15s ease-in-out;
+    color: #9a9a9a;
+    font-size: 16px;
+    z-index: 10;
+  }
+  input {
+    width: 100%;
+    border: 0;
+    height: 35px;
+    border-radius: 0;
+    border-bottom: 1px solid #dee2f3;
+    outline: none;
+    padding-left: 5px;
+    font-size: 16px;
+    &:focus ~ label,
+    &:valid ~ label {
+      font-size: 14px;
+      top: -13px;
+    }
+    &:valid ~ span {
+      display: block;
+    }
+  }
+}
+// СТИЛИ ИКОНКИ ОЧИСТКИ INPUT'ов
+.clear_icon{
+  position: relative;
+  background-image: url('assets/imgs/close_btn.svg');
+  background-repeat: no-repeat;
+  background-size: 55%;
+  background-position: center;
+  width: 20px;
+  height: 20px;
+}
+.close_btn{
+  background-image: url('assets/imgs/close_btn.svg');
+  background-repeat: no-repeat;
+  background-size: 80%;
+  background-position: center;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 .no_scroll {
   overflow: hidden;
@@ -78,6 +160,13 @@ main {
 .mobile_back{
   display: none;
   cursor: pointer;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  top: -1px;
+    & svg{
+      margin-right: 20px;
+    }
 }
 .fade-enter-active,
 .fade-leave-active {
@@ -86,6 +175,8 @@ main {
 .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
   opacity: 0;
 }
+
+// СТИЛИ ДЛЯ КАЛЕНДАРА И ВЫБОРА ПЕРИОДА
 .mx-datepicker svg {
   color: #32aaa7;
 }
@@ -105,6 +196,8 @@ main {
 .mx-calendar-content .cell.in-range {
   background-color: lighten($color: #32aaa7, $amount: 40%) !important;
 }
+// КОНЕЦ СТИЛЕЙ ДЛЯ КАЛЕНДАРЯ И ПЕРИОДА
+
 .el-input .el-input__clear {
   color: #32aaa7;
   margin-top: 0px;
@@ -150,37 +243,26 @@ input[type='number'] {
   position: relative;
   right: -10px;
 }
-@media (min-width: 1920px) {
-  .table_container{
-    width: 100%;
-    max-width: 1920px;
-  }
+// СТИЛИ ДЛЯ ТАГОВ
+.el-tag{
+  background-color: #fff;
+  border: 2px solid #dddddb;
+  border-radius: 7px;
+  color: black;
+  font-weight: 500;
+  margin-right: 10px;
+  height: auto;
+  padding: 3px 10px;
+  font-size: 14px;
 }
-@media (max-width: 800px) {
-  .nav_top{
-    display: none;
-  }
+.el-tag .el-tag__close{
+  color: #32aaa7;
+  font-size: 20px;
+  font-weight: 500;
+  left: 3px;
+  top: 0px;
 }
-@media (max-width: 540px) {
-  main {
-    padding-left: 15px !important;
-    padding-right: 15px;
-    padding-bottom: 70px !important;
-  }
-  .mobile_back{
-    display: inline-block;
-    margin-right: 10px;
-    padding: 0;
-    margin: 0;
-    position: relative;
-    top: -1px;
-  }
-    .page__title {
-    font-size: 20px !important;
-    margin-top: -20px;
-    font-weight: 400;
-  }
-}
+
 .table thead th {
   vertical-align: middle;
 }
@@ -225,5 +307,105 @@ th[aria-colindex='1']{
 }
 .b-table-sticky-header, .table-responsive, [class*="table-responsive-"]{
   margin-bottom: 0;
+}
+// СТИЛИ ДЛЯ МОДАЛОК СО СТИЛЕМ .cust_modal
+.cust_modal{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  padding-left: 120px;
+  padding-bottom: 20px;
+  box-sizing: border-box;
+  background: #FFFFFF;
+  box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);
+}
+.search__btn {
+    padding-top: 20px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: bold;
+    & .search_icon {
+      color: #32aaa7;
+    }
+  }
+// СТИЛЬ ДЛЯ СТРАНИЦ С ТАБЛИЦАМИ БОЛЬШЕ 1920PX
+@media (min-width: 1920px) {
+  .table_container{
+    width: 100%;
+    max-width: 1920px;
+  }
+}
+
+//
+@media (max-width: 800px) {
+  .nav_top{
+    display: none;
+  }
+}
+// СТИЛИ НАЧАИНАЯ С 768PX
+@media (max-width: 768px) {
+  main {
+    padding-left: 15px !important;
+    padding-right: 15px;
+    padding-bottom: 70px !important;
+  }
+  // СТИЛИ ДЛЯ НИЖНЕГО МЕНЮ
+  .nav > ul{
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+  }
+  // СТИЛИ ДЛЯ МОДАЛОК СО СТИЛЕМ .cust_modal
+  .cust_modal{
+    padding-left: 0 !important;
+    padding-bottom: 60px !important;
+  }
+  // СТИЛИ ДЛЯ КНОПКИ "Назад"
+  .mobile_back{
+    display: inline-block;
+  }
+  // СТИЛИ ДЛЯ ЗАГОЛОВКА СТРАНИЦ
+  .page__title{
+    font-size: 22px;
+  }
+  // СТИЛИ ДЛЯ ЗАГОЛОВКА МОДАЛКИ
+  .modal_title{
+  font-size: 20px;
+  }
+}
+// СТИЛИ ДЛЯ МОБ.УСТРОЙСТВ 540PX
+@media (max-width: 540px) {
+  // MAIN БЛОК
+  main{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  // ЗАГОЛОВОК СТРАНИЦЫ
+  .page__title{
+    font-size: 18px;
+  }
+  // ЗАГОЛОВОК РАЗДЕЛА СТРАНИЦЫ
+  .page__caption{
+    font-size: 16px;
+    margin-bottom: 0;
+  }
+  // СТИЛИ ДЛЯ ЗАГОЛОВКА МОДАЛКИ
+  .modal_title{
+  font-size: 16px;
+  // width: 90%;
+  }
+  // КНОПКА НАЗАД
+  .mobile_back{
+    & svg{
+      margin-right: 10px;
+    }
+  }
+  .period_picker{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
 }
 </style>

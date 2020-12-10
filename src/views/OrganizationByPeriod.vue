@@ -3,7 +3,7 @@
     <div class="container-fluid table_container">
       <h2 class="page__title">
                               <p class="mobile_back" @click="back">
-        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" style="margin-right: 30px;" xmlns="http://www.w3.org/2000/svg">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
@@ -65,7 +65,8 @@
         </div>
       </div>
       <div v-if="searchActive" class="organization__modal">
-        <h3>Настройки дерева</h3>
+        <div class="container">
+          <h3 class="mb-3">Настройки дерева</h3>
         <i
           class="mr-1 el-icon-arrow-left"
           @click="periodIndex = periodIndex - 1 >= 0 ? periodIndex - 1 : periods.length - 1"
@@ -76,7 +77,7 @@
           <i class="ml-1 el-icon-arrow-right"
           @click="periodIndex = (periodIndex + 1) % periods.length"></i>
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-12 mt-3">
             <b-form-group label="Выбор дерева">
               <b-form-radio
                 v-model="tree_type"
@@ -107,6 +108,7 @@
             <button class="mr-2" @click="updateData">Показать</button
             ><button @click="clearSelectedFilters">Сбросить</button>
           </div>
+        </div>
         </div>
       </div>
       </footer>
@@ -332,6 +334,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+span[class*="el-tag"] deep i{
+  display: none;
+}
 @media (min-width: 760px) {
   .radio{
     display: inline;
@@ -363,20 +368,9 @@ export default {
       cursor: pointer;
     }
   }
-  & .search__btn {
-    padding-top: 20px;
-    cursor: pointer;
-    margin-bottom: 30px;
-    text-transform: uppercase;
-    font-weight: 500;
-
-    & .search_icon {
-      color: #32aaa7;
-    }
-  }
   & .organization__modal {
     //   position: absolute;
-    padding: 60px;
+    padding-top: 30px;
     width: 100%;
     bottom: 0;
 
@@ -405,17 +399,6 @@ export default {
       }
     }
   }
-}
-.cust_modal{
-  position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 10;
-    width: 100%;
-    padding-left: 120px;
-    box-sizing: border-box;
-    background: #FFFFFF;
-    box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);
 }
 </style>
 <style>

@@ -8,7 +8,6 @@
             height="12"
             viewBox="0 0 18 12"
             fill="none"
-            style="margin-right: 30px;"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
@@ -21,27 +20,27 @@
       </div>
       <div class="top__info mt-3">
         <div class="row edit ">
-          <div class="col-md-6 mt-3">
+          <div class="col-md-6 custom_input mt-3">
             <input type="text" name="country" id="country" required v-model="userInfo.country" />
             <label for="country">Страна:</label>
-            <span class="clear_icon" @click="clearInput('country')">X</span>
+            <span class="clear_icon" @click="clearInput('country')"></span>
           </div>
-          <div class="col-md-6 mt-3">
+          <div class="col-md-6 custom_input mt-3">
             <input type="text" name="city" id="city" required v-model="userInfo.city" />
             <label for="city">Страна:</label>
-            <span class="clear_icon" @click="clearInput('city')">X</span>
+            <span class="clear_icon" @click="clearInput('city')"></span>
           </div>
         </div>
         <div class="row edit ">
-          <div class="col-md-6 mt-3">
+          <div class="col-md-6 custom_input mt-3">
             <input type="text" name="address" id="address" required v-model="userInfo.address" />
             <label for="address">Адрес:</label>
-            <span class="clear_icon" @click="clearInput('address')">X</span>
+            <span class="clear_icon" @click="clearInput('address')"></span>
           </div>
-          <div class="col-md-6 mt-3">
+          <div class="col-md-6 custom_input mt-3">
             <input type="text" name="passport" id="passport" required v-model="userInfo.passport" />
             <label for="passport">Паспорт:</label>
-            <span class="clear_icon" @click="clearInput('passport')">X</span>
+            <span class="clear_icon" @click="clearInput('passport')"></span>
           </div>
         </div>
         <div class="row edit ">
@@ -54,10 +53,10 @@
               style="width: 100%"
             ></date-picker>
           </div>
-          <div class="col-md-6 mt-3">
+          <div class="col-md-6 custom_input mt-3">
             <input type="text" name="skype" id="skype" required v-model="userInfo.skype" />
             <label for="skype">Skype:</label>
-            <span class="clear_icon" @click="clearInput('skype')">X</span>
+            <span class="clear_icon" @click="clearInput('skype')"></span>
           </div>
         </div>
         <div class="row edit mt-3">
@@ -66,44 +65,51 @@
           </div>
         </div>
       </div>
-      <div class="bot__info mt-3">
+      <div class="bot__info custom_input mt-3">
+        <div class="row edit">
+          <div class="col-md-6">
+            <p class="page__caption">Смена адреса почтового ящика</p>
+            <div class="custom_input t">
+              <input type="text" name="email" id="email" required v-model="userInfo.email" />
+              <label for="email">E-mail:</label>
+              <span class="clear_icon" @click="clearInput('email')"></span>
+              <button class="save__newinfo mt-3" v-on:click="saveEmail">Сохранить изменения</button>
+            </div>
+          </div>
+          <div class="col-md-6">
+              <p class="page__caption">Смена телефона</p>
+            <div class="custom_input t">
+              <input type="text" name="phone" id="phone" required v-model="userInfo.phone" />
+              <label for="phone">Телефон:</label>
+              <span class="clear_icon" @click="clearInput('phone')"></span>
+              <button class="save__newinfo mt-3" v-on:click="savePhone">
+                Сохранить изменения
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="row edit">
+          <div class="col">
+            <p class="page__caption">Смена пароля</p>
+          </div>
+        </div>
         <div class="row">
-          <div class="col-md-6"><p>Смена адреса почтового ящика</p></div>
-          <div class="col-md-6"><p>Смена пароля</p></div>
-        </div>
-        <div class="row edit">
-          <div class="col-md-6">
-            <input type="text" name="email" id="email" required v-model="userInfo.email" />
-            <label for="email">E-mail:</label>
-            <span class="clear_icon" @click="clearInput('email')">X</span>
-            <button class="save__newinfo mt-3" v-on:click="saveEmail">Сохранить изменения</button>
-          </div>
-          <div class="col-md-6">
-            <input type="text" name="phone" id="phone" required v-model="userInfo.phone" />
-            <label for="phone">Телефон:</label>
-            <span class="clear_icon" @click="clearInput('phone')">X</span>
-            <button class="save__newinfo mt-3" v-on:click="savePhone">
-              Сохранить изменения
-            </button>
-          </div>
-        </div>
-        <div class="row edit">
-          <div class="col-md mt-3">
-            <input type="text" name="currentPass"
+          <div class="col-md custom_input mt-3">
+            <input type="password" name="currentPass"
             id="currentPass" required v-model="password.currentPass" />
             <label for="currentPass">Текущий пароль:</label>
-            <span class="clear_icon" @click="clearPass('currentPass')">X</span>
+            <span class="clear_icon" @click="clearPass('currentPass')"></span>
           </div>
-          <div class="col-md mt-3">
-            <input type="text" name="newPass" id="newPass" required v-model="password.newPass" />
+          <div class="col-md custom_input mt-3">
+            <input type="password" name="newPass" id="newPass" required v-model="password.newPass"/>
             <label for="newPass">Новый пароль:</label>
-            <span class="clear_icon" @click="clearPass('newPass')">X</span>
+            <span class="clear_icon" @click="clearPass('newPass')"></span>
           </div>
-          <div class="col-md mt-3">
-            <input type="text" name="newPassRepeat"
+          <div class="col-md custom_input mt-3">
+            <input type="password" name="newPassRepeat"
             id="newPassRepeat" required v-model="password.newPassRepeat" />
             <label for="newPassRepeat">Повтор пароля:</label>
-            <span class="clear_icon" @click="clearPass('newPassRepeat')">X</span>
+            <span class="clear_icon" @click="clearPass('newPassRepeat')"></span>
           </div>
         </div>
         <div class="row edit mt-3">
@@ -222,6 +228,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.t label{
+  left: 5px;
+}
 input[type='date']::after{
   position: absolute;
   content: '';
@@ -239,60 +248,8 @@ input[type='date']:valid{
   padding-right: 15px;
   padding-top: 5px;
 }
-.col-md-6,
-.col-md {
-  position: relative;
-  span {
-    display: none;
-    position: absolute;
-    right: 18px;
-    top: 10px;
-    color: #32aaa7;
-    cursor: pointer;
-  }
-  label {
-    position: absolute;
-    top: 5px;
-    left: 20px;
-    transition: 0.15s ease-in-out;
-    color: #9a9a9a;
-    font-size: 14px;
-    z-index: 10;
-  }
-  input {
-    width: 100%;
-    border: 0;
-    height: 35px;
-    border-radius: 0;
-    border-bottom: 1px solid #dee2f3;
-    outline: none;
-    padding-left: 5px;
-    font-size: 14px;
-    &:focus ~ label,
-    &:valid ~ label {
-      font-size: 12px;
-      top: -10px;
-    }
-    &:valid ~ span {
-      display: block;
-    }
-  }
-}
-.bot__info {
-  p {
-    color: #383a41;
-    font-size: 20px;
-  }
-}
 .edit {
-  el-input clearable {
-    width: 95%;
-    height: 30px;
-    border: 0;
-    border-bottom: 1px solid #dee2f3;
-    outline: none;
-    padding-bottom: 5px;
-  }
+  margin-top: 30px;
   .save__newinfo {
     float: right;
     border: 1px solid #32aaa7;
@@ -309,11 +266,33 @@ input[type='date']:valid{
     width: 100%;
   }
 }
+@media (max-width: 525px) {
+  .save__newinfo {
+    padding: 5px 0 !important;
+  }
+  .page__caption{
+    margin-top: 20px;
+  }
+  .t{
+    margin-top: 20px;
+  }
+  .edit{
+    margin-top: 0;
+  }
+  .mt-3{
+    margin-top: 30px !important;
+  }
+}
 </style>
 <style>
 .mx-input{
   border: 0 !important;
   border-bottom: 1px solid #dee2f3 !important;
+  border-radius: 0;
+  padding-left: 6px;
+  font-size: 16px;
+  color: black;
+  font-weight: 400;
 }
 .mx-calendar-content .cell:hover{
   color: #32aaa7;

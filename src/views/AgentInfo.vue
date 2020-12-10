@@ -8,7 +8,6 @@
             height="12"
             viewBox="0 0 18 12"
             fill="none"
-            style="margin-right: 30px;"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
@@ -24,7 +23,7 @@
           </div>
         </div>
         <div class="container top__info">
-          <div class="row" v-if="transfertAccess">
+          <div class="row" v-if="transfertAccess && !this.$route.params.id">
             <div class="col-md mt-1">
               <span class="modal_btn" @click="showTransfModal2">
                 Перевести между лицевыми счетами
@@ -189,7 +188,6 @@
             height="12"
             viewBox="0 0 18 12"
             fill="none"
-            style="margin-right: 30px;"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
@@ -326,20 +324,13 @@ export default {
   color: #32aaa7;
   font-weight: 500;
   cursor: pointer;
+  display: inline-block;
   &:nth-of-type(1){
     margin-right: 30px;
   }
 }
 .myinfo__page {
-  & .page__title {
-    color: #383a41;
-    font-size: 32px;
-  }
-
   &__description {
-    & .page__caption {
-      font-size: 20px;
-    }
     & .myfoto {
       display: inline-block;
       margin-top: 30px;
@@ -397,18 +388,6 @@ export default {
     }
   }
 }
-.cust_modal{
-  position: fixed;
-  padding-bottom: 40px;
-  bottom: 0;
-  left: 0;
-  z-index: 10;
-  width: 100%;
-  padding-left: 120px;
-  box-sizing: border-box;
-  background: #FFFFFF;
-  box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);
-}
 @media (min-width: 768px) {
   .myinfo__page {
     .top__info,
@@ -429,10 +408,21 @@ export default {
     }
   }
 }
-@media (max-width: 450px) {
-  .cust_modal{
-padding-left: 0;
-padding-bottom: 70px
+@media (max-width: 540px) {
+.modal_btn{
+    font-size: 16px;
+    &:nth-of-type(1){
+      margin-right: 0px;
+      margin-bottom: 15px;
+    }
+  }
 }
+@media (max-width: 320px) {
+.modal_btn{
+    font-size: 14px;
+    &:nth-of-type(1){
+      margin-right: 0px;
+    }
+  }
 }
 </style>

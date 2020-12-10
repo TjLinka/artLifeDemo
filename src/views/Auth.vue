@@ -58,11 +58,6 @@ export default {
 
 <style lang="scss" scoped>
 .auth__page {
-  & .page__title {
-    text-align: center;
-    margin-bottom: 70px;
-  }
-
   &__form {
     & form {
       width: 100%;

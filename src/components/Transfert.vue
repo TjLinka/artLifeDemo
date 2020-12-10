@@ -1,29 +1,28 @@
 <template>
   <div class="licevoischet__page">
     <div class="container">
-      <h4 class="mt-4">Текущее состояние
-        <span v-on:click="$emit('enlarge-text')"
-        style="display: inline-block; float: right; color: #32aaa7; cursor: pointer">X</span>
+      <h4 class="mt-4 modal_title">Текущее состояние
+        <span class="close_btn" v-on:click="$emit('enlarge-text')"></span>
       </h4>
       <div class="row transfert">
         <div class="col-md-6">
           <p>ЛО:</p>
           <p>{{ transfertInfo.lo }} баллов</p>
         </div>
-        <div class="col-md-6 mt-4">
+        <div class="col-md-6">
           <p>Резерв:</p>
           <p>{{ transfertInfo.reserve }} баллов</p>
         </div>
       </div>
       <h3 class="perevod">Перевод количества баллов</h3>
       <div class="row edit">
-        <div class="col-md-6 mt-4">
+        <div class="col-xl-6 mt-4">
           <el-input placeholder="Сумма" type="number" v-model="sum" clearable class="count">
           </el-input>
         </div>
       </div>
       <div class="row edit mt-4">
-        <div class="col-md-6 trans_btns">
+        <div class="col-xl-6 trans_btns">
           <button @click="lo2reserve">Перевести в резерв</button>
           <button @click="reserve2lo">Перевести в трансферт</button>
         </div>
@@ -145,20 +144,37 @@ export default {
   display: flex;
   justify-content: space-between;
 }
+@media (max-width: 768px) {
+  .perevod {
+    font-size: 20px;
+    // text-transform: uppercase;
+    margin-bottom: 0;
+  }
+}
 @media (max-width: 425px) {
   .perevod {
-    font-size: 18px;
-    text-transform: uppercase;
+    font-size: 16px;
+    // text-transform: uppercase;
+    margin-bottom: 0;
   }
   .trans_btns {
     flex-direction: column;
     button {
       width: 100%;
       margin-bottom: 20px;
+      font-size: 16px;
     }
   }
+  .transfert {
+      & p {
+        font-size: 14px;
+      }
+      & > .col-md-6 {
+        p:nth-of-type(1) {
+        }
+        p:nth-of-type(2) {
+        }
+      }
+  }
 }
-</style>
-<style>
-
 </style>

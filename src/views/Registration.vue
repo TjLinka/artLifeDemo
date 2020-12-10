@@ -8,7 +8,6 @@
             height="12"
             viewBox="0 0 18 12"
             fill="none"
-            style="margin-right: 30px;"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
@@ -28,6 +27,11 @@
               <b-form-radio value="second">Дистрибьютор</b-form-radio>
             </b-form-radio-group>
           </b-form-group>
+          <div class="reg_input custom_input">
+            <input type="text" name="fio" id="fio" required v-model="newUser.fio" />
+            <label for="fio">ФИО:</label>
+            <span class="clear_icon" @click="clearInput('fio')"></span>
+          </div>
         </div>
         <div class="col-md-6">
           <b-form-group>
@@ -36,45 +40,45 @@
               <b-form-radio value="second">Женский пол</b-form-radio>
             </b-form-radio-group>
           </b-form-group>
+          <div class="reg_input custom_input">
+            <input type="text" name="country" id="country" required v-model="newUser.country" />
+            <label for="country">Страна:</label>
+            <span class="clear_icon" @click="clearInput('country')"></span>
+          </div>
         </div>
       </div>
-      <div class="row mt-5">
-        <div class="col-md-6 ">
-          <input type="text" name="fio" id="fio" required v-model="newUser.fio" />
-          <label for="fio">ФИО:</label>
-          <span class="clear_icon" @click="clearInput('fio')">X</span>
-        </div>
-        <div class="col-md-6">
-          <input type="text" name="country" id="country" required v-model="newUser.country" />
-          <label for="country">Страна:</label>
-          <span class="clear_icon" @click="clearInput('country')">X</span>
-        </div>
-      </div>
-      <div class="row mt-5">
-        <div class="col-md-6">
+      <div class="row mt-md-5">
+        <div class="col-md-6 custom_input">
           <input type="text" name="city" id="city" required v-model="newUser.city" />
           <label for="city">Город:</label>
-          <span class="clear_icon" @click="clearInput('city')">X</span>
+          <span class="clear_icon" @click="clearInput('city')"></span>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 custom_input">
           <input type="text" name="bthdte" id="bthdte" required v-model="newUser.bthdte" />
           <label for="bthdte">Дата рождения:</label>
-          <span class="clear_icon" @click="clearInput('bthdte')">X</span>
+          <span class="clear_icon" @click="clearInput('bthdte')"></span>
         </div>
       </div>
-      <div class="row mt-5">
-        <div class="col-md-6">
+      <div class="row mt-md-5">
+        <div class="col-md-6 custom_input">
           <input type="text" name="phone" id="phone" required v-model="newUser.phone" />
           <label for="phone">Телефон:</label>
-          <span class="clear_icon" @click="clearInput('phone')">X</span>
+          <span class="clear_icon" @click="clearInput('phone')"></span>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 custom_input">
           <input type="text" name="email" id="email" required v-model="newUser.email" />
           <label for="email">Е-mail:</label>
-          <span class="clear_icon" @click="clearInput('email')">X</span>
+          <span class="clear_icon" @click="clearInput('email')"></span>
         </div>
       </div>
-      <div class="row mt-5">
+      <div class="row mt-4">
+        <div class="col-md-6"></div>
+        <div class="col-md-6">
+          Я подтверждаю согласие с правовыми положениями проекта
+          и даю согласие на обработку моих данных
+        </div>
+      </div>
+      <div class="row mt-md-5">
         <div class="col">
           <button @click="registr" class="reg_btn">Зарегистрировать</button>
         </div>
@@ -106,43 +110,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.col-md-6,
-.col-md {
+.reg_input{
   position: relative;
-  span {
-    display: none;
-    position: absolute;
-    right: 18px;
-    top: 10px;
-    color: #32aaa7;
-    cursor: pointer;
-  }
-  label {
-    position: absolute;
-    top: 5px;
-    left: 20px;
-    transition: 0.15s ease-in-out;
-    color: #9a9a9a;
-    font-size: 14px;
-    z-index: 10;
-  }
-  input {
-    width: 100%;
-    border: 0;
-    height: 35px;
-    border-radius: 0;
-    border-bottom: 1px solid #dee2f3;
-    outline: none;
-    padding-left: 5px;
-    font-size: 14px;
-    &:focus ~ label,
-    &:valid ~ label {
-      font-size: 12px;
-      top: -10px;
-    }
-    &:valid ~ span {
-      display: block;
-    }
+  & label{
+    left: 5px !important;
   }
 }
 .reg_btn {
@@ -154,5 +125,29 @@ export default {
   border-radius: 4px;
   display: block;
   float: right;
+}
+@media (max-width: 525px) {
+.reg_input{
+  &:nth-of-type(1){
+    margin-bottom: 10px;
+  }
+}
+  .row.mt-md-5{
+    &:nth-of-type(2){
+      margin-top: -10px;
+    }
+    &:nth-of-type(2),
+    &:nth-of-type(3){
+      & > div{
+        margin-top: 20px;
+      }
+    }
+    &:nth-of-type(4){
+      margin-top: 20px !important;
+    }
+  }
+  .reg_btn{
+    width: 100%;
+  }
 }
 </style>

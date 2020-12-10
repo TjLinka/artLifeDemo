@@ -3,7 +3,7 @@
     <div class="container-fluid table_container">
       <h2 class="page__title">
                               <p class="mobile_back" @click="back">
-        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" style="margin-right: 30px;" xmlns="http://www.w3.org/2000/svg">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none"  xmlns="http://www.w3.org/2000/svg">
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
@@ -11,7 +11,12 @@
       <p class="p-0 m-0 history_title">Период от и до</p>
       <date-picker v-model="rangeDate" range @change="getSelectedDataRange" valueType="format">
       </date-picker>
-      <p class="exp_print">
+      <div class="row mobile_search">
+        <div class="col search__btn" @click="toggleSearch">
+          Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
+        </div>
+      </div>
+      <p class="exp_print mt-3">
         <span class="mr-3">Печать</span>
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
@@ -46,8 +51,11 @@
         </div>
       </div>
       <div v-if="searchActive" class="organization__modal">
-        <span @click="closeModal" class="close_btn">X</span>
-        <h3 class="mt-4">Фильтры</h3>
+        <div class="container">
+        <h3 class="mt-4">
+          Фильтры
+          <span @click="closeModal" class="close_btn"></span>
+        </h3>
         <div class="row">
           <div class="col-md-12 mt-4">
             <b-form-group label="" class="flex-radio">
@@ -76,29 +84,24 @@
           </div>
         </div>
         <div class="row edit mt-4">
-          <div class="col-md-6">
+          <div class="col-md-6 custom_input">
             <input type="text" name="operType"
             id="operType" required v-model="operType" />
             <label for="operType">Тип операции:</label>
-            <span class="clear_icon" @click="clearOperType('operType')">X</span>
+            <span class="clear_icon" @click="clearOperType('operType')"></span>
           </div>
-          <!-- <div class="col-md-6">
-           <input type="text" name="user"
-            id="user" required v-model="user" />
-            <label for="user">Пользователь:</label>
-            <span class="clear_icon" @click="clearUser('user')">X</span>
-          </div> -->
-          <div class="col-md-6">
+          <div class="col-md-6 custom_input">
            <input type="text" name="comment"
             id="comment" required v-model="comment" />
             <label for="comment">Комментарий:</label>
-            <span class="clear_icon" @click="clearComment('comment')">X</span>
+            <span class="clear_icon" @click="clearComment('comment')"></span>
           </div>
         </div>
         <div class="row edit mt-4">
           <div class="col">
             <button class="mr-2 update" @click="updateData">Показать</button>
           </div>
+        </div>
         </div>
       </div>
       </footer>
@@ -152,7 +155,7 @@ export default {
         {
           key: 'comdte',
           label: 'Период',
-          width: '150px',
+          // width: '150px',
           sortable: true,
           formatter(v) {
             return new Date(v).toLocaleDateString();
@@ -181,7 +184,7 @@ export default {
         {
           key: 'comm',
           label: 'Комментарий',
-          width: '300px',
+          // width: '300px',
           sortable: true,
         },
       ],
@@ -218,10 +221,10 @@ export default {
     //   && row.comm.toLowerCase().search(filter.comment.toLowerCase().trim()) !== -1);
     // },
     clearComment() {
-      this.filter.comment = '';
+      this.comment = '';
     },
     clearOperType() {
-      this.filter.operType = '';
+      this.operType = '';
     },
     closeModal() {
       this.searchActive = !this.searchActive;
@@ -273,46 +276,13 @@ export default {
 .update{
   display: block;
   float: right;
-  width: 20% !important;
-}
-.col-md-6,
-.col-md {
-  position: relative;
-  span {
-    display: none;
-    position: absolute;
-    right: 18px;
-    top: 10px;
-    color: #32aaa7;
-    cursor: pointer;
-  }
-  label {
-    position: absolute;
-    top: 5px;
-    left: 20px;
-    transition: 0.15s ease-in-out;
-    color: #9a9a9a;
-    font-size: 14px;
-    z-index: 10;
-  }
-  input {
-    width: 100%;
-    border: 0;
-    height: 35px;
-    border-radius: 0;
-    border-bottom: 1px solid #dee2f3;
-    outline: none;
-    padding-left: 5px;
-    font-size: 14px;
-    &:focus ~ label,
-    &:valid ~ label {
-      font-size: 12px;
-      top: -10px;
-    }
-    &:valid ~ span {
-      display: block;
-    }
-  }
+  width: 20%;
+  border: 0;
+  padding: 5px 30px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  background-color: #32aaa7;
+  color: white;
 }
 .licevoischet__page {
   padding-bottom: 40px;
@@ -330,10 +300,14 @@ export default {
   }
 }
 .organization__modal {
-  position: relative;
+  padding-left: 15px;
+  padding-right: 15px;
+  & > .container{
+    position: relative;
+  }
   & .close_btn {
     position: absolute;
-    right: 0;
+    right: 10px;
     top: 0px;
     font-size: 25px;
     font-weight: 500;
@@ -341,52 +315,48 @@ export default {
     cursor: pointer;
   }
 }
-.edit {
-  input {
+// .edit {
+//   input {
+//     width: 100%;
+//     border: 0;
+//     border-bottom: 1px solid #dee2f3;
+//     padding-bottom: 10px;
+//     outline: none;
+//   }
+//   button {
+//     border: 0;
+//     padding: 5px 30px;
+//     font-size: 16px;
+//     margin-bottom: 20px;
+//     &:nth-of-type(1) {
+//       background-color: #32aaa7;
+//       color: white;
+//     }
+//     &:nth-of-type(2) {
+//       background-color: white;
+//       color: #32aaa7;
+//       border: 2px solid #32aaa7;
+//     }
+//   }
+// }
+.mobile_search{
+  display: none;
+}
+@media (max-width: 770px) {
+  .update{
     width: 100%;
-    border: 0;
-    border-bottom: 1px solid #dee2f3;
-    padding-bottom: 10px;
-    outline: none;
-  }
-  button {
-    width: 48%;
-    border: 0;
-    padding: 5px 30px;
-    font-size: 16px;
-    margin-bottom: 20px;
-    &:nth-of-type(1) {
-      background-color: #32aaa7;
-      color: white;
-    }
-    &:nth-of-type(2) {
-      background-color: white;
-      color: #32aaa7;
-      border: 2px solid #32aaa7;
-    }
   }
 }
-.search__btn {
-    padding-top: 20px;
-    cursor: pointer;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    font-weight: 500;
-
-    & .search_icon {
-      color: #32aaa7;
-    }
+@media (max-width: 525px) {
+  .mobile_search{
+    display: block;
   }
-.cust_modal{
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  z-index: 10;
-  width: 100%;
-  padding-left: 120px;
-  box-sizing: border-box;
-  background: #FFFFFF;
-  box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);
+  .desk_trans{
+    display: none;
+  }
+  .update{
+    width: 100%;
+  }
 }
 </style>
 <style>

@@ -1,7 +1,7 @@
 <template>
   <div class="licevoischet__page">
     <div class="container">
-      <h4 class="mt-4">
+      <h4 class="mt-4 modal_title">
         Настройки партнера
         <span
           v-on:click="$emit('enlarge-text')"

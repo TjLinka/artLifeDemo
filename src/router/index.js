@@ -131,7 +131,7 @@ const routes = [
   },
   {
     path: '/partnerindicators/:id',
-    name: 'PartnerIndicators',
+    name: 'PartnerIndicatorsChild',
     component: () => import('../views/PartnerIndicators.vue'),
     meta: { requiresAuth: true },
     // Видит только Дистрибьютор +

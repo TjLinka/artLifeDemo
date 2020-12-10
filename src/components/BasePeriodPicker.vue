@@ -1,9 +1,12 @@
 <template>
   <div>
-    <i class="mr-1 el-icon-arrow-left" @click="$emit('next-period', -1)"></i>
-    <span>{{ months[new Date(currentPeriod).getMonth()] }} </span>
-    <span>{{ new Date(currentPeriod).getFullYear() }}</span>
-    <i class="ml-1 el-icon-arrow-right" @click="$emit('next-period', 1)"></i>
+    <i class="arrow_left"  @click="$emit('next-period', -1)"></i>
+    <span>
+      {{ months[new Date(currentPeriod).getMonth()] }}
+      {{ new Date(currentPeriod).getFullYear() }}
+    </span>
+    <!-- <span></span> -->
+    <i class="arrow_right" @click="$emit('next-period', 1)"></i>
   </div>
 </template>
 
@@ -37,5 +40,23 @@ export default {
   },
 };
 </script>
-
-<style></style>
+<style scoped>
+.arrow_left,
+.arrow_right{
+  display: inline-block;
+  background-repeat: no-repeat;
+  /* background-size: contain; */
+  background-position: center;
+  width: 12px;
+  height: 12px;
+  cursor: pointer;
+}
+.arrow_left{
+    background-image: url('../assets/imgs/arrow_left.svg');
+    margin-right: 15px;
+}
+.arrow_right{
+    background-image: url('../assets/imgs/arrow_right.svg');
+    margin-left: 15px;
+}
+</style>
