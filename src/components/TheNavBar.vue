@@ -56,7 +56,10 @@
             <li><router-link to="/indicators">Показатели</router-link></li>
             <li><router-link to="/bonus-history">История бонусов (КЕ)</router-link></li>
             <li><router-link to="/points-history">История баллов </router-link></li>
-            <li><router-link to="account-detail">Движение по лицевому счёту</router-link></li>
+            <li><router-link to="/account-detail">Движение по лицевому счёту</router-link></li>
+            <li><router-link to="/partnerindicators">
+            История показателей партнера по периодам
+            </router-link></li>
           </ul>
         </li>
         <li>

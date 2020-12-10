@@ -71,13 +71,6 @@
           <span class="clear_icon" @click="clearInput('email')"></span>
         </div>
       </div>
-      <div class="row mt-4">
-        <div class="col-md-6"></div>
-        <div class="col-md-6">
-          Я подтверждаю согласие с правовыми положениями проекта
-          и даю согласие на обработку моих данных
-        </div>
-      </div>
       <div class="row mt-md-5">
         <div class="col">
           <button @click="registr" class="reg_btn">Зарегистрировать</button>

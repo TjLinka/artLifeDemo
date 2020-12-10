@@ -38,9 +38,9 @@
         </template>
       </b-table>
     </div>
-    <footer class="container-fluid cust_modal" v-if="showModal2">
+    <footer class="container-fluid cust_modal" v-if="showModal1">
       <div>
-        <RightsModalGive v-on:enlarge-text="showModal2 = false"/>
+        <RightsModalGive v-on:enlarge-text="showModal1 = false"/>
       </div>
     </footer>
   </div>
