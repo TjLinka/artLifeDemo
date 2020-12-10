@@ -84,7 +84,7 @@
             </div>
           </div>
         </div>
-        <div v-if="transfertAccess" class="transfert">
+        <div class="transfert">
           <h2 class="page__caption mt-5">Дополнительная информация для трансферта</h2>
           <div class="container transfert__info" v-if="showTransfertInfo">
             <div class="row">
