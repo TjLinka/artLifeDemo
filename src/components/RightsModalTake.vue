@@ -71,6 +71,7 @@ export default {
     giveRights() {
       backApi.post('/agent/share-transfert', { agent_to: this.selectedUser });
       this.$emit('enlarge-text');
+      this.$emit('toast');
     },
   },
 };

@@ -40,10 +40,12 @@
     </div>
     <footer class="container-fluid cust_modal" v-if="showModal1">
       <div>
-        <RightsModalTake v-on:enlarge-text="showModal1 = false"/>
+        <RightsModalTake
+        v-on:enlarge-text="showModal1 = false"
+        v-on:toast="sss"/>
       </div>
     </footer>
-      <b-toast id="my-toast" variant="success" solid>
+      <b-toast id="my-toast-1" variant="success" solid>
       <template #toast-title>
         <div class="d-flex flex-grow-1 align-items-baseline">
           <b-img blank blank-color="green" class="mr-2" width="12" height="12"></b-img>
@@ -52,6 +54,16 @@
         </div>
       </template>
       Права забраны!
+    </b-toast>
+      <b-toast id="my-toast-2" variant="success" solid>
+      <template #toast-title>
+        <div class="d-flex flex-grow-1 align-items-baseline">
+          <b-img blank blank-color="green" class="mr-2" width="12" height="12"></b-img>
+          <strong class="mr-auto">Успех!</strong>
+          <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
+        </div>
+      </template>
+      Права переданы!
     </b-toast>
   </div>
 </template>
@@ -110,9 +122,12 @@ export default {
     });
   },
   methods: {
+    sss() {
+      this.$bvToast.show('my-toast-2');
+    },
     takeRight() {
       backApi.post('/agent/share-transfert', { agent_to: null });
-      this.$bvToast.show('my-toast');
+      this.$bvToast.show('my-toast-1');
     },
     back() {
       this.$router.go(-1);
