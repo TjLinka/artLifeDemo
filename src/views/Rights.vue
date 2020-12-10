@@ -32,8 +32,8 @@
       <h2 class="mt-4">Под заголовок</h2>
       <b-table :fields="fields" :items="entries" head-variant="light" responsive outlined>
         <template v-slot:cell(id)="row">
-          <router-link :to="`/agent/${row.item.agent_id}`" class="link">{{
-            row.item.agent_id
+          <router-link :to="`/agent/${row.item.id}`" class="link">{{
+            row.item.id
           }}</router-link>
         </template>
       </b-table>
