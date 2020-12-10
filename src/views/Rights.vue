@@ -31,7 +31,7 @@
       </div>
       <h2 class="mt-4">Под заголовок</h2>
       <b-table :fields="fields" :items="entries" head-variant="light" responsive outlined>
-        <template v-slot:cell(agent_id)="row">
+        <template v-slot:cell(id)="row">
           <router-link :to="`/agent/${row.item.agent_id}`" class="link">{{
             row.item.agent_id
           }}</router-link>
@@ -118,6 +118,7 @@ export default {
   },
   mounted() {
     backApi.get('/agent/share-transfert-list').then((Response) => {
+      console.log(Response.data);
       this.entries = Response.data.entries;
     });
   },
