@@ -13,7 +13,7 @@
       <date-picker v-model="rangeDate" range @change="getSelectedDataRange" valueType="format">
       </date-picker>
       <p>
-        <span class="mr-3">Печать</span>
+        <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>

@@ -26,7 +26,7 @@
         {{ tag.name }}
       </el-tag>
       <p>
-        <span class="mr-3">Печать</span>
+        <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>

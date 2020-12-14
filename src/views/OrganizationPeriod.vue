@@ -20,7 +20,7 @@
         {{ tag.name }}
       </el-tag>
       <p class="exp_print">
-        <span class="mr-3">Печать</span>
+        <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
@@ -368,9 +368,6 @@ export default {
 }
 .orgper .el-table td, .el-table th.is-leaf{
   border-bottom: 1px solid #9A9A9A;
-}
-.el-table--enable-row-hover .el-table__body tr:hover>td {
-    background-color: unset;
 }
 a{
   color: black;

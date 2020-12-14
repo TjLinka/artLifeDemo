@@ -24,7 +24,9 @@
       <div class="row">
         <div class="col">
           <button>Трансферт</button>
-          <span>Печать</span><span>Экспорт в xls</span><span>Экспорт в pdf</span>
+          <!-- <span>Печать</span> -->
+          <span>Экспорт в xls</span>
+          <span>Экспорт в pdf</span>
         </div>
       </div>
       <div class="transmaneg_table">

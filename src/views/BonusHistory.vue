@@ -16,7 +16,7 @@
         </div>
       </div>
       <p class="exp_print mt-3">
-        <span class="mr-3">Печать</span>
+        <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
@@ -300,11 +300,13 @@ export default {
 .bonus_hist_table table[aria-colcount="2"] td[aria-colindex='1']{
   width: 350px;
 }
-th[aria-colindex='1']{
+.bonus_hist_table th[aria-colindex='1']{
   width: 350px;
+  min-width: 300px;
 }
 .bonus_hist_table table[aria-colcount="2"] > thead > tr > th[role="columnheader"]:nth-of-type(1){
   width: 350px;
+  min-width: 300px;
 }
 .bonus_hist_table table[aria-colcount="2"] tr[tabindex='-1'] > td{
   padding: 0;

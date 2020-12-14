@@ -18,16 +18,16 @@ const routes = [
     // Видят все
   },
   {
-    path: '/myinfoedit',
-    name: 'MyInfoEdit',
-    component: () => import('../views/MyInfoEdit.vue'),
+    path: '/agent/:id',
+    name: 'AgentInfo',
+    component: () => import('../views/AgentInfo.vue'),
     meta: { requiresAuth: true },
     // Видят все
   },
   {
-    path: '/agent/:id',
-    name: 'AgentInfo',
-    component: () => import('../views/AgentInfo.vue'),
+    path: '/myinfoedit',
+    name: 'MyInfoEdit',
+    component: () => import('../views/MyInfoEdit.vue'),
     meta: { requiresAuth: true },
     // Видят все
   },
@@ -70,7 +70,7 @@ const routes = [
     path: '/sponsorcard',
     name: 'SponsorCard',
     component: () => import('../views/SponsorCard.vue'),
-    meta: { requiresAuth: true, requiresRole: 'Дистрибьютор' },
+    meta: { requiresAuth: true },
     // Видит только Дистрбьютор +
   },
   {

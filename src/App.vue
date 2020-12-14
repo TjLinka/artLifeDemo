@@ -171,6 +171,8 @@ main {
       margin-right: 20px;
     }
 }
+
+// АНИМАЦИЯ ПЕРЕХОДА МЕЖДУ СТРАНИЦАМИ
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.2s;
@@ -201,6 +203,10 @@ main {
 }
 // КОНЕЦ СТИЛЕЙ ДЛЯ КАЛЕНДАРЯ И ПЕРИОДА
 
+// СТИЛИ ДЛЯ ТАБЛИЦ КОМПОНЕНТА EL-TABLE
+.el-table--enable-row-hover .el-table__body tr:hover>td {
+    background-color: unset;
+}
 .el-input .el-input__clear {
   color: #32aaa7;
   margin-top: 0px;

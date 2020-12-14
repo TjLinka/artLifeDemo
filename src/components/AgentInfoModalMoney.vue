@@ -36,16 +36,6 @@
         </div>
       </div>
     </div>
-    <b-toast id="my-toast" variant="warning" solid>
-      <template #toast-title>
-        <div class="d-flex flex-grow-1 align-items-baseline">
-          <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
-          <strong class="mr-auto">Ошибка!</strong>
-          <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
-        </div>
-      </template>
-      Данные указаны не верно
-    </b-toast>
   </div>
 </template>
 
@@ -99,8 +89,12 @@ export default {
             agent_to: this.selectedUser,
             amount: this.sum,
           })
+          .then(() => {
+            console.log('good');
+            this.$bvToast.show('my-toast-money');
+          })
           .catch(() => {
-            this.$bvToast.show('my-toast');
+            // this.$bvToast.show('my-toast');
           });
         backApi.get('/agent/profile').then((Response) => {
           this.transfertInfo = Response.data;

@@ -7,7 +7,7 @@
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
-        История оргназации по периодам
+        История организации по периодам
         </h2>
       <el-tag
         v-for="tag in tags"
@@ -20,7 +20,7 @@
         {{ tag.name }}
       </el-tag>
       <p class="exp_print">
-        <span class="mr-3">Печать</span>
+        <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
@@ -40,7 +40,6 @@
           :prop="column.property"
           :key="index"
           :label="column.title"
-          :fixed="column.property == 'id' ? true : false"
           :width="col_width(column)"
         >
           <!--  -->
@@ -68,13 +67,13 @@
         <div class="container">
           <h3 class="mb-3">Настройки дерева</h3>
         <i
-          class="mr-1 el-icon-arrow-left"
+          class="arrow_left"
           @click="periodIndex = periodIndex - 1 >= 0 ? periodIndex - 1 : periods.length - 1"
         >
         </i>
         <span>{{ months[new Date(currentPeriod).getMonth()] }} </span>
         <span>{{ new Date(currentPeriod).getFullYear() }}</span>
-          <i class="ml-1 el-icon-arrow-right"
+          <i class="arrow_right"
           @click="periodIndex = (periodIndex + 1) % periods.length"></i>
         <div class="row">
           <div class="col-md-12 mt-3">

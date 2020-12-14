@@ -15,10 +15,20 @@ Vue.config.productionTip = false;
 
 Vue.filter('localInt', (value) => {
   const formatter = new Intl.NumberFormat('ru');
-  if (!value) {
-    return '';
+  // eslint-disable-next-line no-restricted-globals
+  if (!value || isNaN(value)) {
+    return '-';
   }
   return formatter.format(value);
+});
+Vue.filter('localDate', (value) => {
+  const formatter = new Intl.DateTimeFormat('ru');
+  const date = new Date(value);
+  // eslint-disable-next-line no-restricted-globals
+  if (value === '' || value === null || value === '-') {
+    return '-';
+  }
+  return formatter.format(date);
 });
 new Vue({
   router,

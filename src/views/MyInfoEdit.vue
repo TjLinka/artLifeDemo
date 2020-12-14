@@ -27,7 +27,7 @@
           </div>
           <div class="col-md-6 custom_input mt-3">
             <input type="text" name="city" id="city" required v-model="userInfo.city" />
-            <label for="city">Страна:</label>
+            <label for="city">Город:</label>
             <span class="clear_icon" @click="clearInput('city')"></span>
           </div>
         </div>
@@ -47,6 +47,7 @@
           <div class="col-md-6 mt-3">
             <date-picker
               v-model="userInfo.bthdte"
+              value-type="YYYY-MM-DD"
               format="DD.MM.YYYY"
               type="date"
               placeholder="Дата рождения"
@@ -217,11 +218,12 @@ export default {
       });
     },
     async saveTopEdit() {
+      console.log(this.userInfo.bthdte);
       await backApi.post('agent/profile-edit', this.userInfo);
       backApi.get('/agent/profile').then((Response) => {
         this.userInfo = Response.data;
       });
-      this.$bvToast.show('my-toast-good');
+      this.$bvToast.show('my-toast-success');
     },
   },
 };

@@ -70,7 +70,8 @@
             </div> -->
             <div class="col-md-6 mt-3">
               <p>Дата рождения:</p>
-              <p>{{ new Date(userinfo.bthdte).toLocaleDateString() }}</p>
+              <!-- <p>{{ new Date(userinfo.bthdte).toLocaleDateString() }}</p> -->
+              <p>{{ userinfo.bthdte | localDate }}</p>
             </div>
             <div class="col-md-6 mt-3">
               <p>Skype:</p>
@@ -80,7 +81,7 @@
           <div class="row">
             <div class="col-md-6 mt-3">
               <p>Доп. телефон:</p>
-              <p>+7 (912) 537-33-78</p>
+              <p>{{ userinfo.phone }}</p>
             </div>
           </div>
         </div>
@@ -100,11 +101,11 @@
             <div class="row">
               <div class="col-md-6 mt-3">
                 <p>Групповой объем (ГО):</p>
-                <p>{{ userinfo.go | localInt}}</p>
+                <p>{{ userinfo.go | localInt }}</p>
               </div>
               <div class="col-md-6 mt-3">
                 <p>Накопленный групповой объем (НГО):</p>
-                <p>{{ userinfo.ngo | localInt}}</p>
+                <p>{{ userinfo.ngo | localInt }}</p>
               </div>
             </div>
             <div class="row">
@@ -114,7 +115,7 @@
               </div>
               <div class="col-md-6 mt-3">
                 <p>Квалификационный объем (КО):</p>
-                <p>{{ userinfo.ko | localInt}}</p>
+                <p>{{ userinfo.ko | localInt }}</p>
               </div>
             </div>
             <div class="row">
@@ -144,13 +145,15 @@
               </div>
               <div class="col-md-6 mt-3">
                 <p>Дата достижения максимального ранга:</p>
-                <p>{{ new Date(userinfo.rank_max_date).toLocaleDateString() }}</p>
+                <!-- <p>{{ new Date(userinfo.rank_max_date).toLocaleDateString() }}</p> -->
+                <p>{{ userinfo.rank_max_date | localDate }}</p>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 mt-3">
                 <p>Дата регистрации:</p>
-                <p>{{ new Date(userinfo.credte).toLocaleDateString() }}</p>
+                <!-- <p>{{ new Date(userinfo.credte).toLocaleDateString() }}</p> -->
+                <p>{{ userinfo.credte | localDate }}</p>
               </div>
               <div class="col-md-6 mt-3">
                 <p>Дата окончания лидерской программы:</p>
@@ -197,23 +200,31 @@
       </h2>
       <h2>У вас нет прав доступа</h2>
     </div>
-     <footer class="container-fluid cust_modal" v-if="showModal">
+    <footer class="container-fluid cust_modal" v-if="showModal">
       <div>
-        <Transfert v-on:enlarge-text="showModal = false"/>
+        <Transfert v-on:enlarge-text="showModal = false" />
       </div>
-      </footer>
-     <footer class="container-fluid cust_modal" v-if="showModal1">
+    </footer>
+    <footer class="container-fluid cust_modal" v-if="showModal1">
       <div>
-        <AgentInfoModalPoints v-on:enlarge-text="showModal1 = false"
-        :lo="userinfo.lo" :reserve="userinfo.reserve" :id="userinfo.id"/>
+        <AgentInfoModalPoints
+          v-on:enlarge-text="showModal1 = false"
+          :lo="userinfo.lo"
+          :reserve="userinfo.reserve"
+          :id="userinfo.id"
+        />
       </div>
-      </footer>
-     <footer class="container-fluid cust_modal" v-if="showModal2">
+    </footer>
+    <footer class="container-fluid cust_modal" v-if="showModal2">
       <div>
-        <AgentInfoModalMoney v-on:enlarge-text="showModal2 = false"
-        :lo="userinfo.lo" :reserve="userinfo.reserve" :id="userinfo.id"/>
+        <AgentInfoModalMoney
+          v-on:enlarge-text="showModal2 = false"
+          :lo="userinfo.lo"
+          :reserve="userinfo.reserve"
+          :id="userinfo.id"
+        />
       </div>
-      </footer>
+    </footer>
     <!-- <div>
       <b-modal id="modal-center" hide-footer size="xl" centered title="BootstrapVue">
         <template #modal-title>
@@ -222,7 +233,7 @@
         <Transfert />
       </b-modal>
     </div> -->
-      <b-toast id="my-toast" variant="success" solid>
+    <b-toast id="my-toast-partner" variant="success" solid>
       <template #toast-title>
         <div class="d-flex flex-grow-1 align-items-baseline">
           <b-img blank blank-color="green" class="mr-2" width="12" height="12"></b-img>
@@ -231,6 +242,26 @@
         </div>
       </template>
       Вы стали парнёром!
+    </b-toast>
+    <b-toast id="my-toast-money" variant="warning" solid>
+      <template #toast-title>
+        <div class="d-flex flex-grow-1 align-items-baseline">
+          <b-img blank blank-color="green" class="mr-2" width="12" height="12"></b-img>
+          <strong class="mr-auto">Успех!</strong>
+          <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
+        </div>
+      </template>
+      Операция выполнена успешно!
+    </b-toast>
+    <b-toast id="my-toast-points" variant="warning" solid>
+      <template #toast-title>
+        <div class="d-flex flex-grow-1 align-items-baseline">
+          <b-img blank blank-color="green" class="mr-2" width="12" height="12"></b-img>
+          <strong class="mr-auto">Успех!</strong>
+          <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
+        </div>
+      </template>
+      Операция выполнена успешно!
     </b-toast>
   </div>
 </template>
@@ -260,7 +291,7 @@ export default {
   methods: {
     becomePartner() {
       backApi.post('/agent/become_partner').then(() => {
-        this.$bvToast.show('my-toast');
+        this.$bvToast.show('my-toast-partner');
       });
     },
     showTransfModal() {
@@ -278,16 +309,22 @@ export default {
     toggleTransfertVisible() {
       this.showTransfertInfo = !this.showTransfertInfo;
     },
+    setData(data) {
+      this.userinfo = data;
+      console.log('hello');
+      this.loaded = true;
+    },
   },
-  mounted() {
-    if (this.$route.params.id) {
+  beforeRouteEnter(to, from, next) {
+    if (to.params.id) {
       backApi
-        .get('/agent/profile/child', { params: { another_agent_id: this.$route.params.id } })
+        .get('/agent/profile/child', { params: { another_agent_id: to.params.id } })
         .then((Response) => {
-          console.log(Response.data);
-          this.loaded = !this.loaded;
+          console.log('Another Agent data', Response.data);
           const data = ReplaceNull(Response.data);
-          this.userinfo = data;
+          next((vm) => {
+            vm.setData(data);
+          });
         })
         .catch(() => {
           this.loaded = !this.loaded;
@@ -295,11 +332,61 @@ export default {
         });
     } else {
       backApi.get('/agent/profile').then((Response) => {
-        this.loaded = !this.loaded;
+        console.log('My Data', Response.data);
         const data = ReplaceNull(Response.data);
-        this.userinfo = data;
+        next((vm) => {
+          vm.setData(data);
+        });
       });
     }
+  },
+  beforeRouteUpdate(to, from, next) {
+    if (to.params.id) {
+      backApi
+        .get('/agent/profile/child', { params: { another_agent_id: to.params.id } })
+        .then((Response) => {
+          console.log('Another Agent data', Response.data);
+          const data = ReplaceNull(Response.data);
+          next((vm) => {
+            vm.setData(data);
+          });
+        })
+        .catch(() => {
+          this.loaded = !this.loaded;
+          this.success = !this.success;
+        });
+    } else {
+      backApi.get('/agent/profile').then((Response) => {
+        console.log('My Data', Response.data);
+        const data = ReplaceNull(Response.data);
+        next((vm) => {
+          vm.setData(data);
+        });
+      });
+    }
+  },
+  mounted() {
+    // if (this.$route.params.id) {
+    //   backApi
+    //     .get('/agent/profile/child', { params: { another_agent_id: this.$route.params.id } })
+    //     .then((Response) => {
+    //       console.log('Another Agent data', Response.data);
+    //       this.loaded = !this.loaded;
+    //       const data = ReplaceNull(Response.data);
+    //       this.userinfo = data;
+    //     })
+    //     .catch(() => {
+    //       this.loaded = !this.loaded;
+    //       this.success = !this.success;
+    //     });
+    // } else {
+    //   backApi.get('/agent/profile').then((Response) => {
+    //     console.log('My Data', Response.data);
+    //     this.loaded = !this.loaded;
+    //     const data = ReplaceNull(Response.data);
+    //     this.userinfo = data;
+    //   });
+    // }
   },
   computed: {
     ...mapState('auth', ['role']),
@@ -320,12 +407,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal_btn{
+.modal_btn {
   color: #32aaa7;
   font-weight: 500;
   cursor: pointer;
   display: inline-block;
-  &:nth-of-type(1){
+  &:nth-of-type(1) {
     margin-right: 30px;
   }
 }
@@ -409,18 +496,18 @@ export default {
   }
 }
 @media (max-width: 540px) {
-.modal_btn{
+  .modal_btn {
     font-size: 16px;
-    &:nth-of-type(1){
+    &:nth-of-type(1) {
       margin-right: 0px;
       margin-bottom: 15px;
     }
   }
 }
 @media (max-width: 320px) {
-.modal_btn{
+  .modal_btn {
     font-size: 14px;
-    &:nth-of-type(1){
+    &:nth-of-type(1) {
       margin-right: 0px;
     }
   }

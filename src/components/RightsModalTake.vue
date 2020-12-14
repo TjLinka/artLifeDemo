@@ -13,23 +13,26 @@
             placeholder="Партнер получатель"
             @select="handleSelect"
             style="width: 100%"
+            class="autocomplete_input"
           ></el-autocomplete>
         </div>
         <div class="col-md-6 trans_btns">
-          <button @click="giveRights">Передать права</button>
+          <button @click="takeRights"
+          :class="this.selectedUser !== null
+          && this.selectedUser !== '' ? '' : 'disabled'">Передать права</button>
           <button @click="resetData">Сбросить</button>
         </div>
       </div>
     </div>
-    <b-toast id="my-toast" variant="warning" solid>
+    <b-toast id="my-toast-error" variant="warning" solid>
       <template #toast-title>
         <div class="d-flex flex-grow-1 align-items-baseline">
           <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
-          <strong class="mr-auto">Ошибка!</strong>
+          <strong class="mr-auto">Не был выбран партнер!</strong>
           <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
         </div>
       </template>
-      Данные указаны не верно
+        Выберете партнера, которому хотите передать права
     </b-toast>
   </div>
 </template>
@@ -52,6 +55,7 @@ export default {
   },
   methods: {
     querySearchAsync(queryString, cb) {
+      console.log(this.selectedUser);
       const qr = queryString === '' ? 'а' : queryString;
       backApi.get('/agent/agent-list', { params: { q: qr } }).then((Response) => {
         Response.data.entries.forEach((u) => {
@@ -68,10 +72,15 @@ export default {
       this.selectedUser = null;
       this.$emit('enlarge-text');
     },
-    giveRights() {
-      backApi.post('/agent/share-transfert', { agent_to: this.selectedUser });
-      this.$emit('enlarge-text');
-      this.$emit('toast');
+    takeRights() {
+      if (this.selectedUser !== null && this.selectedUser !== '') {
+        backApi.post('/agent/share-transfert', { agent_to: this.selectedUser });
+        this.$emit('enlarge-text');
+        this.$emit('toast');
+      } else {
+        console.log('Не выбран партнер');
+        this.$bvToast.show('my-toast-error');
+      }
     },
   },
 };
@@ -115,6 +124,11 @@ export default {
 .trans_btns {
   display: flex;
   justify-content: space-between;
+  & button.disabled:nth-of-type(1){
+    color: #9A9A9A;
+    border-color: #C4C4C4;
+    cursor: auto;
+  }
 }
 @media (max-width: 425px) {
   .perevod {
@@ -128,44 +142,8 @@ export default {
       margin-bottom: 20px;
     }
   }
-}
-.col-md-6,
-.col-md {
-  position: relative;
-  span {
-    display: none;
-    position: absolute;
-    right: 18px;
-    top: 10px;
-    color: #32aaa7;
-    cursor: pointer;
-  }
-  label {
-    position: absolute;
-    top: 5px;
-    left: 20px;
-    transition: 0.15s ease-in-out;
-    color: #9a9a9a;
-    font-size: 14px;
-    z-index: 10;
-  }
-  input {
-    width: 100%;
-    border: 0;
-    height: 35px;
-    border-radius: 0;
-    border-bottom: 1px solid #dee2f3;
-    outline: none;
-    padding-left: 5px;
-    font-size: 14px;
-    &:focus ~ label,
-    &:valid ~ label {
-      font-size: 12px;
-      top: -10px;
-    }
-    &:valid ~ span {
-      display: block;
-    }
+  .autocomplete_input{
+    margin-bottom: 25px;
   }
 }
 </style>

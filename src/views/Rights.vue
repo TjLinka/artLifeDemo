@@ -19,12 +19,12 @@
         <div class="col">
           <p class="current_period">
             <strong>Права на управление баллами личной группой переданы -</strong>
-            Василию Василььевич Васильеву
+            {{ruleGiver}}
           </p>
         </div>
       </div>
       <div class="row mt-3">
-        <div class="col-md-6 rights_btns">
+        <div class="col-xl-6 rights_btns">
           <button @click="takeRight">Забрать права</button>
           <button @click="showModal1 = !showModal1">Передать права</button>
         </div>
@@ -79,6 +79,7 @@ export default {
     return {
       showModal1: false,
       showModal2: false,
+      ruleGiver: '',
       entries: [],
       fields: [
         {
@@ -119,6 +120,10 @@ export default {
   mounted() {
     backApi.get('/agent/share-transfert-list').then((Response) => {
       this.entries = Response.data.entries;
+    });
+    backApi.get('/agent/profile').then((Response) => {
+      console.log(Response.data);
+      this.ruleGiver = Response.data.agent2transfer_name;
     });
   },
   methods: {
@@ -169,16 +174,15 @@ export default {
     }
   }
 }
-.cust_modal{
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 10;
-    width: 100%;
-    padding-left: 120px;
-    padding-bottom: 40px;
-    box-sizing: border-box;
-    background: #FFFFFF;
-    box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);
+@media (max-width: 525px) {
+  .rights_btns {
+    button {
+      width: 100%;
+      display: block;
+      &:nth-of-type(1) {
+        margin-bottom: 15px;
+      }
+    }
+  }
 }
 </style>

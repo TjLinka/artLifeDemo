@@ -24,7 +24,7 @@
     </div>
     <div class="row mt-3 mb-4">
       <div class="col export_btns">
-        <span>Печать</span>
+        <!-- <span>Печать</span> -->
         <span>Экспорт в xls</span>
         <span>Экспорт в pdf</span>
       </div>

@@ -58,6 +58,7 @@ export default {
   data() {
     return {
       userInfo: {},
+      someText: '',
     };
   },
   mounted() {
@@ -67,6 +68,9 @@ export default {
     });
   },
   methods: {
+    sss() {
+      console.log(this.someText);
+    },
     back() {
       this.$router.go(-1);
     },
