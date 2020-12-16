@@ -23,6 +23,7 @@
             :fetch-suggestions="querySearchAsync"
             placeholder="Партнер получатель"
             @select="handleSelect"
+            clearable
           ></el-autocomplete>
         </div>
         <div class="col-md-6 mt-4">
@@ -32,7 +33,11 @@
       </div>
       <div class="row edit mt-4">
         <div class="col-md trans_btns">
-          <button @click="send">Перевести</button>
+          <button
+          :disabled="!pointsGo" @click="send"
+          :class="pointsGo ? '' : 'disabled'">
+          Перевести
+          </button>
         </div>
       </div>
     </div>
@@ -51,11 +56,30 @@ export default {
       links: [],
       sum: null,
       toastCount: 0,
+      selectedUser: null,
     };
   },
   mounted() {
   },
+  computed: {
+    pointsGo() {
+      if (
+        this.selectedUser !== ''
+        && this.selectedUser !== null
+        && this.state !== ''
+        && this.sum !== null
+        && this.sum !== '') {
+        return true;
+      // eslint-disable-next-line no-else-return
+      } else {
+        return false;
+      }
+    },
+  },
   methods: {
+    clear() {
+      console.log('Clear');
+    },
     querySearchAsync(queryString, cb) {
       const qr = queryString === '' ? 'а' : queryString;
       backApi.get('/agent/agent-list', { params: { q: qr } }).then((Response) => {
@@ -151,6 +175,11 @@ div[role='combobox']{
 .trans_btns {
   display: flex;
   justify-content: space-between;
+  & button.disabled{
+    color: #9A9A9A;
+    border-color: #C4C4C4;
+    cursor: auto;
+  }
 }
 @media (max-width: 768px) {
   .perevod {

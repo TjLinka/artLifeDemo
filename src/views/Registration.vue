@@ -93,7 +93,6 @@ export default {
       this.$router.go(-1);
     },
     registr() {
-      console.log('registr ok');
     },
     clearInput(name) {
       this.newUser[name] = null;

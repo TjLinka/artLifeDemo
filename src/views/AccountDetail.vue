@@ -10,7 +10,8 @@
         Движение по лицевому счету
         </h2>
       <p class="p-0 m-0 history_title">Период от и до</p>
-      <date-picker v-model="rangeDate" range @change="getSelectedDataRange" valueType="format">
+      <date-picker v-model="rangeDate" range-separator=" - "
+      range @change="getSelectedDataRange" valueType="format">
       </date-picker>
       <p>
         <!-- <span class="mr-3">Печать</span> -->

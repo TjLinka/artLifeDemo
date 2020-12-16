@@ -66,15 +66,19 @@
       <div v-if="searchActive" class="organization__modal">
         <div class="container">
           <h3 class="mb-3">Настройки дерева</h3>
-        <i
-          class="arrow_left"
-          @click="periodIndex = periodIndex - 1 >= 0 ? periodIndex - 1 : periods.length - 1"
-        >
-        </i>
-        <span>{{ months[new Date(currentPeriod).getMonth()] }} </span>
-        <span>{{ new Date(currentPeriod).getFullYear() }}</span>
-          <i class="arrow_right"
-          @click="periodIndex = (periodIndex + 1) % periods.length"></i>
+        <div class="date_picker_comp">
+          <i
+            class="arrow_left"
+            @click="periodIndex = periodIndex - 1 >= 0 ? periodIndex - 1 : periods.length - 1"
+          >
+          </i>
+          <span class="date_show">
+            {{ months[new Date(currentPeriod).getMonth()] }}
+            {{ new Date(currentPeriod).getFullYear() }}
+          </span>
+            <i class="arrow_right"
+            @click="periodIndex = (periodIndex + 1) % periods.length"></i>
+        </div>
         <div class="row">
           <div class="col-md-12 mt-3">
             <b-form-group label="Выбор дерева">
@@ -335,6 +339,37 @@ export default {
 <style lang="scss" scoped>
 span[class*="el-tag"] deep i{
   display: none;
+}
+.date_picker_comp{
+  position: relative;
+  /* display: inline-block; */
+}
+.date_show{
+  /* position: relative; */
+  margin-left: 45px;
+  min-width: 120px;
+  display: inline-block;
+  text-align: center;
+}
+.arrow_left,
+.arrow_right{
+  position: absolute;
+  display: inline;
+  background-repeat: no-repeat;
+  /* background-size: contain; */
+  background-position: center;
+  width: 12px;
+  height: 12px;
+  top: 5px;
+  cursor: pointer;
+}
+.arrow_left{
+    background-image: url('../assets/imgs/arrow_left.svg');
+    left: 0px;
+}
+.arrow_right{
+    background-image: url('../assets/imgs/arrow_right.svg');
+    left: 190px;
 }
 @media (min-width: 760px) {
   .radio{

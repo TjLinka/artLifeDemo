@@ -19,13 +19,18 @@
         <div class="col">
           <p class="current_period">
             <strong>Права на управление баллами личной группой переданы -</strong>
-            {{ruleGiver}}
+            {{ruleGiver ? ruleGiver : 'Никому'}}
           </p>
         </div>
       </div>
       <div class="row mt-3">
         <div class="col-xl-6 rights_btns">
-          <button @click="takeRight">Забрать права</button>
+          <button @click="takeRight"
+          :disabled="ruleGiver !== null
+          && ruleGiver !== '' ? false : true"
+          :class="ruleGiver !== null
+          && ruleGiver !== '' ? '' : 'disabled'"
+          >Забрать права</button>
           <button @click="showModal1 = !showModal1">Передать права</button>
         </div>
       </div>
@@ -42,7 +47,8 @@
       <div>
         <RightsModalTake
         v-on:enlarge-text="showModal1 = false"
-        v-on:toast="sss"/>
+        v-on:toast="sss"
+        v-on:rulegiver="ruleGiver = $event"/>
       </div>
     </footer>
       <b-toast id="my-toast-1" variant="success" solid>
@@ -118,12 +124,11 @@ export default {
     };
   },
   mounted() {
+    backApi.get('/agent/profile').then((Response) => {
+      this.ruleGiver = Response.data.agent2transfer_name;
+    });
     backApi.get('/agent/share-transfert-list').then((Response) => {
       this.entries = Response.data.entries;
-    });
-    backApi.get('/agent/profile').then((Response) => {
-      console.log(Response.data);
-      this.ruleGiver = Response.data.agent2transfer_name;
     });
   },
   methods: {
@@ -132,6 +137,11 @@ export default {
     },
     takeRight() {
       backApi.post('/agent/share-transfert', { agent_to: null });
+      setTimeout(() => {
+        backApi.get('/agent/profile').then((Response) => {
+          this.ruleGiver = Response.data.agent2transfer_name;
+        });
+      }, 1000);
       this.$bvToast.show('my-toast-1');
     },
     back() {
@@ -165,6 +175,10 @@ export default {
       background-color: #32aaa7;
       color: white;
       margin-right: 10px;
+      &.disabled{
+        color: #9A9A9A;
+        background-color: #DEE2F3;
+      }
     }
     &:nth-of-type(2) {
       background-color: white;

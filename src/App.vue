@@ -203,6 +203,12 @@ main {
 }
 // КОНЕЦ СТИЛЕЙ ДЛЯ КАЛЕНДАРЯ И ПЕРИОДА
 
+// СТИЛИ ДЛЯ DATE-PICKER
+.mx-datepicker input{
+  border: 0;
+  border-bottom: 1px solid #dee2f3 !important;
+  border-radius: 0px !important;
+}
 // СТИЛИ ДЛЯ ТАБЛИЦ КОМПОНЕНТА EL-TABLE
 .el-table--enable-row-hover .el-table__body tr:hover>td {
     background-color: unset;
@@ -266,10 +272,13 @@ input[type='number'] {
 }
 .el-tag .el-tag__close{
   color: #32aaa7;
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 500;
   left: 3px;
   top: 0px;
+}
+.el-tag .el-tag__close:hover{
+  background: #32aaa7;
 }
 
 .table thead th {

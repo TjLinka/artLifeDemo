@@ -14,12 +14,18 @@
             @select="handleSelect"
             style="width: 100%"
             class="autocomplete_input"
+            clearable
           ></el-autocomplete>
         </div>
         <div class="col-md-6 trans_btns">
           <button @click="takeRights"
-          :class="this.selectedUser !== null
-          && this.selectedUser !== '' ? '' : 'disabled'">Передать права</button>
+            :class="this.selectedUser !== ''
+          && this.selectedUser !== null
+          && this.state !== '' ? '' : 'disabled'"
+            :disabled="this.selectedUser !== ''
+          && this.selectedUser !== null
+          && this.state !== '' ? false : true "
+          >Передать права</button>
           <button @click="resetData">Сбросить</button>
         </div>
       </div>
@@ -55,7 +61,6 @@ export default {
   },
   methods: {
     querySearchAsync(queryString, cb) {
-      console.log(this.selectedUser);
       const qr = queryString === '' ? 'а' : queryString;
       backApi.get('/agent/agent-list', { params: { q: qr } }).then((Response) => {
         Response.data.entries.forEach((u) => {
@@ -72,13 +77,15 @@ export default {
       this.selectedUser = null;
       this.$emit('enlarge-text');
     },
-    takeRights() {
+    async takeRights() {
       if (this.selectedUser !== null && this.selectedUser !== '') {
-        backApi.post('/agent/share-transfert', { agent_to: this.selectedUser });
+        await backApi.post('/agent/share-transfert', { agent_to: this.selectedUser });
+        await backApi.get('/agent/profile/child', { params: { another_agent_id: this.selectedUser } }).then((Response) => {
+          this.$emit('rulegiver', Response.data.name);
+        });
         this.$emit('enlarge-text');
         this.$emit('toast');
       } else {
-        console.log('Не выбран партнер');
         this.$bvToast.show('my-toast-error');
       }
     },

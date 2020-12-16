@@ -63,14 +63,10 @@ export default {
   },
   mounted() {
     backApi.get('agent/sponsor').then((Response) => {
-      console.log(Response.data);
       this.userInfo = Response.data;
     });
   },
   methods: {
-    sss() {
-      console.log(this.someText);
-    },
     back() {
       this.$router.go(-1);
     },

@@ -25,12 +25,19 @@
         <div class="container top__info">
           <div class="row" v-if="transfertAccess && !this.$route.params.id">
             <div class="col-md mt-1">
-              <span class="modal_btn" @click="showTransfModal2">
+              <!-- <span class="modal_btn" @click="showTransfModal2">
                 Перевести между лицевыми счетами
-              </span>
+              </span> -->
               <span class="modal_btn" @click="showTransfModal1">
                 Перевести баллы между партнерами
               </span>
+            </div>
+          </div>
+          <div class="row" v-if="transfertAccess && !this.$route.params.id">
+            <div class="col">
+              <p class="show__transfert p-0" @click="becomePartner">
+                Стать партнёром
+              </p>
             </div>
           </div>
           <div class="row">
@@ -173,13 +180,13 @@
               </button>
             </div>
           </div>
-          <div class="row" v-if="transfertAccess">
+          <!-- <div class="row" v-if="transfertAccess">
             <div class="col">
               <p class="show__transfert p-0 mt-5" @click="becomePartner">
                 Стать партнёром
               </p>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -215,7 +222,7 @@
         />
       </div>
     </footer>
-    <footer class="container-fluid cust_modal" v-if="showModal2">
+    <!-- <footer class="container-fluid cust_modal" v-if="showModal2">
       <div>
         <AgentInfoModalMoney
           v-on:enlarge-text="showModal2 = false"
@@ -224,7 +231,7 @@
           :id="userinfo.id"
         />
       </div>
-    </footer>
+    </footer> -->
     <!-- <div>
       <b-modal id="modal-center" hide-footer size="xl" centered title="BootstrapVue">
         <template #modal-title>
@@ -270,13 +277,13 @@
 import { mapState } from 'vuex';
 import Transfert from '../components/Transfert.vue';
 import AgentInfoModalPoints from '../components/AgentInfoModalPoints.vue';
-import AgentInfoModalMoney from '../components/AgentInfoModalMoney.vue';
+// import AgentInfoModalMoney from '../components/AgentInfoModalMoney.vue';
 import backApi from '../assets/backApi';
 import { ReplaceNull } from '../assets/utils';
 
 export default {
   name: 'MyInfo',
-  components: { Transfert, AgentInfoModalPoints, AgentInfoModalMoney },
+  components: { Transfert, AgentInfoModalPoints },
   data() {
     return {
       showModal: false,
@@ -311,7 +318,6 @@ export default {
     },
     setData(data) {
       this.userinfo = data;
-      console.log('hello');
       this.loaded = true;
     },
   },
@@ -320,7 +326,7 @@ export default {
       backApi
         .get('/agent/profile/child', { params: { another_agent_id: to.params.id } })
         .then((Response) => {
-          console.log('Another Agent data', Response.data);
+
           const data = ReplaceNull(Response.data);
           next((vm) => {
             vm.setData(data);
@@ -332,7 +338,6 @@ export default {
         });
     } else {
       backApi.get('/agent/profile').then((Response) => {
-        console.log('My Data', Response.data);
         const data = ReplaceNull(Response.data);
         next((vm) => {
           vm.setData(data);
@@ -345,7 +350,6 @@ export default {
       backApi
         .get('/agent/profile/child', { params: { another_agent_id: to.params.id } })
         .then((Response) => {
-          console.log('Another Agent data', Response.data);
           const data = ReplaceNull(Response.data);
           next((vm) => {
             vm.setData(data);
@@ -357,7 +361,6 @@ export default {
         });
     } else {
       backApi.get('/agent/profile').then((Response) => {
-        console.log('My Data', Response.data);
         const data = ReplaceNull(Response.data);
         next((vm) => {
           vm.setData(data);

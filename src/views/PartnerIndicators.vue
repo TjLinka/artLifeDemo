@@ -124,22 +124,18 @@ export default {
   mounted() {
     if (this.$route.params.id) {
       backApi.get(`/agent/all-periods-indicators/${this.$route.params.id}`).then((Response) => {
-        console.log(Response.data);
         this.entries = Response.data.entries;
       });
       backApi
         .get('/agent/profile/child/', { params: { another_agent_id: this.$route.params.id } })
         .then((Response) => {
-          console.log(Response.data);
           this.userInfo = Response.data;
         });
     } else {
       backApi.get('/agent/all-periods-indicators').then((Response) => {
-        console.log(Response.data);
         this.entries = Response.data.entries;
       });
       backApi.get('/agent/profile/').then((Response) => {
-        console.log(Response.data);
         this.userInfo = Response.data;
       });
     }
@@ -147,13 +143,11 @@ export default {
   methods: {
     updateData(id) {
       backApi.get(`/agent/all-periods-indicators/${id}`).then((Response) => {
-        console.log(Response.data);
         this.entries = Response.data.entries;
       });
       backApi
         .get('/agent/profile/child/', { params: { another_agent_id: id } })
         .then((Response) => {
-          console.log(Response.data);
           this.userInfo = Response.data;
         });
       this.showModal = !this.showModal;

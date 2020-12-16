@@ -9,7 +9,8 @@
       </p>
         История баллов</h2>
       <p class="p-0 m-0 history_title">Период от и до</p>
-      <date-picker v-model="rangeDate" range @change="getSelectedDataRange" valueType="format">
+      <date-picker v-model="rangeDate" range-separator=" - "
+      range @change="getSelectedDataRange" valueType="format">
       </date-picker>
       <div class="row mobile_search">
         <div class="col search__btn" @click="toggleSearch">

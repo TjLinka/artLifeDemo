@@ -52,6 +52,7 @@
               type="date"
               placeholder="Дата рождения"
               style="width: 100%"
+              range-separator=" - "
             ></date-picker>
           </div>
           <div class="col-md-6 custom_input mt-3">
@@ -218,7 +219,6 @@ export default {
       });
     },
     async saveTopEdit() {
-      console.log(this.userInfo.bthdte);
       await backApi.post('agent/profile-edit', this.userInfo);
       backApi.get('/agent/profile').then((Response) => {
         this.userInfo = Response.data;

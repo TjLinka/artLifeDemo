@@ -25,7 +25,7 @@
         <span class="mr-3">Экспорт в pdf</span>
       </p>
       <div class="orgper">
-              <el-table
+        <el-table
         :key="tree_key"
         :data="rows"
         style="width: 100%"
@@ -34,7 +34,7 @@
         :load="load"
         :tree-props="{ children: 'children', hasChildren: 'has_children' }"
         :row-class-name="tableRowClassName"
-      >
+        >
         <el-table-column
           v-for="(column, index) in columns"
           :prop="column.property"
@@ -46,7 +46,7 @@
           <router-link :to="`/agent/${scope.row.id}`">{{scope.row.name}}</router-link>
         </span>
         <span v-else-if="column.property === 'rank_end'">
-              <img :src="`../icons/${scope.row.rank_end}.svg`" alt="" class="rank_icon">
+          <img :src="`../icons/${scope.row.rank_end}.svg`" alt="" class="rank_icon">
         </span>
         <span v-else>{{ column.formater(scope.row)}}</span>
       </template>
@@ -113,11 +113,11 @@ export default {
   data() {
     const rows = [];
     const columns = [
-      {
-        property: 'has_children',
-        title: 'Уровень',
-        formater: (item) => `${item.depth} УР`,
-      },
+      // {
+      //   property: 'has_children',
+      //   title: 'Уровень',
+      //   formater: (item) => `${item.depth} УР`,
+      // },
       {
         property: 'rank_end',
         title: 'Ранг',

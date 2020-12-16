@@ -10,12 +10,16 @@
         История возвартов
         </h2>
       <p class="p-0 m-0 history_title">Период от и до</p>
-      <date-picker v-model="rangeDate" range @change="getSelectedDataRange" valueType="format">
+      <date-picker v-model="rangeDate"
+      range @change="getSelectedDataRange" valueType="format"
+      range-separator=" - "
+      >
       </date-picker>
       <p>
         <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
+        <span class="mr-3">Экспорт возвратной накладной в pdf</span>
       </p>
       <div class="refound_table">
       <b-table :fields="fields" :items="entries"
@@ -112,7 +116,7 @@
 <script>
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
-import 'vue2-datepicker/locale/en';
+import 'vue2-datepicker/locale/ru';
 import backApi from '../assets/backApi';
 
 export default {

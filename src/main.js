@@ -4,10 +4,14 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import lang from 'element-ui/lib/locale/lang/ru-RU';
+import locale from 'element-ui/lib/locale';
 
 import App from './App.vue';
 import router from './router';
 import store from './store';
+
+locale.use(lang);
 
 Vue.use(BootstrapVue);
 Vue.use(ElementUI);
@@ -16,7 +20,7 @@ Vue.config.productionTip = false;
 Vue.filter('localInt', (value) => {
   const formatter = new Intl.NumberFormat('ru');
   // eslint-disable-next-line no-restricted-globals
-  if (!value || isNaN(value)) {
+  if (isNaN(value)) {
     return '-';
   }
   return formatter.format(value);

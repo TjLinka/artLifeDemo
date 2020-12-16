@@ -29,6 +29,7 @@
         <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
+        <span class="mr-3">Экспорт накладной в pdf</span>
       </p>
       <div class="perchases_table">
         <b-table :fields="fields" :items="entries"

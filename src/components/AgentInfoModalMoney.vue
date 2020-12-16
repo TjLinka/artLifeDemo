@@ -90,7 +90,6 @@ export default {
             amount: this.sum,
           })
           .then(() => {
-            console.log('good');
             this.$bvToast.show('my-toast-money');
           })
           .catch(() => {
