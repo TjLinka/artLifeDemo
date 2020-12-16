@@ -66,7 +66,6 @@ export default {
     },
     handleSelect(item) {
       this.selectedUser = item.agent_id;
-      console.log(this.selectedUser);
     },
   },
 };

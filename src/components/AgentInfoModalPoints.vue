@@ -77,9 +77,6 @@ export default {
     },
   },
   methods: {
-    clear() {
-      console.log('Clear');
-    },
     querySearchAsync(queryString, cb) {
       const qr = queryString === '' ? 'а' : queryString;
       backApi.get('/agent/agent-list', { params: { q: qr } }).then((Response) => {

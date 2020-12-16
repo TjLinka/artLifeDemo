@@ -84,7 +84,7 @@ const routes = [
     path: '/organization-period',
     name: 'OrganizationPeriod',
     component: () => import('../views/OrganizationPeriod.vue'),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, requiresRole: 'Клиент' },
     // Видят все
   },
   {

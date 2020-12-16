@@ -32,7 +32,7 @@
             <li class="mobilis"><span class="i_m">Структура</span></li>
             <li>
               <router-link to="/organization-period"
-              v-if="role !== 'Клиент'"
+              v-if="role === 'Клиент'"
               >Организация текущего периода</router-link>
             </li>
             <li>

@@ -34,7 +34,7 @@
           <button @click="showModal1 = !showModal1">Передать права</button>
         </div>
       </div>
-      <h2 class="mt-4">Под заголовок</h2>
+      <h2 class="mt-4">Праводатели</h2>
       <b-table :fields="fields" :items="entries" head-variant="light" responsive outlined>
         <template v-slot:cell(id)="row">
           <router-link :to="`/agent/${row.item.id}`" class="link">{{
@@ -91,6 +91,10 @@ export default {
         {
           key: 'id',
           label: 'Номер партнёра',
+        },
+        {
+          key: 'agentname',
+          label: 'ФИО',
         },
         {
           key: 'stockname',

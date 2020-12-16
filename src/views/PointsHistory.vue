@@ -246,6 +246,7 @@ export default {
       backApi.get('/agent/points-detail', data).then((Response) => {
         this.entries = Response.data.entries;
       });
+      this.searchActive = !this.searchActive;
     },
     back() {
       this.$router.go(-1);
