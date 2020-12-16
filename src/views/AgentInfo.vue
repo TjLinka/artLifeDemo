@@ -326,7 +326,6 @@ export default {
       backApi
         .get('/agent/profile/child', { params: { another_agent_id: to.params.id } })
         .then((Response) => {
-
           const data = ReplaceNull(Response.data);
           next((vm) => {
             vm.setData(data);
