@@ -332,71 +332,96 @@ export default {
       this.loaded = true;
     },
   },
-  beforeRouteEnter(to, from, next) {
+  async beforeRouteEnter(to, from, next) {
+    // Загрузка данных, если перешли на чужую карточку партнёра
     if (to.params.id) {
-      backApi
-        .get('/agent/profile/child', { params: { another_agent_id: to.params.id } })
-        .then((Response) => {
-          if (Response.status === 200) {
-            backApi.get('/agent/transfer-info', { params: { another_agent_id: Response.data.id } })
-              .then((response) => {
-                next((vm) => {
-                  vm.setData(ReplaceNull(Response.data), ReplaceNull(response.data));
-                });
-              });
-          }
-        })
-        .catch(() => {
-          this.loaded = !this.loaded;
-          this.success = !this.success;
+      const response = await backApi.get('/agent/profile/child', {
+        params: {
+          another_agent_id: to.params.id,
+        },
+      });
+      // Проверка на успешный ответ от сервера
+        // Если 200, то грузим информацию о трансферте
+      if (response.status === 200) {
+        const response2 = await backApi.get('/agent/transfer-info', {
+          params: {
+            another_agent_id: response.data.id,
+          },
         });
+        next((vm) => {
+          vm.setData(ReplaceNull(response.data), ReplaceNull(response2.data));
+        });
+      } else {
+        // Если ошибка, то просто выполняем setData, только с личными данными
+        next((vm) => {
+          vm.setData(ReplaceNull(ReplaceNull(response.data)));
+        });
+      }
     } else {
-      backApi.get('/agent/profile')
-        .then((Response) => {
-          if (Response.status === 200) {
-            backApi.get('/agent/transfer-info', { params: { another_agent_id: Response.data.id } })
-              .then((response) => {
-                next((vm) => {
-                  vm.setData(ReplaceNull(Response.data), ReplaceNull(response.data));
-                });
-              });
-          }
-          next((vm) => {
-            vm.setData(ReplaceNull(Response.data));
-          });
+      // Загрузка данных, если перешли на свою карточку партнёра
+      const response = await backApi.get('/agent/profile');
+      // Если 200, то грузим информацию о трансферте
+      if (response.status === 200) {
+        const response2 = await backApi.get('/agent/transfer-info', {
+          params: {
+            another_agent_id: response.data.id,
+          },
         });
+        next((vm) => {
+          vm.setData(ReplaceNull(response.data), ReplaceNull(response2.data));
+        });
+      } else {
+        // Если ошибка, то просто выполняем setData, только с личными данными
+        next((vm) => {
+          vm.setData(ReplaceNull(response.data));
+        });
+      }
     }
   },
   beforeRouteUpdate(to, from, next) {
+    // Загрузка данных, если перешли на чужую карточку партнёра
     if (to.params.id) {
-      backApi
-        .get('/agent/profile/child', { params: { another_agent_id: to.params.id } })
-        .then((Response) => {
-          if (Response.status === 200) {
-            backApi.get('/agent/transfer-info', { params: { another_agent_id: to.params.id } })
-              .then((response) => {
-                next((vm) => {
-                  vm.setData(ReplaceNull(Response.data), ReplaceNull(response.data));
-                });
-              });
-          }
-        })
-        .catch(() => {
-          this.loaded = !this.loaded;
-          this.success = !this.success;
+      const response = await backApi.get('/agent/profile/child', {
+        params: {
+          another_agent_id: to.params.id,
+        },
+      });
+      // Проверка на успешный ответ от сервера
+        // Если 200, то грузим информацию о трансферте
+      if (response.status === 200) {
+        const response2 = await backApi.get('/agent/transfer-info', {
+          params: {
+            another_agent_id: response.data.id,
+          },
         });
+        next((vm) => {
+          vm.setData(ReplaceNull(response.data), ReplaceNull(response2.data));
+        });
+      } else {
+        // Если ошибка, то просто выполняем setData, только с личными данными
+        next((vm) => {
+          vm.setData(ReplaceNull(ReplaceNull(response.data)));
+        });
+      }
     } else {
-      backApi.get('/agent/profile')
-        .then((Response) => {
-          if (Response.status === 200) {
-            backApi.get('/agent/transfer-info', { params: { another_agent_id: Response.data.id } })
-              .then((response) => {
-                next((vm) => {
-                  vm.setData(ReplaceNull(Response.data), ReplaceNull(response.data));
-                });
-              });
-          }
+      // Загрузка данных, если перешли на свою карточку партнёра
+      const response = await backApi.get('/agent/profile');
+      // Если 200, то грузим информацию о трансферте
+      if (response.status === 200) {
+        const response2 = await backApi.get('/agent/transfer-info', {
+          params: {
+            another_agent_id: response.data.id,
+          },
         });
+        next((vm) => {
+          vm.setData(ReplaceNull(response.data), ReplaceNull(response2.data));
+        });
+      } else {
+        // Если ошибка, то просто выполняем setData, только с личными данными
+        next((vm) => {
+          vm.setData(ReplaceNull(response.data));
+        });
+      }
     }
   },
   mounted() {
