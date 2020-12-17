@@ -378,7 +378,7 @@ export default {
       }
     }
   },
-  beforeRouteUpdate(to, from, next) {
+  async beforeRouteUpdate(to, from, next) {
     // Загрузка данных, если перешли на чужую карточку партнёра
     if (to.params.id) {
       const response = await backApi.get('/agent/profile/child', {
