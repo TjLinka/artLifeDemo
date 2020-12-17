@@ -46,7 +46,8 @@
           <router-link :to="`/agent/${scope.row.id}`">{{scope.row.name}}</router-link>
         </span>
         <span v-else-if="column.property === 'rank_end'">
-          <img :src="`../icons/${scope.row.rank_end}.svg`"
+          <img
+          :src="`../icons/${scope.row.rank_end}${scope.row.depth === 0 ? '_white' : ''}.svg`"
           :title="scope.row.rank_end" class="rank_icon">
         </span>
         <span v-else>{{ column.formater(scope.row)}}</span>
