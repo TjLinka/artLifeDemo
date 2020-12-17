@@ -40,7 +40,7 @@
           :prop="column.property"
           :key="index"
           :label="column.title"
-          :width="col_width(column)"
+          :min-width="col_width(column)"
         >
           <!--  -->
 
@@ -48,7 +48,8 @@
             <!-- {{column.property}} -->
             <span v-if="column.property != 'id'">{{ column.formater(scope.row) }}</span>
             <span v-else>
-              <img :src="`../icons/${scope.row.rank_end}.svg`" alt="" class="rank_icon">
+              <img :src="`../icons/${scope.row.rank_end}.svg`"
+              :title="scope.row.rank_end" class="rank_icon">
               <span class="user_id">{{ scope.row.id }}</span><br />
               <router-link :to="`/agent/${scope.row.id}`"
               class="user_name">{{scope.row.name}}</router-link>
@@ -65,7 +66,10 @@
       </div>
       <div v-if="searchActive" class="organization__modal">
         <div class="container">
-          <h3 class="mb-3">Настройки дерева</h3>
+          <h3 class="mb-3">
+            Настройки дерева
+            <span class="close_btn" @click="searchActive = !searchActive"></span>
+            </h3>
         <div class="date_picker_comp">
           <i
             class="arrow_left"
@@ -234,7 +238,7 @@ export default {
       if (col.property === 'id') {
         return 250;
       }
-      return null;
+      return 100;
     },
     tableRowClassName({ row }) {
       return `depth-${row.depth}`;
@@ -378,6 +382,7 @@ span[class*="el-tag"] deep i{
 }
 .rank_icon{
   width: 25px;
+  margin-left: 10px;
 }
 .user_id{
   display: inline-block;
@@ -403,11 +408,13 @@ span[class*="el-tag"] deep i{
     }
   }
   & .organization__modal {
-    //   position: absolute;
+    position: relative;
     padding-top: 30px;
     width: 100%;
     bottom: 0;
-
+    & .container{
+      position: relative;
+    }
     & .edit {
       input {
         width: 100%;
@@ -454,8 +461,15 @@ span[class*="el-tag"] deep i{
 .orgbyhist .el-table tr td:nth-of-type(1){
   border-right: 1px solid #9A9A9A;
 }
+.orgbyhist{
+  border: 1px solid #BABABA;
+}
 .orgbyhist .el-table td, .el-table th.is-leaf{
   border-bottom: 1px solid #9A9A9A;
+}
+.el-table th.is-leaf:nth-of-type(1){
+  border-bottom: 1px solid #9A9A9A;
+  border-right: 1px solid #9A9A9A;
 }
 .depth-0 {
   background-color: #32aaa7 !important;

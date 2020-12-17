@@ -170,8 +170,11 @@ div[role='combobox']{
   }
 }
 .trans_btns {
-  display: flex;
-  justify-content: space-between;
+  // display: flex;
+  // justify-content: space-between;
+  & button{
+    float: right;
+  }
   & button.disabled{
     color: #9A9A9A;
     border-color: #C4C4C4;

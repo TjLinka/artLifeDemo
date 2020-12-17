@@ -22,11 +22,13 @@
       </div>
       <h2>История организации</h2>
       <div class="row">
-        <div class="col">
-          <button>Трансферт</button>
-          <!-- <span>Печать</span> -->
-          <span>Экспорт в xls</span>
-          <span>Экспорт в pdf</span>
+        <div class="col-md-6 mt-4">
+          <button class="update">Трансферт</button>
+          <p class="exp_print">
+            <!-- <span class="mr-3">Печать</span> -->
+            <span class="mr-3">Экспорт в xls</span>
+            <span class="mr-3">Экспорт в pdf</span>
+          </p>
         </div>
       </div>
       <div class="transmaneg_table">
@@ -34,9 +36,13 @@
         :fields="fields" :items="entries" class="mt-5">
           <template v-slot:cell(id)="row">
             <p>
-              <span class="mr-4">{{ row.item.level }} УР</span>
-              <img :src="`../icons/${row.item.rank}.svg`" alt="" class="rank_icon" />
-              <span style="display: inline-block; float:right">{{ row.item.id }}</span>
+              <span class="mr-4">{{ row.item.lvl }} УР</span>
+              <img :src="`../icons/${row.item.rank_end}.svg`"
+              :title="row.item.rank_end" class="rank_icon" />
+              <span style="display: inline-block; float:right">{{ row.item.id }}</span><br>
+              <span
+              style="display: inline-block; float:right; text-align: right; margin-top: 10px">
+              {{row.item.name}}</span>
             </p>
             <p style="text-align: right">{{ row.item.fio }}</p>
           </template>
@@ -50,60 +56,111 @@
           Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
         </div>
       </div>
-      <div v-if="searchActive" class="organization__modal">
-        <span @click="searchActive = !searchActive" class="close_btn">X</span>
-        <h3 class="mt-4">Настройка автоматической подачи баллов в трансферт</h3>
-        <div class="row">
+      <div v-if="searchActive" class="organization__modal container">
+        <span @click="searchActive = !searchActive" class="close_btn"></span>
+        <h3 class="mt-4">Поиск партнёра</h3>
+        <div class="row mt-5">
+          <div class="col-md-6">
+            <b-form-group label="" class="flex-radio">
+              <b-form-radio
+                v-model="filterData.points_type"
+                name="some-radios-1"
+                value="0"
+                class="radio mr-3"
+                >Резерв</b-form-radio
+              >
+              <b-form-radio
+                v-model="filterData.points_type"
+                name="some-radios-1"
+                value="1"
+                class="radio mr-3"
+                >ЛО</b-form-radio
+              >
+              <b-form-radio
+                v-model="filterData.points_type"
+                name="some-radios-1"
+                :value="null"
+                class="radio"
+                >Все</b-form-radio
+              >
+            </b-form-group>
+          </div>
+          <div class="col-md-6">
+            <b-form-checkbox
+              id="checkbox-1"
+              v-model="filterData.status"
+              name="checkbox-1"
+              value="accepted"
+              unchecked-value="not_accepted"
+            >
+              Показывать терминированных
+            </b-form-checkbox>
+          </div>
+        </div>
+        <div class="row mt-5">
           <div class="col-md-6 custom_input">
-            <input type="text" name="userFio" id="userFio" required/>
-            <label for="userFio">Номер:</label>
-            <span class="clear_icon" @click="clearFio('userFio')"></span>
+            <input type="text" name="userId" id="userId" required v-model="filterData.agent_id"/>
+            <label for="userId">Номер:</label>
+            <span class="clear_icon" @click="clearFio('userId')"></span>
           </div>
           <div class="col-md-6 custom_input">
-            <input type="text" name="userFio" id="userFio" required/>
-            <label for="userFio">Фамилия:</label>
+            <input type="text" name="userFio" id="userFio" required v-model="filterData.name"/>
+            <label for="userFio">ФИО:</label>
             <span class="clear_icon" @click="clearFio('userFio')"></span>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-6 custom_input">
-            <input type="text" name="userFio" id="userFio" required/>
-            <label for="userFio">Номер:</label>
-            <span class="clear_icon" @click="clearFio('userFio')"></span>
+        <div class="row mt-5">
+          <div class="col-md-6">
+            <el-select v-model="filterData.area" placeholder="Территория">
+              <el-option
+                v-for="item in areaList"
+                :key="item.area_id"
+                :label="item.area_name"
+                :value="item.area_id">
+              </el-option>
+            </el-select>
           </div>
           <div class="col-md-6 custom_input">
-            <input type="text" name="userFio" id="userFio" required/>
-            <label for="userFio">Фамилия:</label>
-            <span class="clear_icon" @click="clearFio('userFio')"></span>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6 custom_input">
-            <input type="text" name="userFio" id="userFio" required/>
-            <label for="userFio">Номер:</label>
-            <span class="clear_icon" @click="clearFio('userFio')"></span>
-          </div>
-          <div class="col-md-6 custom_input">
-            <input type="text" name="userFio" id="userFio" required/>
-            <label for="userFio">Фамилия:</label>
-            <span class="clear_icon" @click="clearFio('userFio')"></span>
+            <input type="text" name="userStore" id="userStore" required v-model="filterData.store"/>
+            <label for="userStore">Город склада обслуживания:</label>
+            <span class="clear_icon" @click="clearFio('userStore')"></span>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-6 custom_input">
-            <input type="text" name="userFio" id="userFio" required/>
-            <label for="userFio">Номер:</label>
-            <span class="clear_icon" @click="clearFio('userFio')"></span>
+        <div class="row mt-5">
+          <div class="col-md-6">
+            <el-select v-model="filterData.rank_beg" placeholder="Ранг на начало">
+              <el-option
+                v-for="item in rankList"
+                :key="item.rankname"
+                :label="item.rankname"
+                :value="item">
+              </el-option>
+            </el-select>
           </div>
-          <div class="col-md-6 custom_input">
-            <input type="text" name="userFio" id="userFio" required/>
-            <label for="userFio">Фамилия:</label>
-            <span class="clear_icon" @click="clearFio('userFio')"></span>
+          <div class="col-md-6">
+            <el-select v-model="filterData.rank_end" placeholder="Ранг на конец">
+              <el-option
+                v-for="item in rankList"
+                :key="item.rankname"
+                :label="item.rankname"
+                :value="item">
+              </el-option>
+            </el-select>
           </div>
         </div>
-        <div class="row edit mt-4">
-          <div class="col-sm-12">
-            <!-- <button class="mr-2 update" @click="updateData">Применить</button> -->
+        <div class="row mt-5">
+          <div class="col-md-6">
+            <el-select v-model="filterData.rank_calc" placeholder="Расчётный ранг">
+              <el-option
+                v-for="item in rankList"
+                :key="item.rankname"
+                :label="item.rankname"
+                :value="item">
+              </el-option>
+            </el-select>
+          </div>
+          <div class="col-md-6 custom_input">
+            <button class="mr-2 update">Применить</button>
           </div>
         </div>
       </div>
@@ -112,30 +169,17 @@
 </template>
 
 <script>
-// import backApi from '../assets/backApi';
+import backApi from '../assets/backApi';
 
 export default {
   name: 'TransferManagement',
   data() {
     return {
       searchActive: false,
-      entries: [
-        {
-          id: 12345,
-          fio: 'Александр Христорождественский Христорождественский',
-          noact: '1/2/3',
-          lo: 444,
-          go: 111,
-          ngo: 222,
-          oo: 333,
-          ko: 91,
-          rank_beg: 'Кол',
-          rank_calc: 'Рок',
-          reserve: 15554,
-          level: 4,
-          rank: 'Директор',
-        },
-      ],
+      filterData: {},
+      rankList: [],
+      areaList: [],
+      entries: [],
       fields: [
         {
           key: 'id',
@@ -190,7 +234,24 @@ export default {
       ],
     };
   },
-  mounted() {},
+  mounted() {
+    backApi.get('/agent/rank-list').then((Response) => {
+      console.log(Response.data);
+      this.rankList = Response.data.entries;
+    });
+    backApi.get('/agent/area-list').then((Response) => {
+      console.log(Response.data);
+      this.areaList = Response.data.entries;
+    });
+    backApi.get('/agent/flat_genealogy', {
+      params: {
+        comdte: '2020-03-01',
+      },
+    }).then((Response) => {
+      console.log(Response.data);
+      this.entries = Response.data.entries;
+    });
+  },
   methods: {
     back() {
       this.$router.go(-1);
@@ -199,6 +260,34 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.el-select{
+  width: 100%;
+  top: -5.5px;
+}
+.exp_print {
+    display: inline;
+    span {
+      color: #32aaa7;
+      cursor: pointer;
+    }
+}
+.update{
+  display: block;
+  float: right;
+  width: 100%;
+  border: 0;
+  padding: 5px 30px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  background-color: #32aaa7;
+  color: white;
+  &:nth-of-type(1){
+    width: 40%;
+    float: none;
+    display: inline;
+    margin-right: 10px;
+  }
+}
 .cust_modal{
   position: fixed;
     bottom: 0;
@@ -211,8 +300,8 @@ export default {
     box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);
 }
 .organization__modal {
-    //   position: absolute;
-    padding: 60px;
+    position: relative;
+    // padding: 60px;
     width: 100%;
     bottom: 0;
 
@@ -251,10 +340,15 @@ export default {
     font-weight: 500;
     color: #32aaa7;
     cursor: pointer;
+}
+@media (min-width: 770px) {
+  .radio{
+    display: inline;
   }
+}
 </style>
 <style>
 .transmaneg_table th[aria-colindex='1']{
-    width: 50%;
+    width: 15%;
 }
 </style>

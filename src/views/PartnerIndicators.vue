@@ -30,8 +30,8 @@
       </div>
     </div>
     <b-table responsive outlined head-variant="light" :items="entries" :fields="fields">
-      <template v-slot:cell(comdte)="row">
-        {{ new Date(row.item.comdte).toLocaleDateString() }}
+      <template v-slot:cell(comdte)="data">
+        {{ data.value }}
       </template>
       <template v-slot:cell(lo)="row">
         {{ row.item.lo | localInt }}
@@ -57,8 +57,9 @@
         </div>
       </div>
       <div v-else>
-        <AgentInfoModalPoints
+        <PartnerIndicatorsModal
           v-on:update-data="updateData($event)"
+          v-on:enlarge-text="toggleShow"
         />
       </div>
     </footer>
@@ -67,11 +68,11 @@
 
 <script>
 import backApi from '../assets/backApi';
-import AgentInfoModalPoints from '../components/PartnerIndicatorsModal.vue';
+import PartnerIndicatorsModal from '../components/PartnerIndicatorsModal.vue';
 
 export default {
   name: 'PartnerIndicators',
-  components: { AgentInfoModalPoints },
+  components: { PartnerIndicatorsModal },
   data() {
     return {
       showModal: false,
@@ -80,6 +81,23 @@ export default {
         {
           key: 'comdte',
           label: 'Период',
+          formatter(v) {
+            const mass = [
+              'Январь',
+              'Ферваль',
+              'Март',
+              'Апрель',
+              'Май',
+              'Июнь',
+              'Июль',
+              'Августь',
+              'Сентябрь',
+              'Октябрь',
+              'Ноябрь',
+              'Декабрь',
+            ];
+            return (`${mass[new Date(v).getMonth()]} ${new Date(v).getFullYear()}`);
+          },
         },
         {
           key: 'noact',
@@ -141,6 +159,9 @@ export default {
     }
   },
   methods: {
+    toggleShow() {
+      this.showModal = !this.showModal;
+    },
     updateData(id) {
       backApi.get(`/agent/all-periods-indicators/${id}`).then((Response) => {
         this.entries = Response.data.entries;
@@ -155,6 +176,8 @@ export default {
     back() {
       this.$router.go(-1);
     },
+  },
+  computed: {
   },
 };
 </script>

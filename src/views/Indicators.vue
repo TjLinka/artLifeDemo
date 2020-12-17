@@ -13,8 +13,8 @@
         <div class="col-sm current_period">
             <p>Текущий период:
               {{ months[new Date(currentPeriodTop.comdte).getMonth()] }}
-              {{new Date(currentPeriodTop.comdte).getFullYear()}}<br>
-            Статус предыдущего года:
+              {{new Date(currentPeriodTop.comdte).getFullYear()}}.<br>
+            Статус предыдущего периода:
             <span :style="`color: ${periodStatus}`">
               {{ currentPeriodTop.prev_status }}
             </span>
@@ -120,18 +120,31 @@
               </b-form-group>
             </div>
           </div>
-          <div class="row  mt-4">
+          <div class="row edit mt-4">
             <div class="col-md-6 custom_input">
               <input type="number" name="autoship" id="autoship" required v-model="autoship" />
               <label for="autoship">Количество баллов:</label>
               <span class="clear_icon" @click="clearInput('autoship')"></span>
             </div>
-          </div>
-          <div class="row edit mt-4">
-            <div class="col-md-12">
-              <button class="mr-2 update" @click="updateData">Сохранить</button>
+            <div class="col-md-6">
+              <button
+              :class="`mr-2 update ${isDisabled ? 'disabled' : ''}`"
+              :disabled="isDisabled"
+              @click="updateData"
+              >Сохранить</button>
             </div>
           </div>
+          <!-- <div class="row edit mt-4">
+            <div class="col-md-6">
+            </div>
+            <div class="col-md-6">
+              <button
+              :class="`mr-2 update ${isDisabled ? 'disabled' : ''}`"
+              :disabled="isDisabled"
+              @click="updateData"
+              >Сохранить</button>
+            </div>
+          </div> -->
         </div>
       </div>
       </footer>
@@ -221,6 +234,12 @@ export default {
     },
   },
   computed: {
+    isDisabled() {
+      if (this.autoship === null || this.autoship === '') {
+        return true;
+      }
+      return false;
+    },
     currentPeriod() {
       try {
         return this.periods[this.periodIndex].comdte;
@@ -259,7 +278,7 @@ export default {
     outline: none;
   }
   button {
-    width: 48%;
+    width: 100%;
     border: 0;
     padding: 5px 30px;
     font-size: 16px;
@@ -366,7 +385,10 @@ export default {
 }
 .update{
   display: block;
-  // width: 15% !important;
+  &.disabled{
+    color: #9A9A9A !important;
+    background-color: #DEE2F3 !important;
+  }
 }
 @media (min-width: 768px) {
   .sponsor__page{
@@ -383,6 +405,9 @@ export default {
   }
 }
 @media (max-width: 760px) {
+  .update{
+    margin-top: 20px;
+  }
   .organization__modal{
     margin-top: 20px;
   }

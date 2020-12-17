@@ -18,8 +18,8 @@
       <div class="myinfo__page__description">
         <div class="myfoto">
           <div>
-            <img v-if="userinfo.male" src="../assets/imgs/male.png" alt="" />
-            <img v-else src="../assets/imgs/female.png" alt="" />
+            <img v-if="userinfo.male" src="../assets/imgs/male.png"/>
+            <img v-else src="../assets/imgs/female.png"/>
           </div>
         </div>
         <div class="container top__info">

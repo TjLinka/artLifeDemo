@@ -20,13 +20,29 @@
           <el-input placeholder="Сумма" type="number" v-model="sum" clearable class="count">
           </el-input>
         </div>
+          <div class="col-xl-6 trans_btns">
+            <button @click="lo2reserve"
+            :disabled="isDisabled"
+            :class="isDisabled ? 'disabled' : ''">
+            Перевести в резерв</button>
+            <button @click="reserve2lo"
+            :disabled="isDisabled"
+            :class="isDisabled ? 'disabled' : ''"
+            >Перевести в трансферт</button>
+          </div>
       </div>
-      <div class="row edit mt-4">
+      <!-- <div class="row edit mt-4">
         <div class="col-xl-6 trans_btns">
-          <button @click="lo2reserve">Перевести в резерв</button>
-          <button @click="reserve2lo">Перевести в трансферт</button>
+          <button @click="lo2reserve"
+          :disabled="isDisabled"
+          :class="isDisabled ? 'disabled' : ''">
+          Перевести в резерв</button>
+          <button @click="reserve2lo"
+          :disabled="isDisabled"
+          :class="isDisabled ? 'disabled' : ''"
+          >Перевести в трансферт</button>
         </div>
-      </div>
+      </div> -->
     </div>
     <b-toast id="my-toast" variant="warning" solid>
       <template #toast-title>
@@ -50,8 +66,15 @@ export default {
     return {
       transfertInfo: {},
       sum: null,
-      toastCount: 0,
     };
+  },
+  computed: {
+    isDisabled() {
+      if (this.sum === null || this.sum === '') {
+        return true;
+      }
+      return false;
+    },
   },
   mounted() {
     backApi.get('/agent/profile').then((Response) => {
@@ -104,6 +127,7 @@ export default {
   },
 };
 </script>
+
 <style lang="scss" scoped>
 .transfert {
   margin-bottom: 30px;
@@ -143,6 +167,17 @@ export default {
 .trans_btns {
   display: flex;
   justify-content: space-between;
+  align-items: flex-end;
+  & button.disabled{
+    color: #9A9A9A;
+    border-color: #C4C4C4;
+    cursor: auto;
+  }
+}
+@media (max-width: 1050px) {
+  .trans_btns {
+    margin-top: 20px;
+  }
 }
 @media (max-width: 768px) {
   .perevod {

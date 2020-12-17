@@ -28,7 +28,6 @@
           <col
             v-for="field in scope.fields"
             :key="field.key"
-            :style="{ width: field.width }"
           />
         </template>
           <template #cell(comdte)="data">
@@ -99,7 +98,9 @@
           </div>
         </div>
         <div class="row edit mt-4">
-          <div class="col">
+          <div class="col-md-6">
+          </div>
+          <div class="col-md-6">
             <button class="mr-2 update" @click="updateData">Показать</button>
           </div>
         </div>
@@ -121,6 +122,9 @@ export default {
   components: { DatePicker },
   data() {
     return {
+      aq: {
+        color: 'red',
+      },
       operType: null,
       comment: null,
       points_type: null,
@@ -156,10 +160,26 @@ export default {
         {
           key: 'comdte',
           label: 'Период',
-          // width: '150px',
+          thStyle: {
+            minWidth: '100px',
+          },
           sortable: true,
           formatter(v) {
-            return new Date(v).toLocaleDateString();
+            const mass = [
+              'Январь',
+              'Ферваль',
+              'Март',
+              'Апрель',
+              'Май',
+              'Июнь',
+              'Июль',
+              'Августь',
+              'Сентябрь',
+              'Октябрь',
+              'Ноябрь',
+              'Декабрь',
+            ];
+            return (`${mass[new Date(v).getMonth()]} ${new Date(v).getFullYear()}`);
           },
         },
         {
@@ -193,6 +213,7 @@ export default {
   },
   mounted() {
     backApi.get('agent/points-detail').then((Response) => {
+      console.log(Response.data);
       this.entries = Response.data.entries;
     });
   },
@@ -275,12 +296,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.aq{
+  color: red;
+}
 .update{
   display: block;
-  float: right;
-  width: 20%;
+  // float: right;
+  width: 100%;
   border: 0;
-  padding: 5px 30px;
+  padding: 5px 0px;
   font-size: 16px;
   margin-bottom: 20px;
   background-color: #32aaa7;
@@ -358,6 +382,12 @@ export default {
   }
   .update{
     width: 100%;
+  }
+  .custom_input:nth-of-type(2){
+    margin-top: 30px;
+  }
+  .organization__modal{
+    padding: 0;
   }
 }
 </style>

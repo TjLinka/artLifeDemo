@@ -4,10 +4,7 @@
       <h4 class="mt-4 modal_title">
         Настройки партнера
         <span
-          v-on:click="$emit('enlarge-text')"
-          style="display: inline-block; float: right; color: #32aaa7; cursor: pointer"
-          >X</span
-        >
+          v-on:click="$emit('enlarge-text')" class="close_btn"></span>
       </h4>
       <div class="row edit">
         <div class="col-md-6 mt-4">
@@ -15,12 +12,17 @@
             v-model="state"
             :fetch-suggestions="querySearchAsync"
             placeholder="Партнер получатель"
+            clearable
             @select="handleSelect"
           ></el-autocomplete>
         </div>
         <div class="col-md-6 mt-4">
           <div class="col-md trans_btns">
-            <button v-on:click="$emit('update-data', selectedUser)">Показать</button>
+            <button
+            v-on:click="$emit('update-data', selectedUser)"
+            :disabled="isDisabled"
+            :class="isDisabled ? 'disabled' : ''"
+            >Показать</button>
           </div>
         </div>
       </div>
@@ -66,6 +68,14 @@ export default {
     },
     handleSelect(item) {
       this.selectedUser = item.agent_id;
+    },
+  },
+  computed: {
+    isDisabled() {
+      if (this.selectedUser === null || this.selectedUser === '' || this.state === null || this.state === '') {
+        return true;
+      }
+      return false;
     },
   },
 };
@@ -119,6 +129,12 @@ div[role='combobox']{
   & button{
     display: block;
     float: right;
+    width: 100%;
+    &.disabled{
+      color: #9A9A9A;
+      border-color: #C4C4C4;
+      cursor: auto;
+    }
   }
 }
 @media (max-width: 425px) {
@@ -128,6 +144,7 @@ div[role='combobox']{
   }
   .trans_btns {
     flex-direction: column;
+    padding: 0;
     button {
       width: 100%;
       margin-bottom: 20px;

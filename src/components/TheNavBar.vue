@@ -56,7 +56,10 @@
           </a>
           <ul class="sub_menu">
             <li class="mobilis"><span class="i_m">Отчеты</span></li>
-            <li><router-link to="/indicators">Показатели</router-link></li>
+            <li>
+            <router-link to="/indicators" v-if="role !== 'Клиент'">
+            Показатели
+            </router-link></li>
             <li><router-link to="/bonus-history">История бонусов (КЕ)</router-link></li>
             <li><router-link to="/points-history">История баллов </router-link></li>
             <li><router-link to="/account-detail">Движение по лицевому счёту</router-link></li>

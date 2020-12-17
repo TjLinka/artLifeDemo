@@ -24,8 +24,6 @@
       <div class="refound_table">
       <b-table :fields="fields" :items="entries"
       head-variant="light" responsive outlined
-      :filter="filter"
-      :filter-function="filterFunc"
       >
         <template v-slot:cell(nomer)="row">
           <b-button size="sm" @click="show_details(row)" class="mr-2">
@@ -44,17 +42,17 @@
       <!-- <h2 class="licevoischet__page__summ">СУММА = {{ summ }}</h2> -->
     </div>
       <footer class="container-fluid cust_modal">
-        <div class="row">
+        <div class="container">
+          <div class="row">
           <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
             Поиск <i class="el-icon-search search_icon"></i>
           </div>
         </div>
         <div v-if="searchActive" class="organization__modal">
           <h3>Поиск
-            <span @click="searchActive = !searchActive"
-            style="display: inline-block; float: right; color: #32aaa7; cursor: pointer">X</span>
+            <span @click="searchActive = !searchActive" class="close_btn"></span>
           </h3>
-          <div class="row edit mt-5">
+          <div class="row edit">
             <div class="col-sm-6">
               <el-input
                 type="number"
@@ -62,7 +60,7 @@
                 id="art"
                 placeholder="Артикул"
                 clearable
-                v-model="filter.articul"
+                v-model="articul"
               />
             </div>
             <div class="col-sm-6">
@@ -72,11 +70,11 @@
                 id="name"
                 placeholder="Наименование товара"
                 clearable
-                v-model="filter.name"
+                v-model="name"
               />
             </div>
           </div>
-          <div class="row edit mt-5">
+          <div class="row edit">
             <div class="col-sm-6">
               <el-input
                 type="number"
@@ -84,7 +82,7 @@
                 id="art"
                 placeholder="Номер накладной"
                 clearable
-                v-model="filter.naknum"
+                v-model="naknum"
               />
             </div>
             <div class="col-sm-6">
@@ -94,20 +92,26 @@
                 id="name"
                 placeholder="Номер документа"
                 clearable
-                v-model="filter.docnum"
+                v-model="docnum"
               />
             </div>
           </div>
-          <div class="row edit mt-5">
-            <div class="col-sm-6">
+          <div class="row edit mt-4">
+            <div class="col-xl-6">
             </div>
-            <div class="col-sm-6">
+            <div class="col-xl-6">
            <div class="col-sm update">
-              <button class="mr-2" @click="updateData">Показать</button>
+              <button
+              :class="`mr-2 ${isDisabled ? 'disabled' : 'a'}`"
+              @click="updateData"
+              :disabled="isDisabled"
+              >Показать
+              </button>
               <button @click="resetData">Сбросить</button>
             </div>
             </div>
           </div>
+        </div>
         </div>
       </footer>
   </div>
@@ -124,7 +128,6 @@ export default {
   components: { DatePicker },
   data() {
     return {
-      filter: {},
       articul: null,
       name: null,
       naknum: null,
@@ -227,6 +230,16 @@ export default {
     });
   },
   computed: {
+    isDisabled() {
+      if (
+        (this.articul === null || this.articul === '')
+        && (this.name === null || this.name === '')
+        && (this.naknum === null || this.naknum === '')
+        && (this.docnum === null || this.docnum === '')) {
+        return true;
+      }
+      return false;
+    },
     summ() {
       let summ = 0;
       this.entries.forEach((item) => {
@@ -242,31 +255,31 @@ export default {
         this.return_details = new Array(this.total_rows).fill(undefined);
       });
       this.searchActive = !this.searchActive;
-      this.filter.articul = null;
-      this.filter.name = null;
-      this.filter.naknum = null;
-      this.filter.docnum = null;
+      this.articul = null;
+      this.name = null;
+      this.naknum = null;
+      this.docnum = null;
     },
     updateData() {
       const data = {
         params: {
           beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
           end_dte: this.rangeDate[1] ? this.rangeDate[1] : null,
-          articul: this.filter.articul,
-          name: this.filter.name,
+          articul: this.articul,
+          name: this.name,
           // eslint-disable-next-line radix
-          saleid: this.filter.naknum ? parseInt(this.filter.naknum) : null,
+          saleid: this.naknum ? parseInt(this.naknum) : null,
           // eslint-disable-next-line radix
-          refund_id: this.filter.docnum ? parseInt(this.filter.docnum) : null,
+          refund_id: this.docnum ? parseInt(this.docnum) : null,
         },
       };
       backApi.get('/agent/refunds', data).then((Response) => {
         this.entries = Response.data.entries;
       });
-      this.filter.articul = null;
-      this.filter.name = null;
-      this.filter.naknum = null;
-      this.filter.docnum = null;
+      this.articul = null;
+      this.name = null;
+      this.naknum = null;
+      this.docnum = null;
       this.searchActive = !this.searchActive;
     },
     // eslint-disable-next-line no-unused-vars
@@ -319,13 +332,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.update{
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  & button.disabled{
+    color: #9A9A9A !important;
+    background-color: #DEE2F3 !important;
+  }
+}
 .organization__modal {
-    //   position: absolute;
-    padding: 60px;
+  position: relative;
+    padding: 0px 0px;
+    margin: 30px 0px;
     width: 100%;
     bottom: 0;
 
     & .edit {
+      margin-top: 50px;
       input {
         width: 100%;
         border: 0;
@@ -352,6 +376,19 @@ export default {
       }
     }
   }
+@media (max-width: 525px) {
+  .organization__modal{
+    & .edit{
+      margin-top: 0;
+      & > div{
+        margin-top: 20px;
+      }
+      &:nth-of-type(3) > div{
+        margin-top: 0;
+      }
+    }
+  }
+}
 .licevoischet__page {
   &__summ {
     text-align: center;
@@ -392,6 +429,17 @@ export default {
 }
 </style>
 <style>
+/* .el-icon-circle-close:before{
+  position: relative;
+  content: ' ';
+  display: block;
+  background-image: url('../assets/imgs/close_btn.svg');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  width: 13px;
+  height: 13px;
+  top: 20px;
+} */
 .mx-datepicker svg{
   color: #32AAA7;
 }

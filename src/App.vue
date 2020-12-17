@@ -46,7 +46,10 @@ button:focus{
 input[type='radio']{
   outline: none !important;
 }
-
+// СТИЛИЯ ЯЧЕЕК EL-TABLE
+.el-table td, .el-table th{
+  vertical-align: top;
+}
 // СТИЛИ ДЛЯ RADIO КНОПОК
 .custom-control-input:checked ~ .custom-control-label::before{
     color: #fff;
@@ -156,6 +159,20 @@ main {
   position: absolute;
   right: 0;
   top: 0;
+  cursor: pointer;
+}
+// СТИЛЬ КНОПКИ ОЧИСТИ el-input
+.el-icon-circle-close:before{
+  position: relative;
+  content: ' ';
+  display: block;
+  background-image: url('assets/imgs/close_btn.svg');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  width: 13px;
+  height: 13px;
+  top: 20px;
+  right: -12px;
 }
 .no_scroll {
   overflow: hidden;

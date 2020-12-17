@@ -53,13 +53,17 @@
         </b-table>
       </div>
       <footer class="container-fluid cust_modal">
-        <div class="row">
+        <div class="container">
+          <div class="row">
           <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
             Фильтр <i class="el-icon-search search_icon"></i>
           </div>
         </div>
         <div v-if="searchActive" class="organization__modal">
-          <h3>Фильтр</h3>
+          <h3>
+            Фильтр
+            <span class="close_btn" @click="searchActive = !searchActive"></span>
+          </h3>
           <BasePeriodPicker :currentPeriod="currentPeriod" v-on:next-period="nextPeriod" />
           <div class="row edit mt-5">
             <div class="col-sm-6">
@@ -88,12 +92,13 @@
             <input type="text" name="" id="" placeholder="Номер накладной" v-model="number" />
           </div>
         </div> -->
-          <div class="row edit">
-            <div class="col-sm update">
+          <div class="row edit justify-content-end">
+            <div class="col-md-6 update">
               <button class="mr-2" @click="updateData">Показать</button
               ><button @click="clearSelectedFilters">Сбросить</button>
             </div>
           </div>
+        </div>
         </div>
       </footer>
     </div>
@@ -371,10 +376,11 @@ export default {
 
 <style lang="scss" scoped>
 .update{
-  text-align: right;
+  display: flex;
+  justify-content: space-between;
   & button{
     display: inline-block;
-    width: 20% !important;
+    width: 100%;
   }
 }
 .licevoischet__page {
@@ -392,8 +398,8 @@ export default {
     }
   }
   & .organization__modal {
-    //   position: absolute;
-    padding: 60px;
+    position: relative;
+    margin: 20px 0px;
     width: 100%;
     bottom: 0;
 

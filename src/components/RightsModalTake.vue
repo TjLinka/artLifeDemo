@@ -2,11 +2,10 @@
   <div class="licevoischet__page">
     <div class="container">
       <h4 class="mt-4 modal_title">Передача прав
-        <span v-on:click="$emit('enlarge-text')"
-        style="display: inline-block; float: right; color: #32aaa7; cursor: pointer">X</span>
+        <span v-on:click="$emit('enlarge-text')" class="close_btn"></span>
       </h4>
       <div class="row transfert mt-5 edit">
-        <div class="col-md-6">
+        <div class="col-xl-6">
           <el-autocomplete
             v-model="state"
             :fetch-suggestions="querySearchAsync"
@@ -17,16 +16,15 @@
             clearable
           ></el-autocomplete>
         </div>
-        <div class="col-md-6 trans_btns">
-          <button @click="takeRights"
-            :class="this.selectedUser !== ''
-          && this.selectedUser !== null
-          && this.state !== '' ? '' : 'disabled'"
-            :disabled="this.selectedUser !== ''
-          && this.selectedUser !== null
-          && this.state !== '' ? false : true "
+        <div class="col-xl-6 trans_btns">
+          <button
+          @click="takeRights"
+          :disabled="isDisabled"
+          :class="isDisabled ? 'disabled' : ''"
           >Передать права</button>
-          <button @click="resetData">Сбросить</button>
+          <button
+          @click="resetData"
+          >Сбросить</button>
         </div>
       </div>
     </div>
@@ -90,6 +88,14 @@ export default {
       }
     },
   },
+  computed: {
+    isDisabled() {
+      if (this.state === '' || this.state === null || this.selectedUser === null || this.selectedUser === '') {
+        return true;
+      }
+      return false;
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -137,6 +143,11 @@ export default {
     cursor: auto;
   }
 }
+@media (max-width: 1024px) {
+  .trans_btns{
+    margin-top: 20px;
+  }
+}
 @media (max-width: 425px) {
   .perevod {
     font-size: 18px;
@@ -144,6 +155,7 @@ export default {
   }
   .trans_btns {
     flex-direction: column;
+    margin-top: 0;
     button {
       width: 100%;
       margin-bottom: 20px;
