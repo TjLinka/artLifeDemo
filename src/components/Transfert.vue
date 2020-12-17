@@ -62,10 +62,12 @@ import backApi from '../assets/backApi';
 
 export default {
   name: 'Transfert',
+  props: ['id'],
   data() {
     return {
       transfertInfo: {},
       sum: null,
+      another_agent_id: null,
     };
   },
   computed: {
@@ -77,8 +79,8 @@ export default {
     },
   },
   mounted() {
-    backApi.get('/agent/profile').then((Response) => {
-      this.transfertInfo = Response.data;
+    backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then((response) => {
+      this.transfertInfo = response.data;
     });
   },
   methods: {
@@ -97,14 +99,14 @@ export default {
     async lo2reserve() {
       if (this.sum !== null && this.sum !== '') {
         await backApi
-          .post('agent/transfert', {
+          .post(`agent/transfert/${this.id}`, {
             sum: this.sum,
             direction: 'lo2reserve',
           })
           .catch(() => {
             this.$bvToast.show('my-toast');
           });
-        backApi.get('/agent/profile').then((Response) => {
+        backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then((Response) => {
           this.transfertInfo = Response.data;
         });
       }
@@ -112,14 +114,14 @@ export default {
     async reserve2lo() {
       if (this.sum !== null && this.sum !== '') {
         await backApi
-          .post('agent/transfert', {
+          .post(`agent/transfert/${this.id}`, {
             sum: this.sum,
             direction: 'reserve2lo',
           })
           .catch(() => {
             this.$bvToast.show('my-toast');
           });
-        backApi.get('/agent/profile').then((Response) => {
+        backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then((Response) => {
           this.transfertInfo = Response.data;
         });
       }

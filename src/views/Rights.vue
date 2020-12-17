@@ -35,7 +35,13 @@
         </div>
       </div>
       <h2 class="mt-4">Праводатели</h2>
-      <b-table :fields="fields" :items="entries" head-variant="light" responsive outlined>
+      <b-table
+      :fields="fields"
+      :items="entries"
+      head-variant="light"
+      responsive
+      selectable
+      outlined>
         <template v-slot:cell(id)="row">
           <router-link :to="`/agent/${row.item.id}`" class="link">{{
             row.item.id

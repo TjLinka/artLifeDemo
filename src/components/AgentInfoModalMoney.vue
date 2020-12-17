@@ -6,16 +6,16 @@
         <span class="close_btn" v-on:click="$emit('enlarge-text')"></span>
       </h4>
       <div class="row transfert">
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
           <p>ЛО:</p>
           <p>{{ lo }} баллов</p>
-        </div>
-        <div class="col-md-6 mt-4">
-          <p>Резерв:</p>
-          <p>{{ reserve }} баллов</p>
+        </div> -->
+        <div class="col-md-6">
+          <p>Баланс:</p>
+          <p>{{ balance }}</p>
         </div>
       </div>
-      <h3 class="perevod">Перевод количества баллов</h3>
+      <h3 class="perevod">Перевод средств</h3>
       <div class="row edit">
         <div class="col-md-6 mt-4">
           <el-autocomplete
@@ -44,7 +44,7 @@ import backApi from '../assets/backApi';
 
 export default {
   name: 'AgentInfoModalMoney',
-  props: ['lo', 'reserve', 'id'],
+  props: ['balance', 'id'],
   data() {
     return {
       state: '',
@@ -85,7 +85,6 @@ export default {
       if (this.sum !== null && this.sum !== '') {
         await backApi
           .post('/agent/send_money', {
-            agent_from: this.id,
             agent_to: this.selectedUser,
             amount: this.sum,
           })

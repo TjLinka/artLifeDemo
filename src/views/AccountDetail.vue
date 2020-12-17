@@ -10,16 +10,35 @@
         Движение по лицевому счету
         </h2>
       <p class="p-0 m-0 history_title">Период от и до</p>
-      <date-picker v-model="rangeDate" range-separator=" - "
-      range @change="getSelectedDataRange" valueType="format">
+      <date-picker
+      v-model="rangeDate"
+      range-separator=" - "
+      range @change="getSelectedDataRange"
+      format="DD.MM.YYYY"
+      value-type="YYYY-MM-DD"
+      >
       </date-picker>
+      <div class="row mt-4">
+        <div class="col">
+        <el-tag
+        v-for="tag in tags"
+        :key="tag.name"
+        closable
+        @close="handleClose($event, tag)"
+        :type="tag.type"
+        :disable-transitions="true"
+        >
+        {{ tag.name }}
+        </el-tag>
+        </div>
+      </div>
       <p>
         <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
       <b-table :fields="fields" :items="entries" head-variant="light"
-      responsive outlined :filter="filter" :filter-function="filFunc">
+      responsive outlined>
       <template #cell(amount)="data">
         <b class="text-info">{{ data.value }}</b>
       </template>
@@ -43,12 +62,16 @@
             <span class="close_btn" @click="searchActive = !searchActive"></span>
           </h3>
           <!-- <BasePeriodPicker :currentPeriod="currentPeriod" v-on:next-period="nextPeriod" /> -->
-          <div class="row edit">
-            <div class="col-sm-6">
-              <input type="text" placeholder="Тип операции" v-model="filter.operType">
+          <div class="row edit mt-4">
+            <div class="col-sm-6 custom_input">
+              <input type="text" name="country" id="country" required v-model="filter.operType" />
+              <label for="country">Тип операции:</label>
+              <span class="clear_icon" @click="clearInput('operType')"></span>
             </div>
-            <div class="col-sm-6">
-              <input type="text" placeholder="Комментарий" v-model="filter.comment">
+            <div class="col-sm-6 custom_input">
+              <input type="text" name="country" id="country" required v-model="filter.comment" />
+              <label for="country">Комментарий:</label>
+              <span class="clear_icon" @click="clearInput('comment')"></span>
             </div>
           </div>
           <!-- <div class="row edit">
@@ -61,7 +84,11 @@
               <!-- <input type="text" placeholder="Пользователь" v-model="filter.user">  -->
             </div>
             <div class="col-sm-6">
-              <button class="mr-2" @click="updateData">Показать</button>
+              <button
+              :disabled="isDisabled"
+              :class="`mr-2 update ${isDisabled ? 'disabled' : ''}`"
+              @click="updateData"
+              >Показать</button>
             </div>
           </div>
         </div>
@@ -81,10 +108,10 @@ export default {
   components: { DatePicker },
   data() {
     return {
+      tags: [],
       filter: {
-        comment: '',
-        operType: '',
-        user: '',
+        comment: null,
+        operType: null,
       },
       searchActive: false,
       lang: {
@@ -147,17 +174,6 @@ export default {
           label: 'Комментарий',
           sortable: true,
         },
-        {
-          key: 'balance',
-          label: 'Пользователь',
-          sortable: true,
-          formatter(v) {
-            if (v !== null) {
-              return 'Пользователь';
-            }
-            return null;
-          },
-        },
       ],
     };
   },
@@ -175,6 +191,13 @@ export default {
     });
   },
   computed: {
+    isDisabled() {
+      if ((this.filter.comment === null || this.filter.comment === '')
+      && (this.filter.operType === null || this.filter.operType === '')) {
+        return true;
+      }
+      return false;
+    },
     incomes() {
       let summ = 0;
       this.income.forEach((item) => {
@@ -198,12 +221,57 @@ export default {
     },
   },
   methods: {
-    filFunc(row, filter) {
-      return (row.account_type.toLowerCase().search(filter.operType.toLowerCase().trim()) !== -1
-      && row.comm.toLowerCase().search(filter.comment.toLowerCase().trim()) !== -1
-      && String(row.income).toLowerCase().search(filter.user.toLowerCase().trim()) !== -1);
+    handleClose(event, tag) {
+      this.tags.splice(this.tags.indexOf(tag), 1);
+      if (tag.key === 'operType') {
+        this.filter.operType = null;
+        this.updateData();
+      } else if (tag.key === 'comment') {
+        this.filter.comment = null;
+        this.updateData();
+      }
     },
     updateData() {
+      const data = {
+        params: {
+          beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
+          end_dte: this.rangeDate[1] ? this.rangeDate[1] : null,
+          find_comm: this.filter.comment,
+          find_type: this.filter.operType,
+        },
+      };
+      if (this.filter.operType !== null && this.filter.operType !== '') {
+        const tag = this.tags.find((t) => t.key === 'operType');
+        if (tag) {
+          tag.name = this.filter.operType;
+        } else {
+          this.tags.push({ name: this.filter.operType, key: 'operType' });
+        }
+      }
+      if (this.filter.comment !== null && this.filter.comment !== '') {
+        const tag = this.tags.find((t) => t.key === 'comment');
+        if (tag) {
+          tag.name = this.filter.comment;
+        } else {
+          this.tags.push({ name: this.filter.comment, key: 'comment' });
+        }
+        data.params.comment = this.comment;
+      }
+      backApi.get('agent/account-detail', data).then((Response) => {
+        this.entries = Response.data.entries;
+        this.income = this.entries.filter((i) => i.amount > 0);
+        this.outcome = this.entries.filter((i) => i.amount < 0);
+        this.entries.forEach((i) => {
+          // eslint-disable-next-line no-param-reassign
+          i.income = i.amount;
+          // eslint-disable-next-line no-param-reassign
+          i.outcome = i.amount;
+        });
+      });
+      if (this.searchActive === true) {
+        // eslint-disable-next-line no-unused-expressions
+        this.searchActive = false;
+      }
     },
     toggleSearch() {
       this.searchActive = !this.searchActive;
@@ -211,24 +279,30 @@ export default {
     back() {
       this.$router.go(-1);
     },
+    clearInput(name) {
+      this.filter[name] = '';
+    },
     getSelectedDataRange() {
-      // eslint-disable-next-line max-len
-      if (this.rangeDate[0] != null && this.rangeDate[1] != null) {
-        backApi
-          .get('agent/account-detail', {
-            params: {
-              beg_dte: String(this.rangeDate[0]),
-              end_dte: String(this.rangeDate[1]),
-            },
-          })
-          .then((Response) => {
-            this.entries = Response.data.entries;
-          });
-      } else {
-        backApi.get('agent/account-detail').then((Response) => {
+      backApi
+        .get('agent/account-detail', {
+          params: {
+            beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
+            end_dte: this.rangeDate[1] ? this.rangeDate[1] : null,
+            find_comm: this.filter.comment,
+            find_type: this.filter.operType,
+          },
+        })
+        .then((Response) => {
           this.entries = Response.data.entries;
+          this.income = this.entries.filter((i) => i.amount > 0);
+          this.outcome = this.entries.filter((i) => i.amount < 0);
+          this.entries.forEach((i) => {
+            // eslint-disable-next-line no-param-reassign
+            i.income = i.amount;
+            // eslint-disable-next-line no-param-reassign
+            i.outcome = i.amount;
+          });
         });
-      }
     },
   },
 };
@@ -293,6 +367,10 @@ export default {
           background-color: white;
           color: #32aaa7;
           border: 2px solid #32aaa7;
+        }
+        &.disabled{
+          color: #9A9A9A;
+          background-color: #DEE2F3;
         }
       }
     }

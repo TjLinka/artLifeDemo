@@ -51,8 +51,6 @@
         {{ row.item.ko | localInt }}
       </template>
       <template v-slot:cell(rank_end)="row">
-        <img :src="`../icons/${row.item.rank_end}.svg`"
-          :title="row.item.rank_end" class="rank_icon">
         {{ row.item.rank_end }}
       </template>
       <template #empty="scope">

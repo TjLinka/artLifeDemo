@@ -6,11 +6,11 @@
         <span class="close_btn" v-on:click="$emit('enlarge-text')"></span>
       </h4>
       <div class="row transfert">
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
           <p>ЛО:</p>
           <p>{{ lo }} баллов</p>
-        </div>
-        <div class="col-md-6 mt-4">
+        </div> -->
+        <div class="col-md-6">
           <p>Резерв:</p>
           <p>{{ reserve }} баллов</p>
         </div>
@@ -106,7 +106,6 @@ export default {
       if (this.sum !== null && this.sum !== '') {
         await backApi
           .post('/agent/send_points', {
-            agent_from: this.id,
             agent_to: this.selectedUser,
             amount: this.sum,
           })

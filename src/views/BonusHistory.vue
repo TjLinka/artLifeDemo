@@ -77,7 +77,7 @@ export default {
           label: 'Бонусов всего',
           formatter(v) {
             if (v !== null) {
-              return v.toFixed(2);
+              return v;
             }
             return null;
           },
@@ -87,7 +87,7 @@ export default {
           label: 'ЛО',
           formatter(v) {
             if (v !== null) {
-              return v.toFixed(2);
+              return v;
             }
             return null;
           },
@@ -97,7 +97,7 @@ export default {
           label: 'ГО',
           formatter(v) {
             if (v !== null) {
-              return v.toFixed(2);
+              return v;
             }
             return null;
           },
@@ -107,7 +107,7 @@ export default {
           label: 'НГО',
           formatter(v) {
             if (v !== null) {
-              return v.toFixed(2);
+              return v;
             }
             return null;
           },
@@ -117,7 +117,7 @@ export default {
           label: 'ОО',
           formatter(v) {
             if (v !== null) {
-              return v.toFixed(2);
+              return v;
             }
             return null;
           },
@@ -127,7 +127,7 @@ export default {
           label: 'КО',
           formatter(v) {
             if (v !== null) {
-              return v.toFixed(2);
+              return v;
             }
             return null;
           },
@@ -148,7 +148,7 @@ export default {
           label: 'Бонус',
           formatter(v) {
             if (v !== null) {
-              return v.toFixed(2);
+              return v;
             }
             return null;
           },
@@ -176,7 +176,7 @@ export default {
           label: 'Процент',
           formatter(v) {
             if (v !== null) {
-              return v.toFixed(2);
+              return v;
             }
             return null;
           },
@@ -198,7 +198,6 @@ export default {
       backApi
         .get('agent/bonus-detail', { params: { comdte: this.currentPeriod } })
         .then((response) => {
-          console.log(Response.data);
           this.bonus = response.data.entries;
           // eslint-disable-next-line no-param-reassign
           response.data.header.period = this.currentPeriod;

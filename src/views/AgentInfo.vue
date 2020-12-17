@@ -18,28 +18,34 @@
       <div class="myinfo__page__description">
         <div class="myfoto">
           <div>
-            <img v-if="userinfo.male" src="../assets/imgs/male.png"/>
-            <img v-else src="../assets/imgs/female.png"/>
+            <img v-if="userinfo.male" src="../assets/imgs/male.png" />
+            <img v-else src="../assets/imgs/female.png" />
           </div>
         </div>
         <div class="container top__info">
-          <div class="row" v-if="transfertAccess && !this.$route.params.id">
+          <div class="row" v-if="!this.$route.params.id">
             <div class="col-md mt-1">
               <!-- <span class="modal_btn" @click="showTransfModal2">
                 Перевести между лицевыми счетами
               </span> -->
-              <span class="modal_btn" @click="showTransfModal1">
+              <span class="modal_btn" @click="showTransfModal1" v-if="transfertAccess">
                 Перевести баллы между партнерами
+              </span>
+              <span class="modal_btn" @click="showTransfModal2">
+                Перевести между лицевыми счетами
+              </span>
+              <span class="modal_btn" @click="becomePartner" v-if="!transfertAccess">
+                Стать партнёром
               </span>
             </div>
           </div>
-          <div class="row" v-if="transfertAccess && !this.$route.params.id">
+          <!-- <div class="row" v-if="transfertAccess && !this.$route.params.id">
             <div class="col">
               <p class="show__transfert p-0" @click="becomePartner">
                 Стать партнёром
               </p>
             </div>
-          </div>
+          </div> -->
           <div class="row">
             <div class="col-md-6 mt-3">
               <p>Номер соглашения:</p>
@@ -92,79 +98,79 @@
             </div>
           </div>
         </div>
-        <div class="transfert">
+        <div class="transfert" v-if="transLoaded">
           <h2 class="page__caption mt-5">Дополнительная информация для трансферта</h2>
           <div class="container transfert__info" v-if="showTransfertInfo">
             <div class="row">
               <div class="col-md-6 mt-3">
                 <p>Нективность:</p>
-                <p>{{ userinfo.noact }}</p>
+                <p>{{ transfertInfo.noact }}</p>
               </div>
               <div class="col-md-6 mt-3">
                 <p>Личный объем (ЛО):</p>
-                <p>{{ userinfo.lo | localInt }}</p>
+                <p>{{ transfertInfo.lo | localInt }}</p>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 mt-3">
                 <p>Групповой объем (ГО):</p>
-                <p>{{ userinfo.go | localInt }}</p>
+                <p>{{ transfertInfo.go | localInt }}</p>
               </div>
               <div class="col-md-6 mt-3">
                 <p>Накопленный групповой объем (НГО):</p>
-                <p>{{ userinfo.ngo | localInt }}</p>
+                <p>{{ transfertInfo.ngo | localInt }}</p>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 mt-3">
                 <p>Организационный объем (ОО):</p>
-                <p>Россия</p>
+                <p>{{transfertInfo.oo}}</p>
               </div>
               <div class="col-md-6 mt-3">
                 <p>Квалификационный объем (КО):</p>
-                <p>{{ userinfo.ko | localInt }}</p>
+                <p>{{ transfertInfo.ko | localInt }}</p>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 mt-3">
                 <p>Баллы в резерве:</p>
-                <p>{{ userinfo.reserve | localInt }}</p>
+                <p>{{ transfertInfo.reserve | localInt }}</p>
               </div>
               <div class="col-md-6 mt-3">
                 <p>Ранг на начало:</p>
-                <p>{{ userinfo.rank_beg }}</p>
+                <p>{{ transfertInfo.rank_beg }}</p>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 mt-3">
                 <p>Расчетный ранг:</p>
-                <p>{{ userinfo.rank_calc }}</p>
+                <p>{{ transfertInfo.rank_calc }}</p>
               </div>
               <div class="col-md-6 mt-3">
                 <p>Ранг на конец месяца:</p>
-                <p>{{ userinfo.rank_end }}</p>
+                <p>{{ transfertInfo.rank_end }}</p>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 mt-3">
                 <p>Максимально достигнутый ранг:</p>
-                <p>{{ userinfo.rank_max }}</p>
+                <p>{{ transfertInfo.rank_max }}</p>
               </div>
               <div class="col-md-6 mt-3">
                 <p>Дата достижения максимального ранга:</p>
                 <!-- <p>{{ new Date(userinfo.rank_max_date).toLocaleDateString() }}</p> -->
-                <p>{{ userinfo.rank_max_date | localDate }}</p>
+                <p>{{ transfertInfo.rank_max_date | localDate }}</p>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 mt-3">
                 <p>Дата регистрации:</p>
                 <!-- <p>{{ new Date(userinfo.credte).toLocaleDateString() }}</p> -->
-                <p>{{ userinfo.credte | localDate }}</p>
+                <p>{{ transfertInfo.credte | localDate }}</p>
               </div>
               <div class="col-md-6 mt-3">
                 <p>Дата окончания лидерской программы:</p>
-                <p>{{ userinfo.leader_date }}</p>
+                <p>{{ transfertInfo.leader_date | localDate}}</p>
               </div>
             </div>
           </div>
@@ -209,29 +215,28 @@
     </div>
     <footer class="container-fluid cust_modal" v-if="showModal">
       <div>
-        <Transfert v-on:enlarge-text="showModal = false" />
+        <Transfert v-on:enlarge-text="showModal = false" :id="userinfo.id"/>
       </div>
     </footer>
     <footer class="container-fluid cust_modal" v-if="showModal1">
       <div>
         <AgentInfoModalPoints
           v-on:enlarge-text="showModal1 = false"
-          :lo="userinfo.lo"
-          :reserve="userinfo.reserve"
+          :lo="transfertInfo.lo"
+          :reserve="transfertInfo.reserve"
           :id="userinfo.id"
         />
       </div>
     </footer>
-    <!-- <footer class="container-fluid cust_modal" v-if="showModal2">
+    <footer class="container-fluid cust_modal" v-if="showModal2">
       <div>
         <AgentInfoModalMoney
           v-on:enlarge-text="showModal2 = false"
-          :lo="userinfo.lo"
-          :reserve="userinfo.reserve"
+          :balance="userinfo.balance"
           :id="userinfo.id"
         />
       </div>
-    </footer> -->
+    </footer>
     <!-- <div>
       <b-modal id="modal-center" hide-footer size="xl" centered title="BootstrapVue">
         <template #modal-title>
@@ -277,13 +282,13 @@
 import { mapState } from 'vuex';
 import Transfert from '../components/Transfert.vue';
 import AgentInfoModalPoints from '../components/AgentInfoModalPoints.vue';
-// import AgentInfoModalMoney from '../components/AgentInfoModalMoney.vue';
+import AgentInfoModalMoney from '../components/AgentInfoModalMoney.vue';
 import backApi from '../assets/backApi';
 import { ReplaceNull } from '../assets/utils';
 
 export default {
   name: 'MyInfo',
-  components: { Transfert, AgentInfoModalPoints },
+  components: { Transfert, AgentInfoModalPoints, AgentInfoModalMoney },
   data() {
     return {
       showModal: false,
@@ -293,6 +298,8 @@ export default {
       success: false,
       showTransfertInfo: false,
       userinfo: {},
+      transLoaded: false,
+      transfertInfo: {},
     };
   },
   methods: {
@@ -316,8 +323,12 @@ export default {
     toggleTransfertVisible() {
       this.showTransfertInfo = !this.showTransfertInfo;
     },
-    setData(data) {
-      this.userinfo = data;
+    setData(user, transer) {
+      this.userinfo = user;
+      if (transer) {
+        this.transfertInfo = transer;
+        this.transLoaded = true;
+      }
       this.loaded = true;
     },
   },
@@ -326,22 +337,35 @@ export default {
       backApi
         .get('/agent/profile/child', { params: { another_agent_id: to.params.id } })
         .then((Response) => {
-          const data = ReplaceNull(Response.data);
-          next((vm) => {
-            vm.setData(data);
-          });
+          if (Response.status === 200) {
+            backApi.get('/agent/transfer-info', { params: { another_agent_id: Response.data.id } })
+              .then((response) => {
+
+                next((vm) => {
+                  vm.setData(ReplaceNull(Response.data), ReplaceNull(response.data));
+                });
+              });
+          }
         })
         .catch(() => {
           this.loaded = !this.loaded;
           this.success = !this.success;
         });
     } else {
-      backApi.get('/agent/profile').then((Response) => {
-        const data = ReplaceNull(Response.data);
-        next((vm) => {
-          vm.setData(data);
+      backApi.get('/agent/profile')
+        .then((Response) => {
+          if (Response.status === 200) {
+            backApi.get('/agent/transfer-info', { params: { another_agent_id: Response.data.id } })
+              .then((response) => {
+                next((vm) => {
+                  vm.setData(ReplaceNull(Response.data), ReplaceNull(response.data));
+                });
+              });
+          }
+          next((vm) => {
+            vm.setData(ReplaceNull(Response.data));
+          });
         });
-      });
     }
   },
   beforeRouteUpdate(to, from, next) {
@@ -349,22 +373,31 @@ export default {
       backApi
         .get('/agent/profile/child', { params: { another_agent_id: to.params.id } })
         .then((Response) => {
-          const data = ReplaceNull(Response.data);
-          next((vm) => {
-            vm.setData(data);
-          });
+          if (Response.status === 200) {
+            backApi.get('/agent/transfer-info', { params: { another_agent_id: to.params.id } })
+              .then((response) => {
+                next((vm) => {
+                  vm.setData(ReplaceNull(Response.data), ReplaceNull(response.data));
+                });
+              });
+          }
         })
         .catch(() => {
           this.loaded = !this.loaded;
           this.success = !this.success;
         });
     } else {
-      backApi.get('/agent/profile').then((Response) => {
-        const data = ReplaceNull(Response.data);
-        next((vm) => {
-          vm.setData(data);
+      backApi.get('/agent/profile')
+        .then((Response) => {
+          if (Response.status === 200) {
+            backApi.get('/agent/transfer-info', { params: { another_agent_id: Response.data.id } })
+              .then((response) => {
+                next((vm) => {
+                  vm.setData(ReplaceNull(Response.data), ReplaceNull(response.data));
+                });
+              });
+          }
         });
-      });
     }
   },
   mounted() {
@@ -414,7 +447,8 @@ export default {
   font-weight: 500;
   cursor: pointer;
   display: inline-block;
-  &:nth-of-type(1) {
+  &:nth-of-type(1),
+  &:nth-of-type(2){
     margin-right: 30px;
   }
 }

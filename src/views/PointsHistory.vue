@@ -15,7 +15,8 @@
       range
       @change="getSelectedDataRange"
       format="DD.MM.YYYY"
-      value-type="YYYY-MM-DD">
+      value-type="YYYY-MM-DD"
+      >
       </date-picker>
       <div class="row mt-4">
         <div class="col">
@@ -237,7 +238,6 @@ export default {
   },
   mounted() {
     backApi.get('agent/points-detail').then((Response) => {
-      console.log(Response.data);
       this.entries = Response.data.entries;
     });
   },

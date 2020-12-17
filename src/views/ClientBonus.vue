@@ -14,13 +14,27 @@
       <div class="sponsor__page__description">
         <div class="container top__info">
           <div class="row">
+            <div class="col-md-6">
+            <el-select v-model="area" placeholder="Территория">
+              <el-option
+                v-for="item in areaList"
+                :key="item.area_id"
+                :label="item.area_name"
+                :value="item.area_id"
+                @change="update"
+                >
+              </el-option>
+            </el-select>
+            </div>
+          </div>
+          <div class="row">
             <div class="col-md-6 mt-3">
               <p>Объем покупок:</p>
               <p>{{bonusInfo.ngo}}</p>
             </div>
             <div class="col-md-6 mt-3">
               <p>Скидка:</p>
-              <p>{{bonusInfo.discount}}</p>
+              <p>{{bonusInfo.discount ? bonusInfo.discount : '-'}}</p>
             </div>
           </div>
         </div>
@@ -37,22 +51,39 @@ export default {
   data() {
     return {
       bonusInfo: {},
+      areaList: [],
+      area: null,
     };
   },
   mounted() {
-    backApi.get('/agent/bonuses').then((Response) => {
-      this.bonusInfo = Response.data;
+    backApi.get('/agent/area-by-currency').then((Response) => {
+      this.areaList = Response.data.entries;
+      // eslint-disable-next-line prefer-destructuring
+      this.area = Response.data.entries[0];
+      backApi.get('/agent/bonuses', { params: { area_id: Response.data.entries[0].area_id } })
+        .then((response) => {
+          this.bonusInfo = response.data;
+        });
     });
   },
   methods: {
     back() {
       this.$router.go(-1);
     },
+    update() {
+      backApi.get('/agent/bonuses', { params: { area_id: this.area.area_id } })
+        .then((response) => {
+          this.bonusInfo = response.data;
+        });
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.el-select{
+  width: 100%
+}
 .sponsor__page {
   margin-top: 40px;
   &__description {

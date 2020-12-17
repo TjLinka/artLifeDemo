@@ -236,11 +236,9 @@ export default {
   },
   mounted() {
     backApi.get('/agent/rank-list').then((Response) => {
-      console.log(Response.data);
       this.rankList = Response.data.entries;
     });
     backApi.get('/agent/area-list').then((Response) => {
-      console.log(Response.data);
       this.areaList = Response.data.entries;
     });
     backApi.get('/agent/flat_genealogy', {
@@ -248,7 +246,6 @@ export default {
         comdte: '2020-03-01',
       },
     }).then((Response) => {
-      console.log(Response.data);
       this.entries = Response.data.entries;
     });
   },
