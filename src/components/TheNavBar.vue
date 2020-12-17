@@ -21,6 +21,9 @@
             <li><router-link to="/myinfoedit">Редактирование личных данных</router-link></li>
             <li><router-link to="/sponsorcard">Данные спонсора</router-link></li>
             <li><router-link to="/rights">Передача прав</router-link></li>
+            <li><router-link to="/client-bonus"
+            v-if="role === 'Клиент'"
+            >Количество бонусных баллов</router-link></li>
           </ul>
         </li>
         <li>

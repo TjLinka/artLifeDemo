@@ -25,12 +25,12 @@
       >
         {{ tag.name }}
       </el-tag>
-      <p>
-        <!-- <span class="mr-3">Печать</span> -->
+      <!-- <p>
+        <span class="mr-3">Печать</span>
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
         <span class="mr-3">Экспорт накладной в pdf</span>
-      </p>
+      </p> -->
       <div class="perchases_table">
         <b-table :fields="fields" :items="entries"
         head-variant="light" responsive outlined>
@@ -87,11 +87,6 @@
               />
             </div>
           </div>
-          <!-- <div class="row edit">
-          <div class="col-sm-6">
-            <input type="text" name="" id="" placeholder="Номер накладной" v-model="number" />
-          </div>
-        </div> -->
           <div class="row edit justify-content-end">
             <div class="col-md-6 update">
               <button class="mr-2" @click="updateData">Показать</button
@@ -146,6 +141,9 @@ export default {
         {
           key: 'articul',
           label: 'Артикул',
+          thStyle: {
+            width: '150px',
+          },
         },
         {
           key: 'itemname',
@@ -207,6 +205,10 @@ export default {
           key: 'nomer',
           label: 'Номер документа',
           sortable: true,
+          thStyle: {
+            width: '150px',
+            minWidth: '150px',
+          },
         },
         // {
         //   key: 'webshop_id',

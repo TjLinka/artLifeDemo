@@ -25,9 +25,9 @@
       </template>
       </b-table>
       <h2 class="licevoischet__page__summ">
-        <span>НАЧИСЛЕНИЕ = {{ incomes }}</span>,
-        <span>СПИСАНИЕ = {{ outcomes }}</span>,
-        <span>ИЗМЕНЕНИЕ  = {{ changes }}</span>
+        <span>НАЧИСЛЕНИЕ = {{ incomes }} </span>
+        <span>СПИСАНИЕ = {{ outcomes }} </span>
+        <span>ИЗМЕНЕНИЕ  = {{ changes }} </span>
         </h2>
     </div>
       <footer class="container-fluid cust_modal">
@@ -48,7 +48,7 @@
               <input type="text" placeholder="Тип операции" v-model="filter.operType">
             </div>
             <div class="col-sm-6">
-              <input type="text" placeholder="Коментарий" v-model="filter.comment">
+              <input type="text" placeholder="Комментарий" v-model="filter.comment">
             </div>
           </div>
           <!-- <div class="row edit">
@@ -58,7 +58,7 @@
         </div> -->
           <div class="row edit">
             <div class="col-sm-6">
-              <input type="text" placeholder="Пользователь" v-model="filter.user">
+              <!-- <input type="text" placeholder="Пользователь" v-model="filter.user">  -->
             </div>
             <div class="col-sm-6">
               <button class="mr-2" @click="updateData">Показать</button>
@@ -99,6 +99,10 @@ export default {
           key: 'dte',
           label: 'Дата операции',
           sortable: true,
+          thStyle: {
+            width: '150px',
+            minWidth: '120px',
+          },
           formatter(v) {
             return new Date(v).toLocaleDateString();
           },
@@ -107,6 +111,10 @@ export default {
           key: 'income',
           label: 'Начисление',
           sortable: true,
+          thStyle: {
+            width: '200px',
+            minWidth: '120px',
+          },
           formatter(v) {
             if (v > 0) {
               return v.toFixed(2);
@@ -118,6 +126,10 @@ export default {
           key: 'outcome',
           label: 'Списание',
           sortable: true,
+          thStyle: {
+            width: '200px',
+            minWidth: '120px',
+          },
           formatter(v) {
             if (v < 0) {
               return v.toFixed(2);
@@ -246,6 +258,10 @@ export default {
 @media (max-width: 450px) {
   .licevoischet__page__summ{
     font-size: 18px;
+    & span{
+      display: block;
+      margin-top: 10px;
+    }
   }
 }
 .organization__modal {

@@ -48,7 +48,8 @@
             <!-- {{column.property}} -->
             <span v-if="column.property != 'id'">{{ column.formater(scope.row) }}</span>
             <span v-else>
-              <img :src="`../icons/${scope.row.rank_end}.svg`"
+              <img
+              :src="`../icons/${scope.row.rank_end}${scope.row.depth === 0 ? '_white' : ''}.svg`"
               :title="scope.row.rank_end" class="rank_icon">
               <span class="user_id">{{ scope.row.id }}</span><br />
               <router-link :to="`/agent/${scope.row.id}`"
@@ -178,9 +179,9 @@ export default {
         formater: (item) => item.rank_calc,
       },
       {
-        property: 'reserve',
-        title: 'Баллы в резерве',
-        formater: (item) => item.reserve,
+        property: 'rank_end',
+        title: 'Ранг на конец',
+        formater: (item) => item.rank_end,
       },
     ];
     return {

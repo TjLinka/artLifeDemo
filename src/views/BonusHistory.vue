@@ -161,7 +161,7 @@ export default {
         },
         {
           key: 'agent_from',
-          label: 'Номер агента',
+          label: 'Номер партнёра',
         },
         {
           key: 'rankname',
@@ -198,6 +198,7 @@ export default {
       backApi
         .get('agent/bonus-detail', { params: { comdte: this.currentPeriod } })
         .then((response) => {
+          console.log(Response.data);
           this.bonus = response.data.entries;
           // eslint-disable-next-line no-param-reassign
           response.data.header.period = this.currentPeriod;

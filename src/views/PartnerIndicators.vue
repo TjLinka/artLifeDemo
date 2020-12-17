@@ -29,7 +29,9 @@
         <span>Экспорт в pdf</span>
       </div>
     </div>
-    <b-table responsive outlined head-variant="light" :items="entries" :fields="fields">
+    <b-table responsive outlined head-variant="light"
+    :items="entries" :fields="fields" show-empty
+    emptyText="У вас нет истории показателей в выбранных периодах/в предыдущих периодах">
       <template v-slot:cell(comdte)="data">
         {{ data.value }}
       </template>
@@ -47,6 +49,14 @@
       </template>
       <template v-slot:cell(ko)="row">
         {{ row.item.ko | localInt }}
+      </template>
+      <template v-slot:cell(rank_end)="row">
+        <img :src="`../icons/${row.item.rank_end}.svg`"
+          :title="row.item.rank_end" class="rank_icon">
+        {{ row.item.rank_end }}
+      </template>
+      <template #empty="scope">
+        <h4>{{ scope.emptyText }}</h4>
       </template>
     </b-table>
     <footer class="container-fluid cust_modal">
@@ -102,38 +112,71 @@ export default {
         {
           key: 'noact',
           label: 'Не активность',
+          thStyle: {
+            width: '150px',
+            minWidth: '130px',
+          },
         },
         {
           key: 'lo',
           label: 'ЛО',
+          thStyle: {
+            width: '100px',
+            minWidth: '50px',
+          },
         },
         {
           key: 'go',
           label: 'ГО',
+          thStyle: {
+            width: '100px',
+            minWidth: '50px',
+          },
         },
         {
           key: 'ngo',
           label: 'НГО',
+          thStyle: {
+            width: '100px',
+            minWidth: '50px',
+          },
         },
         {
           key: 'oo',
           label: 'ОО',
+          thStyle: {
+            width: '100px',
+            minWidth: '50px',
+          },
         },
         {
           key: 'ko',
           label: 'КО',
+          thStyle: {
+            width: '100px',
+            minWidth: '50px',
+          },
         },
         {
           key: 'rank_beg',
           label: 'Ранг на начало',
+          thStyle: {
+            minWidth: '120px',
+          },
         },
         {
           key: 'rank_calc',
           label: 'Расчётный ранг',
+          thStyle: {
+            minWidth: '120px',
+          },
         },
         {
-          key: 'reserve',
-          label: 'Баллы в резерве',
+          key: 'rank_end',
+          label: 'Ранг на конец',
+          thStyle: {
+            minWidth: '120px',
+          },
         },
       ],
       userInfo: {},

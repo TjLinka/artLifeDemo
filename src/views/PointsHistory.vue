@@ -9,9 +9,28 @@
       </p>
         История баллов</h2>
       <p class="p-0 m-0 history_title">Период от и до</p>
-      <date-picker v-model="rangeDate" range-separator=" - "
-      range @change="getSelectedDataRange" valueType="format">
+      <date-picker
+      v-model="rangeDate"
+      range-separator=" - "
+      range
+      @change="getSelectedDataRange"
+      format="DD.MM.YYYY"
+      value-type="YYYY-MM-DD">
       </date-picker>
+      <div class="row mt-4">
+        <div class="col">
+        <el-tag
+        v-for="tag in tags"
+        :key="tag.name"
+        closable
+        @close="handleClose($event, tag)"
+        :type="tag.type"
+        :disable-transitions="true"
+        >
+        {{ tag.name }}
+        </el-tag>
+        </div>
+      </div>
       <div class="row mobile_search">
         <div class="col search__btn" @click="toggleSearch">
           Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
@@ -47,7 +66,7 @@
       <footer class="container-fluid cust_modal pb-4">
       <div class="row desk_trans">
         <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
-          Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
+          Фильтры <i class="el-icon-search   search_icon"></i>
         </div>
       </div>
       <div v-if="searchActive" class="organization__modal">
@@ -85,20 +104,10 @@
         </div>
         <div class="row edit mt-4">
           <div class="col-md-6 custom_input">
-            <input type="text" name="operType"
-            id="operType" required v-model="operType" />
-            <label for="operType">Тип операции:</label>
-            <span class="clear_icon" @click="clearOperType('operType')"></span>
-          </div>
-          <div class="col-md-6 custom_input">
            <input type="text" name="comment"
             id="comment" required v-model="comment" />
             <label for="comment">Комментарий:</label>
             <span class="clear_icon" @click="clearComment('comment')"></span>
-          </div>
-        </div>
-        <div class="row edit mt-4">
-          <div class="col-md-6">
           </div>
           <div class="col-md-6">
             <button class="mr-2 update" @click="updateData">Показать</button>
@@ -113,7 +122,7 @@
 <script>
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
-import 'vue2-datepicker/locale/en';
+import 'vue2-datepicker/locale/ru';
 import backApi from '../assets/backApi';
 // import { ReplaceNull } from '../assets/utils';
 
@@ -122,9 +131,7 @@ export default {
   components: { DatePicker },
   data() {
     return {
-      aq: {
-        color: 'red',
-      },
+      tags: [],
       operType: null,
       comment: null,
       points_type: null,
@@ -153,6 +160,10 @@ export default {
           key: 'dte',
           label: 'Дата операции',
           sortable: true,
+          thStyle: {
+            width: '150px',
+            minWidth: '120px',
+          },
           formatter(v) {
             return new Date(v).toLocaleDateString();
           },
@@ -161,6 +172,7 @@ export default {
           key: 'comdte',
           label: 'Период',
           thStyle: {
+            width: '140px',
             minWidth: '100px',
           },
           sortable: true,
@@ -186,21 +198,33 @@ export default {
           key: 'income',
           label: 'На счёт',
           sortable: true,
+          thStyle: {
+            minWidth: '100px',
+          },
         },
         {
           key: 'outcome',
           label: 'Со счёта',
           sortable: true,
+          thStyle: {
+            minWidth: '100px',
+          },
         },
         {
           key: 'opertype',
           label: 'Тип операции',
           sortable: true,
+          thStyle: {
+            minWidth: '150px',
+          },
         },
         {
           key: 'pointstype',
           label: 'Тип баллов',
           sortable: true,
+          thStyle: {
+            minWidth: '130px',
+          },
         },
         {
           key: 'comm',
@@ -237,6 +261,16 @@ export default {
     },
   },
   methods: {
+    handleClose(event, tag) {
+      this.tags.splice(this.tags.indexOf(tag), 1);
+      if (tag.key === 'points_type') {
+        this.points_type = null;
+        this.updateData();
+      } else if (tag.key === 'comment') {
+        this.comment = null;
+        this.updateData();
+      }
+    },
     // eslint-disable-next-line no-unused-vars
     // filFunc(row, filter) {
     //   return (row.opertype.toLowerCase().search(filter.operType.toLowerCase().trim()) !== -1
@@ -260,10 +294,28 @@ export default {
           beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
           end_dte: this.rangeDate[1] ? this.rangeDate[1] : null,
           points_type: this.points_type,
-          operation_type: this.operType,
           comm_find: this.comment,
         },
       };
+      if (this.points_type !== null) {
+        const treeNameTranslate = { 0: 'Резерв', 1: 'ЛО', null: 'Все' };
+        const treeName = treeNameTranslate[this.points_type];
+        const tag = this.tags.find((t) => t.key === 'points_type');
+        if (tag) {
+          tag.name = treeName;
+        } else {
+          this.tags.push({ name: treeName, key: 'points_type' });
+        }
+      }
+      if (this.comment !== null && this.comment !== '') {
+        const tag = this.tags.find((t) => t.key === 'comment');
+        if (tag) {
+          tag.name = this.comment88;
+        } else {
+          this.tags.push({ name: this.comment, key: 'comment' });
+        }
+        data.params.comment = this.comment;
+      }
       backApi.get('/agent/points-detail', data).then((Response) => {
         this.entries = Response.data.entries;
       });
@@ -280,13 +332,20 @@ export default {
             params: {
               beg_dte: String(this.rangeDate[0]),
               end_dte: String(this.rangeDate[1]),
+              points_type: this.points_type,
+              comm_find: this.comment,
             },
           })
           .then((Response) => {
             this.entries = Response.data.entries;
           });
       } else {
-        backApi.get('agent/points-detail').then((Response) => {
+        backApi.get('agent/points-detail', {
+          params: {
+            points_type: this.points_type,
+            comm_find: this.comment,
+          },
+        }).then((Response) => {
           this.entries = Response.data.entries;
         });
       }
