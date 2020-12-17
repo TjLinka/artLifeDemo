@@ -340,7 +340,6 @@ export default {
           if (Response.status === 200) {
             backApi.get('/agent/transfer-info', { params: { another_agent_id: Response.data.id } })
               .then((response) => {
-
                 next((vm) => {
                   vm.setData(ReplaceNull(Response.data), ReplaceNull(response.data));
                 });
