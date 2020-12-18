@@ -1,6 +1,6 @@
 <template>
   <div class="sponsor__page">
-    <div class="container">
+    <div class="container-md">
       <h2 class="page__title">
                               <p class="mobile_back" @click="back">
         <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -30,7 +30,7 @@
         <h2 class="mt-4 mb-4 page__caption">Мои текущие показатели</h2>
         <BasePeriodPicker :currentPeriod="currentPeriod"
         v-on:next-period="nextPeriod" class="period_picker"/>
-        <div class="container top__info">
+        <div class="container-md top__info">
           <div class="row">
             <div class="col-md-6 mt-4">
               <p>Ранг на начало:</p>
@@ -83,14 +83,14 @@
           </div>
         </div>
       </div>
-      <footer class="container-fluid cust_modal">
+      <footer class="container-md-fluid cust_modal">
       <div class="row desk_trans">
         <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
           Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
         </div>
       </div>
       <div v-if="searchActive" class="organization__modal">
-        <div class="container">
+        <div class="container-md">
           <h3 class="mt-4 modal_title">Настройка автоматической подачи баллов в трансферт
             <span @click="closeModal" class="close_btn"></span></h3>
           <div class="row mt-4">
@@ -264,7 +264,7 @@ export default {
 
 <style lang="scss" scoped>
 .organization__modal {
-  & > .container{
+  & > .container-md{
     position: relative;
   }
 }

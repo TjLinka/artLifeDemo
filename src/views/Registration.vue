@@ -1,6 +1,6 @@
 <template>
   <div class="licevoischet__page">
-    <div class="container">
+    <div class="container-md">
       <h2 class="page__title">
         <p class="mobile_back" @click="back">
           <svg
@@ -118,7 +118,7 @@ export default {
   display: block;
   float: right;
 }
-@media (max-width: 525px) {
+@media (max-width: 768px) {
 .reg_input{
   &:nth-of-type(1){
     margin-bottom: 10px;

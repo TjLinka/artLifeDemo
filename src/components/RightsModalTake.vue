@@ -1,6 +1,6 @@
 <template>
   <div class="licevoischet__page">
-    <div class="container">
+    <div class="container-md">
       <h4 class="mt-4 modal_title">Передача прав
         <span v-on:click="$emit('enlarge-text')" class="close_btn"></span>
       </h4>

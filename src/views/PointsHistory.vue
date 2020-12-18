@@ -71,7 +71,7 @@
         </div>
       </div>
       <div v-if="searchActive" class="organization__modal">
-        <div class="container">
+        <div class="container-md">
         <h3 class="mt-4">
           Фильтры
           <span @click="closeModal" class="close_btn"></span>
@@ -387,7 +387,7 @@ export default {
 .organization__modal {
   padding-left: 15px;
   padding-right: 15px;
-  & > .container{
+  & > .container-md{
     position: relative;
   }
   & .close_btn {
@@ -400,44 +400,26 @@ export default {
     cursor: pointer;
   }
 }
-// .edit {
-//   input {
-//     width: 100%;
-//     border: 0;
-//     border-bottom: 1px solid #dee2f3;
-//     padding-bottom: 10px;
-//     outline: none;
-//   }
-//   button {
-//     border: 0;
-//     padding: 5px 30px;
-//     font-size: 16px;
-//     margin-bottom: 20px;
-//     &:nth-of-type(1) {
-//       background-color: #32aaa7;
-//       color: white;
-//     }
-//     &:nth-of-type(2) {
-//       background-color: white;
-//       color: #32aaa7;
-//       border: 2px solid #32aaa7;
-//     }
-//   }
-// }
 .mobile_search{
   display: none;
 }
 @media (max-width: 770px) {
+  input[id="comment"]{
+    margin-bottom: 20px;
+  }
   .update{
     width: 100%;
   }
-}
-@media (max-width: 525px) {
+  .desk_trans{
+    display: none;
+  }
   .mobile_search{
     display: block;
   }
-  .desk_trans{
-    display: none;
+}
+@media (max-width: 525px) {
+  input[id='comment']{
+    margin-bottom: 20px;
   }
   .update{
     width: 100%;

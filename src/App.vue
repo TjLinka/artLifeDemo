@@ -148,6 +148,9 @@ main {
   width: 20px;
   height: 20px;
 }
+.sr-only{
+  display: none;
+}
 .close_btn{
   background-image: url('assets/imgs/close_btn.svg');
   background-repeat: no-repeat;
@@ -381,6 +384,9 @@ th[aria-colindex='1']{
 }
 // СТИЛИ НАЧАИНАЯ С 768PX
 @media (max-width: 768px) {
+  body {
+    overflow-x: hidden !important;
+  }
   main {
     padding-left: 15px !important;
     padding-right: 15px;
@@ -412,6 +418,10 @@ th[aria-colindex='1']{
 }
 // СТИЛИ ДЛЯ МОБ.УСТРОЙСТВ 540PX
 @media (max-width: 540px) {
+  .date_show{
+    display: block !important;
+    margin-left: 0 !important;
+  }
   // MAIN БЛОК
   main{
     padding-left: 0 !important;

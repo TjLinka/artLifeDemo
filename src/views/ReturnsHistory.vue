@@ -7,7 +7,7 @@
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
-        История возвартов
+        История возвратов
         </h2>
       <p class="p-0 m-0 history_title">Период от и до</p>
       <date-picker v-model="rangeDate"
@@ -15,6 +15,11 @@
       range-separator=" - "
       >
       </date-picker>
+        <div class="row mobile_search">
+          <div class="col search__btn" @click="toggleSearch" v-if="!searchActive">
+            Поиск возврата <i class="el-icon-search search_icon"></i>
+          </div>
+        </div>
       <p>
         <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3">Экспорт в xls</span>
@@ -33,7 +38,7 @@
         </template>
         <template v-slot:row-details="row">
           <div class="sub_table">
-                      <b-table :fields="returnFields" :items="return_details[row.item.webshop_id]"
+          <b-table :fields="returnFields" :items="return_details[row.item.webshop_id]"
            head-variant="light"> </b-table>
           </div>
         </template>
@@ -42,14 +47,14 @@
       <!-- <h2 class="licevoischet__page__summ">СУММА = {{ summ }}</h2> -->
     </div>
       <footer class="container-fluid cust_modal">
-        <div class="container">
-          <div class="row">
+        <div class="container-md">
+          <div class="row desktop_search">
           <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
-            Поиск <i class="el-icon-search search_icon"></i>
+            Поиск возврата <i class="el-icon-search search_icon"></i>
           </div>
         </div>
         <div v-if="searchActive" class="organization__modal">
-          <h3>Поиск
+          <h3>Поиск возврата
             <span @click="searchActive = !searchActive" class="close_btn"></span>
           </h3>
           <div class="row edit">
@@ -144,6 +149,9 @@ export default {
         {
           key: 'articul',
           label: 'Артикул',
+          thStyle: {
+            minWidth: '105px',
+          },
         },
         {
           key: 'itemname',
@@ -175,6 +183,10 @@ export default {
           key: 'nomer',
           label: 'Номер документа',
           sortable: true,
+          // thStyle: {
+          //   width: '200px',
+          //   minWidth: '110px',
+          // },
         },
         // {
         //   key: 'webshop_id',
@@ -332,6 +344,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.mobile_search{
+  display: none;
+}
 .update{
   padding: 0;
   display: flex;
@@ -376,6 +391,17 @@ export default {
       }
     }
   }
+@media (max-width: 768px) {
+  .mobile_search{
+    display: block;
+    & i{
+      margin-left: 10px;
+    }
+  }
+  .desktop_search{
+    display: none;
+  }
+}
 @media (max-width: 525px) {
   .organization__modal{
     & .edit{

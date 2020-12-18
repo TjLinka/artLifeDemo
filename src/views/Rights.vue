@@ -1,6 +1,6 @@
 <template>
   <div class="licevoischet__page">
-    <div class="container">
+    <div class="container-md">
       <h2 class="page__title">
         <p class="mobile_back" @click="back">
           <svg

@@ -32,13 +32,22 @@
         </el-tag>
         </div>
       </div>
+        <div class="row mobile_search">
+          <div class="col search__btn" @click="toggleSearch" v-if="!searchActive">
+            Фильтр <i class="el-icon-search search_icon"></i>
+          </div>
+        </div>
       <p>
         <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
-      <b-table :fields="fields" :items="entries" head-variant="light"
-      responsive outlined>
+      <b-table
+      :fields="fields"
+      :items="entries"
+      head-variant="light"
+      responsive
+      outlined>
       <template #cell(amount)="data">
         <b class="text-info">{{ data.value }}</b>
       </template>
@@ -50,8 +59,8 @@
         </h2>
     </div>
       <footer class="container-fluid cust_modal">
-        <div class="container">
-          <div class="row">
+        <div class="container-md">
+          <div class="row desktop_search">
           <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
             Фильтр <i class="el-icon-search search_icon"></i>
           </div>
@@ -61,27 +70,20 @@
             Фильтр
             <span class="close_btn" @click="searchActive = !searchActive"></span>
           </h3>
-          <!-- <BasePeriodPicker :currentPeriod="currentPeriod" v-on:next-period="nextPeriod" /> -->
           <div class="row edit mt-4">
             <div class="col-sm-6 custom_input">
-              <input type="text" name="country" id="country" required v-model="filter.operType" />
-              <label for="country">Тип операции:</label>
+              <input type="text" name="operType" id="operType" required v-model="filter.operType" />
+              <label for="operType">Тип операции:</label>
               <span class="clear_icon" @click="clearInput('operType')"></span>
             </div>
             <div class="col-sm-6 custom_input">
-              <input type="text" name="country" id="country" required v-model="filter.comment" />
-              <label for="country">Комментарий:</label>
+              <input type="text" name="comment" id="comment" required v-model="filter.comment" />
+              <label for="comment">Комментарий:</label>
               <span class="clear_icon" @click="clearInput('comment')"></span>
             </div>
           </div>
-          <!-- <div class="row edit">
-          <div class="col-sm-6">
-            <input type="text" name="" id="" placeholder="Номер накладной" v-model="number" />
-          </div>
-        </div> -->
           <div class="row edit">
             <div class="col-sm-6">
-              <!-- <input type="text" placeholder="Пользователь" v-model="filter.user">  -->
             </div>
             <div class="col-sm-6">
               <button
@@ -309,9 +311,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.update{
+  width: 100%;
+}
+.mobile_search{
+  display: none;
+}
 .organization__modal{
   position: relative;
-  padding: 20px 0px;
+  // padding: 20px 0px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 .licevoischet__page {
   &__summ {
@@ -319,7 +329,7 @@ export default {
     background-color: #dee2f3;
     font-size: 20px;
     padding: 10px 0px;
-    margin-bottom: 160px;
+    // margin-bottom: 160px;
   }
 
   & .exp_print {
@@ -327,6 +337,16 @@ export default {
       color: #32aaa7;
       cursor: pointer;
     }
+  }
+}
+@media (max-width: 768px) {
+  .desktop_search{
+    display: none;
+  }
+  .mobile_search{
+    display: block;
+    margin-top: -20px;
+    margin-bottom: 20px;
   }
 }
 @media (max-width: 450px) {
@@ -349,13 +369,13 @@ export default {
         width: 100%;
         border: 0;
         border-bottom: 1px solid #dee2f3;
-        padding-bottom: 10px;
+        // padding-bottom: 10px;
         outline: none;
         margin-bottom: 20px;
       }
       button {
         margin-top: 20px;
-        width: 48%;
+        width: 100%;
         border: 0;
         padding: 5px 30px;
         font-size: 16px;
@@ -379,5 +399,8 @@ export default {
 <style>
 .mx-datepicker svg{
   color: #32AAA7;
+}
+.sr-only{
+  display: none;
 }
 </style>

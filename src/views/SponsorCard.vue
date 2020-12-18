@@ -1,6 +1,6 @@
 <template>
   <div class="sponsor__page">
-    <div class="container">
+    <div class="container-md">
       <h2 class="page__title">
                               <p class="mobile_back" @click="back">
         <svg width="18" height="12" viewBox="0 0 18 12" fill="none"  xmlns="http://www.w3.org/2000/svg">
@@ -17,7 +17,7 @@
           </div>
           <p>{{userInfo.name}}</p>
         </div>
-        <div class="container top__info">
+        <div class="container-md top__info">
           <div class="row">
             <div class="col-md-6 mt-4">
               <p>Номер соглашения:</p>
@@ -103,7 +103,7 @@ export default {
     & .top__info,
     & .transfert__info {
       padding: 0;
-      margin-top: 32px;
+      margin-top: 0px;
 
       & .row {
         // margin-bottom: 32px;

@@ -15,6 +15,12 @@
         </p>
         История покупок
       </h2>
+        <div class="row mobile_search">
+          <div class="col search__btn" @click="toggleSearch" v-if="!searchActive">
+            Поиск покупки <i class="el-icon-search search_icon"></i>
+          </div>
+        </div>
+      <div class="tags">
       <el-tag
         v-for="tag in tags"
         :key="tag.name"
@@ -25,6 +31,7 @@
       >
         {{ tag.name }}
       </el-tag>
+      </div>
       <!-- <p>
         <span class="mr-3">Печать</span>
         <span class="mr-3">Экспорт в xls</span>
@@ -53,42 +60,34 @@
         </b-table>
       </div>
       <footer class="container-fluid cust_modal">
-        <div class="container">
-          <div class="row">
+        <div class="container-md">
+        <div class="row desktop_search">
           <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
-            Фильтр <i class="el-icon-search search_icon"></i>
+            Поиск покупки <i class="el-icon-search search_icon"></i>
           </div>
         </div>
         <div v-if="searchActive" class="organization__modal">
           <h3>
-            Фильтр
+            Поиск покупки
             <span class="close_btn" @click="searchActive = !searchActive"></span>
           </h3>
-          <BasePeriodPicker :currentPeriod="currentPeriod" v-on:next-period="nextPeriod" />
-          <div class="row edit mt-5">
-            <div class="col-sm-6">
-              <el-input
-                type="number"
-                name=""
-                id="art"
-                placeholder="Артикул"
-                clearable
-                v-model="articul"
-              />
+          <div class="mt-3">
+            <BasePeriodPicker :currentPeriod="currentPeriod" v-on:next-period="nextPeriod" />
+          </div>
+          <div class="row edit mt-3">
+            <div class="col-sm-6 custom_input">
+              <input type="number" name="articul" id="articul" required v-model="articul" />
+              <label for="articul">Артикул:</label>
+              <span class="clear_icon" @click="clearArticul()"></span>
             </div>
-            <div class="col-sm-6">
-              <el-input
-                type="text"
-                name=""
-                id="name"
-                placeholder="Наименование"
-                clearable
-                v-model="name"
-              />
+            <div class="col-sm-6 custom_input">
+              <input type="text" name="name" id="name" required v-model="name" />
+              <label for="name">Наименование товара:</label>
+              <span class="clear_icon" @click="clearName()"></span>
             </div>
           </div>
           <div class="row edit justify-content-end">
-            <div class="col-md-6 update">
+            <div class="col-xl-6 update">
               <button class="mr-2" @click="updateData">Показать</button
               ><button @click="clearSelectedFilters">Сбросить</button>
             </div>
@@ -103,9 +102,13 @@
 <script>
 /* eslint-disable no-param-reassign */
 import backApi from '../assets/backApi';
+import BasePeriodPicker from '../components/BasePeriodPicker.vue';
 
 export default {
   name: 'AccountDetail',
+  components: {
+    BasePeriodPicker,
+  },
   data() {
     return {
       allData: [],
@@ -281,6 +284,12 @@ export default {
     },
   },
   methods: {
+    clearArticul() {
+      this.articul = null;
+    },
+    clearName() {
+      this.name = null;
+    },
     back() {
       this.$router.go(-1);
     },
@@ -344,6 +353,9 @@ export default {
         this.entries = Response.data.entries;
         this.return_details = new Array(this.total_rows).fill(undefined);
       });
+      if (this.searchActive === true) {
+        this.searchActive = false;
+      }
     },
     clearSelectedFilters() {
       this.name = null;
@@ -377,6 +389,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.tags{
+  margin: 10px 0px 20px 0px;
+}
+.mobile_search{
+  display: none;
+}
 .update{
   display: flex;
   justify-content: space-between;
@@ -410,7 +428,7 @@ export default {
         width: 100%;
         border: 0;
         border-bottom: 1px solid #dee2f3;
-        padding-bottom: 10px;
+        // padding-bottom: 10px;
         outline: none;
         margin-bottom: 20px;
       }
@@ -431,6 +449,17 @@ export default {
         }
       }
     }
+  }
+}
+@media (max-width: 768px) {
+  .mobile_search{
+    display: block;
+    & i{
+      margin-left: 10px;
+    }
+  }
+  .desktop_search{
+    display: none;
   }
 }
 .btn {
