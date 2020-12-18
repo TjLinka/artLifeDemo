@@ -136,6 +136,11 @@ const routes = [
     meta: { requiresAuth: true },
     // Видит только Дистрибьютор +
   },
+  {
+    path: '/change_mail/:mail_hash',
+    name: 'MailChange',
+    component: () => import('../views/MailChange.vue'),
+  },
 ];
 
 const router = new VueRouter({

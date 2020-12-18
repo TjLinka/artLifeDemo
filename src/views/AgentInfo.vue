@@ -124,7 +124,7 @@
             <div class="row">
               <div class="col-md-6 mt-3">
                 <p>Организационный объем (ОО):</p>
-                <p>{{transfertInfo.oo}}</p>
+                <p>{{ transfertInfo.oo }}</p>
               </div>
               <div class="col-md-6 mt-3">
                 <p>Квалификационный объем (КО):</p>
@@ -170,7 +170,7 @@
               </div>
               <div class="col-md-6 mt-3">
                 <p>Дата окончания лидерской программы:</p>
-                <p>{{ transfertInfo.leader_date | localDate}}</p>
+                <p>{{ transfertInfo.leader_date | localDate }}</p>
               </div>
             </div>
           </div>
@@ -215,7 +215,7 @@
     </div>
     <footer class="container-fluid cust_modal" v-if="showModal">
       <div>
-        <Transfert v-on:enlarge-text="showModal = false" :id="userinfo.id"/>
+        <Transfert v-on:enlarge-text="showModal = false" :id="userinfo.id" />
       </div>
     </footer>
     <footer class="container-fluid cust_modal" v-if="showModal1">
@@ -341,7 +341,7 @@ export default {
         },
       });
       // Проверка на успешный ответ от сервера
-        // Если 200, то грузим информацию о трансферте
+      // Если 200, то грузим информацию о трансферте
       if (response.status === 200) {
         const response2 = await backApi.get('/agent/transfer-info', {
           params: {
@@ -362,14 +362,20 @@ export default {
       const response = await backApi.get('/agent/profile');
       // Если 200, то грузим информацию о трансферте
       if (response.status === 200) {
-        const response2 = await backApi.get('/agent/transfer-info', {
-          params: {
-            another_agent_id: response.data.id,
-          },
-        });
-        next((vm) => {
-          vm.setData(ReplaceNull(response.data), ReplaceNull(response2.data));
-        });
+        try {
+          const response2 = await backApi.get('/agent/transfer-info', {
+            params: {
+              another_agent_id: response.data.id,
+            },
+          });
+          next((vm) => {
+            vm.setData(ReplaceNull(response.data), ReplaceNull(response2.data));
+          });
+        } catch (error) {
+          next((vm) => {
+            vm.setData(ReplaceNull(response.data));
+          });
+        }
       } else {
         // Если ошибка, то просто выполняем setData, только с личными данными
         next((vm) => {
@@ -387,7 +393,7 @@ export default {
         },
       });
       // Проверка на успешный ответ от сервера
-        // Если 200, то грузим информацию о трансферте
+      // Если 200, то грузим информацию о трансферте
       if (response.status === 200) {
         const response2 = await backApi.get('/agent/transfer-info', {
           params: {
@@ -472,7 +478,7 @@ export default {
   cursor: pointer;
   display: inline-block;
   &:nth-of-type(1),
-  &:nth-of-type(2){
+  &:nth-of-type(2) {
     margin-right: 30px;
   }
 }
