@@ -32,12 +32,12 @@
         {{ tag.name }}
       </el-tag>
       </div>
-      <!-- <p>
-        <span class="mr-3">Печать</span>
-        <span class="mr-3">Экспорт в xls</span>
-        <span class="mr-3">Экспорт в pdf</span>
-        <span class="mr-3">Экспорт накладной в pdf</span>
-      </p> -->
+      <p>
+        <!-- <span class="mr-3">Печать</span> -->
+        <span class="mr-3" @click="downloadXls">Экспорт в xls</span>
+        <!-- <span class="mr-3">Экспорт в pdf</span> -->
+        <!-- <span class="mr-3">Экспорт накладной в pdf</span> -->
+      </p>
       <div class="perchases_table">
         <b-table :fields="fields" :items="entries"
         head-variant="light" responsive outlined>
@@ -284,6 +284,30 @@ export default {
     },
   },
   methods: {
+    downloadXls() {
+      backApi.get('/agent/sales/excel',
+        {
+          params:
+          {
+            name: this.name,
+            articul: this.articul,
+            saleid: this.saleid,
+            comdte: this.period_enabled ? this.currentPeriod : null,
+          },
+          responseType: 'blob',
+        })
+        .then(({ data }) => {
+          console.log({ data });
+          const filename = 'История покупок.xls';
+          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        });
+    },
     clearArticul() {
       this.articul = null;
     },

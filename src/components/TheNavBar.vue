@@ -46,7 +46,7 @@
               </router-link>
             </li>
             <li>
-              <router-link to="/transfermanagement">
+              <router-link to="/transfermanagement" v-if="role !== 'Клиент'">
               Управление трансфертами структуры(плоское дерево)
               </router-link>
             </li>

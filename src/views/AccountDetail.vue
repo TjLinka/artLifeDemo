@@ -39,7 +39,7 @@
         </div>
       <p>
         <!-- <span class="mr-3">Печать</span> -->
-        <span class="mr-3">Экспорт в xls</span>
+        <span class="mr-3" @click="downloadXls">Экспорт в xls</span>
         <span class="mr-3">Экспорт в pdf</span>
       </p>
       <b-table
@@ -223,6 +223,30 @@ export default {
     },
   },
   methods: {
+    downloadXls() {
+      backApi.get('/agent/account-detail/excel',
+        {
+          params:
+          {
+            beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
+            end_dte: this.rangeDate[1] ? this.rangeDate[1] : null,
+            find_comm: this.filter.comment,
+            find_type: this.filter.operType,
+          },
+          responseType: 'blob',
+        })
+        .then(({ data }) => {
+          console.log({ data });
+          const filename = 'Движение по лицевому счёту.xls';
+          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        });
+    },
     handleClose(event, tag) {
       this.tags.splice(this.tags.indexOf(tag), 1);
       if (tag.key === 'operType') {

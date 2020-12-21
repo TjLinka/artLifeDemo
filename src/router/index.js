@@ -119,7 +119,7 @@ const routes = [
     path: '/transfermanagement',
     name: 'TransferManagement',
     component: () => import('../views/TransferManagement.vue'),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, requiresRole: 'Дистрибьютор' },
     // Видит только Дистрибьютор +
   },
   {

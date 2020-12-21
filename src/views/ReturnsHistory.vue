@@ -22,9 +22,9 @@
         </div>
       <p>
         <!-- <span class="mr-3">Печать</span> -->
-        <span class="mr-3">Экспорт в xls</span>
-        <span class="mr-3">Экспорт в pdf</span>
-        <span class="mr-3">Экспорт возвратной накладной в pdf</span>
+        <span class="mr-3" @click="downloadXls">Экспорт в xls</span>
+        <!-- <span class="mr-3">Экспорт в pdf</span> -->
+        <!-- <span class="mr-3">Экспорт возвратной накладной в pdf</span> -->
       </p>
       <div class="refound_table">
       <b-table :fields="fields" :items="entries"
@@ -261,6 +261,33 @@ export default {
     },
   },
   methods: {
+    downloadXls() {
+      backApi.get('/agent/refunds/excel',
+        {
+          params:
+          {
+            beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
+            end_dte: this.rangeDate[1] ? this.rangeDate[1] : null,
+            articul: this.articul,
+            name: this.name,
+            // eslint-disable-next-line radix
+            saleid: this.naknum ? parseInt(this.naknum) : null,
+            // eslint-disable-next-line radix
+            refund_id: this.docnum ? parseInt(this.docnum) : null,
+          },
+          responseType: 'blob',
+        })
+        .then(({ data }) => {
+          const filename = 'История возвратов.xls';
+          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        });
+    },
     resetData() {
       backApi.get('agent/refunds').then((Response) => {
         this.entries = Response.data.entries;

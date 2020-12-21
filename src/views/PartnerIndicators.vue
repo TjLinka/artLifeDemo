@@ -25,8 +25,8 @@
     <div class="row mt-3 mb-4">
       <div class="col export_btns">
         <!-- <span>Печать</span> -->
-        <span>Экспорт в xls</span>
-        <span>Экспорт в pdf</span>
+        <span @click="downloadXls">Экспорт в xls</span>
+        <!-- <span>Экспорт в pdf</span> -->
       </div>
     </div>
     <b-table responsive outlined head-variant="light"
@@ -200,6 +200,20 @@ export default {
     }
   },
   methods: {
+    downloadXls() {
+      backApi.get('/agent/all-periods-indicators/excel', { responseType: 'blob' })
+        .then(({ data }) => {
+          console.log({ data });
+          const filename = 'История показателей партнера по периодам.xls';
+          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        });
+    },
     toggleShow() {
       this.showModal = !this.showModal;
     },
