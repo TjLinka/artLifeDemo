@@ -297,7 +297,6 @@ export default {
           responseType: 'blob',
         })
         .then(({ data }) => {
-          console.log({ data });
           const filename = 'История покупок.xls';
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
