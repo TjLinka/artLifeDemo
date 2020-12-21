@@ -268,9 +268,7 @@ export default {
       });
       this.periodIndex = this.periods.length - 1;
     });
-
     backApi.get('agent/sales').then((Response) => {
-      console.log(Response);
       this.entries = Response.data.entries;
       this.return_details = new Array(this.total_rows).fill(undefined);
     });
