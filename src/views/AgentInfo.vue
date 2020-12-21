@@ -435,7 +435,6 @@ export default {
     //   backApi
     //     .get('/agent/profile/child', { params: { another_agent_id: this.$route.params.id } })
     //     .then((Response) => {
-    //       console.log('Another Agent data', Response.data);
     //       this.loaded = !this.loaded;
     //       const data = ReplaceNull(Response.data);
     //       this.userinfo = data;
@@ -446,7 +445,6 @@ export default {
     //     });
     // } else {
     //   backApi.get('/agent/profile').then((Response) => {
-    //     console.log('My Data', Response.data);
     //     this.loaded = !this.loaded;
     //     const data = ReplaceNull(Response.data);
     //     this.userinfo = data;

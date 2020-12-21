@@ -141,6 +141,11 @@ const routes = [
     name: 'MailChange',
     component: () => import('../views/MailChange.vue'),
   },
+  {
+    path: '/signup/:signup_hash',
+    name: 'RegistrationConfirm',
+    component: () => import('../views/RegistrationConfirm.vue'),
+  },
 ];
 
 const router = new VueRouter({

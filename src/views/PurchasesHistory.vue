@@ -63,12 +63,12 @@
         <div class="container-md">
         <div class="row desktop_search">
           <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
-            Поиск покупки <i class="el-icon-search search_icon"></i>
+            Фильтр <i class="el-icon-search search_icon"></i>
           </div>
         </div>
         <div v-if="searchActive" class="organization__modal">
           <h3>
-            Поиск покупки
+            Фильтр
             <span class="close_btn" @click="searchActive = !searchActive"></span>
           </h3>
           <div class="mt-3">
@@ -150,7 +150,7 @@ export default {
         },
         {
           key: 'itemname',
-          label: 'Товар',
+          label: 'Наименование товара',
         },
         {
           key: 'points',
@@ -206,7 +206,7 @@ export default {
       fields: [
         {
           key: 'nomer',
-          label: 'Номер документа',
+          label: 'Номер накладной',
           sortable: true,
           thStyle: {
             width: '150px',
@@ -270,6 +270,7 @@ export default {
     });
 
     backApi.get('agent/sales').then((Response) => {
+      console.log(Response);
       this.entries = Response.data.entries;
       this.return_details = new Array(this.total_rows).fill(undefined);
     });
@@ -341,12 +342,12 @@ export default {
           comdte: this.period_enabled ? this.currentPeriod : null,
         },
       };
-      if (this.articul !== null) {
+      if (this.articul !== null && this.articul !== '') {
         const tag = this.tags.find((t) => t.key === 'articul');
         if (tag) {
           tag.name = this.articul;
         } else if (this.tree_type !== 'full') {
-          this.tags.push({ name: this.articul, key: 'articul' });
+          this.tags.push({ name: `Артикул: ${this.articul}`, key: 'articul' });
         }
       }
       if (this.name !== null && this.name !== '') {
@@ -354,7 +355,7 @@ export default {
         if (tag) {
           tag.name = this.name;
         } else {
-          this.tags.push({ name: this.name, key: 'name' });
+          this.tags.push({ name: `Наименование: ${this.name}`, key: 'name' });
         }
         data.params.agent_id = this.agent_id;
       }

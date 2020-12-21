@@ -34,7 +34,7 @@
             </div>
             <div class="col-md-6 mt-3">
               <p>Скидка:</p>
-              <p>{{bonusInfo.discount ? bonusInfo.discount : '-'}}</p>
+              <p>{{bonusInfo.discount_pc ? bonusInfo.discount_pc : '-'}}</p>
             </div>
           </div>
         </div>

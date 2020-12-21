@@ -1,6 +1,11 @@
 <template>
-  <div>
-    Ваша почта ...
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <p>Ваша почта подтверждена</p>
+        <p>super@mail.ru</p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -20,4 +25,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.col{
+  & p:nth-of-type(1){
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+  }
+</style>

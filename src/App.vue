@@ -51,7 +51,7 @@ input[type='radio']{
   vertical-align: top;
 }
 // СТИЛИ ДЛЯ RADIO КНОПОК
-.custom-control-input:checked ~ .custom-control-label::before{
+.custom-radio .custom-control-input:checked ~ .custom-control-label::before{
     color: #fff;
     border: 2px solid black;
     border-color: #32aaa7;
@@ -61,7 +61,7 @@ input[type='radio']{
 .custom-radio .custom-control-input:checked ~ .custom-control-label::after{
   background: #32aaa7 !important;
 }
-.custom-control-label::after{
+.custom-radio .custom-control-label::after{
     position: absolute;
     top: 0.5rem;
     left: -1.25rem;
@@ -75,6 +75,39 @@ input[type='radio']{
 }
 .custom-control-input{
   outline: none;
+}
+// КОНЕЦ СТИЛЕЙ ДЛЯ RADIO КНОПОК
+
+// СТИЛИ ДЛЯ CHECKBOX
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before{
+    color: #fff;
+    border: 2px solid black;
+    border-color: #32aaa7;
+    // background-color: white;
+    box-shadow: none;
+}
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::after{
+  background-color: #32aaa7 !important;
+  border: none;
+}
+.custom-control-input{
+  outline: none;
+}
+.custom-checkbox .custom-control-label::after{
+  border-radius: 2px;
+  border: 2px solid #DEE2F3;
+}
+input[type="checkbox"]{
+  box-shadow: none;
+}
+.custom-control-input:focus ~ .custom-control-label::before{
+  box-shadow: none !important;
+}
+.custom-control-input:focus:not(:checked) ~ .custom-control-label::before{
+  border-color: #DEE2F3;
+}
+.custom-control-input:not(:disabled):active ~ .custom-control-label::before{
+  background-color: #DEE2F3;
 }
 // КОНЕЦ СТИЛЕЙ ДЛЯ RADIO КНОПОК
 
@@ -250,6 +283,55 @@ main {
 .el-input__inner:focus {
   border-color: #32aaa7;
 }
+.depth-1 {
+  background-color: #bebebe !important;
+  background-color: lighten;
+  color: black;
+}
+.depth-2 {
+  background-color: #c4c5c6 !important;
+  color: black;
+}
+.depth-3 {
+  background-color: #cecfd0 !important;
+  color: black;
+}
+.depth-4 {
+  background-color: #d4d5d7 !important;
+  color: black;
+}
+.depth-5 {
+  background-color: #e3e3e4 !important;
+  color: black;
+}
+.depth-6 {
+  background-color: #ebedf4 !important;
+  color: black;
+}
+.depth-7 {
+  background-color: #eceef3 !important;
+  color: black;
+}
+.depth-8 {
+  background-color: #f0f0f3 !important;
+  color: black;
+}
+.depth-9 {
+  background-color: #f0f1f6 !important;
+  color: black;
+}
+.depth-10 {
+  background-color: #eff0f5 !important;
+  color: black;
+}
+.b-table-row-selected{
+  background-color: #32aaa7 !important;
+  color: white !important;
+}
+.b-table-row-selected td{
+  color: white !important;
+}
+// Конец El-Table
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -281,7 +363,7 @@ input[type='number'] {
 // СТИЛИ ДЛЯ ТАГОВ
 .el-tag{
   background-color: #fff;
-  border: 2px solid #dddddb;
+  border: 1px solid #dddddb;
   border-radius: 7px;
   color: black;
   font-weight: 500;
@@ -289,6 +371,9 @@ input[type='number'] {
   height: auto;
   padding: 3px 10px;
   font-size: 14px;
+  &:hover{
+    background-color: #E6F4F4;
+  }
 }
 .el-tag .el-tag__close{
   color: #32aaa7;
@@ -298,9 +383,16 @@ input[type='number'] {
   top: 0px;
 }
 .el-tag .el-tag__close:hover{
-  background: #32aaa7;
+  background: unset;
+  color: #32aaa7;
 }
-
+// Loading Spinner
+.el-loading-spinner .path{
+  stroke: #32aaa7;
+}
+.el-loading-spinner{
+  top: 10%;
+}
 .table thead th {
   vertical-align: middle;
 }
@@ -338,7 +430,7 @@ th[aria-colindex='1']{
   border-top: 1px solid #BABABA !important;
   border-bottom: 1px solid #BABABA !important;
   font-weight: 600 !important;
-  color: black !important;
+  color: black ;
 }
 .table .thead-light th{
   background: #DEE2F3;

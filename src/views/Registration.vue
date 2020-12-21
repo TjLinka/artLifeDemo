@@ -21,10 +21,10 @@
             <b-form-radio-group
               id="radio-group-1"
               v-model="newUser.role"
-              name="radio-sub-component"
+              name="radio-sub-component-1"
             >
-              <b-form-radio value="first">Прив. Клиент</b-form-radio>
-              <b-form-radio value="second">Дистрибьютор</b-form-radio>
+              <b-form-radio :value="0" >Прив. Клиент</b-form-radio>
+              <b-form-radio :value="1" >Дистрибьютор</b-form-radio>
             </b-form-radio-group>
           </b-form-group>
           <div class="reg_input custom_input">
@@ -35,9 +35,10 @@
         </div>
         <div class="col-md-6">
           <b-form-group>
-            <b-form-radio-group id="radio-group-2" v-model="newUser.sex" name="radio-sub-component">
-              <b-form-radio value="first">Мужской пол</b-form-radio>
-              <b-form-radio value="second">Женский пол</b-form-radio>
+            <b-form-radio-group id="radio-group-2"
+            v-model="newUser.sex" name="radio-sub-component-2">
+              <b-form-radio :value="0">Мужской пол</b-form-radio>
+              <b-form-radio :value="1">Женский пол</b-form-radio>
             </b-form-radio-group>
           </b-form-group>
           <div class="reg_input custom_input">
@@ -54,9 +55,15 @@
           <span class="clear_icon" @click="clearInput('city')"></span>
         </div>
         <div class="col-md-6 custom_input">
-          <input type="text" name="bthdte" id="bthdte" required v-model="newUser.bthdte" />
-          <label for="bthdte">Дата рождения:</label>
-          <span class="clear_icon" @click="clearInput('bthdte')"></span>
+            <date-picker
+              v-model="newUser.bthdte"
+              value-type="YYYY-MM-DD"
+              format="DD.MM.YYYY"
+              type="date"
+              placeholder="Дата рождения"
+              style="width: 100%"
+              range-separator=" - "
+            ></date-picker>
         </div>
       </div>
       <div class="row mt-md-5">
@@ -81,18 +88,59 @@
 </template>
 
 <script>
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
+import 'vue2-datepicker/locale/ru';
+import backApi from '../assets/backApi';
+
 export default {
   name: 'Registration',
+  components: { DatePicker },
   data() {
     return {
       newUser: {},
     };
   },
   methods: {
+    showToast(title, message, status) {
+      // Use a shorter name for this.$createElement
+      const h = this.$createElement;
+      // Increment the toast count
+      // Create the message
+      const vNodesMsg = h('p', { class: ['text-center', 'mb-0'] }, [
+        h('strong', { class: 'mr-2' }, message),
+      ]);
+      // Create the title
+      const vNodesTitle = h(
+        'div',
+        { class: ['d-flex', 'flex-grow-1', 'align-items-baseline', 'mr-2'] },
+        [
+          h('strong', { class: 'mr-2' }, title),
+        ],
+      );
+      // Pass the VNodes as an array for message and title
+      this.$bvToast.toast([vNodesMsg], {
+        title: [vNodesTitle],
+        solid: true,
+        variant: status,
+      });
+    },
     back() {
       this.$router.go(-1);
     },
     registr() {
+      const data = {
+        access_level: this.newUser.role,
+        male: this.newUser.sex,
+        fullname: this.newUser.fio,
+        country: this.newUser.country,
+        city: this.newUser.city,
+        bthdte: this.newUser.bthdte,
+        mobile_phone: this.newUser.phone,
+        email: this.newUser.email,
+      };
+      backApi.post('/agent/signup-start', data);
+      this.showToast('Регистрация', 'На вашу почту пришло письмо!', 'success');
     },
     clearInput(name) {
       this.newUser[name] = null;

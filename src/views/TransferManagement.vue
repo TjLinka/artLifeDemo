@@ -15,25 +15,43 @@
         </p>
         Управление трансфертами структуры
       </h2>
-      <div class="row">
-        <div class="col">
-          Теги
-        </div>
-      </div>
       <h2>История организации</h2>
       <div class="row">
         <div class="col-md-6 mt-4">
           <button class="update">Трансферт</button>
           <p class="exp_print">
             <!-- <span class="mr-3">Печать</span> -->
-            <span class="mr-3">Экспорт в xls</span>
+            <span class="mr-3" @click="downloadXls">Экспорт в xls</span>
             <span class="mr-3">Экспорт в pdf</span>
           </p>
         </div>
       </div>
-      <div class="transmaneg_table">
-        <b-table outlined responsive head-variant="light"
-        :fields="fields" :items="entries" class="mt-5">
+      <div class="row">
+        <div class="col">
+          <el-tag
+            v-for="tag in tags"
+            :key="tag.name"
+            closable
+            @close="handleClose($event, tag)"
+            :type="tag.type"
+            :disable-transitions="true"
+          >
+            {{ tag.name }}
+          </el-tag>
+        </div>
+      </div>
+      <div class="transmaneg_table" v-loading="loading">
+        <b-table
+        outlined
+        responsive
+        selectable
+        select-mode="single"
+        head-variant="light"
+        @row-selected="onRowSelected"
+        :fields="fields"
+        :items="entries"
+        :tbody-tr-class="rowClass"
+        class="mt-5">
           <template v-slot:cell(id)="row">
             <p>
               <span class="mr-4">{{ row.item.lvl }} УР</span>
@@ -61,37 +79,13 @@
         <h3 class="mt-4">Поиск партнёра</h3>
         <div class="row mt-5">
           <div class="col-md-6">
-            <b-form-group label="" class="flex-radio">
-              <b-form-radio
-                v-model="filterData.points_type"
-                name="some-radios-1"
-                value="0"
-                class="radio mr-3"
-                >Резерв</b-form-radio
-              >
-              <b-form-radio
-                v-model="filterData.points_type"
-                name="some-radios-1"
-                value="1"
-                class="radio mr-3"
-                >ЛО</b-form-radio
-              >
-              <b-form-radio
-                v-model="filterData.points_type"
-                name="some-radios-1"
-                :value="null"
-                class="radio"
-                >Все</b-form-radio
-              >
-            </b-form-group>
-          </div>
-          <div class="col-md-6">
             <b-form-checkbox
               id="checkbox-1"
               v-model="filterData.status"
               name="checkbox-1"
-              value="accepted"
-              unchecked-value="not_accepted"
+              value="true"
+              checked
+              unchecked-value="false"
             >
               Показывать терминированных
             </b-form-checkbox>
@@ -101,17 +95,17 @@
           <div class="col-md-6 custom_input">
             <input type="text" name="userId" id="userId" required v-model="filterData.agent_id"/>
             <label for="userId">Номер:</label>
-            <span class="clear_icon" @click="clearFio('userId')"></span>
+            <span class="clear_icon" @click="clearInput('agent_id')"></span>
           </div>
           <div class="col-md-6 custom_input">
-            <input type="text" name="userFio" id="userFio" required v-model="filterData.name"/>
+            <input type="text" name="userFio" id="userFio" required v-model="filterData.fullname"/>
             <label for="userFio">ФИО:</label>
-            <span class="clear_icon" @click="clearFio('userFio')"></span>
+            <span class="clear_icon" @click="clearInput('fullname')"></span>
           </div>
         </div>
         <div class="row mt-5">
           <div class="col-md-6">
-            <el-select v-model="filterData.area" placeholder="Территория">
+            <el-select v-model="filterData.area_id" placeholder="Территория">
               <el-option
                 v-for="item in areaList"
                 :key="item.area_id"
@@ -123,7 +117,7 @@
           <div class="col-md-6 custom_input">
             <input type="text" name="userStore" id="userStore" required v-model="filterData.store"/>
             <label for="userStore">Город склада обслуживания:</label>
-            <span class="clear_icon" @click="clearFio('userStore')"></span>
+            <span class="clear_icon" @click="clearInput('store')"></span>
           </div>
         </div>
         <div class="row mt-5">
@@ -133,7 +127,7 @@
                 v-for="item in rankList"
                 :key="item.rankname"
                 :label="item.rankname"
-                :value="item">
+                :value="item.rankname">
               </el-option>
             </el-select>
           </div>
@@ -143,7 +137,7 @@
                 v-for="item in rankList"
                 :key="item.rankname"
                 :label="item.rankname"
-                :value="item">
+                :value="item.rankname">
               </el-option>
             </el-select>
           </div>
@@ -155,28 +149,41 @@
                 v-for="item in rankList"
                 :key="item.rankname"
                 :label="item.rankname"
-                :value="item">
+                :value="item.rankname">
               </el-option>
             </el-select>
           </div>
           <div class="col-md-6 custom_input">
-            <button class="mr-2 update">Применить</button>
+            <button class="mr-2 update" @click="updateData">Применить</button>
           </div>
         </div>
       </div>
+      </footer>
+      <footer class="container-fluid cust_modal" v-if="showTrans">
+        <div>
+          <Transfert v-on:enlarge-text="showTrans = false" :id="id" />
+        </div>
       </footer>
   </div>
 </template>
 
 <script>
 import backApi from '../assets/backApi';
+import Transfert from '../components/Transfert.vue';
 
 export default {
   name: 'TransferManagement',
+  components: { Transfert },
   data() {
     return {
+      id: null,
+      showTrans: false,
+      loading: true,
+      tags: [],
       searchActive: false,
-      filterData: {},
+      filterData: {
+        status: true,
+      },
       rankList: [],
       areaList: [],
       entries: [],
@@ -243,13 +250,170 @@ export default {
     });
     backApi.get('/agent/flat_genealogy', {
       params: {
-        comdte: '2020-03-01',
+        tree_type: 2,
       },
     }).then((Response) => {
       this.entries = Response.data.entries;
+      this.loading = false;
     });
   },
   methods: {
+    onRowSelected(item) {
+      this.showTrans = false;
+      if (item.length > 0) {
+        backApi.get('/agent/transfer-info', { params: { another_agent_id: item[0].id } })
+          .then(() => {
+            this.id = item[0].id;
+            this.showTrans = true;
+          })
+          .catch(() => {
+          });
+      } else {
+        this.showTrans = false;
+      }
+    },
+    rowClass(item) {
+      return `depth-${item.lvl}`;
+    },
+    tableRowClassName({ row }) {
+      return `depth-${row.depth}`;
+    },
+    handleClose(event, tag) {
+      this.tags.splice(this.tags.indexOf(tag), 1);
+      if (tag.key === 'rank_beg') {
+        this.filterData.rank_beg = null;
+        this.updateData();
+      }
+      if (tag.key === 'rank_calc') {
+        this.filterData.rank_calc = null;
+        this.updateData();
+      }
+      if (tag.key === 'rank_end') {
+        this.filterData.rank_end = null;
+        this.updateData();
+      }
+      if (tag.key === 'agent_id') {
+        this.filterData.agent_id = null;
+        this.updateData();
+      }
+    },
+    clearInput(name) {
+      this.filterData[name] = null;
+    },
+    downloadXls() {
+      backApi.get('/agent/flat_genealogy/excel',
+        {
+          // params:
+          // {
+          //   comdte: this.currentPeriod,
+          // },
+          responseType: 'blob',
+        })
+        .then(({ data }) => {
+          const filename = 'История организации по периодам.xls';
+          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        });
+    },
+    updateData() {
+      this.loading = true;
+      const rankBeg = this.rankList.find((i) => i.rankname === this.filterData.rank_beg)
+        ? this.rankList.find((i) => i.rankname === this.filterData.rank_beg).i_rank : null;
+      const statusBeg = this.rankList.find((i) => i.rankname === this.filterData.rank_beg)
+        ? this.rankList.find((i) => i.rankname === this.filterData.rank_beg).i_status : null;
+
+      const rankCalc = this.rankList.find((i) => i.rankname === this.filterData.rank_calc)
+        ? this.rankList.find((i) => i.rankname === this.filterData.rank_calc).i_rank : null;
+      const statusCalc = this.rankList.find((i) => i.rankname === this.filterData.rank_calc)
+        ? this.rankList.find((i) => i.rankname === this.filterData.rank_calc).i_status : null;
+
+      const rankEnd = this.rankList.find((i) => i.rankname === this.filterData.rank_end)
+        ? this.rankList.find((i) => i.rankname === this.filterData.rank_end).i_rank : null;
+      const statusEnd = this.rankList.find((i) => i.rankname === this.filterData.rank_end)
+        ? this.rankList.find((i) => i.rankname === this.filterData.rank_end).i_status : null;
+
+      const data = {
+        params: {
+          with_terminated: this.filterData.status,
+          tree_type: 2,
+          num: this.filterData.agent_id,
+          fullname: this.filterData.fullname,
+          area_id: this.filterData.area_id,
+          city: this.filterData.store,
+          i_rank_beg: rankBeg,
+          i_status_beg: statusBeg,
+          i_rank_calc: rankCalc,
+          i_status_calc: statusCalc,
+          i_rank_end: rankEnd,
+          i_status_end: statusEnd,
+        },
+      };
+      // Номер агента
+      if (this.filterData.agent_id !== null
+      && this.filterData.agent_id !== ''
+      && this.filterData.agent_id !== undefined) {
+        const tag = this.tags.find((t) => t.key === 'agent_id');
+        if (tag) {
+          tag.name = `Номер агента: ${this.filterData.agent_id}`;
+        } else {
+          this.tags.push({ name: `Номер агента: ${this.filterData.agent_id}`, key: 'agent_id' });
+        }
+      }
+      // Ранг на начало
+      if (this.filterData.rank_beg !== null
+      && this.filterData.rank_beg !== ''
+      && this.filterData.rank_beg !== undefined) {
+        const tag = this.tags.find((t) => t.key === 'rank_beg');
+        if (tag) {
+          tag.name = `Ранг на начало: ${this.filterData.rank_beg}`;
+        } else {
+          this.tags.push({ name: `Ранг на начало: ${this.filterData.rank_beg}`, key: 'rank_beg' });
+        }
+      }
+      // Ранг на конец
+      if (this.filterData.rank_end !== null
+      && this.filterData.rank_end !== ''
+      && this.filterData.rank_end !== undefined) {
+        const tag = this.tags.find((t) => t.key === 'rank_end');
+        if (tag) {
+          tag.name = `Ранг на конец: ${this.filterData.rank_end}`;
+        } else {
+          this.tags.push({ name: `Ранг на конец: ${this.filterData.rank_end}`, key: 'rank_end' });
+        }
+      }
+      // // Рассчётный ранг
+      if (this.filterData.rank_calc !== null
+      && this.filterData.rank_calc !== ''
+      && this.filterData.rank_calc !== undefined) {
+        const tag = this.tags.find((t) => t.key === 'rank_calc');
+        if (tag) {
+          tag.name = `Рассчётный ранг: ${this.filterData.rank_calc}`;
+        } else {
+          this.tags.push({ name: `Рассчётный ранг: ${this.filterData.rank_calc}`, key: 'rank_calc' });
+        }
+      }
+
+      // if (this.filterData.comment !== null && this.filterData.comment !== '') {
+      //   const tag = this.tags.find((t) => t.key === 'comment');
+      //   if (tag) {
+      //     tag.name = this.filterData.comment;
+      //   } else {
+      //     this.tags.push({ name: this.filterData.comment, key: 'comment' });
+      //   }
+      //   data.params.comment = this.comment;
+      // }
+      this.searchActive = false;
+      backApi.get('/agent/flat_genealogy', data)
+        .then((Response) => {
+          this.entries = Response.data.entries;
+          this.loading = false;
+        });
+    },
     back() {
       this.$router.go(-1);
     },

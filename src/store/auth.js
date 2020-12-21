@@ -65,20 +65,21 @@ export default {
       });
     },
     register({ commit }, user) {
-      commit('AUTH_REQUEST');
       return new Promise((resolve, reject) => {
+        commit('AUTH_REQUEST');
         backApi
-          .post('/register', { data: user })
+          .post('/agent/signup-end', user)
           .then((resp) => {
-            const token = resp.data.token;
-            localStorage.setItem('access_token', token);
+            const data = JSON.stringify(resp.data);
+            const token = resp.data.access_token;
+            localStorage.setItem('access_token', data);
             backApi.defaults.headers.common['access-token'] = token;
-            commit('AUTH_SUCCESS');
+            commit('AUTH_SUCCESS', resp.data);
             resolve(resp);
           })
           .catch((err) => {
             commit('AUTH_ERROR', err);
-            localStorage.removeItem('access_token');
+            localStorage.removeItem('access-token');
             reject(err);
           });
       });

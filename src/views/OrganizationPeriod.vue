@@ -170,6 +170,26 @@ export default {
   },
   computed: {},
   methods: {
+    downloadXls() {
+      backApi.get('/agents-tree-hist/excel',
+        {
+          params:
+          {
+            comdte: this.currentPeriod,
+          },
+          responseType: 'blob',
+        })
+        .then(({ data }) => {
+          const filename = 'История организации текущего периода.xls';
+          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        });
+    },
     back() {
       this.$router.go(-1);
     },

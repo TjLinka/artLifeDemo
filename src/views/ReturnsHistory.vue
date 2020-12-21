@@ -10,8 +10,12 @@
         История возвратов
         </h2>
       <p class="p-0 m-0 history_title">Период от и до</p>
-      <date-picker v-model="rangeDate"
-      range @change="getSelectedDataRange" valueType="format"
+      <date-picker
+      v-model="rangeDate"
+      range
+      @change="getSelectedDataRange"
+      format="DD.MM.YYYY"
+      value-type="YYYY-MM-DD"
       range-separator=" - "
       >
       </date-picker>
@@ -50,11 +54,11 @@
         <div class="container-md">
           <div class="row desktop_search">
           <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
-            Поиск возврата <i class="el-icon-search search_icon"></i>
+            Фильтр <i class="el-icon-search search_icon"></i>
           </div>
         </div>
         <div v-if="searchActive" class="organization__modal">
-          <h3>Поиск возврата
+          <h3>Фильтр
             <span @click="searchActive = !searchActive" class="close_btn"></span>
           </h3>
           <div class="row edit">
@@ -155,7 +159,7 @@ export default {
         },
         {
           key: 'itemname',
-          label: 'Товар',
+          label: 'Наименование товара',
         },
         {
           key: 'points',
@@ -181,7 +185,7 @@ export default {
       fields: [
         {
           key: 'nomer',
-          label: 'Номер документа',
+          label: 'Номер возвратной накладной',
           sortable: true,
           // thStyle: {
           //   width: '200px',
@@ -315,10 +319,10 @@ export default {
       backApi.get('/agent/refunds', data).then((Response) => {
         this.entries = Response.data.entries;
       });
-      this.articul = null;
-      this.name = null;
-      this.naknum = null;
-      this.docnum = null;
+      // this.articul = null;
+      // this.name = null;
+      // this.naknum = null;
+      // this.docnum = null;
       this.searchActive = !this.searchActive;
     },
     // eslint-disable-next-line no-unused-vars
