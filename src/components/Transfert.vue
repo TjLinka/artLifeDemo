@@ -1,6 +1,6 @@
 <template>
   <div class="licevoischet__page">
-    <div class="container">
+    <div class="container-md">
       <h4 class="mt-4 modal_title">Текущее состояние
         <span class="close_btn" v-on:click="$emit('enlarge-text')"></span>
       </h4>

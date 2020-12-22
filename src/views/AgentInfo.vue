@@ -1,6 +1,6 @@
 <template>
   <div class="myinfo__page" v-if="loaded">
-    <div class="container" v-if="!success">
+    <div class="container-md" v-if="!success">
       <h2 class="page__title">
         <p class="mobile_back" @click="back">
           <svg
@@ -22,7 +22,7 @@
             <img v-else src="../assets/imgs/female.png" />
           </div>
         </div>
-        <div class="container top__info">
+        <div class="container-md top__info">
           <div class="row" v-if="!this.$route.params.id">
             <div class="col-md mt-1">
               <!-- <span class="modal_btn" @click="showTransfModal2">
@@ -100,7 +100,7 @@
         </div>
         <div class="transfert" v-if="transLoaded">
           <h2 class="page__caption mt-5">Дополнительная информация для трансферта</h2>
-          <div class="container transfert__info" v-if="showTransfertInfo">
+          <div class="container-md transfert__info" v-if="showTransfertInfo">
             <div class="row">
               <div class="col-md-6 mt-3">
                 <p>Нективность:</p>

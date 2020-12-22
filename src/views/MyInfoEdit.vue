@@ -308,8 +308,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.t label {
-  left: 5px;
+.myfoto{
+  & img{
+    border-radius: 50%;
+  }
+}
+.t{
+  & label{
+    left: 5px;
+  }
+  & span{
+    right: 0;
+  }
 }
 input[type='date']::after {
   position: absolute;

@@ -27,18 +27,39 @@ export default {
 </script>
 
 <style lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+@font-face {
+  font-family: 'FuturaPTDemi';
+  src: url('/fonts/futura_pt_demi.eot'); /* IE9 Compat Modes */
+  src: url('/fonts/futura_pt_demi.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('/fonts/futura_pt_demi.woff2') format('woff2'), /* Super Modern Browsers */
+       url('/fonts/futura_pt_demi.woff') format('woff'), /* Pretty Modern Browsers */
+       url('/fonts/futura_pt_demi.ttf')  format('truetype'), /* Safari, Android, iOS */
+       url('/fonts/futura_pt_demi.svg#svgFontName') format('svg'); /* Legacy iOS */
+}
+@font-face {
+font-family: 'Futura PT Book';
+src: url('/fonts/FuturaPT-Book.eot');
+src: url('/fonts/FuturaPT-Book.eot?#iefix') format('embedded-opentype'),
+url('/fonts/FuturaPT-Book.woff') format('woff'),
+url('/fonts/FuturaPT-Book.ttf') format('truetype');
+}
 // ТЕСТОВЫЙ СТИЛЬ ДЛЯ CONTAINER
 @media (min-width: 1200px) {
   .container, .container-sm, .container-md, .container-lg, .container-xl{
     max-width: 1920px;
   }
 }
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
+}
+h1, h2, h3, h4{
+  font-family: 'FuturaPTDemi';
+}
+p, a, div{
+  font-family: 'Futura PT Book';
 }
 button:focus{
   outline: none;
@@ -51,6 +72,10 @@ input[type='radio']{
   vertical-align: top;
 }
 // СТИЛИ ДЛЯ RADIO КНОПОК
+.custom-radio label{
+  font-family: 'FuturaPTDemi';
+  font-size: 14px;
+}
 .custom-radio .custom-control-input:checked ~ .custom-control-label::before{
     color: #fff;
     border: 2px solid black;
@@ -63,7 +88,7 @@ input[type='radio']{
 }
 .custom-radio .custom-control-label::after{
     position: absolute;
-    top: 0.5rem;
+    top: 7.8px;
     left: -1.25rem;
     display: block;
     border-radius: 50%;
@@ -79,6 +104,10 @@ input[type='radio']{
 // КОНЕЦ СТИЛЕЙ ДЛЯ RADIO КНОПОК
 
 // СТИЛИ ДЛЯ CHECKBOX
+.custom-checkbox label{
+  font-family: 'FuturaPTDemi';
+  font-size: 14px;
+}
 .custom-checkbox .custom-control-input:checked ~ .custom-control-label::before{
     color: #fff;
     border: 2px solid black;
@@ -149,7 +178,7 @@ main {
     left: 20px;
     transition: 0.15s ease-in-out;
     color: #9a9a9a;
-    font-size: 16px;
+    font-size: 14px;
     z-index: 10;
   }
   input {
@@ -429,9 +458,13 @@ th[aria-colindex='1']{
 .table th, .table td{
   border-top: 1px solid #BABABA !important;
   border-bottom: 1px solid #BABABA !important;
-  font-weight: 600 !important;
+  font-family: 'FuturaPTDemi' !important;
+  font-weight: 500 !important;
   color: black ;
 }
+// th[role='columnheader']{
+//   font-family: 'FuturaPTDemi' !important;
+// }
 .table .thead-light th{
   background: #DEE2F3;
 }
