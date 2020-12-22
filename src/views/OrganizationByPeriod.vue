@@ -9,6 +9,9 @@
       </p>
         История организации по периодам
         </h2>
+        <div class="col search__btn mobile" @click="toggleSearch" v-if="!searchActive">
+          Настройки дерева <i class="el-icon-search search_icon"></i>
+        </div>
       <el-tag
         v-for="tag in tags"
         :key="tag.name"
@@ -61,7 +64,7 @@
       </div>
       <footer class="cust_modal">
               <div class="row">
-        <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
+        <div class="col text-center search__btn desktop" @click="toggleSearch" v-if="!searchActive">
           Настройки дерева <i class="el-icon-search search_icon"></i>
         </div>
       </div>
@@ -124,6 +127,7 @@
       </div>
       </footer>
     </div>
+    <div :class="`mobile_modal_mask ${searchActive ? 'active' : ''}`"></div>
   </div>
 </template>
 
@@ -217,6 +221,7 @@ export default {
         },
       };
       backApi.get('/agents-tree-hist/period', data).then((response) => {
+        console.log(response.data);
         this.rows = response.data.entries;
         this.rows.forEach((e) => {
           e.depth = 0;
@@ -391,6 +396,7 @@ export default {
         this.rows = response.data.entries;
         this.rows.forEach((e) => {
           e.depth = 0;
+          e.children = [];
         });
       });
       this.tree_key += 1;
@@ -400,6 +406,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.mobile{
+  display: none;
+  margin-bottom: 20px;
+}
 span[class*="el-tag"] deep i{
   display: none;
 }
@@ -434,10 +444,23 @@ span[class*="el-tag"] deep i{
     background-image: url('../assets/imgs/arrow_right.svg');
     left: 190px;
 }
-@media (min-width: 760px) {
+@media (min-width: 770px) {
   .radio{
     display: inline;
   }
+}
+@media (max-width: 770px) {
+  .mobile{
+    display: block;
+    padding-left: 0;
+  }
+  .desktop{
+    display: none;
+  }
+}
+.close_btn{
+  right: 10px;
+  top: 10px;
 }
 .rank_icon{
   width: 25px;

@@ -20,7 +20,11 @@
         <button @click="phoneCodeCome" v-if="!codeCome">
             Отправить код потверждения
         </button>
-        <button @click="getAccess" v-else>
+        <button
+        v-else
+        @click="getAccess"
+        :disabled="!status"
+        :class="`${status ? '' : 'disabled'}`">
             Потвердить код
         </button>
         <b-form-checkbox
@@ -28,13 +32,16 @@
           v-model="status"
           name="checkbox-1"
           :value="true"
-          :disabled="phoneCheck"
+          v-if="codeCome"
           :unchecked-value="false"
         >
           Согласен на обработку данных
         </b-form-checkbox>
-        <button :disabled="status"
-        :class="status ? '' : 'disabled'" @click="getAccess">Перейти в профиль</button>
+        <br>
+        <button
+        v-if="registeration"
+        :disabled="!registeration"
+        @click="$router.push('/');">Перейти в профиль</button>
       </div>
       <div class="col-md-6">
         <p>Ваша почта подтверждена</p>
@@ -58,6 +65,7 @@ export default {
       phoneCheck: true,
       phoneCode: null,
       status: false,
+      registeration: false,
     };
   },
   mounted() {
@@ -122,7 +130,9 @@ export default {
         sms_code: this.mobile_phone_code,
       };
       this.register(data).then(() => {
-        this.$router.push('/');
+        // this.$router.push('/');
+        this.registeration = true;
+        this.showToast('Регистриция', 'Вы успешно прошли регистрацию', 'success');
       });
     },
     clearPhone() {
@@ -156,6 +166,11 @@ button:nth-of-type(1) {
   padding: 4px 0px;
   margin-top: 30px;
   margin-bottom: 30px;
+  &.disabled{
+    color: #9A9A9A;
+    background-color: #DEE2F3;
+    border: 2px solid  #DEE2F3;
+  }
 }
 button:nth-of-type(2) {
   background-color: #32aaa7;

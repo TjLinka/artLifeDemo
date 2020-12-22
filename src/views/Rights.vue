@@ -77,6 +77,7 @@
       </template>
       Права переданы!
     </b-toast>
+    <div :class="`mobile_modal_mask ${showModal1 ? 'active' : ''}`"></div>
   </div>
 </template>
 
@@ -90,7 +91,6 @@ export default {
   data() {
     return {
       showModal1: false,
-      showModal2: false,
       ruleGiver: '',
       entries: [],
       fields: [

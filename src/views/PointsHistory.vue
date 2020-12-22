@@ -127,6 +127,7 @@
         </div>
       </div>
       </footer>
+      <div :class="`mobile_modal_mask ${searchActive ? 'active' : ''}`"></div>
   </div>
 </template>
 

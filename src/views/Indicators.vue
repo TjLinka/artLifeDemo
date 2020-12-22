@@ -149,6 +149,7 @@
       </div>
       </footer>
     </div>
+    <div :class="`mobile_modal_mask ${searchActive ? 'active' : ''}`"></div>
   </div>
 </template>
 
@@ -263,6 +264,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.mobile_modal_mask{
+  display: none;
+}
 .organization__modal {
   & > .container-md{
     position: relative;
@@ -398,6 +402,18 @@ export default {
   }
 }
 @media (max-width: 760px) {
+  .mobile_modal_mask{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: .7;
+    background-color: black;
+    &.active{
+      display: block;
+    }
+  }
   .update{
     margin-top: 20px;
   }

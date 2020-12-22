@@ -50,6 +50,9 @@ url('/fonts/FuturaPT-Book.ttf') format('truetype');
     max-width: 1920px;
   }
 }
+#main{
+  overflow-x: hidden;
+}
 .end{
   align-items: flex-end;
   position: relative;
@@ -482,6 +485,7 @@ th[aria-colindex='1']{
   border: 1px solid #BABABA !important;
 }
 .table th, .table td{
+  padding: 6px !important;
   border-top: 1px solid #BABABA !important;
   border-bottom: 1px solid #BABABA !important;
   font-family: 'FuturaPTDemi' !important;
@@ -496,6 +500,10 @@ th[aria-colindex='1']{
 }
 .b-table-sticky-header, .table-responsive, [class*="table-responsive-"]{
   margin-bottom: 0;
+}
+// Mobile_Modal_Mask
+.mobile_modal_mask{
+  display: none;
 }
 // СТИЛИ ДЛЯ МОДАЛОК СО СТИЛЕМ .cust_modal
 .cust_modal{
@@ -535,6 +543,18 @@ th[aria-colindex='1']{
 }
 // СТИЛИ НАЧАИНАЯ С 768PX
 @media (max-width: 768px) {
+  .mobile_modal_mask{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: .7;
+    background-color: black;
+    &.active{
+      display: block;
+    }
+  }
   body {
     overflow-x: hidden !important;
   }

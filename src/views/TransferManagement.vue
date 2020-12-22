@@ -81,21 +81,21 @@
       <div v-if="searchActive" class="organization__modal container">
         <span @click="searchActive = !searchActive" class="close_btn"></span>
         <h3 class="mt-4">Поиск партнёра</h3>
-        <div class="row mt-5">
+        <div class="row mt-md-5">
           <div class="col-md-6">
             <b-form-checkbox
               id="checkbox-1"
               v-model="filterData.status"
               name="checkbox-1"
-              value="true"
+              value="1"
               checked
-              unchecked-value="false"
+              unchecked-value="0"
             >
               Показывать терминированных
             </b-form-checkbox>
           </div>
         </div>
-        <div class="row mt-5">
+        <div class="row mt-md-5">
           <div class="col-md-6 custom_input">
             <input type="text" name="userId" id="userId" required v-model="filterData.agent_id"/>
             <label for="userId">Номер:</label>
@@ -107,7 +107,7 @@
             <span class="clear_icon" @click="clearInput('fullname')"></span>
           </div>
         </div>
-        <div class="row mt-5">
+        <div class="row mt-md-5">
           <div class="col-md-6">
             <span
             v-if="filterData.area_id"
@@ -132,7 +132,7 @@
             <span class="clear_icon" @click="clearInput('store')"></span>
           </div>
         </div>
-        <div class="row mt-5">
+        <div class="row mt-md-5">
           <div class="col-md-6">
             <span
             v-if="filterData.rank_beg"
@@ -170,7 +170,7 @@
             </el-select>
           </div>
         </div>
-        <div class="row mt-5">
+        <div class="row mt-md-5">
           <div class="col-md-6">
             <span
             v-if="filterData.rank_calc"
@@ -200,6 +200,7 @@
           <Transfert v-on:enlarge-text="showTrans = false" :id="id" />
         </div>
       </footer>
+      <div :class="`mobile_modal_mask ${searchActive ? 'active' : ''}`"></div>
   </div>
 </template>
 
@@ -219,7 +220,7 @@ export default {
       tags: [],
       searchActive: false,
       filterData: {
-        status: true,
+        status: 1,
       },
       rankList: [],
       areaList: [],
@@ -564,7 +565,7 @@ export default {
   }
 }
 .cust_modal{
-  position: fixed;
+    position: fixed;
     bottom: 0;
     left: 0;
     z-index: 10;
@@ -572,6 +573,8 @@ export default {
     padding-left: 120px;
     box-sizing: border-box;
     background: #FFFFFF;
+    max-height: 70vh;
+    overflow: scroll;
     box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);
 }
 .organization__modal {
@@ -619,6 +622,13 @@ export default {
 @media (min-width: 770px) {
   .radio{
     display: inline;
+  }
+}
+@media (max-width: 525px) {
+  .mt-md-5{
+    & .col-md-6{
+      margin-top: 20px;
+    }
   }
 }
 </style>
