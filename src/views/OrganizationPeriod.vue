@@ -21,8 +21,8 @@
       </el-tag>
       <p class="exp_print">
         <!-- <span class="mr-3">Печать</span> -->
-        <span class="mr-3">Экспорт в xls</span>
-        <span class="mr-3">Экспорт в pdf</span>
+        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
+        <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
       </p>
       <div class="orgper">
         <el-table
@@ -175,12 +175,38 @@ export default {
         {
           params:
           {
-            comdte: this.currentPeriod,
+            period: this.currentPeriod,
+            agent_id: this.agent_id,
+            filter: this.tree_type,
+            get_root: true,
           },
           responseType: 'blob',
         })
         .then(({ data }) => {
-          const filename = 'История организации текущего периода.xls';
+          const filename = 'История организации текущего периода.xlsx';
+          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        });
+    },
+    downloadPdf() {
+      backApi.get('/agents-tree-hist/pdf',
+        {
+          params:
+          {
+            period: this.currentPeriod,
+            agent_id: this.agent_id,
+            filter: this.tree_type,
+            get_root: true,
+          },
+          responseType: 'blob',
+        })
+        .then(({ data }) => {
+          const filename = 'История организации текущего периода.pdf';
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;

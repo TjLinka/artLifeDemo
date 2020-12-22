@@ -26,8 +26,8 @@
         </div>
       <p>
         <!-- <span class="mr-3">Печать</span> -->
-        <span class="mr-3" @click="downloadXls">Экспорт в xls</span>
-        <!-- <span class="mr-3">Экспорт в pdf</span> -->
+        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
+        <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
         <!-- <span class="mr-3">Экспорт возвратной накладной в pdf</span> -->
       </p>
       <div class="refound_table">
@@ -62,47 +62,31 @@
             <span @click="searchActive = !searchActive" class="close_btn"></span>
           </h3>
           <div class="row edit">
-            <div class="col-sm-6">
-              <el-input
-                type="number"
-                name=""
-                id="art"
-                placeholder="Артикул"
-                clearable
-                v-model="articul"
-              />
+            <div class="col-sm-6 custom_input">
+              <input type="text" name="articul" id="articul"
+              required v-model="filterData.articul" />
+              <label for="articul">Артикул:</label>
+              <span class="clear_icon" @click="clearInput('articul')"></span>
             </div>
-            <div class="col-sm-6">
-              <el-input
-                type="text"
-                name=""
-                id="name"
-                placeholder="Наименование товара"
-                clearable
-                v-model="name"
-              />
+            <div class="col-sm-6 custom_input">
+              <input type="text" name="name" id="name"
+              required v-model="filterData.name" />
+              <label for="name">Наименование товара:</label>
+              <span class="clear_icon" @click="clearInput('name')"></span>
             </div>
           </div>
           <div class="row edit">
-            <div class="col-sm-6">
-              <el-input
-                type="number"
-                name=""
-                id="art"
-                placeholder="Номер накладной"
-                clearable
-                v-model="naknum"
-              />
+            <div class="col-sm-6 custom_input">
+              <input type="text" name="naknum" id="naknum"
+              required v-model="filterData.naknum" />
+              <label for="naknum">Номер накладной:</label>
+              <span class="clear_icon" @click="clearInput('naknum')"></span>
             </div>
-            <div class="col-sm-6">
-              <el-input
-                type="text"
-                name=""
-                id="name"
-                placeholder="Номер документа"
-                clearable
-                v-model="docnum"
-              />
+            <div class="col-sm-6 custom_input">
+              <input type="text" name="docnum" id="docnum"
+              required v-model="filterData.docnum" />
+              <label for="docnum">Номер документа:</label>
+              <span class="clear_icon" @click="clearInput('docnum')"></span>
             </div>
           </div>
           <div class="row edit mt-4">
@@ -137,10 +121,7 @@ export default {
   components: { DatePicker },
   data() {
     return {
-      articul: null,
-      name: null,
-      naknum: null,
-      docnum: null,
+      filterData: {},
       user: null,
       lang: {
         monthBeforeYear: false,
@@ -248,10 +229,10 @@ export default {
   computed: {
     isDisabled() {
       if (
-        (this.articul === null || this.articul === '')
-        && (this.name === null || this.name === '')
-        && (this.naknum === null || this.naknum === '')
-        && (this.docnum === null || this.docnum === '')) {
+        (this.filterData.articul === null || this.filterData.articul === '')
+        && (this.filterData.name === null || this.filterData.name === '')
+        && (this.filterData.naknum === null || this.filterData.naknum === '')
+        && (this.filterData.docnum === null || this.filterData.docnum === '')) {
         return true;
       }
       return false;
@@ -265,6 +246,9 @@ export default {
     },
   },
   methods: {
+    clearInput(name) {
+      this.filterData[name] = null;
+    },
     downloadXls() {
       backApi.get('/agent/refunds/excel',
         {
@@ -272,17 +256,44 @@ export default {
           {
             beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
             end_dte: this.rangeDate[1] ? this.rangeDate[1] : null,
-            articul: this.articul,
-            name: this.name,
+            articul: this.filterData.articul,
+            name: this.filterData.name,
             // eslint-disable-next-line radix
-            saleid: this.naknum ? parseInt(this.naknum) : null,
+            saleid: this.filterData.naknum ? parseInt(this.filterData.naknum) : null,
             // eslint-disable-next-line radix
-            refund_id: this.docnum ? parseInt(this.docnum) : null,
+            refund_id: this.filterData.docnum ? parseInt(this.filterData.docnum) : null,
           },
           responseType: 'blob',
         })
         .then(({ data }) => {
-          const filename = 'История возвратов.xls';
+          const filename = 'История возвратов.xlsx';
+          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        });
+    },
+    downloadPdf() {
+      backApi.get('/agent/refunds/pdf',
+        {
+          params:
+          {
+            beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
+            end_dte: this.rangeDate[1] ? this.rangeDate[1] : null,
+            articul: this.articul,
+            name: this.filterData.name,
+            // eslint-disable-next-line radix
+            saleid: this.filterData.naknum ? parseInt(this.filterData.naknum) : null,
+            // eslint-disable-next-line radix
+            refund_id: this.filterData.docnum ? parseInt(this.filterData.docnum) : null,
+          },
+          responseType: 'blob',
+        })
+        .then(({ data }) => {
+          const filename = 'История возвратов.pdf';
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;
@@ -298,22 +309,22 @@ export default {
         this.return_details = new Array(this.total_rows).fill(undefined);
       });
       this.searchActive = !this.searchActive;
-      this.articul = null;
-      this.name = null;
-      this.naknum = null;
-      this.docnum = null;
+      this.filterData.articul = null;
+      this.filterData.name = null;
+      this.filterData.naknum = null;
+      this.filterData.docnum = null;
     },
     updateData() {
       const data = {
         params: {
           beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
           end_dte: this.rangeDate[1] ? this.rangeDate[1] : null,
-          articul: this.articul,
-          name: this.name,
+          articul: this.filterData.articul,
+          name: this.filterData.name,
           // eslint-disable-next-line radix
-          saleid: this.naknum ? parseInt(this.naknum) : null,
+          saleid: this.filterData.naknum ? parseInt(this.filterData.naknum) : null,
           // eslint-disable-next-line radix
-          refund_id: this.docnum ? parseInt(this.docnum) : null,
+          refund_id: this.filterData.docnum ? parseInt(this.filterData.docnum) : null,
         },
       };
       backApi.get('/agent/refunds', data).then((Response) => {
@@ -397,12 +408,7 @@ export default {
     & .edit {
       margin-top: 50px;
       input {
-        width: 100%;
-        border: 0;
-        border-bottom: 1px solid #dee2f3;
-        padding-bottom: 10px;
-        outline: none;
-        margin-bottom: 20px;
+        // margin-bottom: 20px;
       }
       button {
         margin-top: 20px;

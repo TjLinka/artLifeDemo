@@ -16,8 +16,9 @@
         </div>
       </div>
       <h3 class="perevod">Перевод количества баллов</h3>
-      <div class="row edit">
+      <div class="row edit end">
         <div class="col-md-6 mt-4">
+          <span v-if="state" class="custom_label">Партнёр получатель</span>
           <el-autocomplete
             v-model="state"
             :fetch-suggestions="querySearchAsync"
@@ -26,15 +27,17 @@
             clearable
           ></el-autocomplete>
         </div>
-        <div class="col-md-6 mt-4">
-          <el-input placeholder="Сумма" type="number" v-model="sum" clearable class="count">
-          </el-input>
+        <div class="col-md-6 mt-4 custom_input">
+              <input type="number" name="sum" id="sum" required v-model="sum" />
+              <label for="sum">Сумма:</label>
+              <span class="clear_icon" @click="clearSum()"></span>
         </div>
       </div>
       <div class="row edit mt-4">
         <div class="col-md trans_btns">
           <button
-          :disabled="!pointsGo" @click="send"
+          :disabled="!pointsGo"
+          @click="send"
           :class="pointsGo ? '' : 'disabled'">
           Перевести
           </button>
@@ -75,6 +78,9 @@ export default {
         return false;
       }
     },
+  },
+  clearSum() {
+    this.sum = null;
   },
   methods: {
     querySearchAsync(queryString, cb) {
@@ -125,6 +131,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.custom_input{
+  margin-top: 29px !important;
+}
 .close_btn{
   display: inline-block;
   position: absolute;
@@ -150,14 +159,6 @@ div[role='combobox']{
   }
 }
 .edit {
-  & input {
-    width: 100%;
-    border: 0;
-    border-bottom: 1px solid #dee2f3;
-    padding-bottom: 10px;
-    outline: none;
-  }
-
   & button {
     width: 48%;
     padding: 8px 0px;

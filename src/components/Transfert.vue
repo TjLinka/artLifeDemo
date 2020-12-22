@@ -16,9 +16,10 @@
       </div>
       <h3 class="perevod">Перевод количества баллов</h3>
       <div class="row edit">
-        <div class="col-xl-6 mt-4">
-          <el-input placeholder="Сумма" type="number" v-model="sum" clearable class="count">
-          </el-input>
+        <div class="col-xl-6 mt-4 custom_input">
+              <input type="number" name="sum" id="sum" required v-model="sum" />
+              <label for="sum">Сумма:</label>
+              <span class="clear_icon" @click="clearSum()"></span>
         </div>
           <div class="col-xl-6 trans_btns">
             <button @click="lo2reserve"
@@ -84,6 +85,9 @@ export default {
     });
   },
   methods: {
+    clearSum() {
+      this.sum = null;
+    },
     back() {
       this.$router.go(-1);
     },
@@ -148,14 +152,6 @@ export default {
   }
 }
 .edit {
-  & input {
-    width: 100%;
-    border: 0;
-    border-bottom: 1px solid #dee2f3;
-    padding-bottom: 10px;
-    outline: none;
-  }
-
   & button {
     width: 48%;
     padding: 8px 0px;

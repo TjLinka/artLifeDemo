@@ -18,11 +18,15 @@
       <h2>История организации</h2>
       <div class="row">
         <div class="col-md-6 mt-4">
-          <button class="update">Трансферт</button>
+          <button
+          :class="`update ${transAccess ? 'disabled' : ''}`"
+          @click="showTrans = !showTrans"
+          :disabled="transAccess"
+          >Трансферт</button>
           <p class="exp_print">
             <!-- <span class="mr-3">Печать</span> -->
-            <span class="mr-3" @click="downloadXls">Экспорт в xls</span>
-            <span class="mr-3">Экспорт в pdf</span>
+            <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
+            <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
           </p>
         </div>
       </div>
@@ -105,7 +109,15 @@
         </div>
         <div class="row mt-5">
           <div class="col-md-6">
-            <el-select v-model="filterData.area_id" placeholder="Территория">
+            <span
+            v-if="filterData.area_id"
+            class="custom_label"
+            >
+            Территория</span>
+            <el-select
+            v-model="filterData.area_id"
+            clearable
+            placeholder="Территория">
               <el-option
                 v-for="item in areaList"
                 :key="item.area_id"
@@ -122,7 +134,15 @@
         </div>
         <div class="row mt-5">
           <div class="col-md-6">
-            <el-select v-model="filterData.rank_beg" placeholder="Ранг на начало">
+            <span
+            v-if="filterData.rank_beg"
+            class="custom_label"
+            >
+            Ранг на начало</span>
+            <el-select
+            v-model="filterData.rank_beg"
+            clearable
+            placeholder="Ранг на начало">
               <el-option
                 v-for="item in rankList"
                 :key="item.rankname"
@@ -132,7 +152,15 @@
             </el-select>
           </div>
           <div class="col-md-6">
-            <el-select v-model="filterData.rank_end" placeholder="Ранг на конец">
+            <span
+            v-if="filterData.rank_end"
+            class="custom_label"
+            >
+            Ранг на конец</span>
+            <el-select
+            v-model="filterData.rank_end"
+            clearable
+            placeholder="Ранг на конец">
               <el-option
                 v-for="item in rankList"
                 :key="item.rankname"
@@ -144,7 +172,15 @@
         </div>
         <div class="row mt-5">
           <div class="col-md-6">
-            <el-select v-model="filterData.rank_calc" placeholder="Расчётный ранг">
+            <span
+            v-if="filterData.rank_calc"
+            class="custom_label"
+            >
+            Расчётный ранг</span>
+            <el-select
+            v-model="filterData.rank_calc"
+            clearable
+            placeholder="Расчётный ранг">
               <el-option
                 v-for="item in rankList"
                 :key="item.rankname"
@@ -154,7 +190,7 @@
             </el-select>
           </div>
           <div class="col-md-6 custom_input">
-            <button class="mr-2 update" @click="updateData">Применить</button>
+            <button class="mr-2 update w-100" @click="updateData">Применить</button>
           </div>
         </div>
       </div>
@@ -177,6 +213,7 @@ export default {
   data() {
     return {
       id: null,
+      transAccess: true,
       showTrans: false,
       loading: true,
       tags: [],
@@ -264,12 +301,13 @@ export default {
         backApi.get('/agent/transfer-info', { params: { another_agent_id: item[0].id } })
           .then(() => {
             this.id = item[0].id;
-            this.showTrans = true;
+            this.transAccess = false;
           })
           .catch(() => {
+            this.transAccess = true;
           });
       } else {
-        this.showTrans = false;
+        this.transAccess = true;
       }
     },
     rowClass(item) {
@@ -301,16 +339,88 @@ export default {
       this.filterData[name] = null;
     },
     downloadXls() {
+      const rankBeg = this.rankList.find((i) => i.rankname === this.filterData.rank_beg)
+        ? this.rankList.find((i) => i.rankname === this.filterData.rank_beg).i_rank : null;
+      const statusBeg = this.rankList.find((i) => i.rankname === this.filterData.rank_beg)
+        ? this.rankList.find((i) => i.rankname === this.filterData.rank_beg).i_status : null;
+
+      const rankCalc = this.rankList.find((i) => i.rankname === this.filterData.rank_calc)
+        ? this.rankList.find((i) => i.rankname === this.filterData.rank_calc).i_rank : null;
+      const statusCalc = this.rankList.find((i) => i.rankname === this.filterData.rank_calc)
+        ? this.rankList.find((i) => i.rankname === this.filterData.rank_calc).i_status : null;
+
+      const rankEnd = this.rankList.find((i) => i.rankname === this.filterData.rank_end)
+        ? this.rankList.find((i) => i.rankname === this.filterData.rank_end).i_rank : null;
+      const statusEnd = this.rankList.find((i) => i.rankname === this.filterData.rank_end)
+        ? this.rankList.find((i) => i.rankname === this.filterData.rank_end).i_status : null;
+
+      const dataXlsx = {
+        with_terminated: this.filterData.status,
+        tree_type: 2,
+        num: this.filterData.agent_id,
+        fullname: this.filterData.fullname,
+        area_id: this.filterData.area_id,
+        city: this.filterData.store,
+        i_rank_beg: rankBeg,
+        i_status_beg: statusBeg,
+        i_rank_calc: rankCalc,
+        i_status_calc: statusCalc,
+        i_rank_end: rankEnd,
+        i_status_end: statusEnd,
+      };
       backApi.get('/agent/flat_genealogy/excel',
         {
-          // params:
-          // {
-          //   comdte: this.currentPeriod,
-          // },
+          dataXlsx,
           responseType: 'blob',
         })
         .then(({ data }) => {
-          const filename = 'История организации по периодам.xls';
+          const filename = 'Управление трансфертами структуры.xlsx';
+          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        });
+    },
+    downloadPdf() {
+      const rankBeg = this.rankList.find((i) => i.rankname === this.filterData.rank_beg)
+        ? this.rankList.find((i) => i.rankname === this.filterData.rank_beg).i_rank : null;
+      const statusBeg = this.rankList.find((i) => i.rankname === this.filterData.rank_beg)
+        ? this.rankList.find((i) => i.rankname === this.filterData.rank_beg).i_status : null;
+
+      const rankCalc = this.rankList.find((i) => i.rankname === this.filterData.rank_calc)
+        ? this.rankList.find((i) => i.rankname === this.filterData.rank_calc).i_rank : null;
+      const statusCalc = this.rankList.find((i) => i.rankname === this.filterData.rank_calc)
+        ? this.rankList.find((i) => i.rankname === this.filterData.rank_calc).i_status : null;
+
+      const rankEnd = this.rankList.find((i) => i.rankname === this.filterData.rank_end)
+        ? this.rankList.find((i) => i.rankname === this.filterData.rank_end).i_rank : null;
+      const statusEnd = this.rankList.find((i) => i.rankname === this.filterData.rank_end)
+        ? this.rankList.find((i) => i.rankname === this.filterData.rank_end).i_status : null;
+
+      const dataXlsx = {
+        with_terminated: this.filterData.status,
+        tree_type: 2,
+        num: this.filterData.agent_id,
+        fullname: this.filterData.fullname,
+        area_id: this.filterData.area_id,
+        city: this.filterData.store,
+        i_rank_beg: rankBeg,
+        i_status_beg: statusBeg,
+        i_rank_calc: rankCalc,
+        i_status_calc: statusCalc,
+        i_rank_end: rankEnd,
+        i_status_end: statusEnd,
+      };
+      backApi.get('/agent/flat_genealogy/pdf',
+        {
+          dataXlsx,
+          responseType: 'blob',
+        })
+        .then(({ data }) => {
+          const filename = 'Управление трансфертами структуры.pdf';
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;
@@ -442,6 +552,10 @@ export default {
   margin-bottom: 20px;
   background-color: #32aaa7;
   color: white;
+  &.disabled{
+    color: #9A9A9A;
+    background-color: #DEE2F3;
+  }
   &:nth-of-type(1){
     width: 40%;
     float: none;

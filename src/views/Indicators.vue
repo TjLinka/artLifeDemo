@@ -270,13 +270,6 @@ export default {
 }
 .edit {
   margin-top: 60px;
-  input {
-    width: 100%;
-    border: 0;
-    border-bottom: 1px solid #dee2f3;
-    padding-bottom: 0px;
-    outline: none;
-  }
   button {
     width: 100%;
     border: 0;

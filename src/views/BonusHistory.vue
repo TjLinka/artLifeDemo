@@ -17,8 +17,8 @@
       </div>
       <p class="exp_print mt-3">
         <!-- <span class="mr-3">Печать</span> -->
-        <span class="mr-3" @click="downloadXls">Экспорт в xls</span>
-        <span class="mr-3">Экспорт в pdf</span>
+        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
+        <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
       </p>
       <div class="bonus_hist_table">
               <b-table :fields="topFields " :items="topTableData" head-variant="light"
@@ -235,7 +235,27 @@ export default {
           responseType: 'blob',
         })
         .then(({ data }) => {
-          const filename = 'История бонусов.xls';
+          const filename = 'История бонусов.xlsx';
+          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        });
+    },
+    downloadPdf() {
+      backApi.get('/agent/bonus-detail/pdf',
+        {
+          params:
+          {
+            comdte: this.currentPeriod,
+          },
+          responseType: 'blob',
+        })
+        .then(({ data }) => {
+          const filename = 'История бонусов.pdf';
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;

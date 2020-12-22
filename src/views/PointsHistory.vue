@@ -39,8 +39,8 @@
       </div>
       <p class="exp_print mt-3">
         <!-- <span class="mr-3">Печать</span> -->
-        <span class="mr-3" @click="downloadXls">Экспорт в xls</span>
-        <span class="mr-3">Экспорт в pdf</span>
+        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
+        <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
       </p>
       <b-table responsive :fields="fields" :items="entries" head-variant="light"
       class="points_history_table" outlined>
@@ -109,6 +109,16 @@
             id="comment" required v-model="comment" />
             <label for="comment">Комментарий:</label>
             <span class="clear_icon" @click="clearComment('comment')"></span>
+          </div>
+          <div class="col-md-6 custom_input">
+           <input type="text" name="operType"
+            id="operType" required v-model="operType" />
+            <label for="operType">Тип операции:</label>
+            <span class="clear_icon" @click="clearOperType('operType')"></span>
+          </div>
+        </div>
+        <div class="row edit mt-4">
+          <div class="col-md-6">
           </div>
           <div class="col-md-6">
             <button class="mr-2 update" @click="updateData">Показать</button>
@@ -270,11 +280,36 @@ export default {
             end_dte: this.rangeDate[1] ? this.rangeDate[1] : null,
             points_type: this.points_type,
             comm_find: this.comment,
+            operation_type: this.operType,
           },
           responseType: 'blob',
         })
         .then(({ data }) => {
-          const filename = 'История баллов.xls';
+          const filename = 'История баллов.xlsx';
+          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        });
+    },
+    downloadPdf() {
+      backApi.get('/agent/points-detail/pdf',
+        {
+          params:
+          {
+            beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
+            end_dte: this.rangeDate[1] ? this.rangeDate[1] : null,
+            points_type: this.points_type,
+            comm_find: this.comment,
+            operation_type: this.operType,
+          },
+          responseType: 'blob',
+        })
+        .then(({ data }) => {
+          const filename = 'История баллов.pdf';
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;
@@ -293,6 +328,10 @@ export default {
         this.comment = null;
         this.updateData();
       }
+      if (tag.key === 'operType') {
+        this.operType = null;
+        this.updateData();
+      }
     },
     // eslint-disable-next-line no-unused-vars
     // filFunc(row, filter) {
@@ -300,10 +339,10 @@ export default {
     //   && row.comm.toLowerCase().search(filter.comment.toLowerCase().trim()) !== -1);
     // },
     clearComment() {
-      this.comment = '';
+      this.comment = null;
     },
     clearOperType() {
-      this.operType = '';
+      this.operType = null;
     },
     closeModal() {
       this.searchActive = !this.searchActive;
@@ -318,6 +357,7 @@ export default {
           end_dte: this.rangeDate[1] ? this.rangeDate[1] : null,
           points_type: this.points_type,
           comm_find: this.comment,
+          operation_type: this.operType,
         },
       };
       if (this.points_type !== null) {
@@ -338,6 +378,14 @@ export default {
           this.tags.push({ name: this.comment, key: 'comment' });
         }
         data.params.comment = this.comment;
+      }
+      if (this.operType !== null && this.operType !== '') {
+        const tag = this.tags.find((t) => t.key === 'operType');
+        if (tag) {
+          tag.name = this.operType;
+        } else {
+          this.tags.push({ name: this.operType, key: 'operType' });
+        }
       }
       backApi.get('/agent/points-detail', data).then((Response) => {
         this.entries = Response.data.entries;

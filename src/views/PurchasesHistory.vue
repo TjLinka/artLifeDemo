@@ -34,8 +34,8 @@
       </div>
       <p>
         <!-- <span class="mr-3">Печать</span> -->
-        <span class="mr-3" @click="downloadXls">Экспорт в xls</span>
-        <!-- <span class="mr-3">Экспорт в pdf</span> -->
+        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
+        <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
         <!-- <span class="mr-3">Экспорт накладной в pdf</span> -->
       </p>
       <div class="perchases_table">
@@ -296,7 +296,30 @@ export default {
           responseType: 'blob',
         })
         .then(({ data }) => {
-          const filename = 'История покупок.xls';
+          const filename = 'История покупок.xlsx';
+          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        });
+    },
+    downloadPdf() {
+      backApi.get('/agent/sales/pdf',
+        {
+          params:
+          {
+            name: this.name,
+            articul: this.articul,
+            saleid: this.saleid,
+            comdte: this.period_enabled ? this.currentPeriod : null,
+          },
+          responseType: 'blob',
+        })
+        .then(({ data }) => {
+          const filename = 'История покупок.pdf';
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;
@@ -447,11 +470,6 @@ export default {
 
     & .edit {
       input {
-        width: 100%;
-        border: 0;
-        border-bottom: 1px solid #dee2f3;
-        // padding-bottom: 10px;
-        outline: none;
         margin-bottom: 20px;
       }
       button {

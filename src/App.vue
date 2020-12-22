@@ -50,6 +50,16 @@ url('/fonts/FuturaPT-Book.ttf') format('truetype');
     max-width: 1920px;
   }
 }
+.end{
+  align-items: flex-end;
+  position: relative;
+}
+.custom_label{
+  position: absolute;
+  top: -15px;
+  left: 19px;
+  z-index: 10;
+}
 * {
   padding: 0;
   margin: 0;
@@ -190,6 +200,12 @@ main {
     outline: none;
     padding-left: 5px;
     font-size: 16px;
+    &:hover{
+      border-bottom-color: #46474b;
+    }
+    &:hover ~ label{
+      color: #46474b;
+    }
     &:focus ~ label,
     &:valid ~ label {
       font-size: 14px;
@@ -198,6 +214,16 @@ main {
     &:valid ~ span {
       display: block;
     }
+  }
+}
+.el-input__inner{
+  padding-left: 5px !important;
+}
+.el-input__inner:hover{
+  transition: none;
+  border-bottom-color: #46474b !important;
+  &::placeholder{
+    color: #46474b;
   }
 }
 // СТИЛИ ИКОНКИ ОЧИСТКИ INPUT'ов
@@ -233,11 +259,11 @@ main {
   display: block;
   background-image: url('assets/imgs/close_btn.svg');
   background-repeat: no-repeat;
-  background-size: 100%;
+  background-size: 85%;
   width: 13px;
   height: 13px;
-  top: 20px;
-  right: -12px;
+  top: 5px;
+  right: 2px;
 }
 .no_scroll {
   overflow: hidden;
@@ -310,7 +336,7 @@ main {
 }
 .el-input.is-active .el-input__inner,
 .el-input__inner:focus {
-  border-color: #32aaa7;
+  border-color: #32aaa7 !important;
 }
 .depth-1 {
   background-color: #bebebe !important;

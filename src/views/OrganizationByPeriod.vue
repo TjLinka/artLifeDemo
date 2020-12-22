@@ -21,8 +21,8 @@
       </el-tag>
       <p class="exp_print">
         <!-- <span class="mr-3">Печать</span> -->
-        <span class="mr-3" @click="downloadXls">Экспорт в xls</span>
-        <!-- <span class="mr-3">Экспорт в pdf</span> -->
+        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
+        <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
       </p>
       <div class="orgbyhist">
         <el-table
@@ -108,12 +108,15 @@
           </div>
         </div>
         <div class="row edit">
-          <div class="col-sm-6 mb-4">
-            <el-input type="number" name="" id="" placeholder="Номер"
-            clearable v-model="agent_id" min="1" />
+          <div class="col-sm-6 mb-4 custom_input">
+              <input type="number" name="agent_id" id="agent_id" required v-model="agent_id" />
+              <label for="agent_id">Номер агента:</label>
+              <span class="clear_icon" @click="clearAgentId()"></span>
           </div>
           <div class="col-sm-6">
-            <button class="mr-2" @click="updateData">Показать</button
+            <button
+            class="mr-2"
+            @click="updateData">Показать</button
             ><button @click="clearSelectedFilters">Сбросить</button>
           </div>
         </div>
@@ -223,6 +226,12 @@ export default {
     });
   },
   computed: {
+    disabled() {
+      if (this.agent_id !== null && this.agent_id !== '') {
+        return false;
+      }
+      return true;
+    },
     currentPeriod() {
       try {
         return this.periods[this.periodIndex].comdte;
@@ -232,17 +241,46 @@ export default {
     },
   },
   methods: {
+    clearAgentId() {
+      this.agent_id = null;
+    },
     downloadXls() {
       backApi.get('/agents-tree-hist/period/excel',
         {
           params:
           {
-            comdte: this.currentPeriod,
+            agent_id: this.agent_id,
+            period: this.currentPeriod,
+            filter: this.tree_type,
+            get_root: true,
           },
           responseType: 'blob',
         })
         .then(({ data }) => {
-          const filename = 'История организации по периодам.xls';
+          const filename = 'История организации по периодам.xlsx';
+          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        });
+    },
+    downloadPdf() {
+      backApi.get('/agents-tree-hist/period/pdf',
+        {
+          params:
+          {
+            agent_id: this.agent_id,
+            filter: this.tree_type,
+            period: this.currentPeriod,
+            get_root: true,
+          },
+          responseType: 'blob',
+        })
+        .then(({ data }) => {
+          const filename = 'История организации по периодам.pdf';
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;
@@ -437,18 +475,15 @@ span[class*="el-tag"] deep i{
       position: relative;
     }
     & .edit {
-      input {
-        width: 100%;
-        border: 0;
-        border-bottom: 1px solid #dee2f3;
-        padding-bottom: 10px;
-        outline: none;
-      }
       button {
         width: 48%;
         border: 0;
         padding: 5px 30px;
         font-size: 16px;
+        &.disabled{
+          color: #9A9A9A;
+          background-color: #DEE2F3;
+        }
         &:nth-of-type(1) {
           background-color: #32aaa7;
           color: white;

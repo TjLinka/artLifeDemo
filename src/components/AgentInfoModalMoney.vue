@@ -16,23 +16,30 @@
         </div>
       </div>
       <h3 class="perevod">Перевод средств</h3>
-      <div class="row edit">
+      <div class="row edit end">
         <div class="col-md-6 mt-4">
+          <span v-if="state" class="custom_label">Партнер получатель</span>
           <el-autocomplete
             v-model="state"
             :fetch-suggestions="querySearchAsync"
             placeholder="Партнер получатель"
             @select="handleSelect"
+            clearable
           ></el-autocomplete>
         </div>
-        <div class="col-md-6 mt-4">
-          <el-input placeholder="Сумма" type="number" v-model="sum" clearable class="count">
-          </el-input>
+        <div class="col-md-6 mt-4 custom_input">
+              <input type="number" name="sum" id="sum" required v-model="sum" />
+              <label for="sum">Сумма:</label>
+              <span class="clear_icon" @click="clearSum()"></span>
         </div>
       </div>
       <div class="row edit mt-4">
         <div class="col-md trans_btns">
-          <button @click="send">Перевести</button>
+          <button
+          :disabled="!pointsGo"
+          :class="pointsGo ? '' : 'disabled'"
+          @click="send"
+          >Перевести</button>
         </div>
       </div>
     </div>
@@ -55,7 +62,25 @@ export default {
   },
   mounted() {
   },
+  computed: {
+    pointsGo() {
+      if (
+        this.selectedUser !== ''
+        && this.selectedUser !== null
+        && this.state !== ''
+        && this.sum !== null
+        && this.sum !== '') {
+        return true;
+      // eslint-disable-next-line no-else-return
+      } else {
+        return false;
+      }
+    },
+  },
   methods: {
+    clearSum() {
+      this.sum = null;
+    },
     querySearchAsync(queryString, cb) {
       const qr = queryString === '' ? 'а' : queryString;
       backApi.get('/agent/agent-list', { params: { q: qr } }).then((Response) => {
@@ -104,6 +129,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.custom_input{
+  margin-top: 29px !important;
+}
 .close_btn{
   display: inline-block;
   position: absolute;
@@ -129,14 +157,6 @@ div[role='combobox']{
   }
 }
 .edit {
-  & input {
-    width: 100%;
-    border: 0;
-    border-bottom: 1px solid #dee2f3;
-    padding-bottom: 10px;
-    outline: none;
-  }
-
   & button {
     width: 48%;
     padding: 8px 0px;
@@ -148,8 +168,16 @@ div[role='combobox']{
   }
 }
 .trans_btns {
-  display: flex;
-  justify-content: space-between;
+  // display: flex;
+  // justify-content: space-between;
+  & button{
+    float: right;
+  }
+  & button.disabled{
+    color: #9A9A9A;
+    border-color: #C4C4C4;
+    cursor: auto;
+  }
 }
 @media (max-width: 768px) {
   .perevod {
