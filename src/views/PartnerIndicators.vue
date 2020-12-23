@@ -14,7 +14,11 @@
       </p>
       История показателей партнера по периодам
     </h2>
-    <div class="row mt-4">
+        <div class="col mt-4 search__btn mobile"
+        @click="showModal = !showModal" v-if="!showModal">
+          Настройки партнера <i class="el-icon-search search_icon"></i>
+        </div>
+    <div class="row mt-3">
       <div class="col">
         <p class="userInfo">
           <span>{{ userInfo.name }} {{ userInfo.id }}</span
@@ -59,7 +63,7 @@
     </b-table>
     <footer class="container-fluid cust_modal">
       <div class="row" v-if="!showModal">
-        <div class="col text-center search__btn"
+        <div class="col text-center search__btn desktop"
         @click="showModal = !showModal" v-if="!showModal">
           Настройки партнера <i class="el-icon-search search_icon"></i>
         </div>
@@ -250,6 +254,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.mobile{
+  display: none;
+}
 .userInfo {
   font-size: 22px;
   color: gray;
@@ -272,5 +279,14 @@ export default {
     box-sizing: border-box;
     background: #FFFFFF;
     box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);
+}
+@media (max-width: 760px) {
+  .mobile{
+    display: block;
+    padding: 0;
+  }
+  .desktop{
+    display: none;
+  }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="left_menu active">
+  <div class="left_menu active" v-if="this.$route.path !== '/login'">
     <div class="left_menu_top">
       <div class="logo">
         <a href="#">
@@ -16,7 +16,12 @@
             <span class="ico_t">Профиль</span>
           </a>
           <ul class="sub_menu">
-            <li class="mobilis"><span class="i_m">Профиль</span></li>
+            <li class="mobilis">
+              <span class="i_m">Профиль</span>
+              <div class="mobile_logout" v-on:click="out">
+                <img src="../assets/imgs/logoutmobile.svg" alt="">
+              </div>
+              </li>
             <li><router-link to="/">Карточка партнера</router-link></li>
             <li><router-link to="/myinfoedit">Редактирование личных данных</router-link></li>
             <li><router-link to="/sponsorcard">Данные спонсора</router-link></li>
@@ -145,6 +150,10 @@ export default {
 </script>
 
 <style>
+.mobile_logout{
+  display: block;
+  float: right;
+}
 .left_menu {
   z-index: 11;
 }

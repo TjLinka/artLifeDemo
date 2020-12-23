@@ -324,14 +324,13 @@ export default {
       this.tags.splice(this.tags.indexOf(tag), 1);
       if (tag.key === 'points_type') {
         this.points_type = null;
-        this.updateData();
+        this.updateData(false);
       } else if (tag.key === 'comment') {
         this.comment = null;
-        this.updateData();
-      }
-      if (tag.key === 'operType') {
+        this.updateData(false);
+      } else if (tag.key === 'operType') {
         this.operType = null;
-        this.updateData();
+        this.updateData(false);
       }
     },
     // eslint-disable-next-line no-unused-vars
@@ -351,7 +350,7 @@ export default {
     toggleSearch() {
       this.searchActive = !this.searchActive;
     },
-    updateData() {
+    updateData(tagsDelete = false) {
       const data = {
         params: {
           beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
@@ -374,7 +373,7 @@ export default {
       if (this.comment !== null && this.comment !== '') {
         const tag = this.tags.find((t) => t.key === 'comment');
         if (tag) {
-          tag.name = this.comment88;
+          tag.name = this.comment;
         } else {
           this.tags.push({ name: this.comment, key: 'comment' });
         }
@@ -391,7 +390,9 @@ export default {
       backApi.get('/agent/points-detail', data).then((Response) => {
         this.entries = Response.data.entries;
       });
-      this.searchActive = !this.searchActive;
+      if (tagsDelete) {
+        this.searchActive = !this.searchActive;
+      }
     },
     back() {
       this.$router.go(-1);

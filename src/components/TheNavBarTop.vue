@@ -4,9 +4,9 @@
       toggleable="lg"
       type="dark"
       variant="grey"
-      :class="this.$route.path === '/login' ? 'auth_page' : 'main_color'"
+      :class="is_authorized ? 'main_color' : 'auth_page'"
     >
-      <b-navbar-brand to="/" v-if="this.$route.path === '/login'">
+      <b-navbar-brand to="/" v-if="!is_authorized">
         <img src="../assets/imgs/lc.png" alt="" srcset=""
       /></b-navbar-brand>
 
@@ -57,6 +57,7 @@ export default {
 <style>
 .auth_page {
   background-color: #f0f0f0;
+  min-height: 70px;
 }
 .main_color {
   background-color: #32aaa7;

@@ -75,6 +75,7 @@
             <span class="close_btn" @click="searchActive = !searchActive"></span>
             </h3>
         <div class="date_picker_comp">
+          <div>
           <i
             class="arrow_left"
             @click="periodIndex = periodIndex - 1 >= 0 ? periodIndex - 1 : periods.length - 1"
@@ -86,6 +87,7 @@
           </span>
             <i class="arrow_right"
             @click="periodIndex = (periodIndex + 1) % periods.length"></i>
+          </div>
         </div>
         <div class="row">
           <div class="col-md-12 mt-3">
@@ -127,7 +129,7 @@
       </div>
       </footer>
     </div>
-    <div :class="`mobile_modal_mask ${searchActive ? 'active' : ''}`"></div>
+    <!-- <div :class="`mobile_modal_mask ${searchActive ? 'active' : ''}`"></div> -->
   </div>
 </template>
 
@@ -221,7 +223,6 @@ export default {
         },
       };
       backApi.get('/agents-tree-hist/period', data).then((response) => {
-        console.log(response.data);
         this.rows = response.data.entries;
         this.rows.forEach((e) => {
           e.depth = 0;
@@ -456,6 +457,25 @@ span[class*="el-tag"] deep i{
   }
   .desktop{
     display: none;
+  }
+}
+@media (max-width: 575px) {
+  .date_picker_comp{
+    & > div{
+      display: flex;
+      position: relative;
+      justify-content: center;
+      & i{
+        position: static;
+        margin-top: 5px;
+        &:nth-of-type(1){
+          margin-right: 20px;
+        }
+        &:nth-of-type(2){
+          margin-left: 20px;
+        }
+      }
+    }
   }
 }
 .close_btn{

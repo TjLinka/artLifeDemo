@@ -50,8 +50,22 @@ url('/fonts/FuturaPT-Book.ttf') format('truetype');
     max-width: 1920px;
   }
 }
-#main{
-  overflow-x: hidden;
+.auth_switch .el-switch__label{
+  font-family: 'FuturaPTDemi';
+  color: #9A9A9A;
+  &:nth-of-type(1){
+    margin-right: 40px;
+  }
+  &:nth-of-type(3){
+    margin-left: 40px;
+  }
+  &.is-active{
+    color: black;
+  }
+}
+.el-switch.is-checked .el-switch__core{
+  background-color: #DCDFE6;
+  border-color: #DCDFE6;
 }
 .end{
   align-items: flex-end;
@@ -514,6 +528,7 @@ th[aria-colindex='1']{
   width: 100%;
   padding-left: 120px;
   padding-bottom: 20px;
+  max-height: 70vh;
   box-sizing: border-box;
   background: #FFFFFF;
   box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);
@@ -543,9 +558,13 @@ th[aria-colindex='1']{
 }
 // СТИЛИ НАЧАИНАЯ С 768PX
 @media (max-width: 768px) {
+  // #main,
+  // .licevoischet__page{
+  // min-height: 100vh;
+  // }
   .mobile_modal_mask{
     position: absolute;
-    top: 0;
+    top: -50px;
     left: 0;
     right: 0;
     bottom: 0;
@@ -556,7 +575,7 @@ th[aria-colindex='1']{
     }
   }
   body {
-    overflow-x: hidden !important;
+    // overflow-x: hidden !important;
   }
   main {
     padding-left: 15px !important;
@@ -623,5 +642,20 @@ th[aria-colindex='1']{
     justify-content: space-around;
     align-items: center;
   }
+}
+@media (max-width: 350px) {
+  .auth_switch .el-switch__label{
+  font-family: 'FuturaPTDemi';
+  color: #9A9A9A;
+  &:nth-of-type(1){
+    margin-right: 10px;
+  }
+  &:nth-of-type(3){
+    margin-left: 10px;
+  }
+  &.is-active{
+    color: black;
+  }
+}
 }
 </style>

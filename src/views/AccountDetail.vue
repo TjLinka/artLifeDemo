@@ -395,6 +395,11 @@ export default {
     margin-bottom: 20px;
   }
 }
+@media (max-width: 575px) {
+  .custom_input{
+    margin-top: 20px;
+  }
+}
 @media (max-width: 450px) {
   .licevoischet__page__summ{
     font-size: 18px;

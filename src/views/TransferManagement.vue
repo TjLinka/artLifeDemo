@@ -16,13 +16,18 @@
         Управление трансфертами структуры
       </h2>
       <h2>История организации</h2>
+        <div class="col search__btn mobile"
+        @click="searchActive = !searchActive" v-if="!searchActive">
+          Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
+        </div>
       <div class="row">
-        <div class="col-md-6 mt-4">
+        <div class="col-xl-6 mt-4">
           <button
           :class="`update ${transAccess ? 'disabled' : ''}`"
           @click="showTrans = !showTrans"
           :disabled="transAccess"
           >Трансферт</button>
+          <br class="mobile_br">
           <p class="exp_print">
             <!-- <span class="mr-3">Печать</span> -->
             <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
@@ -73,7 +78,7 @@
     </div>
       <footer class="container-fluid cust_modal">
       <div class="row desk_trans">
-        <div class="col text-center search__btn"
+        <div class="col text-center search__btn desktop"
         @click="searchActive = !searchActive" v-if="!searchActive">
           Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
         </div>
@@ -532,6 +537,12 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.mobile_br{
+  display: none;
+}
+.mobile{
+  display: none;
+}
 .el-select{
   width: 100%;
   top: -5.5px;
@@ -573,7 +584,6 @@ export default {
     padding-left: 120px;
     box-sizing: border-box;
     background: #FFFFFF;
-    max-height: 70vh;
     overflow: scroll;
     box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);
 }
@@ -624,7 +634,22 @@ export default {
     display: inline;
   }
 }
+@media (max-width: 768px) {
+  .mobile{
+    display: block;
+    padding: 0;
+  }
+  .desktop{
+    display: none;
+  }
+}
 @media (max-width: 525px) {
+  .update{
+    width: 100% !important;
+  }
+  .mobile_br{
+    display: block;
+  }
   .mt-md-5{
     & .col-md-6{
       margin-top: 20px;
