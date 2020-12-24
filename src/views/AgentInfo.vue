@@ -343,18 +343,18 @@ export default {
       // Проверка на успешный ответ от сервера
       // Если 200, то грузим информацию о трансферте
       if (response.status === 200) {
-        const response2 = await backApi.get('/agent/transfer-info', {
+        backApi.get('/agent/transfer-info', {
           params: {
             another_agent_id: response.data.id,
           },
-        });
-        next((vm) => {
-          vm.setData(ReplaceNull(response.data), ReplaceNull(response2.data));
-        });
-      } else {
-        // Если ошибка, то просто выполняем setData, только с личными данными
-        next((vm) => {
-          vm.setData(ReplaceNull(ReplaceNull(response.data)));
+        }).then((Response2) => {
+          next((vm) => {
+            vm.setData(ReplaceNull(response.data), ReplaceNull(Response2.data));
+          });
+        }).catch(() => {
+          next((vm) => {
+            vm.setData(ReplaceNull(ReplaceNull(response.data)));
+          });
         });
       }
     } else {
@@ -362,26 +362,23 @@ export default {
       const response = await backApi.get('/agent/profile');
       // Если 200, то грузим информацию о трансферте
       if (response.status === 200) {
-        try {
-          const response2 = await backApi.get('/agent/transfer-info', {
-            params: {
-              another_agent_id: response.data.id,
-            },
-          });
+        backApi.get('/agent/transfer-info', {
+          params: {
+            another_agent_id: response.data.id,
+          },
+        }).then((Response2) => {
           next((vm) => {
-            vm.setData(ReplaceNull(response.data), ReplaceNull(response2.data));
+            vm.setData(ReplaceNull(response.data), ReplaceNull(Response2.data));
           });
-        } catch (error) {
+        }).catch(() => {
           next((vm) => {
-            vm.setData(ReplaceNull(response.data));
+            vm.setData(ReplaceNull(ReplaceNull(response.data)));
           });
-        }
-      } else {
-        // Если ошибка, то просто выполняем setData, только с личными данными
-        next((vm) => {
-          vm.setData(ReplaceNull(response.data));
         });
       }
+      next((vm) => {
+        vm.setData(ReplaceNull(response.data));
+      });
     }
   },
   async beforeRouteUpdate(to, from, next) {
