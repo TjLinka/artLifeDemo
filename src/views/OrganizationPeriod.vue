@@ -48,7 +48,8 @@
         <span v-else-if="column.property === 'rank_end'">
           <img
           :src="`../icons/${scope.row.rank_end}${scope.row.depth === 0 ? '_white' : ''}.svg`"
-          :title="scope.row.rank_end" class="rank_icon">
+          :title="scope.row.rank_end" class="rank_icon mr-3">
+          <span>{{scope.row.rank_end}}</span>
         </span>
         <span v-else>{{ column.formater(scope.row)}}</span>
       </template>
@@ -123,26 +124,31 @@ export default {
       {
         property: 'rank_end',
         title: 'Ранг',
+        sortable: true,
         formater: (item) => item.rank_end,
       },
       {
         property: 'id',
         title: 'Р/Номер',
+        sortable: true,
         formater: (item) => item.id,
       },
       {
         property: 'name',
         title: 'ФИО',
+        sortable: true,
         formater: (item) => item.name,
       },
       {
         property: 'lo',
         title: 'ЛО',
+        sortable: true,
         formater: (item) => item.lo,
       },
       {
         property: 'ngo',
         title: 'НГО',
+        sortable: true,
         formater: (item) => item.ngo,
       },
     ];

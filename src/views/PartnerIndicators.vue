@@ -94,6 +94,7 @@ export default {
         {
           key: 'comdte',
           label: 'Период',
+          sortable: true,
           formatter(v) {
             const mass = [
               'Январь',
@@ -115,6 +116,7 @@ export default {
         {
           key: 'noact',
           label: 'Не активность',
+          sortable: true,
           thStyle: {
             width: '150px',
             minWidth: '130px',
@@ -123,6 +125,7 @@ export default {
         {
           key: 'lo',
           label: 'ЛО',
+          sortable: true,
           thStyle: {
             width: '100px',
             minWidth: '50px',
@@ -131,6 +134,7 @@ export default {
         {
           key: 'go',
           label: 'ГО',
+          sortable: true,
           thStyle: {
             width: '100px',
             minWidth: '50px',
@@ -139,6 +143,7 @@ export default {
         {
           key: 'ngo',
           label: 'НГО',
+          sortable: true,
           thStyle: {
             width: '100px',
             minWidth: '50px',
@@ -147,6 +152,7 @@ export default {
         {
           key: 'oo',
           label: 'ОО',
+          sortable: true,
           thStyle: {
             width: '100px',
             minWidth: '50px',
@@ -155,6 +161,7 @@ export default {
         {
           key: 'ko',
           label: 'КО',
+          sortable: true,
           thStyle: {
             width: '100px',
             minWidth: '50px',
@@ -163,6 +170,7 @@ export default {
         {
           key: 'rank_beg',
           label: 'Ранг на начало',
+          sortable: true,
           thStyle: {
             minWidth: '120px',
           },
@@ -170,6 +178,7 @@ export default {
         {
           key: 'rank_calc',
           label: 'Расчётный ранг',
+          sortable: true,
           thStyle: {
             minWidth: '120px',
           },
@@ -177,6 +186,7 @@ export default {
         {
           key: 'rank_end',
           label: 'Ранг на конец',
+          sortable: true,
           thStyle: {
             minWidth: '120px',
           },

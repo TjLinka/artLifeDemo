@@ -276,13 +276,13 @@ export default {
           key: 'rank_beg',
           label: 'ранг на начало',
           formater: (item) => item.rank_beg,
-          // sortable: true,
+          sortable: true,
         },
         {
           key: 'rank_calc',
           label: 'расчетный ранг',
           formater: (item) => item.rank_calc,
-          // sortable: true,
+          sortable: true,
         },
         {
           key: 'reserve',

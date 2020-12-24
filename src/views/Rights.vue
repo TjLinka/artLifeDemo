@@ -97,38 +97,47 @@ export default {
         {
           key: 'id',
           label: 'Номер партнёра',
+          sortable: true,
         },
         {
           key: 'agentname',
           label: 'ФИО',
+          sortable: true,
         },
         {
           key: 'stockname',
           label: 'Склад обслуживания',
+          sortable: true,
         },
         {
           key: 'rank_beg',
           label: 'Ранг на начало',
+          sortable: true,
         },
         {
           key: 'rank_calc',
           label: 'Расчётный ранг',
+          sortable: true,
         },
         {
           key: 'rank_end',
           label: 'Ранг на конец',
+          sortable: true,
         },
         {
           key: 'lo',
           label: 'ЛО',
+          sortable: true,
         },
         {
           key: 'go',
           label: 'ГО',
+          sortable: true,
         },
         {
           key: 'reserve',
           label: 'Резерв',
+          sortable: true,
         },
       ],
     };

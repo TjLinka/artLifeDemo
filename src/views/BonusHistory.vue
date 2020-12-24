@@ -160,14 +160,17 @@ export default {
         {
           key: 'agent_from_name',
           label: 'ФИО',
+          sortable: true,
         },
         {
           key: 'agent_from',
           label: 'Номер партнёра',
+          sortable: true,
         },
         {
           key: 'rankname',
           label: 'Ранг',
+          sortable: true,
         },
         {
           key: 'volume',
