@@ -51,6 +51,7 @@
             <!-- {{column.property}} -->
             <span v-if="column.property != 'id'">{{ column.formater(scope.row) }}</span>
             <span v-else>
+              <span>{{scope.row.depth}} УР</span>
               <img
               :src="`../icons/${scope.row.rank_end}${scope.row.depth === 0 ? '_white' : ''}.svg`"
               :title="scope.row.rank_end" class="rank_icon">

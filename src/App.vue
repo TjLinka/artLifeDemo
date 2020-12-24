@@ -451,6 +451,21 @@ input[type='number'] {
   font-size: 24px;
   font-weight: 500;
 }
+.el-table__expand-icon--expanded{
+  transform: none;
+}
+.el-table__expand-icon--expanded .el-icon-arrow-right:before{
+  content: '-';
+  top: -1px;
+}
+.el-icon-arrow-right:before{
+  position: relative;
+  top: 1px;
+  content: "+";
+  font-size: 17px;
+  font-family: 'FuturaPTDemi';
+  font-weight: 500;
+}
 .el-icon-arrow-left,
 .el-icon-arrow-right {
   color: #32aaa7;
