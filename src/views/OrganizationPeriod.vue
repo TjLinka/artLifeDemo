@@ -51,6 +51,9 @@
           :title="scope.row.rank_end" class="rank_icon mr-3">
           <span>{{scope.row.rank_end}}</span>
         </span>
+        <span v-else-if="column.property === 'depth'">
+          <span>{{scope.row.depth}}</span>
+        </span>
         <span v-else>{{ column.formater(scope.row)}}</span>
       </template>
         </el-table-column>
@@ -122,14 +125,14 @@ export default {
       //   formater: (item) => `${item.depth} УР`,
       // },
       {
-        property: 'rank_end',
-        title: 'Ранг',
+        property: 'depth',
+        title: 'Глубина',
         sortable: true,
-        formater: (item) => item.rank_end,
+        formater: (item) => item.depth,
       },
       {
         property: 'id',
-        title: 'Р/Номер',
+        title: 'Номер партнера',
         sortable: true,
         formater: (item) => item.id,
       },
@@ -150,6 +153,12 @@ export default {
         title: 'НГО',
         sortable: true,
         formater: (item) => item.ngo,
+      },
+      {
+        property: 'rank_end',
+        title: 'Ранг',
+        sortable: true,
+        formater: (item) => item.rank_end,
       },
     ];
     return {

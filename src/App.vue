@@ -447,8 +447,9 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 .history_title {
-  color: #9a9a9a;
-  font-size: 13px;
+  // color: #9a9a9a;
+  font-size: 24px;
+  font-weight: 500;
 }
 .el-icon-arrow-left,
 .el-icon-arrow-right {
@@ -529,6 +530,15 @@ th[aria-colindex='1']{
 }
 .border{
   border: 1px solid #BABABA !important;
+}
+.el-table th>.cell{
+  // padding-left: 0;
+}
+.orgper{
+  border: 1px solid gray;
+}
+.orgper .el-table_1_column_1{
+  border-right: 1px solid #9A9A9A
 }
 .table th, .table td{
   padding: 6px !important;

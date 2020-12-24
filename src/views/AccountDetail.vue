@@ -20,7 +20,8 @@
       value-type="YYYY-MM-DD"
       >
       </date-picker>
-          <span class="licshet ml-5">Состояние лицевого счёта: {{balance}}</span>
+          <span class="licshet ml-5">Состояние лицевого счёта:
+          <span :class="sbalance < 0 ? 'red' : ''">{{balance}}</span></span>
         </div>
       </div>
       <div class="row mt-4">
@@ -367,10 +368,13 @@ export default {
 
 <style lang="scss" scoped>
 .licshet{
-  color: #BD0A0A;
+  // color: #BD0A0A;
   font-size: 25px;
   position: relative;
   top: 10px;
+  & span.red{
+    color: #BD0A0A;
+  }
 }
 .update{
   width: 100%;
