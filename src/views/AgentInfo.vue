@@ -91,12 +91,12 @@
               <p>{{ userinfo.skype }}</p>
             </div>
           </div>
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-6 mt-3">
               <p>Доп. телефон:</p>
               <p>{{ userinfo.phone }}</p>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="transfert" v-if="transLoaded">
           <h2 class="page__caption mt-5">Дополнительная информация для трансферта</h2>
@@ -124,7 +124,7 @@
             <div class="row">
               <div class="col-md-6 mt-3">
                 <p>Организационный объем (ОО):</p>
-                <p>{{ transfertInfo.oo }}</p>
+                <p>{{ transfertInfo.so }}</p>
               </div>
               <div class="col-md-6 mt-3">
                 <p>Квалификационный объем (КО):</p>

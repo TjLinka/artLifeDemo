@@ -35,6 +35,19 @@
           </p>
         </div>
       </div>
+      <div class="row mb-4">
+        <div class="col-md-4 uptran">
+          <el-autocomplete
+            v-model="state"
+            :fetch-suggestions="querySearchAsync"
+            placeholder="Партнер получатель"
+            @select="handleSelect"
+            clearable
+            v-on:clear="dd"
+            style="width: 100%;"
+          ></el-autocomplete>
+        </div>
+      </div>
       <div class="row">
         <div class="col">
           <el-tag
@@ -67,11 +80,13 @@
               <img :src="`../icons/${row.item.rank_end}${row.item.lvl === '0' ? '_white' : ''}.svg`"
               :title="row.item.rank_end" class="rank_icon" />
               <span style="display: inline-block; float:right">{{ row.item.id }}</span><br>
-              <span
-              style="display: inline-block; float:right; text-align: right; margin-top: 10px">
+              <span :class="`user_name ${row.item.lvl === '0' ? 'depth-main' : ''}`">
               {{row.item.name}}</span>
             </p>
             <p style="text-align: right">{{ row.item.fio }}</p>
+          </template>
+          <template v-slot:cell(isterminated)="row">
+              {{row.item.isterminated === 0 ? 'Нет' : 'Да'}}
           </template>
         </b-table>
       </div>
@@ -88,6 +103,27 @@
         <h3 class="mt-4">Поиск партнёра</h3>
         <div class="row mt-md-5">
           <div class="col-md-6">
+            <b-form-group label="Выбор дерева">
+              <b-form-radio
+                v-model="tree_type"
+                name="some-radios-1"
+                value="0"
+                class="radio mr-3"
+                >Полное дерево</b-form-radio
+              >
+              <b-form-radio
+                v-model="tree_type"
+                name="some-radios-1"
+                value="1"
+                class="radio mr-3"
+                >Директорское</b-form-radio
+              >
+              <b-form-radio v-model="tree_type" name="some-radios-1" value="2" class="radio"
+                >Своя группа</b-form-radio
+              >
+            </b-form-group>
+          </div>
+          <div class="col-md-6 qq">
             <b-form-checkbox
               id="checkbox-1"
               v-model="filterData.status"
@@ -218,10 +254,13 @@ export default {
   components: { Transfert },
   data() {
     return {
+      state: '',
+      links: [],
       id: null,
       transAccess: true,
       showTrans: false,
       loading: true,
+      tree_type: 0,
       tags: [],
       searchActive: false,
       filterData: {
@@ -285,9 +324,26 @@ export default {
           sortable: true,
         },
         {
-          key: 'reserve',
-          label: 'балы в резерве',
-          formater: (item) => item.reserve,
+          key: 'areaname',
+          label: 'Территория',
+          formater: (item) => item.areaname,
+          sortable: true,
+        },
+        {
+          key: 'cityname',
+          label: 'Город склада обслуживания',
+          formater: (item) => item.cityname,
+          sortable: true,
+        },
+        {
+          key: 'isterminated',
+          label: 'Терминирован',
+          // formatter: (item) => {
+          //   if (item.isterminated === 0) {
+          //     return 'Нет';
+          //   }
+          //   return 'Да';
+          // },
           sortable: true,
         },
       ],
@@ -300,16 +356,94 @@ export default {
     backApi.get('/agent/area-list').then((Response) => {
       this.areaList = Response.data.entries;
     });
-    backApi.get('/agent/flat_genealogy', {
-      params: {
-        tree_type: 2,
-      },
-    }).then((Response) => {
-      this.entries = Response.data.entries;
-      this.loading = false;
-    });
+    if (this.$route.params.id) {
+      backApi.get('agent/share-transfert-list').then((Response) => {
+        // eslint-disable-next-line eqeqeq
+        const user = Response.data.entries.filter((u) => u.id == this.$route.params.id);
+        this.state = `${user[0].id} - ${user[0].agentname}`;
+      });
+      backApi.get('/agent/flat_genealogy', {
+        params: {
+          agent_id: this.$route.params.id,
+          tree_type: 0,
+        },
+      }).then((Response) => {
+        this.entries = Response.data.entries;
+        this.loading = false;
+      });
+      const treeNameTranslate = {
+        2: 'Своя группа',
+        0: 'Полное дерево',
+        1: 'Директорское',
+      };
+      const treeName = treeNameTranslate[this.tree_type];
+      this.tags.push({ name: treeName, key: 'tree_type' });
+    } else {
+      backApi.get('/agent/profile').then((Response) => {
+        this.state = `${Response.data.id} - ${Response.data.name}`;
+        backApi.get('/agent/flat_genealogy', {
+          params: {
+            agent_id: Response.data.id,
+            tree_type: 0,
+          },
+        }).then((Response2) => {
+          this.entries = Response2.data.entries;
+          this.loading = false;
+        });
+        const treeNameTranslate = {
+          2: 'Своя группа',
+          0: 'Полное дерево',
+          1: 'Директорское',
+        };
+        const treeName = treeNameTranslate[this.tree_type];
+        this.tags.push({ name: treeName, key: 'tree_type' });
+      });
+    }
   },
   methods: {
+    dd() {
+      this.loading = true;
+      backApi.get('/agent/profile').then((Response) => {
+        this.state = `${Response.data.id} - ${Response.data.name}`;
+        backApi.get('/agent/flat_genealogy', {
+          params: {
+            agent_id: Response.data.id,
+            tree_type: 0,
+          },
+        }).then((Response2) => {
+          this.entries = Response2.data.entries;
+          this.loading = false;
+        });
+      });
+    },
+    querySearchAsync(queryString, cb) {
+      // const qr = queryString === '' ? 'а' : queryString;
+      backApi.get('/agent/profile').then((Response) => {
+        backApi.get('/agent/share-transfert-list').then((Response2) => {
+          // eslint-disable-next-line no-param-reassign
+          Response.data.agentname = Response.data.name;
+          // Response2.data.entries.push
+          Response2.data.entries.push(Response.data);
+          Response2.data.entries.forEach((u) => {
+            // eslint-disable-next-line no-param-reassign
+            u.value = `${u.id}-${u.agentname}`;
+          });
+          cb(Response2.data.entries.slice(0, 10));
+        });
+      });
+    },
+    handleSelect(item) {
+      // this.selectedUser = item.agent_id;
+      backApi.get('/agent/flat_genealogy', {
+        params: {
+          agent_id: item.id,
+          tree_type: 0,
+        },
+      }).then((Response2) => {
+        this.entries = Response2.data.entries;
+        this.loading = false;
+      });
+    },
     onRowSelected(item) {
       this.showTrans = false;
       if (item.length > 0) {
@@ -335,22 +469,31 @@ export default {
       return `depth-${row.depth}`;
     },
     handleClose(event, tag) {
-      this.tags.splice(this.tags.indexOf(tag), 1);
       if (tag.key === 'rank_beg') {
+        this.tags.splice(this.tags.indexOf(tag), 1);
         this.filterData.rank_beg = null;
         this.updateData();
       }
       if (tag.key === 'rank_calc') {
+        this.tags.splice(this.tags.indexOf(tag), 1);
         this.filterData.rank_calc = null;
         this.updateData();
       }
       if (tag.key === 'rank_end') {
+        this.tags.splice(this.tags.indexOf(tag), 1);
         this.filterData.rank_end = null;
         this.updateData();
       }
       if (tag.key === 'agent_id') {
+        this.tags.splice(this.tags.indexOf(tag), 1);
         this.filterData.agent_id = null;
         this.updateData();
+      }
+      if (tag.key === 'tree_type') {
+        if (tag.name !== 'Полное дерево') {
+          this.tree_type = 0;
+          this.updateData();
+        }
       }
     },
     clearInput(name) {
@@ -374,7 +517,7 @@ export default {
 
       const dataXlsx = {
         with_terminated: this.filterData.status,
-        tree_type: 2,
+        tree_type: this.tree_type,
         num: this.filterData.agent_id,
         fullname: this.filterData.fullname,
         area_id: this.filterData.area_id,
@@ -420,7 +563,7 @@ export default {
 
       const dataXlsx = {
         with_terminated: this.filterData.status,
-        tree_type: 2,
+        tree_type: this.tree_type,
         num: this.filterData.agent_id,
         fullname: this.filterData.fullname,
         area_id: this.filterData.area_id,
@@ -468,7 +611,7 @@ export default {
       const data = {
         params: {
           with_terminated: this.filterData.status,
-          tree_type: 2,
+          tree_type: this.tree_type,
           num: this.filterData.agent_id,
           fullname: this.filterData.fullname,
           area_id: this.filterData.area_id,
@@ -481,6 +624,20 @@ export default {
           i_status_end: statusEnd,
         },
       };
+      const treeNameTranslate = {
+        2: 'Своя группа',
+        0: 'Полное дерево',
+        1: 'Директорское',
+      };
+      if (this.tree_type !== null) {
+        const treeName = treeNameTranslate[this.tree_type];
+        const tag = this.tags.find((t) => t.key === 'tree_type');
+        if (tag) {
+          tag.name = treeName;
+        } else if (this.tree_type !== 'full') {
+          this.tags.push({ name: treeName, key: 'tree_type' });
+        }
+      }
       // Номер агента
       if (this.filterData.agent_id !== null
       && this.filterData.agent_id !== ''
@@ -514,7 +671,7 @@ export default {
           this.tags.push({ name: `Ранг на конец: ${this.filterData.rank_end}`, key: 'rank_end' });
         }
       }
-      // // Рассчётный ранг
+      // Рассчётный ранг
       if (this.filterData.rank_calc !== null
       && this.filterData.rank_calc !== ''
       && this.filterData.rank_calc !== undefined) {
@@ -549,6 +706,42 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.el-icon-circle-close:before{
+  top: 20px;
+}
+.qq{
+  display: flex;
+  align-items: center;
+  & > div{
+    margin-top: 20px;
+  }
+}
+.user_name{
+  display: inline-block;
+  position: relative;
+  text-align: right;
+  float: right;
+  padding-bottom: 0;
+  margin-top: 10px;
+  &::after {
+      position: absolute;
+      content: '';
+      width: 100%;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      border-bottom: 1px dotted black;
+  }
+}
+.user_name.depth-main::after{
+      position: absolute;
+      content: '';
+      width: 100%;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      border-bottom: 1px dotted white;
+}
 .mobile_br{
   display: none;
 }
@@ -672,5 +865,9 @@ export default {
 <style>
 .transmaneg_table th[aria-colindex='1']{
     width: 15%;
+}
+.uptran .el-icon-circle-close:before{
+  top: 20px;
+  right: -10px;
 }
 </style>

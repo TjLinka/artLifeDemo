@@ -28,6 +28,7 @@
         <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
+        <span class="mr-3" >Экспорт возвратной накладной в pdf</span>
         <!-- <span class="mr-3">Экспорт возвратной накладной в pdf</span> -->
       </p>
       <div class="refound_table">
@@ -134,6 +135,7 @@ export default {
         {
           key: 'articul',
           label: 'Артикул',
+          sortable: true,
           thStyle: {
             minWidth: '105px',
           },
@@ -141,6 +143,7 @@ export default {
         {
           key: 'itemname',
           label: 'Наименование товара',
+          sortable: true,
         },
         {
           key: 'points',
@@ -203,20 +206,20 @@ export default {
           },
         },
         {
-          key: 'delivery',
-          label: 'Доставка',
+          key: 'sale_id',
+          label: 'Номер накладной',
           sortable: true,
         },
-        {
-          key: 'address',
-          label: 'Адрес',
-          sortable: true,
-        },
-        {
-          key: 'contacts',
-          label: 'Контакты',
-          sortable: true,
-        },
+        // {
+        //   key: 'address',
+        //   label: 'Пользователь',
+        //   sortable: true,
+        // },
+        // {
+        //   key: 'contacts',
+        //   label: 'Контакты',
+        //   sortable: true,
+        // },
         {
           key: 'status',
           label: 'Статус',

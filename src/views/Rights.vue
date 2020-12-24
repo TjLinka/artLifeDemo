@@ -41,11 +41,11 @@
       head-variant="light"
       responsive
       selectable
+      @row-selected="onRowSelected"
       outlined>
         <template v-slot:cell(id)="row">
-          <router-link :to="`/agent/${row.item.id}`" class="link">{{
-            row.item.id
-          }}</router-link>
+          <router-link :to="`/agent/${row.item.id}`" class="link">
+          {{row.item.id}}</router-link>
         </template>
       </b-table>
     </div>
@@ -78,6 +78,16 @@
       Права переданы!
     </b-toast>
     <div :class="`mobile_modal_mask ${showModal1 ? 'active' : ''}`"></div>
+      <footer class="container-md-fluid cust_modal">
+      <div class="row desk_trans">
+        <div
+        class="col text-center search__btn"
+        @click="goToTransfert"
+        >
+          Перейти в таблицу управления трансфертом
+        </div>
+      </div>
+      </footer>
   </div>
 </template>
 
@@ -92,6 +102,7 @@ export default {
     return {
       showModal1: false,
       ruleGiver: '',
+      selectedUserId: null,
       entries: [],
       fields: [
         {
@@ -151,6 +162,16 @@ export default {
     });
   },
   methods: {
+    onRowSelected(item) {
+      if (item.length > 0) {
+        this.selectedUserId = item[0].id;
+      } else {
+        this.selectedUserId = null;
+      }
+    },
+    goToTransfert() {
+      this.$router.push(`/transfermanagement/${this.selectedUserId === null ? '' : this.selectedUserId}`);
+    },
     sss() {
       this.$bvToast.show('my-toast-2');
     },
@@ -171,9 +192,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.search__btn{
+  text-transform: none;
+  font-size: 16px;
+}
 .link {
+  position: relative;
   color: #32aaa7;
-  text-decoration: underline;
+  &::after{
+      position: absolute;
+      content: '';
+      width: 100%;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      border-bottom: 1px dotted #32aaa7;
+  }
+}
+.b-table-row-selected td, .b-table-row-selected td a::after{
+  border-bottom: 1px dotted white;
 }
 .current_period {
   background-color: #ebeefa;

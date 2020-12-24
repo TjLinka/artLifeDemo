@@ -397,27 +397,27 @@ export default {
   color: white;
 }
 .depth-1{
-  background-color: #BEBEBE !important;
+  background-color: #AED9D8 !important;
   color: black;
 }
 .depth-2{
-  background-color: #C4C5C6 !important;
+  background-color: #B5CCE2 !important;
   color: black;
 }
 .depth-3{
-  background-color: #CECFD0 !important;
+  background-color: #C1D5E9 !important;
   color: black;
 }
 .depth-4{
-  background-color: #D4D5D7 !important;
+  background-color: #BEBEBE !important;
   color: black;
 }
 .depth-5{
-  background-color: #E3E3E4 !important;
+  background-color: #C4C5C6 !important;
   color: black;
 }
 .depth-6{
-  background-color: #EBEDF4 !important;
+  background-color: #CECFD0 !important;
   color: black;
 }
 .el-table{

@@ -26,7 +26,7 @@
         <form>
           <div class="custom_input login_input">
             <input type="text" name="login" id="login" required v-model="log.login" />
-            <label for="login">{{value2 ? 'Телефон' : 'Логин'}}</label>
+            <label for="login">{{value2 ? 'Телефон' : 'ID'}}</label>
             <span class="clear_icon" @click="clearInput('login')"></span>
           </div>
           <div  class="custom_input password_input">

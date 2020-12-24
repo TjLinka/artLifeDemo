@@ -99,32 +99,34 @@
                 <b-form-radio
                   v-model="points_rule"
                   name="some-radios-1"
-                  value="0"
+                  :value="0"
                   class="radio mr-3"
                   >Все баллы в трансферт</b-form-radio
                 >
                 <b-form-radio
                   v-model="points_rule"
                   name="some-radios-1"
-                  value="1"
+                  :value="1"
                   class="radio mr-3"
-                  >Правило по умолчанию по выбору склада</b-form-radio
+                  >Баллы в резерв после обязательного трансферта</b-form-radio
                 >
                 <b-form-radio
                   v-model="points_rule"
                   name="some-radios-1"
                   :value="null"
                   class="radio"
-                  >Баллы в резерв</b-form-radio
+                  >Правило по умолчанию по выбору склада</b-form-radio
                 >
               </b-form-group>
             </div>
           </div>
           <div class="row edit mt-4">
             <div class="col-md-6 custom_input">
+              <div v-if="points_rule === 1">
               <input type="number" name="autoship" id="autoship" required v-model="autoship" />
               <label for="autoship">Количество баллов</label>
               <span class="clear_icon" @click="clearInput('autoship')"></span>
+              </div>
             </div>
             <div class="col-md-6">
               <button
@@ -167,7 +169,7 @@ export default {
     return {
       currentPeriodTop: {},
       userInfo: {},
-      points_rule: null,
+      points_rule: '2',
       autoship: null,
       searchActive: false,
       periods: [],
@@ -236,6 +238,9 @@ export default {
   },
   computed: {
     isDisabled() {
+      if (this.points_rule === 0 || this.points_rule === null) {
+        return false;
+      }
       if (this.autoship === null || this.autoship === '') {
         return true;
       }

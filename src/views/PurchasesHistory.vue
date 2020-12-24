@@ -15,6 +15,15 @@
         </p>
         История покупок
       </h2>
+      <date-picker
+      v-model="rangeDate"
+      range-separator=" - "
+      range
+      @change="getSelectedDataRange"
+      format="DD.MM.YYYY"
+      value-type="YYYY-MM-DD"
+      >
+      </date-picker>
         <div class="row mobile_search">
           <div class="col search__btn" @click="toggleSearch" v-if="!searchActive">
             Поиск покупки <i class="el-icon-search search_icon"></i>
@@ -36,6 +45,7 @@
         <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
+        <span class="mr-3" >Экспорт накладной в pdf</span>
         <!-- <span class="mr-3">Экспорт накладной в pdf</span> -->
       </p>
       <div class="perchases_table">
@@ -46,6 +56,10 @@
               {{ row.detailsShowing ? '-' : '+' }}
             </b-button>
             <span>{{ row.item.webshop_id }}</span>
+          </template>
+          <template v-slot:cell(delivery)="row">
+              <span>{{row.item.delivery === 'нет' ? 'Самовывоз' : 'Доставка до адреса'}}</span>
+            <!-- <span>{{ row.item.webshop_id }}</span> -->
           </template>
           <template v-slot:row-details="row">
             <div class="sub_table">
@@ -71,22 +85,52 @@
             Фильтр
             <span class="close_btn" @click="searchActive = !searchActive"></span>
           </h3>
-          <div class="mt-3">
+          <!-- <div class="mt-3">
             <BasePeriodPicker :currentPeriod="currentPeriod" v-on:next-period="nextPeriod" />
-          </div>
-          <div class="row edit mt-3">
+          </div> -->
+          <div class="row edit mt-5">
             <div class="col-sm-6 custom_input">
               <input type="number" name="articul" id="articul" required v-model="articul" />
               <label for="articul">Артикул</label>
               <span class="clear_icon" @click="clearArticul()"></span>
             </div>
             <div class="col-sm-6 custom_input">
+              <input type="text" name="status" id="status" required v-model="status" />
+              <label for="status">Статус</label>
+              <span class="clear_icon" @click="clearStatus()"></span>
+            </div>
+          </div>
+          <div class="row edit mt-5">
+            <div class="col-sm-6 custom_input">
+              <input type="text" name="naknum" id="naknum" required v-model="naknum" />
+              <label for="naknum">Номер накладной</label>
+              <span class="clear_icon" @click="clearNaknum()"></span>
+            </div>
+          <div class="col-md-6">
+            <span
+            v-if="delivery"
+            class="custom_label"
+            >
+            Доставка</span>
+            <el-select
+            v-model="delivery"
+            clearable
+            placeholder="Доставка">
+              <el-option
+                v-for="item in deliveryList"
+                :key="item"
+                :label="item"
+                :value="item">
+              </el-option>
+            </el-select>
+          </div>
+          </div>
+          <div class="row mt-5 edit justify-content-end">
+            <div class="col-sm-6 custom_input">
               <input type="text" name="name" id="name" required v-model="name" />
               <label for="name">Наименование товара</label>
               <span class="clear_icon" @click="clearName()"></span>
             </div>
-          </div>
-          <div class="row edit justify-content-end">
             <div class="col-xl-6 update">
               <button class="mr-2" @click="updateData">Показать</button
               ><button @click="clearSelectedFilters">Сбросить</button>
@@ -101,16 +145,24 @@
 
 <script>
 /* eslint-disable no-param-reassign */
+import DatePicker from 'vue2-datepicker';
 import backApi from '../assets/backApi';
-import BasePeriodPicker from '../components/BasePeriodPicker.vue';
+// import BasePeriodPicker from '../components/BasePeriodPicker.vue';
+import 'vue2-datepicker/index.css';
+import 'vue2-datepicker/locale/ru';
 
 export default {
   name: 'AccountDetail',
   components: {
-    BasePeriodPicker,
+    // BasePeriodPicker,
+    DatePicker,
   },
   data() {
     return {
+      deliveryList: ['Самовывоз', 'Доставка до адреса'],
+      delivery: '',
+      status: '',
+      naknum: '',
       allData: [],
       lang: {
         monthBeforeYear: false,
@@ -130,13 +182,14 @@ export default {
         'Декабрь',
       ],
       periods: [],
+      rangeDate: [],
       periodIndex: 0,
       period_enabled: true,
       searchActive: false,
       name: null,
       articul: null,
       saleid: null,
-      rangeDate: {},
+      // rangeDate: {},
       entries: [],
       return_details: [],
       tags: [],
@@ -144,6 +197,7 @@ export default {
         {
           key: 'articul',
           label: 'Артикул',
+          sortable: true,
           thStyle: {
             width: '150px',
           },
@@ -151,10 +205,12 @@ export default {
         {
           key: 'itemname',
           label: 'Наименование товара',
+          sortable: true,
         },
         {
           key: 'points',
           label: 'Баллы',
+          sortable: true,
           fomratter(v) {
             if (v !== null) {
               return v.toFixed(2);
@@ -165,6 +221,7 @@ export default {
         {
           key: 'price',
           label: 'Цена',
+          sortable: true,
           fomratter(v) {
             if (v !== null) {
               return v.toFixed(2);
@@ -175,6 +232,7 @@ export default {
         {
           key: 'cnt',
           label: 'Кол-во',
+          sortable: true,
           fomratter(v) {
             if (v !== null) {
               return v.toFixed(2);
@@ -185,6 +243,7 @@ export default {
         {
           key: 'points_all',
           label: 'Сумма балов',
+          sortable: true,
           fomratter(v) {
             if (v !== null) {
               return v.toFixed(2);
@@ -195,6 +254,7 @@ export default {
         {
           key: 'price_total',
           label: 'Стоимость',
+          sortable: true,
           fomratter(v) {
             if (v !== null) {
               return v.toFixed(2);
@@ -283,6 +343,17 @@ export default {
     },
   },
   methods: {
+    getSelectedDataRange() {
+      const data = {
+        params: {
+          beg_dte: this.rangeDate ? this.rangeDate[0] : null,
+          end_dte: this.rangeDate ? this.rangeDate[1] : null,
+        },
+      };
+      backApi.get('/agent/sales', data).then((Response) => {
+        this.entries = Response.data.entries;
+      });
+    },
     downloadXls() {
       backApi.get('/agent/sales/excel',
         {
@@ -330,10 +401,16 @@ export default {
         });
     },
     clearArticul() {
-      this.articul = null;
+      this.articul = '';
     },
     clearName() {
-      this.name = null;
+      this.name = '';
+    },
+    clearNaknum() {
+      this.naknum = '';
+    },
+    clearStatus() {
+      this.status = '';
     },
     back() {
       this.$router.go(-1);
@@ -357,10 +434,14 @@ export default {
     updateData() {
       const data = {
         params: {
+          articul: this.articul !== '' ? this.articul : null,
           name: this.name,
-          articul: this.articul,
-          saleid: this.saleid,
-          comdte: this.period_enabled ? this.currentPeriod : null,
+          // eslint-disable-next-line radix
+          saleid: this.naknum !== '' ? parseInt(this.naknum) : null,
+          beg_dte: this.rangeDate ? this.rangeDate[0] : null,
+          end_dte: this.rangeDate ? this.rangeDate[1] : null,
+          i_delivery: this.delivery !== '' ? this.delivery : null,
+          i_status: this.status !== '' ? this.status : null,
         },
       };
       if (this.articul !== null && this.articul !== '') {
@@ -403,9 +484,9 @@ export default {
       }
     },
     clearSelectedFilters() {
-      this.name = null;
-      this.articul = null;
-      this.number = null;
+      this.name = '';
+      this.articul = '';
+      this.naknum = '';
       this.tags = [];
       backApi.get('agent/sales').then((Response) => {
         this.entries = Response.data.entries;
@@ -434,6 +515,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.el-select{
+  width: 100%;
+}
 .tags{
   margin: 10px 0px 20px 0px;
 }
@@ -470,10 +554,10 @@ export default {
 
     & .edit {
       input {
-        margin-bottom: 20px;
+        // margin-bottom: 20px;
       }
       button {
-        margin-top: 20px;
+        // margin-top: 20px;
         width: 48%;
         border: 0;
         padding: 5px 30px;

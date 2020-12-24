@@ -15,7 +15,7 @@
             <img v-if="userInfo.male" src="../assets/imgs/male.png" alt="" />
             <img v-else src="../assets/imgs/female.png" alt="" />
           </div>
-          <p>{{userInfo.name}}</p>
+          <p>{{userInfo.fio}}</p>
         </div>
         <div class="container-md top__info">
           <div class="row">

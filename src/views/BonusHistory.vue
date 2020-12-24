@@ -135,7 +135,7 @@ export default {
           },
         },
         {
-          key: 'rank',
+          key: 'rank_calc',
           label: 'Расчетный ранг ',
         },
       ],

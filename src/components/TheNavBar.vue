@@ -26,6 +26,7 @@
             <li><router-link to="/myinfoedit">Редактирование личных данных</router-link></li>
             <li><router-link to="/sponsorcard">Данные спонсора</router-link></li>
             <li><router-link to="/rights">Передача прав</router-link></li>
+            <li><router-link to="#">Мои реферальные ссылки</router-link></li>
             <li><router-link to="/client-bonus"
             v-if="role === 'Клиент'"
             >Количество бонусных баллов</router-link></li>
@@ -69,7 +70,8 @@
             Показатели
             </router-link></li>
             <li><router-link to="/bonus-history">История бонусов (КЕ)</router-link></li>
-            <li><router-link to="/points-history">История баллов </router-link></li>
+            <li><router-link to="/points-history"
+            v-show="role !== 'Клиент'">История баллов </router-link></li>
             <li><router-link to="/account-detail">Движение по лицевому счёту</router-link></li>
             <li><router-link to="/partnerindicators">
             История показателей партнера по периодам

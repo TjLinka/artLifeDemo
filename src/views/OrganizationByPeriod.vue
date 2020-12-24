@@ -149,11 +149,6 @@ export default {
         formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
       },
       {
-        property: 'noact',
-        title: 'Не активность',
-        formater: (item) => item.noact,
-      },
-      {
         property: 'lo',
         title: 'ЛО',
         formater: (item) => item.lo,
@@ -169,6 +164,11 @@ export default {
         formater: (item) => item.ngo,
       },
       {
+        property: 'reserve',
+        title: 'Резерв',
+        formater: (item) => item.oo,
+      },
+      {
         property: 'oo',
         title: 'ОО',
         formater: (item) => item.oo,
@@ -177,6 +177,11 @@ export default {
         property: 'ko',
         title: 'КО',
         formater: (item) => item.ko,
+      },
+      {
+        property: 'noact',
+        title: 'Не активность',
+        formater: (item) => item.noact,
       },
       {
         property: 'rank_beg',
@@ -215,6 +220,7 @@ export default {
         const result = a.comdte > b.comdte ? 1 : -1;
         return result;
       });
+      this.tags.push({ name: `${this.months[new Date(this.periods[this.periods.length - 1].comdte).getMonth()]} ${new Date(this.currentPeriod).getFullYear()}`, key: 'period' });
       this.periodIndex = this.periods.length - 1;
       const data = {
         params: {
@@ -318,6 +324,7 @@ export default {
         this.agent_id = null;
       } else if (tag.key === 'period') {
         this.periodIndex = this.periods.length - 1;
+        this.tags.push({ name: `${this.months[new Date(this.periods[this.periods.length - 1].comdte).getMonth()]} ${new Date(this.currentPeriod).getFullYear()}`, key: 'period' });
       }
       this.updateData();
     },
@@ -492,9 +499,30 @@ span[class*="el-tag"] deep i{
   float: right;
 }
 .user_name{
-  display: block;
+  display: inline-block;
+  position: relative;
   text-align: right;
+  float: right;
+  padding-bottom: 0;
   margin-top: 10px;
+  &::after {
+      position: absolute;
+      content: '';
+      width: 100%;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      border-bottom: 1px dotted black;
+  }
+}
+.depth-0 .user_name::after{
+      position: absolute;
+      content: '';
+      width: 100%;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      border-bottom: 1px dotted white;
 }
 .licevoischet__page {
   position: relative;
@@ -576,27 +604,39 @@ span[class*="el-tag"] deep i{
   color: white;
 }
 .depth-1 {
-  background-color: #bebebe !important;
+  background-color: #AED9D8 !important;
   color: black;
 }
 .depth-2 {
-  background-color: #c4c5c6 !important;
+  background-color: #B5CCE2 !important;
   color: black;
 }
 .depth-3 {
-  background-color: #cecfd0 !important;
+  background-color: #C1D5E9 !important;
   color: black;
 }
 .depth-4 {
-  background-color: #d4d5d7 !important;
+  background-color: #BEBEBE !important;
   color: black;
 }
 .depth-5 {
-  background-color: #e3e3e4 !important;
+  background-color: #C4C5C6 !important;
   color: black;
 }
 .depth-6 {
-  background-color: #ebedf4 !important;
+  background-color: #CECFD0 !important;
+  color: black;
+}
+.depth-7 {
+  background-color: #D4D5D7 !important;
+  color: black;
+}
+.depth-8 {
+  background-color: #E3E3E4 !important;
+  color: black;
+}
+.depth-9 {
+  background-color: #EBEDF4 !important;
   color: black;
 }
 .el-table .cell {

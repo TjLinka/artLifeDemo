@@ -21,7 +21,7 @@
       >
       </date-picker>
           <span class="licshet ml-5">Состояние лицевого счёта:
-          <span :class="sbalance < 0 ? 'red' : ''">{{balance}}</span></span>
+          <span :class="balance < 0 ? 'red' : ''">{{balance}}</span></span>
         </div>
       </div>
       <div class="row mt-4">
@@ -51,6 +51,7 @@
       <b-table
       :fields="fields"
       :items="entries"
+      sticky-header
       head-variant="light"
       responsive
       outlined>

@@ -432,7 +432,8 @@ main {
   background-color: #3D8987 !important;
   color: white !important;
 }
-.b-table-row-selected td{
+.b-table-row-selected td,
+.b-table-row-selected td a{
   color: white !important;
 }
 // Конец El-Table
@@ -462,9 +463,59 @@ input[type='number'] {
   position: relative;
   top: 1px;
   content: "+";
+  color: black;
   font-size: 17px;
   font-family: 'FuturaPTDemi';
   font-weight: 500;
+}
+.depth-0 .el-icon-arrow-right:before{
+  position: relative;
+  top: 1px;
+  content: "+";
+  color: white;
+  font-size: 17px;
+  font-family: 'FuturaPTDemi';
+  font-weight: 500;
+}
+.depth-0 {
+  background-color: #32aaa7 !important;
+  color: white;
+}
+.depth-1 {
+  background-color: #AED9D8 !important;
+  color: black;
+}
+.depth-2 {
+  background-color: #B5CCE2 !important;
+  color: black;
+}
+.depth-3 {
+  background-color: #C1D5E9 !important;
+  color: black;
+}
+.depth-4 {
+  background-color: #BEBEBE !important;
+  color: black;
+}
+.depth-5 {
+  background-color: #C4C5C6 !important;
+  color: black;
+}
+.depth-6 {
+  background-color: #CECFD0 !important;
+  color: black;
+}
+.depth-7 {
+  background-color: #D4D5D7 !important;
+  color: black;
+}
+.depth-8 {
+  background-color: #E3E3E4 !important;
+  color: black;
+}
+.depth-9 {
+  background-color: #EBEDF4 !important;
+  color: black;
 }
 .el-icon-arrow-left,
 .el-icon-arrow-right {
@@ -556,7 +607,7 @@ th[aria-colindex='1']{
   border-right: 1px solid #9A9A9A
 }
 .table th, .table td{
-  padding: 6px !important;
+  // padding: 6px !important;
   border-top: 1px solid #BABABA !important;
   border-bottom: 1px solid #BABABA !important;
   font-family: 'FuturaPTDemi' !important;

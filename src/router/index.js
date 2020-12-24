@@ -123,6 +123,13 @@ const routes = [
     // Видит только Дистрибьютор +
   },
   {
+    path: '/transfermanagement/:id',
+    name: 'TransferManagement',
+    component: () => import('../views/TransferManagement.vue'),
+    meta: { requiresAuth: true, requiresRole: 'Дистрибьютор' },
+    // Видит только Дистрибьютор +
+  },
+  {
     path: '/partnerindicators',
     name: 'PartnerIndicators',
     component: () => import('../views/PartnerIndicators.vue'),
@@ -145,6 +152,11 @@ const routes = [
     path: '/signup/:signup_hash',
     name: 'RegistrationConfirm',
     component: () => import('../views/RegistrationConfirm.vue'),
+  },
+  {
+    path: '/remind-password/',
+    name: 'RemindPassword',
+    component: () => import('../views/RemindPassword.vue'),
   },
 ];
 

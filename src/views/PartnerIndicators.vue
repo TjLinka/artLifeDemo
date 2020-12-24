@@ -18,6 +18,18 @@
         @click="showModal = !showModal" v-if="!showModal">
           Настройки партнера <i class="el-icon-search search_icon"></i>
         </div>
+      <p class="p-0 m-0 history_title">Период от и до</p>
+      <div class="month_range_indicators">
+        <el-date-picker
+          v-model="monthRange"
+          type="monthrange"
+          range-separator="-"
+          v-on:change="dd"
+          value-format="yyyy-MM-dd"
+          :format="`MMMM yyyy`"
+          >
+        </el-date-picker>
+      </div>
     <div class="row mt-3">
       <div class="col">
         <p class="userInfo">
@@ -87,8 +99,10 @@ export default {
   components: { PartnerIndicatorsModal },
   data() {
     return {
+      monthRange: [],
       showModal: false,
       rank_icon: undefined,
+      months: ['Январь', 'Ферваль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
       entries: [],
       fields: [
         {
@@ -218,6 +232,17 @@ export default {
     }
   },
   methods: {
+    dd() {
+      const data = {
+        params: {
+          beg_comdte: this.monthRange ? this.monthRange[0] : null,
+          end_comdte: this.monthRange ? this.monthRange[1] : null,
+        },
+      };
+      backApi.get('agent/all-periods-indicators', data).then((Response) => {
+        this.entries = Response.data.entries;
+      });
+    },
     downloadXls() {
       backApi.get('/agent/all-periods-indicators/excel', { responseType: 'blob' })
         .then(({ data }) => {
@@ -302,5 +327,27 @@ export default {
   .desktop{
     display: none;
   }
+}
+</style>
+<style>
+.el-month-table td.start-date .cell{
+  background-color: #32aaa7;
+  border-radius: 0;
+}
+.el-month-table td.end-date .cell{
+  background-color: #32aaa7;
+  border-radius: 0;
+}
+.el-month-table td.in-range div, .el-month-table td.in-range div:hover{
+  background-color: #55a1a0c2;
+}
+.el-month-table td.start-date div{
+  border-radius: 0;
+}
+.el-month-table td.end-date div{
+  border-radius: 0;
+}
+.el-month-table td.today .cell{
+  color: #32aaa7;
 }
 </style>
