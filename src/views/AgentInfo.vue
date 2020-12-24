@@ -348,9 +348,11 @@ export default {
             another_agent_id: response.data.id,
           },
         });
-        next((vm) => {
-          vm.setData(ReplaceNull(response.data), ReplaceNull(response2.data));
-        });
+        if (response2.status === 200) {
+          next((vm) => {
+            vm.setData(ReplaceNull(response.data), ReplaceNull(response2.data));
+          });
+        }
       } else {
         // Если ошибка, то просто выполняем setData, только с личными данными
         next((vm) => {
@@ -368,9 +370,11 @@ export default {
               another_agent_id: response.data.id,
             },
           });
-          next((vm) => {
-            vm.setData(ReplaceNull(response.data), ReplaceNull(response2.data));
-          });
+          if (response2.status === 200) {
+            next((vm) => {
+              vm.setData(ReplaceNull(response.data), ReplaceNull(response2.data));
+            });
+          }
         } catch (error) {
           next((vm) => {
             vm.setData(ReplaceNull(response.data));
@@ -400,9 +404,11 @@ export default {
             another_agent_id: response.data.id,
           },
         });
-        next((vm) => {
-          vm.setData(ReplaceNull(response.data), ReplaceNull(response2.data));
-        });
+        if (response2.status === 200) {
+          next((vm) => {
+            vm.setData(ReplaceNull(response.data), ReplaceNull(response2.data));
+          });
+        }
       } else {
         // Если ошибка, то просто выполняем setData, только с личными данными
         next((vm) => {
@@ -419,9 +425,11 @@ export default {
             another_agent_id: response.data.id,
           },
         });
-        next((vm) => {
-          vm.setData(ReplaceNull(response.data), ReplaceNull(response2.data));
-        });
+        if (response2.status === 200) {
+          next((vm) => {
+            vm.setData(ReplaceNull(response.data), ReplaceNull(response2.data));
+          });
+        }
       } else {
         // Если ошибка, то просто выполняем setData, только с личными данными
         next((vm) => {
