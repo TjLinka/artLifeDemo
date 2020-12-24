@@ -560,7 +560,7 @@ th[aria-colindex='1']{
   width: 100%;
   padding-left: 120px;
   padding-bottom: 20px;
-  max-height: 70vh;
+  max-height: 100%;
   box-sizing: border-box;
   background: #FFFFFF;
   box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);

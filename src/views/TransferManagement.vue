@@ -596,7 +596,7 @@ export default {
     padding-left: 120px;
     box-sizing: border-box;
     background: #FFFFFF;
-    overflow: scroll;
+    overflow-y: auto;
     box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);
 }
 .organization__modal {
