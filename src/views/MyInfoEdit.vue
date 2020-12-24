@@ -57,7 +57,7 @@
           </div>
           <div class="col-md-6 custom_input mt-3">
             <input type="text" name="skype" id="skype" required v-model="userInfo.skype" />
-            <label for="skype">Skype</label>
+            <label for="skype">Доп. контакты</label>
             <span class="clear_icon" @click="clearInput('skype')"></span>
           </div>
         </div>

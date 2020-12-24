@@ -87,7 +87,7 @@
               <p>{{ userinfo.bthdte | localDate }}</p>
             </div>
             <div class="col-md-6 mt-3">
-              <p>Skype:</p>
+              <p>Доп. контакты:</p>
               <p>{{ userinfo.skype }}</p>
             </div>
           </div>
