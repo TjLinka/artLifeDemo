@@ -51,7 +51,6 @@
       <b-table
       :fields="fields"
       :items="entries"
-      sticky-header
       head-variant="light"
       responsive
       outlined>
