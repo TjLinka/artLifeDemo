@@ -21,12 +21,14 @@
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
       </p>
       <div class="bonus_hist_table">
-              <b-table :fields="topFields " :items="topTableData" head-variant="light"
+      <div class="mb-5">
+      <b-table :fields="topFields " :items="topTableData" head-variant="light"
       responsive outlined class="bonus_history_table">
           <template #cell(period)="data">
             <span>{{ data.value }}</span>
           </template>
       </b-table>
+      </div>
       <b-table :fields="mainFields" :items="bonus" head-variant="light"
       class="sub_2" responsive outlined>
         <template v-slot:cell(Наименование)="row">
@@ -170,6 +172,7 @@ export default {
         {
           key: 'volume',
           label: 'Объем',
+          sortable: true,
         },
         {
           key: 'percent',
@@ -180,10 +183,12 @@ export default {
             }
             return null;
           },
+          sortable: true,
         },
         {
           key: 'bonus_value',
           label: 'Бонус',
+          sortable: true,
         },
       ],
     };

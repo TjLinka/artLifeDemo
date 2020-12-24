@@ -78,8 +78,8 @@ export default {
     async takeRights() {
       if (this.selectedUser !== null && this.selectedUser !== '') {
         await backApi.post('/agent/share-transfert', { agent_to: this.selectedUser });
-        await backApi.get('/agent/profile/child', { params: { another_agent_id: this.selectedUser } }).then((Response) => {
-          this.$emit('rulegiver', Response.data.name);
+        await backApi.get('/agent/profile/').then((Response) => {
+          this.$emit('rulegiver', Response.data.agent2transfer_name);
         });
         this.$emit('enlarge-text');
         this.$emit('toast');
@@ -136,6 +136,7 @@ export default {
 }
 .trans_btns {
   display: flex;
+  // margin-top: 20px;
   justify-content: space-between;
   & button.disabled:nth-of-type(1){
     color: #9A9A9A;
@@ -143,7 +144,7 @@ export default {
     cursor: auto;
   }
 }
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .trans_btns{
     margin-top: 20px;
   }

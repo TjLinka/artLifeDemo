@@ -29,7 +29,7 @@
           </b-form-group>
           <div class="reg_input custom_input">
             <input type="text" name="fio" id="fio" required v-model="newUser.fio" />
-            <label for="fio">ФИО:</label>
+            <label for="fio">ФИО</label>
             <span class="clear_icon" @click="clearInput('fio')"></span>
           </div>
         </div>
@@ -43,7 +43,7 @@
           </b-form-group>
           <div class="reg_input custom_input">
             <input type="text" name="country" id="country" required v-model="newUser.country" />
-            <label for="country">Страна:</label>
+            <label for="country">Страна</label>
             <span class="clear_icon" @click="clearInput('country')"></span>
           </div>
         </div>
@@ -51,7 +51,7 @@
       <div class="row mt-md-5">
         <div class="col-md-6 custom_input">
           <input type="text" name="city" id="city" required v-model="newUser.city" />
-          <label for="city">Город:</label>
+          <label for="city">Город</label>
           <span class="clear_icon" @click="clearInput('city')"></span>
         </div>
         <div class="col-md-6 custom_input">
@@ -69,12 +69,12 @@
       <div class="row mt-md-5">
         <div class="col-md-6 custom_input">
           <input type="text" name="phone" id="phone" required v-model="newUser.phone" />
-          <label for="phone">Телефон:</label>
+          <label for="phone">Телефон</label>
           <span class="clear_icon" @click="clearInput('phone')"></span>
         </div>
         <div class="col-md-6 custom_input">
           <input type="text" name="email" id="email" required v-model="newUser.email" />
-          <label for="email">Е-mail:</label>
+          <label for="email">Е-mail</label>
           <span class="clear_icon" @click="clearInput('email')"></span>
         </div>
       </div>

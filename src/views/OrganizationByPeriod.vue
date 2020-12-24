@@ -115,7 +115,7 @@
         <div class="row edit">
           <div class="col-sm-6 mb-4 custom_input">
               <input type="number" name="agent_id" id="agent_id" required v-model="agent_id" />
-              <label for="agent_id">Номер агента:</label>
+              <label for="agent_id">Номер агента</label>
               <span class="clear_icon" @click="clearAgentId()"></span>
           </div>
           <div class="col-sm-6">

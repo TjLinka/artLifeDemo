@@ -18,7 +18,7 @@
       <div class="row edit">
         <div class="col-xl-6 mt-4 custom_input">
               <input type="number" name="sum" id="sum" required v-model="sum" />
-              <label for="sum">Сумма:</label>
+              <label for="sum">Сумма</label>
               <span class="clear_icon" @click="clearSum()"></span>
         </div>
           <div class="col-xl-6 trans_btns">

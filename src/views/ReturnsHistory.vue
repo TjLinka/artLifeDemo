@@ -65,13 +65,13 @@
             <div class="col-sm-6 custom_input">
               <input type="text" name="articul" id="articul"
               required v-model="filterData.articul" />
-              <label for="articul">Артикул:</label>
+              <label for="articul">Артикул</label>
               <span class="clear_icon" @click="clearInput('articul')"></span>
             </div>
             <div class="col-sm-6 custom_input">
               <input type="text" name="name" id="name"
               required v-model="filterData.name" />
-              <label for="name">Наименование товара:</label>
+              <label for="name">Наименование товара</label>
               <span class="clear_icon" @click="clearInput('name')"></span>
             </div>
           </div>
@@ -79,13 +79,13 @@
             <div class="col-sm-6 custom_input">
               <input type="text" name="naknum" id="naknum"
               required v-model="filterData.naknum" />
-              <label for="naknum">Номер накладной:</label>
+              <label for="naknum">Номер накладной</label>
               <span class="clear_icon" @click="clearInput('naknum')"></span>
             </div>
             <div class="col-sm-6 custom_input">
               <input type="text" name="docnum" id="docnum"
               required v-model="filterData.docnum" />
-              <label for="docnum">Номер документа:</label>
+              <label for="docnum">Номер документа</label>
               <span class="clear_icon" @click="clearInput('docnum')"></span>
             </div>
           </div>
@@ -145,22 +145,27 @@ export default {
         {
           key: 'points',
           label: 'Баллы',
+          sortable: true,
         },
         {
           key: 'price',
           label: 'Цена',
+          sortable: true,
         },
         {
           key: 'cnt',
           label: 'Кол-во',
+          sortable: true,
         },
         {
           key: 'points_cnt',
           label: 'Сумма баллов',
+          sortable: true,
         },
         {
           key: 'price_cnt',
           label: 'Стоимость',
+          sortable: true,
         },
       ],
       fields: [

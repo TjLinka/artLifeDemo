@@ -34,7 +34,7 @@
           <button @click="showModal1 = !showModal1">Передать права</button>
         </div>
       </div>
-      <h2 class="mt-4">Праводатели</h2>
+      <h2 class="mt-4">Переданные мне права</h2>
       <b-table
       :fields="fields"
       :items="entries"

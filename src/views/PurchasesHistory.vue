@@ -77,12 +77,12 @@
           <div class="row edit mt-3">
             <div class="col-sm-6 custom_input">
               <input type="number" name="articul" id="articul" required v-model="articul" />
-              <label for="articul">Артикул:</label>
+              <label for="articul">Артикул</label>
               <span class="clear_icon" @click="clearArticul()"></span>
             </div>
             <div class="col-sm-6 custom_input">
               <input type="text" name="name" id="name" required v-model="name" />
-              <label for="name">Наименование товара:</label>
+              <label for="name">Наименование товара</label>
               <span class="clear_icon" @click="clearName()"></span>
             </div>
           </div>

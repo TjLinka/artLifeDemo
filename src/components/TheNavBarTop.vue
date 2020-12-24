@@ -13,11 +13,13 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse v-if="is_authorized" id="nav-collapse" is-nav>
+        <button class="siteBtn">Перейти на сайт</button>
         <b-navbar-nav class="ml-auto">
           <div class="d-lg-flex"></div>
           <b-nav-item-dropdown right>
             <template v-slot:button-content>
-              <em>{{ agentname }}</em>
+              <span class="mr-3 username">{{ agentname }}</span>
+              <img class="mb-1" src="../assets/imgs/UserIcon.svg" alt="">
             </template>
             <b-dropdown-item to="/">{{ agentname }}</b-dropdown-item>
             <b-dropdown-item disabled>
@@ -54,6 +56,30 @@ export default {
 };
 </script>
 
+<style lang="scss" scoped>
+.siteBtn{
+  margin-left: 120px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: center;
+  width: 204px;
+  height: 32px;
+  background: #FFFFFF;
+  border-radius: 1px;
+  color: #32AAA7;
+  display: block;
+  line-height: 32px;
+  margin-top: 10px;
+  position: absolute;
+  border: 1px solid #FFFFFF;
+}
+.username{
+  text-transform: uppercase;
+  color: white;
+}
+</style>
 <style>
 .auth_page {
   background-color: #f0f0f0;

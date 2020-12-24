@@ -10,6 +10,8 @@
         Движение по лицевому счету
         </h2>
       <p class="p-0 m-0 history_title">Период от и до</p>
+      <div class="row">
+        <div class="col">
       <date-picker
       v-model="rangeDate"
       range-separator=" - "
@@ -18,6 +20,9 @@
       value-type="YYYY-MM-DD"
       >
       </date-picker>
+          <span class="licshet ml-5">Состояние лицевого счёта: {{balance}}</span>
+        </div>
+      </div>
       <div class="row mt-4">
         <div class="col">
         <el-tag
@@ -73,12 +78,12 @@
           <div class="row edit mt-4">
             <div class="col-sm-6 custom_input">
               <input type="text" name="operType" id="operType" required v-model="filter.operType" />
-              <label for="operType">Тип операции:</label>
+              <label for="operType">Тип операции</label>
               <span class="clear_icon" @click="clearInput('operType')"></span>
             </div>
             <div class="col-sm-6 custom_input">
               <input type="text" name="comment" id="comment" required v-model="filter.comment" />
-              <label for="comment">Комментарий:</label>
+              <label for="comment">Комментарий</label>
               <span class="clear_icon" @click="clearInput('comment')"></span>
             </div>
           </div>
@@ -111,6 +116,7 @@ export default {
   data() {
     return {
       tags: [],
+      balance: null,
       filter: {
         comment: null,
         operType: null,
@@ -190,6 +196,9 @@ export default {
         // eslint-disable-next-line no-param-reassign
         i.outcome = i.amount;
       });
+    });
+    backApi.get('/agent/profile').then((Response) => {
+      this.balance = Response.data.balance;
     });
   },
   computed: {
@@ -357,6 +366,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.licshet{
+  color: #BD0A0A;
+  font-size: 25px;
+  position: relative;
+  top: 10px;
+}
 .update{
   width: 100%;
 }
@@ -373,7 +388,7 @@ export default {
   &__summ {
     text-align: center;
     background-color: #dee2f3;
-    font-size: 20px;
+    font-size: 16px;
     padding: 10px 0px;
     // margin-bottom: 160px;
   }
@@ -402,7 +417,7 @@ export default {
 }
 @media (max-width: 450px) {
   .licevoischet__page__summ{
-    font-size: 18px;
+    font-size: 16px;
     & span{
       display: block;
       margin-top: 10px;

@@ -7,6 +7,9 @@
       <h1 class="text-center mb-5">
         Авторизация
       </h1>
+      <h4 class="text-center mb-5 error_log" v-if="badLogin">
+        Введён неправильно логин или пароль!
+      </h4>
       <div class="auth__page__form">
         <div class="row">
           <div class="col mb-4 text-center switch">
@@ -21,34 +24,21 @@
           </div>
         </div>
         <form>
-          <!-- <el-input type="text" placeholder="Логин" v-model="log.login"
-          class="log_in" clearable/> -->
-          <div class="custom_input">
+          <div class="custom_input login_input">
             <input type="text" name="login" id="login" required v-model="log.login" />
             <label for="login">{{value2 ? 'Телефон' : 'Логин'}}</label>
             <span class="clear_icon" @click="clearInput('login')"></span>
           </div>
-          <div  class="custom_input">
+          <div  class="custom_input password_input">
             <input type="password" name="password" id="password" required v-model="log.password" />
-            <label for="password">Пароль:</label>
+            <label for="password">Пароль</label>
             <span class="clear_icon" @click="clearInput('password')"></span>
           </div>
-          <!-- <el-input type="password" placeholder="Пароль" v-model="log.password"
-          class="log_in" show-password /> -->
           <button class="btn__login" v-on:click.prevent="sf">Войти</button>
         </form>
       </div>
       <div class="auth__page__help">
         <p>Забыли пароль? <a href="#">Напомнить</a> на email</p>
-      </div>
-      <div class="auth__page__copy">
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Numquam id asperiores quae
-          voluptatibus, in quas iste est nemo inventore animi rerum labore dicta maiores voluptate!
-          Veniam quaerat voluptates nemo tenetur maiores voluptas, quis minus natus voluptatum
-          pariatur illo facilis ut consequatur eos nam animi omnis. Quaerat ab debitis assumenda
-          minima voluptatum eius necessitatibus dolor! Impedit ducimus ad ipsam adipisci harum.
-        </p>
       </div>
     </div>
   </div>
@@ -57,28 +47,70 @@
 <script>
 import md5 from 'md5';
 import { mapActions } from 'vuex';
+import $ from 'jquery';
 
 export default {
   name: 'Home',
   data() {
     return {
-      value2: true,
+      value2: false,
+      badLogin: false,
       log: {},
     };
   },
   methods: {
+    showToast(title, message, status) {
+      // Use a shorter name for this.$createElement
+      const h = this.$createElement;
+      // Increment the toast count
+      // Create the message
+      const vNodesMsg = h('p', { class: ['text-center', 'mb-0'] }, [
+        h('strong', { class: 'mr-2' }, message),
+      ]);
+      // Create the title
+      const vNodesTitle = h(
+        'div',
+        { class: ['d-flex', 'flex-grow-1', 'align-items-baseline', 'mr-2'] },
+        [
+          h('strong', { class: 'mr-2' }, title),
+        ],
+      );
+      // Pass the VNodes as an array for message and title
+      this.$bvToast.toast([vNodesMsg], {
+        title: [vNodesTitle],
+        solid: true,
+        variant: status,
+      });
+    },
     clearInput(name) {
-      this.log[name] = null;
+      this.log[name] = '';
     },
     ...mapActions('auth', ['login']),
     sf() {
-      const data = {
-        login: this.log.login,
-        pwd_hash: md5(this.log.password),
-      };
-      this.login(data).then(() => {
-        this.$router.push('/');
-      });
+      if (this.log.login !== '' && this.log.password !== '') {
+        $('.login_input, .password_input').removeClass('error');
+        const data = {
+          login: this.log.login,
+          pwd_hash: md5(this.log.password),
+        };
+        this.login(data)
+          .then(() => {
+            this.badLogin = false;
+            this.$router.push('/');
+          })
+          .catch(() => {
+            this.badLogin = true;
+          });
+      }
+      $('.login_input, .password_input').removeClass('error');
+      if (this.log.login === '') {
+        $('.login_input').addClass('error');
+        this.showToast('Ошибка!', 'Заполните поле Логин', 'danger');
+      }
+      if (this.log.password === '') {
+        $('.password_input').addClass('error');
+        this.showToast('Ошибка!', 'Заполните поле Пароль', 'danger');
+      }
     },
   },
   computed: {},
@@ -86,6 +118,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.error_log{
+  color: red;
+}
+.error{
+  border-bottom: 2px solid red;
+}
 .mobile_logo{
   display: none;
 }

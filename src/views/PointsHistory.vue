@@ -107,13 +107,13 @@
           <div class="col-md-6 custom_input">
            <input type="text" name="comment"
             id="comment" required v-model="comment" />
-            <label for="comment">Комментарий:</label>
+            <label for="comment">Комментарий</label>
             <span class="clear_icon" @click="clearComment('comment')"></span>
           </div>
           <div class="col-md-6 custom_input">
            <input type="text" name="operType"
             id="operType" required v-model="operType" />
-            <label for="operType">Тип операции:</label>
+            <label for="operType">Тип операции</label>
             <span class="clear_icon" @click="clearOperType('operType')"></span>
           </div>
         </div>
@@ -447,7 +447,7 @@ export default {
   &__summ {
     text-align: center;
     background-color: #dee2f3;
-    font-size: 12px;
+    font-size: 16px;
     padding: 10px 0px;
   }
   & .exp_print {

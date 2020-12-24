@@ -1,5 +1,5 @@
 <template>
-  <div class="left_menu active" v-if="this.$route.path !== '/login'">
+  <div class="left_menu" v-show="this.$route.path !== '/login'">
     <div class="left_menu_top">
       <div class="logo">
         <a href="#">
@@ -8,7 +8,7 @@
         </a>
       </div>
     </div>
-    <div class="nav active">
+    <div class="nav">
       <ul>
         <li>
           <a class="nav_parent" href="#">
@@ -104,6 +104,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
+import $ from 'jquery';
 
 export default {
   name: 'TheNavBar',
@@ -119,24 +120,43 @@ export default {
     },
   },
   mounted() {
-    const navP = document.getElementsByClassName('nav_parent');
-    let nav = '';
-    // eslint-disable-next-line no-restricted-syntax
-    for (nav of navP) {
-      // eslint-disable-next-line prefer-arrow-callback
-      // eslint-disable-next-line no-loop-func
-      nav.addEventListener('click', function () {
-        if (this.classList.contains('active')) {
-          this.classList.remove('active');
-        } else {
-          // eslint-disable-next-line no-restricted-syntax
-          for (const i of this.parentNode.parentNode.children) {
-            i.firstChild.classList.remove('active');
-          }
-          this.classList.add('active');
-        }
-      });
-    }
+    // eslint-disable-next-line func-names
+    $('.nav_parent').click(function () {
+      if (!$(this).hasClass('active')) {
+        $('.nav_parent').removeClass('active');
+        $(this).addClass('active');
+      } else {
+        $(this).removeClass('active');
+      }
+      // eslint-disable-next-line no-restricted-globals
+      return false;
+    });
+    // eslint-disable-next-line prefer-arrow-callback
+    $('.sub_menu a').click(function (e) {
+      // eslint-disable-next-line no-restricted-globals
+      if (innerWidth > 780) {
+        e.stopPropagation();
+      }
+    });
+    // const navP = document.getElementsByClassName('nav_parent');
+    // let nav = '';
+    // // eslint-disable-next-line no-restricted-syntax
+    // for (nav of navP) {
+    //   // eslint-disable-next-line prefer-arrow-callback
+    //   // eslint-disable-next-line no-loop-func
+    //   nav.addEventListener('click', function () {
+    //     if (this.classList.contains('active')) {
+    //       this.classList.remove('active');
+    //     } else {
+    //       // eslint-disable-next-line no-restricted-syntax
+    //       for (const i of this.parentNode.parentNode.children) {
+    //         i.firstChild.classList.remove('active');
+    //       }
+    //       this.classList.add('active');
+    //     }
+    //   });
+    // }
+    // this.$forceUpdate();
     const links = document.getElementsByClassName('sub_menu');
     // eslint-disable-next-line no-restricted-syntax
     for (const link of links) {
@@ -303,9 +323,9 @@ ul {
 .nav ul li .sub_menu li:hover {
   background: none;
 }
-.nav ul li:hover .sub_menu {
+/* .nav ul li:hover .sub_menu {
   display: block;
-}
+} */
 .nav ul li .sub_menu li a {
   font-size: 14px;
   line-height: 16px;
@@ -340,6 +360,9 @@ ul {
 }
 .mobilis {
   display: none;
+}
+.left_menu:hover .nav ul li a.active + .sub_menu {
+    display: block;
 }
 @media (min-width: 320px) and (max-width: 800px) {
   nav ul {

@@ -15,7 +15,7 @@
         </p>
         Управление трансфертами структуры
       </h2>
-      <h2>История организации</h2>
+      <!-- <h2>История организации</h2> -->
         <div class="col search__btn mobile"
         @click="searchActive = !searchActive" v-if="!searchActive">
           Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
@@ -64,7 +64,7 @@
           <template v-slot:cell(id)="row">
             <p>
               <span class="mr-4">{{ row.item.lvl }} УР</span>
-              <img :src="`../icons/${row.item.rank_end}.svg`"
+              <img :src="`../icons/${row.item.rank_end}${row.item.lvl === '0' ? '_white' : ''}.svg`"
               :title="row.item.rank_end" class="rank_icon" />
               <span style="display: inline-block; float:right">{{ row.item.id }}</span><br>
               <span
@@ -103,12 +103,12 @@
         <div class="row mt-md-5">
           <div class="col-md-6 custom_input">
             <input type="text" name="userId" id="userId" required v-model="filterData.agent_id"/>
-            <label for="userId">Номер:</label>
+            <label for="userId">Номер</label>
             <span class="clear_icon" @click="clearInput('agent_id')"></span>
           </div>
           <div class="col-md-6 custom_input">
             <input type="text" name="userFio" id="userFio" required v-model="filterData.fullname"/>
-            <label for="userFio">ФИО:</label>
+            <label for="userFio">ФИО</label>
             <span class="clear_icon" @click="clearInput('fullname')"></span>
           </div>
         </div>
@@ -133,7 +133,7 @@
           </div>
           <div class="col-md-6 custom_input">
             <input type="text" name="userStore" id="userStore" required v-model="filterData.store"/>
-            <label for="userStore">Город склада обслуживания:</label>
+            <label for="userStore">Город склада обслуживания</label>
             <span class="clear_icon" @click="clearInput('store')"></span>
           </div>
         </div>
@@ -240,46 +240,55 @@ export default {
           key: 'noact',
           label: 'не активность',
           formater: (item) => item.noact,
+          sortable: true,
         },
         {
           key: 'lo',
           label: 'ЛО',
           formater: (item) => item.lo,
+          sortable: true,
         },
         {
           key: 'go',
           label: 'ГО',
           formater: (item) => item.go,
+          sortable: true,
         },
         {
           key: 'ngo',
           label: 'НГО',
           formater: (item) => item.ngo,
+          sortable: true,
         },
         {
           key: 'oo',
           label: 'ОО',
           formater: (item) => item.oo,
+          sortable: true,
         },
         {
           key: 'ko',
           label: 'КО',
           formater: (item) => item.ko,
+          sortable: true,
         },
         {
           key: 'rank_beg',
           label: 'ранг на начало',
           formater: (item) => item.rank_beg,
+          // sortable: true,
         },
         {
           key: 'rank_calc',
           label: 'расчетный ранг',
           formater: (item) => item.rank_calc,
+          // sortable: true,
         },
         {
           key: 'reserve',
           label: 'балы в резерве',
           formater: (item) => item.reserve,
+          sortable: true,
         },
       ],
     };
@@ -317,6 +326,9 @@ export default {
       }
     },
     rowClass(item) {
+      if (item.lvl === '0') {
+        return 'green';
+      }
       return `depth-${item.lvl}`;
     },
     tableRowClassName({ row }) {
@@ -584,7 +596,7 @@ export default {
     padding-left: 120px;
     box-sizing: border-box;
     background: #FFFFFF;
-    overflow: scroll;
+    // overflow: scroll;
     box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);
 }
 .organization__modal {

@@ -123,7 +123,7 @@
           <div class="row edit mt-4">
             <div class="col-md-6 custom_input">
               <input type="number" name="autoship" id="autoship" required v-model="autoship" />
-              <label for="autoship">Количество баллов:</label>
+              <label for="autoship">Количество баллов</label>
               <span class="clear_icon" @click="clearInput('autoship')"></span>
             </div>
             <div class="col-md-6">
@@ -249,7 +249,7 @@ export default {
       }
     },
     periodStatus() {
-      return this.currentPeriodTop.prev_status === 'не выплачен' ? 'red' : 'green';
+      return this.currentPeriodTop.prev_status === 'не выплачен' ? '#BD0A0A' : 'green';
     },
   },
   watch: {

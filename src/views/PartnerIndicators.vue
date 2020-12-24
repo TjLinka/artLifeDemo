@@ -21,8 +21,8 @@
     <div class="row mt-3">
       <div class="col">
         <p class="userInfo">
-          <span>{{ userInfo.name }} {{ userInfo.id }}</span
-          ><img alt="" />
+          <span class="mr-3">{{ userInfo.name }} {{ userInfo.id }}</span>
+          <img class="mb-1" :src="`../icons/${rank_icon}.svg`" alt="" />
         </p>
       </div>
     </div>
@@ -88,6 +88,7 @@ export default {
   data() {
     return {
       showModal: false,
+      rank_icon: undefined,
       entries: [],
       fields: [
         {
@@ -200,6 +201,9 @@ export default {
       });
       backApi.get('/agent/profile/').then((Response) => {
         this.userInfo = Response.data;
+        backApi.get('/agent/transfer-info', { params: { another_agent_id: Response.data.id } }).then((response) => {
+          this.rank_icon = response.data.rank_end;
+        });
       });
     }
   },

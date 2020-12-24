@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <TheNavBarTop class="nav_top"></TheNavBarTop>
-    <TheNavBar v-if="is_authorized"></TheNavBar>
+    <TheNavBar v-show="is_authorized"></TheNavBar>
     <main id="main">
       <transition name="fade" mode="out-in">
         <router-view />
@@ -50,6 +50,15 @@ url('/fonts/FuturaPT-Book.ttf') format('truetype');
     max-width: 1920px;
   }
 }
+.el-scrollbar__thumb{
+  background-color: #afafaf;
+}
+.dropdown-toggle::after{
+  content: none;
+}
+.el-table [class*=el-table__row--level] .el-table__expand-icon{
+  margin-right: 0;
+}
 .auth_switch .el-switch__label{
   font-family: 'FuturaPTDemi';
   color: #9A9A9A;
@@ -81,6 +90,7 @@ url('/fonts/FuturaPT-Book.ttf') format('truetype');
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  outline: none !important;
 }
 h1, h2, h3, h4{
   font-family: 'FuturaPTDemi';
@@ -205,7 +215,7 @@ main {
     left: 20px;
     transition: 0.15s ease-in-out;
     color: #9a9a9a;
-    font-size: 14px;
+    font-size: 16px;
     z-index: 10;
   }
   input {
@@ -225,7 +235,7 @@ main {
     }
     &:focus ~ label,
     &:valid ~ label {
-      font-size: 14px;
+      font-size: 13px;
       top: -13px;
     }
     &:valid ~ span {
@@ -355,6 +365,12 @@ main {
 .el-input__inner:focus {
   border-color: #32aaa7 !important;
 }
+.green{
+  background-color: #32aaa7;
+  & td{
+    color: white !important;
+  }
+}
 .depth-1 {
   background-color: #bebebe !important;
   background-color: lighten;
@@ -397,7 +413,7 @@ main {
   color: black;
 }
 .b-table-row-selected{
-  background-color: #32aaa7 !important;
+  background-color: #3D8987 !important;
   color: white !important;
 }
 .b-table-row-selected td{

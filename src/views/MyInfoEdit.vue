@@ -22,24 +22,24 @@
         <div class="row edit ">
           <div class="col-md-6 custom_input mt-3">
             <input type="text" name="country" id="country" required v-model="userInfo.country" />
-            <label for="country">Страна:</label>
+            <label for="country">Страна</label>
             <span class="clear_icon" @click="clearInput('country')"></span>
           </div>
           <div class="col-md-6 custom_input mt-3">
             <input type="text" name="city" id="city" required v-model="userInfo.city" />
-            <label for="city">Город:</label>
+            <label for="city">Город</label>
             <span class="clear_icon" @click="clearInput('city')"></span>
           </div>
         </div>
         <div class="row edit ">
           <div class="col-md-6 custom_input mt-3">
             <input type="text" name="address" id="address" required v-model="userInfo.address" />
-            <label for="address">Адрес:</label>
+            <label for="address">Адрес</label>
             <span class="clear_icon" @click="clearInput('address')"></span>
           </div>
           <div class="col-md-6 custom_input mt-3">
             <input type="text" name="passport" id="passport" required v-model="userInfo.passport" />
-            <label for="passport">Паспорт:</label>
+            <label for="passport">Паспорт</label>
             <span class="clear_icon" @click="clearInput('passport')"></span>
           </div>
         </div>
@@ -57,7 +57,7 @@
           </div>
           <div class="col-md-6 custom_input mt-3">
             <input type="text" name="skype" id="skype" required v-model="userInfo.skype" />
-            <label for="skype">Skype:</label>
+            <label for="skype">Skype</label>
             <span class="clear_icon" @click="clearInput('skype')"></span>
           </div>
         </div>
@@ -73,7 +73,7 @@
             <p class="page__caption">Смена адреса почтового ящика</p>
             <div class="custom_input t">
               <input type="text" name="email" id="email" required v-model="userInfo.email" />
-              <label for="email">E-mail:</label>
+              <label for="email">E-mail</label>
               <span class="clear_icon" @click="clearInput('email')"></span>
               <button class="save__newinfo mt-3" v-on:click="saveEmail">Сохранить изменения</button>
             </div>
@@ -82,7 +82,7 @@
             <p class="page__caption">Смена телефона</p>
             <div class="custom_input t" v-if="!smsStatus">
               <input type="text" name="phone" id="phone" required v-model="userInfo.phone" />
-              <label for="phone">Телефон:</label>
+              <label for="phone">Телефон</label>
               <span class="clear_icon" @click="clearInput('phone')"></span>
               <button class="save__newinfo mt-3" v-on:click="savePhone">
                 Сохранить изменения
@@ -90,7 +90,7 @@
             </div>
             <div class="custom_input t" v-if="smsStatus">
               <input type="text" name="smsCode" id="smsCode" required v-model="smsCode" />
-              <label for="smsCode">Код потверждения:</label>
+              <label for="smsCode">Код потверждения</label>
               <span class="clear_icon" @click="clearInput('smsCode')"></span>
               <button class="save__newinfo mt-3" v-on:click="checkSmsCode">
                 Потвердить
@@ -112,7 +112,7 @@
               required
               v-model="password.currentPass"
             />
-            <label for="currentPass">Текущий пароль:</label>
+            <label for="currentPass">Текущий пароль</label>
             <span class="clear_icon" @click="clearPass('currentPass')"></span>
           </div>
           <div class="col-md custom_input mt-3">
@@ -123,7 +123,7 @@
               required
               v-model="password.newPass"
             />
-            <label for="newPass">Новый пароль:</label>
+            <label for="newPass">Новый пароль</label>
             <span class="clear_icon" @click="clearPass('newPass')"></span>
           </div>
           <div class="col-md custom_input mt-3">
@@ -134,7 +134,7 @@
               required
               v-model="password.newPassRepeat"
             />
-            <label for="newPassRepeat">Повтор пароля:</label>
+            <label for="newPassRepeat">Повтор пароля</label>
             <span class="clear_icon" @click="clearPass('newPassRepeat')"></span>
           </div>
         </div>
@@ -243,7 +243,7 @@ export default {
           .then((Response) => {
             this.phoneHash = Response.data;
             this.smsStatus = true;
-            this.showToast('Смена пароля', 'Ваш пароль успешно изменён!', 'success');
+            // this.showToast('Смена пароля', 'Ваш пароль успешно изменён!', 'success');
           })
           .catch((error) => {
             this.showToast('Ошибка', error.response.data.detail, 'danger');
