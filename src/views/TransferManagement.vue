@@ -102,7 +102,7 @@
         <span @click="searchActive = !searchActive" class="close_btn"></span>
         <h3 class="mt-4">Поиск партнёра</h3>
         <div class="row mt-md-5">
-          <div class="col-md-6">
+          <div class="col-xl-6">
             <b-form-group label="Выбор дерева">
               <b-form-radio
                 v-model="tree_type"
@@ -123,7 +123,7 @@
               >
             </b-form-group>
           </div>
-          <div class="col-md-6 qq">
+          <div class="col-xl-6 qq">
             <b-form-checkbox
               id="checkbox-1"
               v-model="filterData.status"
@@ -369,7 +369,7 @@ export default {
       this.areaList = Response.data.entries;
     });
     if (this.$route.params.id) {
-      backApi.get('agent/share-transfert-list').then((Response) => {
+      backApi.get('agent/share-transfert-list', { params: { show_root: 1 } }).then(() => {
         // eslint-disable-next-line eqeqeq
         const user = Response.data.entries.filter((u) => u.id == this.$route.params.id);
         this.state = `${user[0].id} - ${user[0].agentname}`;
@@ -430,18 +430,16 @@ export default {
     },
     querySearchAsync(queryString, cb) {
       // const qr = queryString === '' ? 'а' : queryString;
-      backApi.get('/agent/profile').then((Response) => {
-        backApi.get('/agent/share-transfert-list').then((Response2) => {
+      backApi.get('/agent/share-transfert-list', { params: { show_root: 1 } }).then((Response2) => {
+        // eslint-disable-next-line no-param-reassign
+        // Response.data.agentname = Response.data.name;
+        // // Response2.data.entries.push
+        // Response2.data.entries.push(Response.data);
+        Response2.data.entries.forEach((u) => {
           // eslint-disable-next-line no-param-reassign
-          Response.data.agentname = Response.data.name;
-          // Response2.data.entries.push
-          Response2.data.entries.push(Response.data);
-          Response2.data.entries.forEach((u) => {
-            // eslint-disable-next-line no-param-reassign
-            u.value = `${u.id}-${u.agentname}`;
-          });
-          cb(Response2.data.entries.slice(0, 10));
+          u.value = `${u.id}-${u.agentname}`;
         });
+        cb(Response2.data.entries.slice(0, 10));
       });
     },
     handleSelect(item) {

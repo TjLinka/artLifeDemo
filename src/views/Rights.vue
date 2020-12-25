@@ -85,7 +85,7 @@
       Права переданы!
     </b-toast>
     <div :class="`mobile_modal_mask ${showModal1 ? 'active' : ''}`"></div>
-      <footer class="container-md-fluid cust_modal">
+      <footer class="container-md-fluid cust_modal mmm">
       <div class="row desk_trans">
         <div
         class="col text-center search__btn"
@@ -199,6 +199,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.mmm{
+  z-index: 9;
+}
 .search__btn{
   text-transform: none;
   font-size: 16px;

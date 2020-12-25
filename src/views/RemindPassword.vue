@@ -12,13 +12,15 @@
     </div>
     <div class="row mt-4">
       <div class="col-md-6 ">
-          <button class="rempass">Восстановить пароль</button>
+          <button class="rempass" @click="remindPass">Восстановить пароль</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import backApi from '../assets/backApi';
+
 export default {
   name: 'RemindPassword',
   data() {
@@ -27,6 +29,43 @@ export default {
     };
   },
   methods: {
+    showToast(title, message, status) {
+      // Use a shorter name for this.$createElement
+      const h = this.$createElement;
+      // Increment the toast count
+      // Create the message
+      const vNodesMsg = h('p', { class: ['text-center', 'mb-0'] }, [
+        h('strong', { class: 'mr-2' }, message),
+      ]);
+      // Create the title
+      const vNodesTitle = h(
+        'div',
+        { class: ['d-flex', 'flex-grow-1', 'align-items-baseline', 'mr-2'] },
+        [
+          h('strong', { class: 'mr-2' }, title),
+        ],
+      );
+      // Pass the VNodes as an array for message and title
+      this.$bvToast.toast([vNodesMsg], {
+        title: [vNodesTitle],
+        solid: true,
+        variant: status,
+      });
+    },
+    remindPass() {
+      if (this.email !== '') {
+        const data = {
+          params: {
+            email: this.email,
+          },
+        };
+        backApi.get('/remind-password', data).then(() => {
+          this.showToast('Восстановление пароля', 'На вашу почту пришло письмо!', 'success');
+        }).catch(() => {
+          this.showToast('Восстановление пароля', 'Почта указана не верно', 'danger');
+        });
+      }
+    },
     clearInput() {
       this.email = '';
     },

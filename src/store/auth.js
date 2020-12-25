@@ -47,21 +47,39 @@ export default {
     login({ commit }, user) {
       return new Promise((resolve, reject) => {
         commit('AUTH_REQUEST');
-        backApi
-          .post('/login', user)
-          .then((resp) => {
-            const data = JSON.stringify(resp.data);
-            const token = resp.data.access_token;
-            localStorage.setItem('access_token', data);
-            backApi.defaults.headers.common['access-token'] = token;
-            commit('AUTH_SUCCESS', resp.data);
-            resolve(resp);
-          })
-          .catch((err) => {
-            commit('AUTH_ERROR', err);
-            localStorage.removeItem('access-token');
-            reject(err);
-          });
+        if (!user.authMethod) {
+          backApi
+            .post('/agent/login/id', user)
+            .then((resp) => {
+              const data = JSON.stringify(resp.data);
+              const token = resp.data.access_token;
+              localStorage.setItem('access_token', data);
+              backApi.defaults.headers.common['access-token'] = token;
+              commit('AUTH_SUCCESS', resp.data);
+              resolve(resp);
+            })
+            .catch((err) => {
+              commit('AUTH_ERROR', err);
+              localStorage.removeItem('access-token');
+              reject(err);
+            });
+        } else {
+          backApi
+            .post('/agent/login/phone', user)
+            .then((resp) => {
+              const data = JSON.stringify(resp.data);
+              const token = resp.data.access_token;
+              localStorage.setItem('access_token', data);
+              backApi.defaults.headers.common['access-token'] = token;
+              commit('AUTH_SUCCESS', resp.data);
+              resolve(resp);
+            })
+            .catch((err) => {
+              commit('AUTH_ERROR', err);
+              localStorage.removeItem('access-token');
+              reject(err);
+            });
+        }
       });
     },
     register({ commit }, user) {

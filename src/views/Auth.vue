@@ -38,7 +38,8 @@
         </form>
       </div>
       <div class="auth__page__help">
-        <p>Забыли пароль? <router-link to="/remind-password">Напомнить</router-link> на email</p>
+        <p>Забыли пароль? <router-link to="/remind-password"
+        class="remind_link">Напомнить</router-link> на email</p>
       </div>
     </div>
   </div>
@@ -94,10 +95,20 @@ export default {
       && (this.log.password !== '' || this.log.password !== null)
       ) {
         $('.login_input, .password_input').removeClass('error');
-        const data = {
-          login: this.log.login,
-          pwd_hash: md5(this.log.password),
-        };
+        let data = {};
+        if (!this.value2) {
+          data = {
+            login: this.log.login,
+            pwd_hash: md5(this.log.password),
+            authMethod: this.value2,
+          };
+        } else {
+          data = {
+            phone: this.log.login,
+            pwd_hash: md5(this.log.password),
+            authMethod: this.value2,
+          };
+        }
         this.login(data)
           .then(() => {
             this.badLogin = false;
@@ -123,6 +134,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.remind_link{
+  color: #32AAA7;
+}
 .error_log{
   color: red;
 }

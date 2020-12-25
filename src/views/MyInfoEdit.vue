@@ -107,7 +107,7 @@
           <div class="col-md custom_input mt-3">
             <input
               ref="currentPass"
-              v-on:focus="$refs.newPassRepeat.classList.remove('error')"
+              v-on:focus="$refs.currentPass.classList.remove('error')"
               type="password"
               name="currentPass"
               id="currentPass"
@@ -278,7 +278,7 @@ export default {
       // eslint-disable-next-line prefer-template
       if (
         this.password.newPass === this.password.newPassRepeat
-        && this.password.newPass.length > 8
+        && this.password.newPass.length >= 5
       ) {
         const data = {
           old_password: md5(this.password.currentPass),
@@ -294,7 +294,7 @@ export default {
             this.showToast('Ошибка', error.response.data.detail, 'danger');
           });
       }
-      if (this.password.newPass !== this.password.newPassRepeat || this.password.currentPass === '') {
+      if (this.password.newPass !== this.password.newPassRepeat || this.password.currentPass === '' || this.password.newPass.length < 6) {
         if (this.password.currentPass === '') {
           $(this.$refs.currentPass).addClass('error');
           this.showToast('Ошибка', 'Введите Текущий пароль!', 'danger');
@@ -303,6 +303,9 @@ export default {
           $(this.$refs.newPass).addClass('error');
           $(this.$refs.newPassRepeat).addClass('error');
           this.showToast('Ошибка', 'Пароли не совпадают!', 'danger');
+        }
+        if (this.password.newPass.length < 5) {
+          this.showToast('Ошибка', 'Длина пароля должна быть не меньше 5 символов!', 'danger');
         }
       }
     },

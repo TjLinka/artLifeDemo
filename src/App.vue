@@ -478,6 +478,9 @@ input[type='number'] {
   font-family: 'FuturaPTDemi';
   font-weight: 500;
 }
+.el-table th>.cell{
+  padding-left: 4px;
+}
 .depth-0 {
   background-color: #32aaa7 !important;
   color: white;
