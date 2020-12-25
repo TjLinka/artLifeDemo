@@ -260,7 +260,7 @@ export default {
       transAccess: true,
       showTrans: false,
       loading: true,
-      tree_type: 0,
+      tree_type: 2,
       tags: [],
       searchActive: false,
       filterData: {
@@ -377,7 +377,7 @@ export default {
       backApi.get('/agent/flat_genealogy', {
         params: {
           agent_id: this.$route.params.id,
-          tree_type: 0,
+          tree_type: 2,
         },
       }).then((Response) => {
         this.entries = Response.data.entries;
