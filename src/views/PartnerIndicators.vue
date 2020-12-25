@@ -34,7 +34,7 @@
       <div class="col">
         <p class="userInfo">
           <span class="mr-3">{{ userInfo.name }} {{ userInfo.id }}</span>
-          <img class="mb-1" :src="`../icons/${rank_icon}.svg`" alt="" />
+          <img class="mb-1" :src="`../icons/${userIcon}.svg`" alt="" />
         </p>
       </div>
     </div>
@@ -91,6 +91,7 @@
 </template>
 
 <script>
+/* eslint-disable quote-props */
 import backApi from '../assets/backApi';
 import PartnerIndicatorsModal from '../components/PartnerIndicatorsModal.vue';
 
@@ -99,9 +100,67 @@ export default {
   components: { PartnerIndicatorsModal },
   data() {
     return {
+      iconDict: {
+        'Клиент': {
+          'full': 'Клиент',
+          'short': 'Клиент',
+        },
+        'Консультант': {
+          'full': 'Консультант',
+          'short': 'Консультант',
+        },
+        'Мастер': {
+          'full': 'Мастер',
+          'short': 'Мастер',
+        },
+        'Управляющий': {
+          'full': 'Управляющий',
+          'short': 'Управляющий',
+        },
+        'Директор': {
+          'full': 'Директор',
+          'short': 'Директор',
+        },
+        'Серебряный Директор': {
+          'full': 'Серебряный Директор',
+          'short': 'Сер.Директор',
+        },
+        'Золотой Директор': {
+          'full': 'Золотой Директор',
+          'short': 'Зол.Директор',
+        },
+        'Рубиновый Директор': {
+          'full': 'Рубиновый Директор',
+          'short': 'Руб.Директор',
+        },
+        'Бриллиантовый Директор': {
+          'full': 'Бриллиантовый Директор',
+          'short': 'Брил.Директор',
+        },
+        'Президент': {
+          'full': 'Президент',
+          'short': 'Президент',
+        },
+        'Сер.Директор': {
+          'full': 'Серебряный Директор',
+          'short': 'Сер.Директор',
+        },
+        'Зол.Директор': {
+          'full': 'Золотой Директор',
+          'short': 'Зол.Директор',
+        },
+        'Руб.Директор': {
+          'full': 'Рубиновый Директор',
+          'short': 'Руб.Директор',
+        },
+        'Брил.Директор': {
+          'full': 'Бриллиантовый Директор',
+          'short': 'Брил.Директор',
+        },
+      },
       monthRange: [],
       showModal: false,
-      rank_icon: undefined,
+      rank_icon: '',
       months: ['Январь', 'Ферваль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
       entries: [],
       fields: [
@@ -226,7 +285,7 @@ export default {
       backApi.get('/agent/profile/').then((Response) => {
         this.userInfo = Response.data;
         backApi.get('/agent/transfer-info', { params: { another_agent_id: Response.data.id } }).then((response) => {
-          this.rank_icon = response.data.rank_end;
+          this.rank_icon = response.data.rank_calc;
         });
       });
     }
@@ -288,6 +347,9 @@ export default {
     },
   },
   computed: {
+    userIcon() {
+      return this.iconDict[this.rank_icon] ? this.iconDict[this.rank_icon].full : '';
+    },
   },
 };
 </script>

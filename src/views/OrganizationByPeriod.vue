@@ -154,6 +154,7 @@
 </template>
 
 <script>
+/* eslint-disable quote-props */
 import backApi from '../assets/backApi';
 import BasePeriodPicker from '../components/BasePeriodPicker.vue';
 
@@ -222,6 +223,7 @@ export default {
       },
     ];
     return {
+
       searchActive: false,
       months: ['Январь', 'Ферваль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
       tree_type: 'full',
