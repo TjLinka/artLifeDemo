@@ -396,7 +396,7 @@ export default {
         backApi.get('/agent/flat_genealogy', {
           params: {
             agent_id: Response.data.id,
-            tree_type: 0,
+            tree_type: 2,
           },
         }).then((Response2) => {
           this.entries = Response2.data.entries;
