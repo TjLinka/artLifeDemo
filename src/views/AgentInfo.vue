@@ -334,7 +334,7 @@ export default {
   },
   async beforeRouteEnter(to, from, next) {
     // Загрузка данных, если перешли на чужую карточку партнёра
-    if (to.params.id) {
+    if (to.params.id !== undefined) {
       const response = await backApi.get('/agent/profile/child', {
         params: {
           another_agent_id: to.params.id,
@@ -375,10 +375,11 @@ export default {
             vm.setData(ReplaceNull(ReplaceNull(response.data)));
           });
         });
+      } else {
+        next((vm) => {
+          vm.setData(ReplaceNull(response.data));
+        });
       }
-      next((vm) => {
-        vm.setData(ReplaceNull(response.data));
-      });
     }
   },
   async beforeRouteUpdate(to, from, next) {

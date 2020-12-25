@@ -38,7 +38,7 @@
         </form>
       </div>
       <div class="auth__page__help">
-        <p>Забыли пароль? <a href="#">Напомнить</a> на email</p>
+        <p>Забыли пароль? <router-link to="/remind-password">Напомнить</router-link> на email</p>
       </div>
     </div>
   </div>
@@ -55,7 +55,10 @@ export default {
     return {
       value2: false,
       badLogin: false,
-      log: {},
+      log: {
+        login: '',
+        password: '',
+      },
     };
   },
   methods: {
@@ -87,7 +90,9 @@ export default {
     },
     ...mapActions('auth', ['login']),
     sf() {
-      if (this.log.login !== '' && this.log.password !== '') {
+      if ((this.log.login !== '' || this.log.login !== null)
+      && (this.log.password !== '' || this.log.password !== null)
+      ) {
         $('.login_input, .password_input').removeClass('error');
         const data = {
           login: this.log.login,

@@ -77,7 +77,7 @@
           <template v-slot:cell(id)="row">
             <p>
               <span class="mr-4">{{ row.item.lvl }} УР</span>
-              <img :src="`../icons/${row.item.rank_end}${row.item.lvl === '0' ? '_white' : ''}.svg`"
+            <img :src="`../icons/${row.item.rank_calc}${row.item.lvl === '0' ? '_white' : ''}.svg`"
               :title="row.item.rank_end" class="rank_icon" />
               <span style="display: inline-block; float:right">{{ row.item.id }}</span><br>
               <span :class="`user_name ${row.item.lvl === '0' ? 'depth-main' : ''}`">
@@ -276,12 +276,6 @@ export default {
           formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
         },
         {
-          key: 'noact',
-          label: 'не активность',
-          formater: (item) => item.noact,
-          sortable: true,
-        },
-        {
           key: 'lo',
           label: 'ЛО',
           formater: (item) => item.lo,
@@ -300,6 +294,12 @@ export default {
           sortable: true,
         },
         {
+          key: 'reserve',
+          label: 'Резерв',
+          formater: (item) => item.reserve,
+          sortable: true,
+        },
+        {
           key: 'oo',
           label: 'ОО',
           formater: (item) => item.oo,
@@ -312,27 +312,39 @@ export default {
           sortable: true,
         },
         {
+          key: 'noact',
+          label: 'не активность',
+          formater: (item) => item.noact,
+          sortable: true,
+        },
+        {
           key: 'rank_beg',
-          label: 'ранг на начало',
+          label: 'Ранг на начало',
           formater: (item) => item.rank_beg,
           sortable: true,
         },
         {
           key: 'rank_calc',
-          label: 'расчетный ранг',
+          label: 'Расчетный ранг',
           formater: (item) => item.rank_calc,
           sortable: true,
         },
         {
-          key: 'areaname',
-          label: 'Территория',
-          formater: (item) => item.areaname,
+          key: 'rank_end',
+          label: 'Ранг на конец',
+          formater: (item) => item.rank_end,
           sortable: true,
         },
         {
           key: 'cityname',
           label: 'Город склада обслуживания',
           formater: (item) => item.cityname,
+          sortable: true,
+        },
+        {
+          key: 'areaname',
+          label: 'Территория',
+          formater: (item) => item.areaname,
           sortable: true,
         },
         {

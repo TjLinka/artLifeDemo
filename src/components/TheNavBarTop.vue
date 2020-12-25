@@ -1,7 +1,6 @@
 <template>
   <div class="container-fluid p-0">
     <b-navbar
-      toggleable="lg"
       type="dark"
       variant="grey"
       :class="is_authorized ? 'main_color' : 'auth_page'"
@@ -13,7 +12,7 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse v-if="is_authorized" id="nav-collapse" is-nav>
-        <button class="siteBtn">Перейти на сайт</button>
+        <a href="https://www.artlife.ru/" class="siteBtn">Перейти на сайт</a>
         <b-navbar-nav class="ml-auto">
           <div class="d-lg-flex"></div>
           <b-nav-item-dropdown right>
@@ -71,7 +70,7 @@ export default {
   color: #32AAA7;
   display: block;
   line-height: 32px;
-  margin-top: 10px;
+  // margin-top: 10px;
   position: absolute;
   border: 1px solid #FFFFFF;
 }

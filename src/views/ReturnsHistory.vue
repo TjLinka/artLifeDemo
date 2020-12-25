@@ -24,7 +24,7 @@
             Поиск возврата <i class="el-icon-search search_icon"></i>
           </div>
         </div>
-      <p>
+      <p class="exp_print mt-3">
         <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
@@ -518,6 +518,9 @@ table[aria-colcount="7"] > tbody > tr.b-table-has-details > td{
   background: #32AAA7;
   color: white !important;
   margin-bottom: 0;
+}
+.refound_table table[aria-colcount='5'] td[colspan='5']{
+  padding: 0;
 }
 .sub_table > table > tbody > tr.b-table-has-details > td{
   background: white !important;

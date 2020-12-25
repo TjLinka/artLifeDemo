@@ -98,7 +98,16 @@ export default {
   components: { DatePicker },
   data() {
     return {
-      newUser: {},
+      newUser: {
+        role: 0,
+        sex: 0,
+        fio: '',
+        country: '',
+        city: '',
+        bthdte: '',
+        phone: '',
+        email: '',
+      },
     };
   },
   methods: {
@@ -129,18 +138,25 @@ export default {
       this.$router.go(-1);
     },
     registr() {
-      const data = {
-        access_level: this.newUser.role,
-        male: this.newUser.sex,
-        fullname: this.newUser.fio,
-        country: this.newUser.country,
-        city: this.newUser.city,
-        bthdte: this.newUser.bthdte,
-        mobile_phone: this.newUser.phone,
-        email: this.newUser.email,
-      };
-      backApi.post('/agent/signup-start', data);
-      this.showToast('Регистрация', 'На вашу почту пришло письмо!', 'success');
+      if (
+        this.newUser.fio !== '' && this.newUser.country !== '' && this.newUser.city !== '' && this.newUser.bthdte !== ''
+        && this.newUser.phone !== '' && this.newUser.email !== ''
+      ) {
+        const data = {
+          access_level: this.newUser.role,
+          male: this.newUser.sex,
+          fullname: this.newUser.fio,
+          country: this.newUser.country,
+          city: this.newUser.city,
+          bthdte: this.newUser.bthdte,
+          mobile_phone: this.newUser.phone,
+          email: this.newUser.email,
+        };
+        backApi.post('/agent/signup-start', data);
+        this.showToast('Регистрация', 'На вашу почту пришло письмо!', 'success');
+      } else {
+        this.showToast('Регистрация', 'Заполните все поля для продолжения регистрации!', 'danger');
+      }
     },
     clearInput(name) {
       this.newUser[name] = null;

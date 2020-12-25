@@ -19,7 +19,7 @@
       >
         {{ tag.name }}
       </el-tag>
-      <p class="exp_print">
+      <p class="exp_print mt-3">
         <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
@@ -392,7 +392,7 @@ export default {
         color: white;
         left: 0;
       }
-.depth-0{
+/* .depth-0{
   background-color: #32AAA7 !important;
   color: white;
 }
@@ -419,7 +419,7 @@ export default {
 .depth-6{
   background-color: #CECFD0 !important;
   color: black;
-}
+} */
 .el-table{
   font-weight: 500;
 }

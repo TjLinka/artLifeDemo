@@ -106,6 +106,8 @@
         <div class="row">
           <div class="col-md custom_input mt-3">
             <input
+              ref="currentPass"
+              v-on:focus="$refs.newPassRepeat.classList.remove('error')"
               type="password"
               name="currentPass"
               id="currentPass"
@@ -117,6 +119,8 @@
           </div>
           <div class="col-md custom_input mt-3">
             <input
+              ref="newPass"
+              v-on:focus="$refs.newPass.classList.remove('error')"
               type="password"
               name="newPass"
               id="newPass"
@@ -128,6 +132,8 @@
           </div>
           <div class="col-md custom_input mt-3">
             <input
+              v-on:focus="$refs.newPassRepeat.classList.remove('error')"
+              ref="newPassRepeat"
               type="password"
               name="newPassRepeat"
               id="newPassRepeat"
@@ -173,6 +179,7 @@ import md5 from 'md5';
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/ru';
+import $ from 'jquery';
 import backApi from '../assets/backApi';
 
 export default {
@@ -183,7 +190,11 @@ export default {
       phoneHash: null,
       smsCode: null,
       smsStatus: false,
-      password: {},
+      password: {
+        newPass: '',
+        newPassRepeat: '',
+        currentPass: '',
+      },
       userInfo: {},
       newPass: null,
       oldPass: null,
@@ -283,6 +294,17 @@ export default {
             this.showToast('Ошибка', error.response.data.detail, 'danger');
           });
       }
+      if (this.password.newPass !== this.password.newPassRepeat || this.password.currentPass === '') {
+        if (this.password.currentPass === '') {
+          $(this.$refs.currentPass).addClass('error');
+          this.showToast('Ошибка', 'Введите Текущий пароль!', 'danger');
+        }
+        if (this.password.newPass !== this.password.newPassRepeat) {
+          $(this.$refs.newPass).addClass('error');
+          $(this.$refs.newPassRepeat).addClass('error');
+          this.showToast('Ошибка', 'Пароли не совпадают!', 'danger');
+        }
+      }
     },
     back() {
       this.$router.go(-1);
@@ -308,6 +330,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.error{
+  border-bottom: 1px solid red;
+}
 .myfoto{
   & img{
     border-radius: 50%;

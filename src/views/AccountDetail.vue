@@ -21,7 +21,7 @@
       >
       </date-picker>
           <span class="licshet ml-5">Состояние лицевого счёта:
-          <span :class="balance < 0 ? 'red' : ''">{{balance}}</span></span>
+          <span :class="balance < 0 ? 'red' : ''">{{balance === null ? 0 : balance}}</span></span>
         </div>
       </div>
       <div class="row mt-4">
@@ -43,7 +43,7 @@
             Фильтр <i class="el-icon-search search_icon"></i>
           </div>
         </div>
-      <p>
+      <p class="exp_print">
         <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>

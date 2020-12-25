@@ -15,6 +15,7 @@
         </p>
         История покупок
       </h2>
+      <p class="p-0 m-0 history_title">Период от и до</p>
       <date-picker
       v-model="rangeDate"
       range-separator=" - "
@@ -41,7 +42,7 @@
         {{ tag.name }}
       </el-tag>
       </div>
-      <p>
+      <p class="exp_print">
         <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>

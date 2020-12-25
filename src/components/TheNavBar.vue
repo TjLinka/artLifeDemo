@@ -1,5 +1,5 @@
 <template>
-  <div class="left_menu" v-show="this.$route.path !== '/login'">
+  <div class="left_menu" v-show="is_authorized && this.$route.path !== '/login'">
     <div class="left_menu_top">
       <div class="logo">
         <a href="#">
@@ -26,7 +26,7 @@
             <li><router-link to="/myinfoedit">Редактирование личных данных</router-link></li>
             <li><router-link to="/sponsorcard">Данные спонсора</router-link></li>
             <li><router-link to="/rights">Передача прав</router-link></li>
-            <li><router-link to="#">Мои реферальные ссылки</router-link></li>
+            <li><a href="https://www.artlife.ru/">Мои реферальные ссылки</a></li>
             <li><router-link to="/client-bonus"
             v-if="role === 'Клиент'"
             >Количество бонусных баллов</router-link></li>

@@ -52,6 +52,7 @@ url('/fonts/FuturaPT-Book.ttf') format('truetype');
 }
 ::-webkit-scrollbar {
     width: 8px; /* ширина нового скроллбара */
+    height: 5px;
 }
 ::-webkit-scrollbar-track {
     // background: #afafaf; /* цвет фона у дорожки */
@@ -387,47 +388,47 @@ main {
     color: white !important;
   }
 }
-.depth-1 {
-  background-color: #bebebe !important;
-  background-color: lighten;
-  color: black;
-}
-.depth-2 {
-  background-color: #c4c5c6 !important;
-  color: black;
-}
-.depth-3 {
-  background-color: #cecfd0 !important;
-  color: black;
-}
-.depth-4 {
-  background-color: #d4d5d7 !important;
-  color: black;
-}
-.depth-5 {
-  background-color: #e3e3e4 !important;
-  color: black;
-}
-.depth-6 {
-  background-color: #ebedf4 !important;
-  color: black;
-}
-.depth-7 {
-  background-color: #eceef3 !important;
-  color: black;
-}
-.depth-8 {
-  background-color: #f0f0f3 !important;
-  color: black;
-}
-.depth-9 {
-  background-color: #f0f1f6 !important;
-  color: black;
-}
-.depth-10 {
-  background-color: #eff0f5 !important;
-  color: black;
-}
+// .depth-1 {
+//   background-color: #bebebe;
+//   background-color: lighten;
+//   color: black;
+// }
+// .depth-2 {
+//   background-color: #c4c5c6 !important;
+//   color: black;
+// }
+// .depth-3 {
+//   background-color: #cecfd0 !important;
+//   color: black;
+// }
+// .depth-4 {
+//   background-color: #d4d5d7 !important;
+//   color: black;
+// }
+// .depth-5 {
+//   background-color: #e3e3e4 !important;
+//   color: black;
+// }
+// .depth-6 {
+//   background-color: #ebedf4 !important;
+//   color: black;
+// }
+// .depth-7 {
+//   background-color: #eceef3 !important;
+//   color: black;
+// }
+// .depth-8 {
+//   background-color: #f0f0f3 !important;
+//   color: black;
+// }
+// .depth-9 {
+//   background-color: #f0f1f6 !important;
+//   color: black;
+// }
+// .depth-10 {
+//   background-color: #eff0f5 !important;
+//   color: black;
+// }
 .b-table-row-selected{
   background-color: #3D8987 !important;
   color: white !important;
@@ -482,39 +483,39 @@ input[type='number'] {
   color: white;
 }
 .depth-1 {
-  background-color: #AED9D8 !important;
+  background-color: #AED9D8;
   color: black;
 }
 .depth-2 {
-  background-color: #B5CCE2 !important;
+  background-color: #B5CCE2 ;
   color: black;
 }
 .depth-3 {
-  background-color: #C1D5E9 !important;
+  background-color: #C1D5E9 ;
   color: black;
 }
 .depth-4 {
-  background-color: #BEBEBE !important;
+  background-color: #BEBEBE ;
   color: black;
 }
 .depth-5 {
-  background-color: #C4C5C6 !important;
+  background-color: #C4C5C6 ;
   color: black;
 }
 .depth-6 {
-  background-color: #CECFD0 !important;
+  background-color: #CECFD0 ;
   color: black;
 }
 .depth-7 {
-  background-color: #D4D5D7 !important;
+  background-color: #D4D5D7 ;
   color: black;
 }
 .depth-8 {
-  background-color: #E3E3E4 !important;
+  background-color: #E3E3E4 ;
   color: black;
 }
 .depth-9 {
-  background-color: #EBEDF4 !important;
+  background-color: #EBEDF4 ;
   color: black;
 }
 .el-icon-arrow-left,
@@ -611,9 +612,15 @@ th[aria-colindex='1']{
   border-top: 1px solid #BABABA !important;
   border-bottom: 1px solid #BABABA !important;
   font-family: 'FuturaPTDemi' !important;
-  font-weight: 500 !important;
+  // font-weight: 500 !important;
   color: black ;
 }
+.exp_print {
+    span {
+      color: #32aaa7;
+      cursor: pointer;
+    }
+  }
 // th[role='columnheader']{
 //   font-family: 'FuturaPTDemi' !important;
 // }

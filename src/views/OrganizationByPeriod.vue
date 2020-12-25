@@ -12,6 +12,25 @@
         <div class="col search__btn mobile" @click="toggleSearch" v-if="!searchActive">
           Настройки дерева <i class="el-icon-search search_icon"></i>
         </div>
+        <!-- <div class="date_picker_comp">
+          <div>
+          <i
+            class="arrow_left"
+            @click="periodIndex = periodIndex - 1 >= 0 ? periodIndex - 1 : periods.length - 1"
+          >
+          </i>
+          <span class="date_show">
+            {{ months[new Date(currentPeriod).getMonth()] }}
+            {{ new Date(currentPeriod).getFullYear() }}
+          </span>
+            <i class="arrow_right"
+            @click="periodIndex = (periodIndex + 1) % periods.length"></i>
+          </div>
+        </div> -->
+        <div class="perioad__picker mb-3">
+        <BasePeriodPicker :currentPeriod="currentPeriod"
+        v-on:next-period="nextPeriod" class="period_picker"/>
+        </div>
       <el-tag
         v-for="tag in tags"
         :key="tag.name"
@@ -22,7 +41,7 @@
       >
         {{ tag.name }}
       </el-tag>
-      <p class="exp_print">
+      <p class="exp_print mt-3">
         <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
@@ -53,7 +72,7 @@
             <span v-else>
               <span>{{scope.row.depth}} УР</span>
               <img
-              :src="`../icons/${scope.row.rank_end}${scope.row.depth === 0 ? '_white' : ''}.svg`"
+              :src="`../icons/${scope.row.rank_calc}${scope.row.depth === 0 ? '_white' : ''}.svg`"
               :title="scope.row.rank_end" class="rank_icon">
               <span class="user_id">{{ scope.row.id }}</span><br />
               <router-link :to="`/agent/${scope.row.id}`"
@@ -75,7 +94,7 @@
             Настройки дерева
             <span class="close_btn" @click="searchActive = !searchActive"></span>
             </h3>
-        <div class="date_picker_comp">
+        <!-- <div class="date_picker_comp">
           <div>
           <i
             class="arrow_left"
@@ -89,7 +108,7 @@
             <i class="arrow_right"
             @click="periodIndex = (periodIndex + 1) % periods.length"></i>
           </div>
-        </div>
+        </div> -->
         <div class="row">
           <div class="col-md-12 mt-3">
             <b-form-group label="Выбор дерева">
@@ -136,10 +155,13 @@
 
 <script>
 import backApi from '../assets/backApi';
+import BasePeriodPicker from '../components/BasePeriodPicker.vue';
 
 export default {
   name: 'OrganizationByPeriod',
-  components: {},
+  components: {
+    BasePeriodPicker,
+  },
   data() {
     const rows = [];
     const columns = [
@@ -162,11 +184,6 @@ export default {
         property: 'ngo',
         title: 'НГО',
         formater: (item) => item.ngo,
-      },
-      {
-        property: 'reserve',
-        title: 'Резерв',
-        formater: (item) => item.oo,
       },
       {
         property: 'oo',
@@ -195,6 +212,11 @@ export default {
       },
       {
         property: 'rank_end',
+        title: 'Расчетный ранг',
+        formater: (item) => item.rank_end,
+      },
+      {
+        property: 'rank_end',
         title: 'Ранг на конец',
         formater: (item) => item.rank_end,
       },
@@ -220,7 +242,6 @@ export default {
         const result = a.comdte > b.comdte ? 1 : -1;
         return result;
       });
-      this.tags.push({ name: `${this.months[new Date(this.periods[this.periods.length - 1].comdte).getMonth()]} ${new Date(this.currentPeriod).getFullYear()}`, key: 'period' });
       this.periodIndex = this.periods.length - 1;
       const data = {
         params: {
@@ -251,6 +272,24 @@ export default {
       } catch (e) {
         return '';
       }
+    },
+  },
+  watch: {
+    currentPeriod(v) {
+      const data = {
+        params: {
+          filter: this.tree_type,
+          get_root: true,
+          period: v,
+        },
+      };
+      backApi.get('/agents-tree-hist/period', data).then((response) => {
+        this.rows = response.data.entries;
+        this.rows.forEach((e) => {
+          e.depth = 0;
+          e.children = [];
+        });
+      });
     },
   },
   methods: {
@@ -322,9 +361,6 @@ export default {
         this.tree_type = 'full';
       } else if (tag.key === 'agent_id') {
         this.agent_id = null;
-      } else if (tag.key === 'period') {
-        this.periodIndex = this.periods.length - 1;
-        this.tags.push({ name: `${this.months[new Date(this.periods[this.periods.length - 1].comdte).getMonth()]} ${new Date(this.currentPeriod).getFullYear()}`, key: 'period' });
       }
       this.updateData();
     },
@@ -394,12 +430,6 @@ export default {
         }
         data.params.agent_id = this.agent_id;
       }
-      const tag = this.tags.find((t) => t.key === 'period');
-      if (tag) {
-        tag.name = `${this.months[new Date(this.currentPeriod).getMonth()]} ${new Date(this.currentPeriod).getFullYear()}`;
-      } else if (this.currentPeriod !== this.periods[this.periods.length - 1].comdte) {
-        this.tags.push({ name: `${this.months[new Date(this.currentPeriod).getMonth()]} ${new Date(this.currentPeriod).getFullYear()}`, key: 'period' });
-      }
       this.searchActive = false;
       backApi.get('/agents-tree-hist/period', data).then((response) => {
         this.rows = response.data.entries;
@@ -409,6 +439,10 @@ export default {
         });
       });
       this.tree_key += 1;
+    },
+    nextPeriod(x) {
+      this.period_enabled = true;
+      this.periodIndex = (this.periodIndex + this.periods.length + x) % this.periods.length;
     },
   },
 };
@@ -603,39 +637,39 @@ span[class*="el-tag"] deep i{
   background-color: #32aaa7 !important;
   color: white;
 }
-.depth-1 {
+.orgbyhist .depth-1 {
   background-color: #AED9D8 !important;
   color: black;
 }
-.depth-2 {
+.orgbyhist .depth-2 {
   background-color: #B5CCE2 !important;
   color: black;
 }
-.depth-3 {
+.orgbyhist .depth-3 {
   background-color: #C1D5E9 !important;
   color: black;
 }
-.depth-4 {
+.orgbyhist .depth-4 {
   background-color: #BEBEBE !important;
   color: black;
 }
-.depth-5 {
+.orgbyhist .depth-5 {
   background-color: #C4C5C6 !important;
   color: black;
 }
-.depth-6 {
+.orgbyhist .depth-6 {
   background-color: #CECFD0 !important;
   color: black;
 }
-.depth-7 {
+.orgbyhist .depth-7 {
   background-color: #D4D5D7 !important;
   color: black;
 }
-.depth-8 {
+.orgbyhist .depth-8 {
   background-color: #E3E3E4 !important;
   color: black;
 }
-.depth-9 {
+.orgbyhist .depth-9 {
   background-color: #EBEDF4 !important;
   color: black;
 }
