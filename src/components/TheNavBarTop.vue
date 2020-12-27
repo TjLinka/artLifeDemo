@@ -22,7 +22,7 @@
             </template>
             <b-dropdown-item to="/">{{ agentname }}</b-dropdown-item>
             <b-dropdown-item disabled>
-              <span><small style="color: grey; font-size: 12px;">Статус</small></span
+              <span><small style="color: grey; font-size: 12px;">Тип соглашения</small></span
               ><br />
               {{role}}
             </b-dropdown-item>

@@ -254,7 +254,7 @@ export default {
     savePhone() {
       if (this.userInfo.phone !== '' && this.userInfo.phone !== null) {
         backApi
-          .post('/agent/change-phone-start', { new_phone: this.userInfo.phone })
+          .post('/agent/change-phone-start', { new_phone: this.userInfo.phone.replace(/[-,(,), ]/g, '') })
           .then((Response) => {
             this.phoneHash = Response.data;
             this.smsStatus = true;

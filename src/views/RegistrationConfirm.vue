@@ -112,7 +112,7 @@ export default {
     phoneCodeCome() {
       const data = {
         hash_content: this.$route.params.signup_hash,
-        mobile_phone: this.newUser.mobile_phone,
+        mobile_phone: this.newUser.mobile_phone.replace(/[-,(,), ]/g, ''),
       };
       backApi.post('/agent/new-agent/send-code', data)
         .then(() => {
