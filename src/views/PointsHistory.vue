@@ -60,9 +60,14 @@
             {{ data.value | localInt}}
           </template>
       </b-table>
-      <h2 class="licevoischet__page__summ">
+      <!-- <h2 class="licevoischet__page__summ">
         НА СЧЁТ = {{ summIncome }} , СО СЧЕТА = {{ summOutcome }}, ИЗМЕНЕНИЯ = {{ changes }}
-      </h2>
+      </h2> -->
+      <h2 class="licevoischet__page__summ">
+        <span class="mr-4">НА СЧЁТ = {{ summIncome }}        </span>
+        <span class="mr-4">СО СЧЕТА = {{ summOutcome }}        </span>
+        <span class="mr-4">ИЗМЕНЕНИЯ  = {{ changes }}         </span>
+        </h2>
     </div>
       <footer class="container-fluid cust_modal pb-4">
       <div class="row desk_trans">
