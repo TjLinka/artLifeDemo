@@ -187,15 +187,6 @@ export default {
           },
         },
         {
-          key: 'noact',
-          label: 'Не активность',
-          sortable: true,
-          thStyle: {
-            width: '150px',
-            minWidth: '130px',
-          },
-        },
-        {
           key: 'lo',
           label: 'ЛО',
           sortable: true,
@@ -238,6 +229,15 @@ export default {
           thStyle: {
             width: '100px',
             minWidth: '50px',
+          },
+        },
+        {
+          key: 'noact',
+          label: 'Не активность',
+          sortable: true,
+          thStyle: {
+            width: '150px',
+            minWidth: '130px',
           },
         },
         {

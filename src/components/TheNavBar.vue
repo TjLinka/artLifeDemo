@@ -27,6 +27,7 @@
             <li><router-link to="/sponsorcard">Данные спонсора</router-link></li>
             <li v-if="role !== 'Клиент'"><router-link to="/rights">Передача прав</router-link></li>
             <li><a href="https://www.artlife.ru/">Мои реферальные ссылки</a></li>
+            <li><router-link to="/registration">Регистрация партнёра</router-link></li>
           </ul>
         </li>
         <li>
@@ -75,7 +76,7 @@
             >Количество бонусных баллов</router-link></li>
           </ul>
         </li>
-        <li>
+        <!-- <li>
           <a class="nav_parent" href="#">
             <span class="ico"><img src="../assets/imgs/i4.png" alt=""/></span>
             <span class="ico_t">Операции</span>
@@ -84,7 +85,7 @@
             <li class="mobilis"><span class="i_m">Операции</span></li>
             <li><router-link to="/registration">Регистрация партнёра</router-link></li>
           </ul>
-        </li>
+        </li> -->
         <li class="hover">
           <a class="nav_parent" href="#">
             <span class="ico"><img src="../assets/imgs/i5.png" alt=""/></span>

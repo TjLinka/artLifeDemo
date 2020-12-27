@@ -20,7 +20,7 @@
         @click="searchActive = !searchActive" v-if="!searchActive">
           Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
         </div>
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-xl-6 mt-4">
           <button
           :class="`update ${transAccess ? 'disabled' : ''}`"
@@ -29,12 +29,11 @@
           >Трансферт</button>
           <br class="mobile_br">
           <p class="exp_print">
-            <!-- <span class="mr-3">Печать</span> -->
             <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
             <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
           </p>
         </div>
-      </div>
+      </div> -->
       <div class="row mb-4">
         <div class="col-md-4 uptran">
           <el-autocomplete
@@ -60,6 +59,20 @@
           >
             {{ tag.name }}
           </el-tag>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-6 mt-4">
+          <button
+          :class="`update ${transAccess ? 'disabled' : ''}`"
+          @click="showTrans = !showTrans"
+          :disabled="transAccess"
+          >Трансферт</button>
+          <br class="mobile_br">
+          <p class="exp_print">
+            <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
+            <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
+          </p>
         </div>
       </div>
       <div class="transmaneg_table" v-loading="loading">

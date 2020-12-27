@@ -95,7 +95,7 @@
         </el-table-column>
       </el-table>
       </div>
-      <footer class="cust_modal">
+      <!-- <footer class="cust_modal">
               <div class="row">
         <div class="col text-center search__btn desktop" @click="toggleSearch" v-if="!searchActive">
           Настройки дерева <i class="el-icon-search search_icon"></i>
@@ -106,7 +106,7 @@
           <h3 class="mb-3">
             Настройки дерева
             <span class="close_btn" @click="searchActive = !searchActive"></span>
-            </h3>
+            </h3> -->
         <!-- <div class="date_picker_comp">
           <div>
           <i
@@ -122,7 +122,7 @@
             @click="periodIndex = (periodIndex + 1) % periods.length"></i>
           </div>
         </div> -->
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-md-12 mt-3">
             <b-form-group label="Выбор дерева">
               <b-form-radio
@@ -144,8 +144,8 @@
               >
             </b-form-group>
           </div>
-        </div>
-        <div class="row mt-3 edit">
+        </div> -->
+        <!-- <div class="row mt-3 edit">
           <div class="col-sm-6 mb-4">
             <span v-if="state2" class="custom_label">Партнер получатель</span>
           <el-autocomplete
@@ -167,7 +167,7 @@
         </div>
         </div>
       </div>
-      </footer>
+      </footer> -->
     </div>
     <!-- <div :class="`mobile_modal_mask ${searchActive ? 'active' : ''}`"></div> -->
   </div>
