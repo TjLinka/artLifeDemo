@@ -794,27 +794,29 @@ export default {
   float: right;
   padding-bottom: 0;
   margin-top: 10px;
-  &::after {
-      position: absolute;
-      content: '';
-      width: 100%;
-      left: 0;
-      bottom: 0;
-      height: 2px;
-      border-bottom: 1px dotted black;
-  }
+  text-decoration: underline;
+  // &::after {
+  //     position: absolute;
+  //     content: '';
+  //     width: 100%;
+  //     left: 0;
+  //     bottom: 0;
+  //     height: 2px;
+  //     border-bottom: 1px dotted black;
+  // }
 }
-.user_name.depth-main::after{
-      position: absolute;
-      content: '';
-      width: 100%;
-      left: 0;
-      bottom: 0;
-      height: 2px;
-      border-bottom: 1px dotted white;
-}
+// .user_name.depth-main::after{
+//       position: absolute;
+//       content: '';
+//       width: 100%;
+//       left: 0;
+//       bottom: 0;
+//       height: 2px;
+//       border-bottom: 1px dotted white;
+// }
 .user_name.depth-main{
   color: white;
+  text-decoration: underline;
 }
 .mobile_br{
   display: none;
