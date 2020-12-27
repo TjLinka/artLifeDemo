@@ -22,13 +22,6 @@
         <button @click="phoneCodeCome" v-if="!codeCome">
             Отправить код потверждения
         </button>
-        <button
-        v-else
-        @click="getAccess"
-        :disabled="!status"
-        :class="`${status ? '' : 'disabled'}`">
-            Потвердить код
-        </button>
         <b-form-checkbox
           id="checkbox-1"
           v-model="status"
@@ -39,6 +32,13 @@
         >
           Согласен на обработку данных
         </b-form-checkbox>
+        <button
+        v-else
+        @click="getAccess"
+        :disabled="!status"
+        :class="`${status ? '' : 'disabled'}`">
+            Потвердить код
+        </button>
         <br>
         <button
         v-if="registeration"

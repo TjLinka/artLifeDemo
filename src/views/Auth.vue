@@ -24,10 +24,17 @@
           </div>
         </div>
         <form>
-          <div class="custom_input login_input">
-            <input type="text" name="login" id="login" required v-model="log.login" />
-            <label for="login">{{value2 ? 'Телефон' : 'ID'}}</label>
-            <span class="clear_icon" @click="clearInput('login')"></span>
+          <div class="custom_input login_input" v-show="!value2">
+            <input type="number" name="login" id="login" required v-model="log.login_ID" />
+            <label for="login">ID</label>
+            <span class="clear_icon" @click="clearInput('login_ID')"></span>
+          </div>
+          <div class="custom_input login_input"  v-show="value2">
+            <input type="text"
+            v-mask="'# (###)-###-##-##'"
+            name="login" id="login" required v-model="log.login_phone" />
+            <label for="login">Телефон</label>
+            <span class="clear_icon" @click="clearInput('login_phone')"></span>
           </div>
           <div  class="custom_input password_input">
             <input type="password" name="password" id="password" required v-model="log.password" />
@@ -91,20 +98,20 @@ export default {
     },
     ...mapActions('auth', ['login']),
     sf() {
-      if ((this.log.login !== '' || this.log.login !== null)
+      if ((this.log.login_ID !== '' || this.log.login_ID !== null)
       && (this.log.password !== '' || this.log.password !== null)
       ) {
         $('.login_input, .password_input').removeClass('error');
         let data = {};
         if (!this.value2) {
           data = {
-            login: this.log.login,
+            login: this.log.login_ID,
             pwd_hash: md5(this.log.password),
             authMethod: this.value2,
           };
         } else {
           data = {
-            phone: this.log.login,
+            phone: this.log.login_phone.replace(/[-,(,), ]/g, ''),
             pwd_hash: md5(this.log.password),
             authMethod: this.value2,
           };
@@ -119,7 +126,7 @@ export default {
           });
       }
       $('.login_input, .password_input').removeClass('error');
-      if (this.log.login === '') {
+      if (this.log.login_ID === '') {
         $('.login_input').addClass('error');
         this.showToast('Ошибка!', 'Заполните поле Логин', 'danger');
       }
@@ -152,6 +159,9 @@ export default {
     font-size: 20px;
   }
   &:nth-of-type(1){
+    margin-bottom: 30px;
+  }
+  &:nth-of-type(2){
     margin-bottom: 30px;
   }
   & label{

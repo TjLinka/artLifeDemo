@@ -81,7 +81,7 @@
           </div>
           <div class="col-md-6">
             <p class="page__caption">Смена телефона</p>
-            <div class="custom_input t" v-if="!smsStatus">
+            <div class="custom_input t" v-show="!smsStatus">
               <input type="text"
               v-mask="'# (###)-###-##-##'"
               name="phone" id="phone"
@@ -92,14 +92,24 @@
                 Сохранить изменения
               </button>
             </div>
-            <div class="custom_input t" v-if="smsStatus">
+            <div class="custom_input t" v-show="smsStatus">
+              <input type="text"
+              name="smsCode" id="smsCode"
+              required v-model="smsCode" />
+              <label for="smsCode">Код потверждения</label>
+              <span class="clear_icon" @click="clearInput('phone')"></span>
+              <button class="save__newinfo mt-3" v-on:click="checkSmsCode">
+                Потвердить
+              </button>
+            </div>
+            <!-- <div class="custom_input t" v-if="smsStatus">
               <input type="text" name="smsCode" id="smsCode" required v-model="smsCode" />
               <label for="smsCode">Код потверждения</label>
               <span class="clear_icon" @click="clearInput('smsCode')"></span>
               <button class="save__newinfo mt-3" v-on:click="checkSmsCode">
                 Потвердить
               </button>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="row edit">

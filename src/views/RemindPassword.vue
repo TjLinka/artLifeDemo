@@ -49,6 +49,7 @@ export default {
       this.$bvToast.toast([vNodesMsg], {
         title: [vNodesTitle],
         solid: true,
+        autoHideDelay: 1000,
         variant: status,
       });
     },
@@ -61,7 +62,7 @@ export default {
         };
         backApi.get('/remind-password', data).then(() => {
           this.showToast('Восстановление пароля', 'На вашу почту пришло письмо!', 'success');
-          setTimeout(() => { this.$router.push('/login'); }, 2500);
+          setTimeout(() => { this.$router.push('/login'); }, 1500);
         }).catch(() => {
           this.showToast('Восстановление пароля', 'Почта указана не верно', 'danger');
         });
