@@ -115,20 +115,23 @@
             <label for="comment">Комментарий</label>
             <span class="clear_icon" @click="clearComment('comment')"></span>
           </div>
-          <div class="col-md-6 custom_input">
+          <!-- <div class="col-md-6 custom_input">
            <input type="text" name="operType"
             id="operType" required v-model="operType" />
             <label for="operType">Тип операции</label>
             <span class="clear_icon" @click="clearOperType('operType')"></span>
+          </div> -->
+          <div class="col-md-6">
+            <button class="mr-2 update" @click="updateData">Показать</button>
           </div>
         </div>
-        <div class="row edit mt-4">
+        <!-- <div class="row edit mt-4">
           <div class="col-md-6">
           </div>
           <div class="col-md-6">
             <button class="mr-2 update" @click="updateData">Показать</button>
           </div>
-        </div>
+        </div> -->
         </div>
       </div>
       </footer>
@@ -384,7 +387,12 @@ export default {
           this.tags.push({ name: `Тип баллов: ${treeName}`, key: 'points_type' });
         }
       } else {
-        this.tags.push({ name: 'Тип баллов: Все', key: 'points_type' });
+        const tag = this.tags.find((t) => t.key === 'points_type');
+        if (tag) {
+          tag.name = 'Тип баллов: Все';
+        } else {
+          this.tags.push({ name: 'Тип баллов: Все', key: 'points_type' });
+        }
       }
       if (this.comment !== null && this.comment !== '') {
         const tag = this.tags.find((t) => t.key === 'comment');

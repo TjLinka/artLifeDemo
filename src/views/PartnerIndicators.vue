@@ -61,7 +61,7 @@
         {{ row.item.ngo | localInt }}
       </template>
       <template v-slot:cell(oo)="row">
-        {{ row.item.oo | localInt }}
+        {{ row.item.so | localInt }}
       </template>
       <template v-slot:cell(ko)="row">
         {{ row.item.ko | localInt }}
@@ -212,7 +212,7 @@ export default {
           },
         },
         {
-          key: 'oo',
+          key: 'so',
           label: 'ОО',
           sortable: true,
           thStyle: {
@@ -301,7 +301,14 @@ export default {
       });
     },
     downloadXls() {
-      backApi.get('/agent/all-periods-indicators/excel', { responseType: 'blob' })
+      const dataa = {
+        params: {
+          beg_comdte: this.monthRange ? this.monthRange[0] : null,
+          end_comdte: this.monthRange ? this.monthRange[1] : null,
+        },
+        responseType: 'blob',
+      };
+      backApi.get('/agent/all-periods-indicators/excel', dataa)
         .then(({ data }) => {
           const filename = 'История показателей партнера по периодам.xlsx';
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
@@ -314,7 +321,14 @@ export default {
         });
     },
     downloadPdf() {
-      backApi.get('/agent/all-periods-indicators/pdf', { responseType: 'blob' })
+      const dataa = {
+        params: {
+          beg_comdte: this.monthRange ? this.monthRange[0] : null,
+          end_comdte: this.monthRange ? this.monthRange[1] : null,
+        },
+        responseType: 'blob',
+      };
+      backApi.get('/agent/all-periods-indicators/pdf', dataa)
         .then(({ data }) => {
           const filename = 'История показателей партнера по периодам.pdf';
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));

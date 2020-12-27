@@ -248,7 +248,7 @@ export default {
       searchActive: false,
       months: ['Январь', 'Ферваль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
       tree_type: 'full',
-      agent_id: null,
+      currentUserID: null,
       modal_agent: {
         agent_id: '',
         name: '',
@@ -445,14 +445,26 @@ export default {
       this.agent_id = null;
     },
     downloadXls() {
+      const dataS = {
+        params:
+          {
+            agent_id: this.modal_agent.agent_id !== '' ? this.modal_agent.agent_id : null,
+            period: this.currentPeriod,
+            filter: this.tree_type,
+            get_root: true,
+            context: this.currentUserID,
+          },
+        responseType: 'blob',
+      };
       backApi.get('/agents-tree-hist/period/excel',
         {
           params:
           {
-            agent_id: this.agent_id,
+            agent_id: this.modal_agent.agent_id !== '' ? this.modal_agent.agent_id : null,
             period: this.currentPeriod,
             filter: this.tree_type,
             get_root: true,
+            context: this.currentUserID,
           },
           responseType: 'blob',
         })
@@ -472,10 +484,11 @@ export default {
         {
           params:
           {
-            agent_id: this.agent_id,
-            filter: this.tree_type,
+            agent_id: this.modal_agent.agent_id !== '' ? this.modal_agent.agent_id : null,
             period: this.currentPeriod,
+            filter: this.tree_type,
             get_root: true,
+            context: this.currentUserID,
           },
           responseType: 'blob',
         })

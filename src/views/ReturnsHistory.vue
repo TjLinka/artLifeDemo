@@ -221,7 +221,7 @@ export default {
         },
         {
           key: 'dte',
-          label: 'Дата',
+          label: 'Дата сервера',
           sortable: true,
           formatter(v) {
             return new Date(v).toLocaleDateString();

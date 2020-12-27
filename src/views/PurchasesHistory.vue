@@ -66,7 +66,7 @@
             <span>{{ row.item.sale_id }}</span>
           </template>
           <template v-slot:cell(delivery)="row">
-              <span>{{row.item.delivery === 'нет' ? 'Самовывоз' : 'Доставка до адреса'}}</span>
+              <span>{{row.item.delivery}}</span>
             <!-- <span>{{ row.item.webshop_id }}</span> -->
           </template>
           <template v-slot:row-details="row">
@@ -391,17 +391,21 @@ export default {
       });
     },
     downloadXls() {
-      backApi.get('/agent/sales/excel',
-        {
-          params:
-          {
-            name: this.name,
-            articul: this.articul,
-            saleid: this.saleid,
-            comdte: this.period_enabled ? this.currentPeriod : null,
-          },
-          responseType: 'blob',
-        })
+      const dataa = {
+        params: {
+          articul: this.articul !== '' ? this.articul : null,
+          name: this.name,
+          // eslint-disable-next-line radix
+          saleid: this.naknum !== '' ? this.naknum : null,
+          beg_dte: this.rangeDate ? this.rangeDate[0] : null,
+          end_dte: this.rangeDate ? this.rangeDate[1] : null,
+          i_delivery: this.delivery !== '' ? this.delivery : null,
+          // eslint-disable-next-line radix
+          i_status: this.status !== '' ? this.status : null,
+        },
+        responseType: 'blob',
+      };
+      backApi.get('/agent/sales/excel', dataa)
         .then(({ data }) => {
           const filename = 'История покупок.xlsx';
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
@@ -414,17 +418,21 @@ export default {
         });
     },
     downloadPdf() {
-      backApi.get('/agent/sales/pdf',
-        {
-          params:
-          {
-            name: this.name,
-            articul: this.articul,
-            saleid: this.saleid,
-            comdte: this.period_enabled ? this.currentPeriod : null,
-          },
-          responseType: 'blob',
-        })
+      const dataa = {
+        params: {
+          articul: this.articul !== '' ? this.articul : null,
+          name: this.name,
+          // eslint-disable-next-line radix
+          saleid: this.naknum !== '' ? this.naknum : null,
+          beg_dte: this.rangeDate ? this.rangeDate[0] : null,
+          end_dte: this.rangeDate ? this.rangeDate[1] : null,
+          i_delivery: this.delivery !== '' ? this.delivery : null,
+          // eslint-disable-next-line radix
+          i_status: this.status !== '' ? this.status : null,
+        },
+        responseType: 'blob',
+      };
+      backApi.get('/agent/sales/pdf', dataa)
         .then(({ data }) => {
           const filename = 'История покупок.pdf';
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));

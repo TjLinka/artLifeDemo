@@ -273,6 +273,7 @@ export default {
       state: '',
       links: [],
       id: null,
+      currentUserId: null,
       transAccess: true,
       showTrans: false,
       loading: true,
@@ -385,10 +386,11 @@ export default {
       this.areaList = Response.data.entries;
     });
     if (this.$route.params.id) {
-      backApi.get('agent/share-transfert-list', { params: { show_root: 1 } }).then(() => {
+      backApi.get('agent/share-transfert-list', { params: { show_root: 1 } }).then((Response) => {
         // eslint-disable-next-line eqeqeq
         const user = Response.data.entries.filter((u) => u.id == this.$route.params.id);
         this.state = `${user[0].id} - ${user[0].agentname}`;
+        this.currentUserId = user[0].id;
       });
       backApi.get('/agent/flat_genealogy', {
         params: {
@@ -409,6 +411,7 @@ export default {
     } else {
       backApi.get('/agent/profile').then((Response) => {
         this.state = `${Response.data.id} - ${Response.data.name}`;
+        this.currentUserId = Response.data.id;
         backApi.get('/agent/flat_genealogy', {
           params: {
             agent_id: Response.data.id,
@@ -432,6 +435,7 @@ export default {
     dd() {
       this.loading = true;
       backApi.get('/agent/profile').then((Response) => {
+        this.currentUserId = Response.data.id;
         this.state = `${Response.data.id} - ${Response.data.name}`;
         backApi.get('/agent/flat_genealogy', {
           params: {
@@ -455,6 +459,7 @@ export default {
     },
     handleSelect(item) {
       this.loading = true;
+      this.currentUserId = item.id;
       backApi.get('/agent/flat_genealogy', {
         params: {
           agent_id: item.id,
@@ -551,25 +556,32 @@ export default {
       const statusEnd = this.rankList.find((i) => i.rankname === this.filterData.rank_end)
         ? this.rankList.find((i) => i.rankname === this.filterData.rank_end).i_status : null;
 
-      const dataXlsx = {
-        with_terminated: this.filterData.status,
-        tree_type: this.tree_type,
-        num: this.filterData.agent_id,
-        fullname: this.filterData.fullname,
-        area_id: this.filterData.area_id,
-        city: this.filterData.store,
-        i_rank_beg: rankBeg,
-        i_status_beg: statusBeg,
-        i_rank_calc: rankCalc,
-        i_status_calc: statusCalc,
-        i_rank_end: rankEnd,
-        i_status_end: statusEnd,
+      const areaName = this.areaList.find((a) => a.area_id === this.filterData.area_id)
+        ? this.areaList.find((a) => a.area_id === this.filterData.area_id).area_name : null;
+
+      const dataa = {
+        params: {
+          context: this.currentUserId,
+          with_terminated: this.filterData.status,
+          tree_type: this.tree_type,
+          agent_id: this.filterData.agent_id,
+          fullname: this.filterData.fullname,
+          area_name: areaName,
+          area_id: this.filterData.area_id,
+          city: this.filterData.store,
+          rank_beg_name: this.filterData.rank_beg,
+          i_rank_beg: rankBeg,
+          i_status_beg: statusBeg,
+          rank_calc_name: this.filterData.rank_calc,
+          i_rank_calc: rankCalc,
+          i_status_calc: statusCalc,
+          rank_end_name: this.filterData.rank_end,
+          i_rank_end: rankEnd,
+          i_status_end: statusEnd,
+        },
+        responseType: 'blob',
       };
-      backApi.get('/agent/flat_genealogy/excel',
-        {
-          dataXlsx,
-          responseType: 'blob',
-        })
+      backApi.get('/agent/flat_genealogy/excel', dataa)
         .then(({ data }) => {
           const filename = 'Управление трансфертами структуры.xlsx';
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
@@ -597,25 +609,46 @@ export default {
       const statusEnd = this.rankList.find((i) => i.rankname === this.filterData.rank_end)
         ? this.rankList.find((i) => i.rankname === this.filterData.rank_end).i_status : null;
 
-      const dataXlsx = {
-        with_terminated: this.filterData.status,
-        tree_type: this.tree_type,
-        num: this.filterData.agent_id,
-        fullname: this.filterData.fullname,
-        area_id: this.filterData.area_id,
-        city: this.filterData.store,
-        i_rank_beg: rankBeg,
-        i_status_beg: statusBeg,
-        i_rank_calc: rankCalc,
-        i_status_calc: statusCalc,
-        i_rank_end: rankEnd,
-        i_status_end: statusEnd,
+      const areaName = this.areaList.find((a) => a.area_id === this.filterData.area_id)
+        ? this.areaList.find((a) => a.area_id === this.filterData.area_id).area_name : null;
+
+      // const dataXlsx = {
+      //   with_terminated: this.filterData.status,
+      //   tree_type: this.tree_type,
+      //   num: this.filterData.agent_id,
+      //   fullname: this.filterData.fullname,
+      //   area_id: this.filterData.area_id,
+      //   city: this.filterData.store,
+      //   i_rank_beg: rankBeg,
+      //   i_status_beg: statusBeg,
+      //   i_rank_calc: rankCalc,
+      //   i_status_calc: statusCalc,
+      //   i_rank_end: rankEnd,
+      //   i_status_end: statusEnd,
+      // }
+      const dataa = {
+        params: {
+          context: this.currentUserId,
+          with_terminated: this.filterData.status,
+          tree_type: this.tree_type,
+          agent_id: this.filterData.agent_id,
+          fullname: this.filterData.fullname,
+          area_id: this.filterData.area_id,
+          area_name: areaName,
+          city: this.filterData.store,
+          rank_beg_name: this.filterData.rank_beg,
+          i_rank_beg: rankBeg,
+          i_status_beg: statusBeg,
+          rank_calc_name: this.filterData.rank_calc,
+          i_rank_calc: rankCalc,
+          i_status_calc: statusCalc,
+          rank_end_name: this.filterData.rank_end,
+          i_rank_end: rankEnd,
+          i_status_end: statusEnd,
+        },
+        responseType: 'blob',
       };
-      backApi.get('/agent/flat_genealogy/pdf',
-        {
-          dataXlsx,
-          responseType: 'blob',
-        })
+      backApi.get('/agent/flat_genealogy/pdf', dataa)
         .then(({ data }) => {
           const filename = 'Управление трансфертами структуры.pdf';
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
