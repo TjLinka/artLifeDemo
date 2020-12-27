@@ -255,7 +255,7 @@ export default {
           .then((Response) => {
             this.phoneHash = Response.data;
             this.smsStatus = true;
-            // this.showToast('Смена пароля', 'Ваш пароль успешно изменён!', 'success');
+            this.showToast('Смена пароля', 'На ваш телефон придет сообщение с смс кодом!', 'success');
           })
           .catch((error) => {
             this.showToast('Ошибка', error.response.data.detail, 'danger');
