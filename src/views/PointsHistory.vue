@@ -251,6 +251,9 @@ export default {
     backApi.get('agent/points-detail').then((Response) => {
       this.entries = Response.data.entries;
     });
+    const treeNameTranslate = { 0: 'Резерв', 1: 'ЛО', null: 'Все' };
+    const treeName = treeNameTranslate.null;
+    this.tags.push({ name: `Тип баллов: ${treeName}`, key: 'points_type' });
   },
   computed: {
     summIncome() {
@@ -321,14 +324,20 @@ export default {
         });
     },
     handleClose(event, tag) {
-      this.tags.splice(this.tags.indexOf(tag), 1);
       if (tag.key === 'points_type') {
-        this.points_type = null;
-        this.updateData(false);
-      } else if (tag.key === 'comment') {
+        if (tag.name !== 'Тип баллов: Все') {
+          this.tags.splice(this.tags.indexOf(tag), 1);
+          this.points_type = null;
+          this.updateData(false);
+        }
+      }
+      if (tag.key === 'comment') {
+        this.tags.splice(this.tags.indexOf(tag), 1);
         this.comment = null;
         this.updateData(false);
-      } else if (tag.key === 'operType') {
+      }
+      if (tag.key === 'operType') {
+        this.tags.splice(this.tags.indexOf(tag), 1);
         this.operType = null;
         this.updateData(false);
       }
@@ -355,7 +364,7 @@ export default {
         params: {
           beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
           end_dte: this.rangeDate[1] ? this.rangeDate[1] : null,
-          points_type: this.points_type,
+          points_type: this.points_type === null ? null : this.points_type,
           comm_find: this.comment,
           operation_type: this.operType,
         },
@@ -365,26 +374,28 @@ export default {
         const treeName = treeNameTranslate[this.points_type];
         const tag = this.tags.find((t) => t.key === 'points_type');
         if (tag) {
-          tag.name = treeName;
+          tag.name = `Тип баллов: ${treeName}`;
         } else {
-          this.tags.push({ name: treeName, key: 'points_type' });
+          this.tags.push({ name: `Тип баллов: ${treeName}`, key: 'points_type' });
         }
+      } else {
+        this.tags.push({ name: 'Тип баллов: Все', key: 'points_type' });
       }
       if (this.comment !== null && this.comment !== '') {
         const tag = this.tags.find((t) => t.key === 'comment');
         if (tag) {
-          tag.name = this.comment;
+          tag.name = `Комментарий: ${this.comment}`;
         } else {
-          this.tags.push({ name: this.comment, key: 'comment' });
+          this.tags.push({ name: `Комментарий: ${this.comment}`, key: 'comment' });
         }
-        data.params.comment = this.comment;
+        // data.params.comment = this.comment;
       }
       if (this.operType !== null && this.operType !== '') {
         const tag = this.tags.find((t) => t.key === 'operType');
         if (tag) {
-          tag.name = this.operType;
+          tag.name = `Тип операции: ${this.operType}`;
         } else {
-          this.tags.push({ name: this.operType, key: 'operType' });
+          this.tags.push({ name: `Тип операции: ${this.operType}`, key: 'operType' });
         }
       }
       backApi.get('/agent/points-detail', data).then((Response) => {

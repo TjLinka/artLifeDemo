@@ -6,6 +6,8 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import lang from 'element-ui/lib/locale/lang/ru-RU';
 import locale from 'element-ui/lib/locale';
+import VueMask from 'v-mask';
+import VueTheMask from 'vue-the-mask';
 
 import App from './App.vue';
 import router from './router';
@@ -13,6 +15,8 @@ import store from './store';
 
 locale.use(lang);
 Vue.use(BootstrapVue);
+Vue.use(VueMask);
+Vue.use(VueTheMask);
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
 

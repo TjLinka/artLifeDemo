@@ -112,7 +112,7 @@ const routes = [
     path: '/rights',
     name: 'Rights',
     component: () => import('../views/Rights.vue'),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true, requiresRole: 'Дистрибьютор' },
     // Видит только Дистрибьютор +
   },
   {

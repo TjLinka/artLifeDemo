@@ -9,6 +9,19 @@
       </p>
         История организации по периодам
         </h2>
+        <div class="row mb-4">
+          <div class="col-md-3">
+          <el-autocomplete
+            v-model="state"
+            :fetch-suggestions="querySearchAsync"
+            placeholder="Партнер получатель"
+            @select="handleSelect"
+            clearable
+            v-on:clear="dd"
+            style="width: 100%;"
+          ></el-autocomplete>
+          </div>
+        </div>
         <div class="col search__btn mobile" @click="toggleSearch" v-if="!searchActive">
           Настройки дерева <i class="el-icon-search search_icon"></i>
         </div>
@@ -132,11 +145,18 @@
             </b-form-group>
           </div>
         </div>
-        <div class="row edit">
-          <div class="col-sm-6 mb-4 custom_input">
-              <input type="number" name="agent_id" id="agent_id" required v-model="agent_id" />
-              <label for="agent_id">Номер агента</label>
-              <span class="clear_icon" @click="clearAgentId()"></span>
+        <div class="row mt-3 edit">
+          <div class="col-sm-6 mb-4">
+            <span v-if="state2" class="custom_label">Партнер получатель</span>
+          <el-autocomplete
+            v-model="state2"
+            :fetch-suggestions="querySearchAsync2"
+            placeholder="Партнер получатель"
+            @select="handleSelect2"
+            clearable
+            v-on:clear="dd2"
+            style="width: 100%;"
+          ></el-autocomplete>
           </div>
           <div class="col-sm-6">
             <button
@@ -211,11 +231,11 @@ export default {
         title: 'Расчетный ранг',
         formater: (item) => item.rank_calc,
       },
-      {
-        property: 'rank_end',
-        title: 'Расчетный ранг',
-        formater: (item) => item.rank_end,
-      },
+      // {
+      //   property: 'rank_end',
+      //   title: 'Расчетный ранг',
+      //   formater: (item) => item.rank_end,
+      // },
       {
         property: 'rank_end',
         title: 'Ранг на конец',
@@ -223,11 +243,16 @@ export default {
       },
     ];
     return {
-
+      state: '',
+      state2: '',
       searchActive: false,
       months: ['Январь', 'Ферваль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
       tree_type: 'full',
       agent_id: null,
+      modal_agent: {
+        agent_id: '',
+        name: '',
+      },
       get_root: true,
       tags: [],
       children: [],
@@ -260,6 +285,11 @@ export default {
         });
       });
     });
+    backApi.get('/agent/profile').then((Response) => {
+      this.state = `${Response.data.id} - ${Response.data.name}`;
+      this.currentUserID = Response.data.id;
+    });
+    this.tags.push({ name: 'Полное дерево', key: 'tree_type' });
   },
   computed: {
     disabled() {
@@ -283,6 +313,7 @@ export default {
           filter: this.tree_type,
           get_root: true,
           period: v,
+          agent_id: this.currentUserID,
         },
       };
       backApi.get('/agents-tree-hist/period', data).then((response) => {
@@ -295,6 +326,121 @@ export default {
     },
   },
   methods: {
+    dd() {
+      // this.loading = true;
+      const data = {
+        params: {
+          filter: this.tree_type,
+          get_root: true,
+          period: this.currentPeriod,
+        },
+      };
+      backApi.get('/agents-tree-hist/period', data).then((response) => {
+        this.rows = response.data.entries;
+        this.rows.forEach((e) => {
+          e.depth = 0;
+          e.children = [];
+        });
+      });
+      backApi.get('/agent/profile').then((Response) => {
+        this.state = `${Response.data.id} - ${Response.data.name}`;
+        this.currentUserID = Response.data.id;
+      });
+    },
+    querySearchAsync(queryString, cb) {
+      // const qr = queryString === '' ? 'а' : queryString;
+      backApi.get('/agent/share-transfert-list', { params: { show_root: 1 } }).then((Response2) => {
+        // eslint-disable-next-line no-param-reassign
+        // Response.data.agentname = Response.data.name;
+        // // Response2.data.entries.push
+        // Response2.data.entries.push(Response.data);
+        Response2.data.entries.forEach((u) => {
+          // eslint-disable-next-line no-param-reassign
+          u.value = `${u.id}-${u.agentname}`;
+        });
+        cb(Response2.data.entries.slice(0, 10));
+      });
+    },
+    handleSelect(item) {
+      // this.selectedUser = item.agent_id;
+      const data = {
+        params: {
+          filter: this.tree_type,
+          get_root: true,
+          period: this.currentPeriod,
+          agent_id: item.id,
+        },
+      };
+      backApi.get('/agents-tree-hist/period', data).then((response) => {
+        this.rows = response.data.entries;
+        this.rows.forEach((e) => {
+          e.depth = 0;
+          e.children = [];
+        });
+      });
+      this.currentUserID = item.id;
+    },
+    dd2() {
+      // this.loading = true;
+      const data = {
+        params: {
+          filter: this.tree_type,
+          get_root: true,
+          period: this.currentPeriod,
+          agent_id: this.currentUserID,
+        },
+      };
+      backApi.get('/agents-tree-hist/period', data).then((response) => {
+        this.rows = response.data.entries;
+        this.rows.forEach((e) => {
+          e.depth = 0;
+          e.children = [];
+        });
+      });
+      this.modal_agent_id = this.currentUserID;
+    },
+    querySearchAsync2(queryString, cb) {
+      const qr = queryString === '' ? 'а' : queryString;
+      const valueDict = {
+        active: 2,
+        full: 0,
+        director: 1,
+      };
+      const data = {
+        params: {
+          agent_root: this.currentUserID,
+          find_str: qr,
+          tree_type: valueDict[this.tree_type],
+          comdte: this.currentPeriod,
+        },
+      };
+      backApi.get('/agent/tree-agents-list', data).then((Response2) => {
+        Response2.data.entries.forEach((u) => {
+          // eslint-disable-next-line no-param-reassign
+          u.value = `${u.agent_id}-${u.name}`;
+        });
+        cb(Response2.data.entries.slice(0, 10));
+      });
+    },
+    handleSelect2(item) {
+      // this.selectedUser = item.agent_id;
+      const data = {
+        params: {
+          filter: this.tree_type,
+          get_root: true,
+          period: this.currentPeriod,
+          agent_id: item.id,
+        },
+      };
+      backApi.get('/agents-tree-hist/period', data).then((response) => {
+        this.rows = response.data.entries;
+        this.rows.forEach((e) => {
+          e.depth = 0;
+          e.children = [];
+        });
+      });
+      this.modal_agent = item;
+    },
     clearAgentId() {
       this.agent_id = null;
     },
@@ -361,8 +507,9 @@ export default {
       this.tags.splice(this.tags.indexOf(tag), 1);
       if (tag.key === 'tree_type') {
         this.tree_type = 'full';
-      } else if (tag.key === 'agent_id') {
-        this.agent_id = null;
+      }
+      if (tag.key === 'modal_agent_id') {
+        this.modal_agent.agent_id = null;
       }
       this.updateData();
     },
@@ -407,6 +554,7 @@ export default {
           filter: this.tree_type,
           get_root: true,
           period: this.currentPeriod,
+          agent_id: this.modal_agent.agent_id !== '' ? this.modal_agent.agent_id : this.currentUserID,
         },
       };
       const treeNameTranslate = {
@@ -421,16 +569,18 @@ export default {
           tag.name = treeName;
         } else if (this.tree_type !== 'full') {
           this.tags.push({ name: treeName, key: 'tree_type' });
+        } else {
+          this.tags.push({ name: treeName, key: 'tree_type' });
         }
       }
-      if (this.agent_id !== null && this.agent_id !== '') {
-        const tag = this.tags.find((t) => t.key === 'agent_id');
+      if (this.modal_agent.agent_id !== null && this.modal_agent.agent_id !== '') {
+        const tag = this.tags.find((t) => t.key === 'modal_agent_id');
         if (tag) {
-          tag.name = this.agent_id;
+          tag.name = `${this.modal_agent.agent_id} - ${this.modal_agent.name}`;
         } else {
-          this.tags.push({ name: this.agent_id, key: 'agent_id' });
+          this.tags.push({ name: `${this.modal_agent.agent_id} - ${this.modal_agent.name}`, key: 'modal_agent_id' });
         }
-        data.params.agent_id = this.agent_id;
+        // data.params.modal_agent_id = this.modal_agent.agent_id;
       }
       this.searchActive = false;
       backApi.get('/agents-tree-hist/period', data).then((response) => {

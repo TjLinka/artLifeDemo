@@ -7,7 +7,7 @@
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
-        Движение по лицевому счету
+        Детализация лицевого счёта
         </h2>
       <p class="p-0 m-0 history_title">Период от и до</p>
       <div class="row">
@@ -59,9 +59,9 @@
       </template>
       </b-table>
       <h2 class="licevoischet__page__summ">
-        <span>НАЧИСЛЕНИЕ = {{ incomes }} </span>
-        <span>СПИСАНИЕ = {{ outcomes }} </span>
-        <span>ИЗМЕНЕНИЕ  = {{ changes }} </span>
+        <span class="mr-4">НАЧИСЛЕНИЕ = {{ incomes }}        </span>
+        <span class="mr-4">СПИСАНИЕ = {{ outcomes }}        </span>
+        <span class="mr-4">ИЗМЕНЕНИЕ  = {{ changes }}         </span>
         </h2>
     </div>
       <footer class="container-fluid cust_modal">
@@ -391,6 +391,8 @@ export default {
 .licevoischet__page {
   &__summ {
     text-align: center;
+    // font-family: 'Futura PT Book';
+    // font-weight: 500;
     background-color: #dee2f3;
     font-size: 16px;
     padding: 10px 0px;

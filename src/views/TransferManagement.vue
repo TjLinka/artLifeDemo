@@ -73,7 +73,8 @@
         :fields="fields"
         :items="entries"
         :tbody-tr-class="rowClass"
-        class="mt-5">
+        sticky-header
+        class="mt-4">
           <template v-slot:cell(id)="row">
             <p>
               <span class="mr-4">{{ row.item.lvl }} УР</span>
@@ -313,7 +314,7 @@ export default {
         },
         {
           key: 'noact',
-          label: 'не активность',
+          label: 'Не активность',
           formater: (item) => item.noact,
           sortable: true,
         },
@@ -429,12 +430,7 @@ export default {
       });
     },
     querySearchAsync(queryString, cb) {
-      // const qr = queryString === '' ? 'а' : queryString;
       backApi.get('/agent/share-transfert-list', { params: { show_root: 1 } }).then((Response2) => {
-        // eslint-disable-next-line no-param-reassign
-        // Response.data.agentname = Response.data.name;
-        // // Response2.data.entries.push
-        // Response2.data.entries.push(Response.data);
         Response2.data.entries.forEach((u) => {
           // eslint-disable-next-line no-param-reassign
           u.value = `${u.id}-${u.agentname}`;
@@ -443,7 +439,7 @@ export default {
       });
     },
     handleSelect(item) {
-      // this.selectedUser = item.agent_id;
+      this.loading = true;
       backApi.get('/agent/flat_genealogy', {
         params: {
           agent_id: item.id,
@@ -494,9 +490,24 @@ export default {
         this.filterData.rank_end = null;
         this.updateData();
       }
+      if (tag.key === 'area_id') {
+        this.tags.splice(this.tags.indexOf(tag), 1);
+        this.filterData.area_id = null;
+        this.updateData();
+      }
       if (tag.key === 'agent_id') {
         this.tags.splice(this.tags.indexOf(tag), 1);
         this.filterData.agent_id = null;
+        this.updateData();
+      }
+      if (tag.key === 'fullname') {
+        this.tags.splice(this.tags.indexOf(tag), 1);
+        this.filterData.fullname = null;
+        this.updateData();
+      }
+      if (tag.key === 'store') {
+        this.tags.splice(this.tags.indexOf(tag), 1);
+        this.filterData.store = null;
         this.updateData();
       }
       if (tag.key === 'tree_type') {
@@ -639,6 +650,7 @@ export default {
         0: 'Полное дерево',
         1: 'Директорское',
       };
+      // Тип дерева
       if (this.tree_type !== null) {
         const treeName = treeNameTranslate[this.tree_type];
         const tag = this.tags.find((t) => t.key === 'tree_type');
@@ -657,6 +669,28 @@ export default {
           tag.name = `Номер агента: ${this.filterData.agent_id}`;
         } else {
           this.tags.push({ name: `Номер агента: ${this.filterData.agent_id}`, key: 'agent_id' });
+        }
+      }
+      // ФИО
+      if (this.filterData.fullname !== null
+      && this.filterData.fullname !== ''
+      && this.filterData.fullname !== undefined) {
+        const tag = this.tags.find((t) => t.key === 'fullname');
+        if (tag) {
+          tag.name = `ФИО: ${this.filterData.fullname}`;
+        } else {
+          this.tags.push({ name: `ФИО: ${this.filterData.fullname}`, key: 'fullname' });
+        }
+      }
+      // Город склада обслуживания
+      if (this.filterData.store !== null
+      && this.filterData.store !== ''
+      && this.filterData.store !== undefined) {
+        const tag = this.tags.find((t) => t.key === 'store');
+        if (tag) {
+          tag.name = `Город склада обслуживания: ${this.filterData.store}`;
+        } else {
+          this.tags.push({ name: `Город склада обслуживания: ${this.filterData.store}`, key: 'store' });
         }
       }
       // Ранг на начало
@@ -692,6 +726,17 @@ export default {
           this.tags.push({ name: `Рассчётный ранг: ${this.filterData.rank_calc}`, key: 'rank_calc' });
         }
       }
+      // Территория
+      if (this.filterData.area_id !== null
+      && this.filterData.area_id !== ''
+      && this.filterData.area_id !== undefined) {
+        const tag = this.tags.find((t) => t.key === 'area_id');
+        if (tag) {
+          tag.name = `Территория: ${this.areaList[this.filterData.area_id].area_name}`;
+        } else {
+          this.tags.push({ name: `Территория: ${this.areaList[this.filterData.area_id].area_name}`, key: 'area_id' });
+        }
+      }
 
       // if (this.filterData.comment !== null && this.filterData.comment !== '') {
       //   const tag = this.tags.find((t) => t.key === 'comment');
@@ -717,7 +762,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .el-icon-circle-close:before{
-  top: 20px;
+  // top: 20px;
 }
 .qq{
   display: flex;
@@ -877,7 +922,14 @@ export default {
     width: 15%;
 }
 .uptran .el-icon-circle-close:before{
-  top: 20px;
-  right: -10px;
+  /* top: 20px;
+  right: -10px; */
+}
+.el-icon-circle-close{
+  position: relative;
+}
+.el-select .el-icon-circle-close:before{
+  bottom: 20px;
+  right: 10px;
 }
 </style>

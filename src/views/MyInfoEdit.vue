@@ -45,6 +45,7 @@
         </div>
         <div class="row edit ">
           <div class="col-md-6 mt-3">
+            <span v-if="userInfo.bthdte" class="custom_label">Дата рождения</span>
             <date-picker
               v-model="userInfo.bthdte"
               value-type="YYYY-MM-DD"

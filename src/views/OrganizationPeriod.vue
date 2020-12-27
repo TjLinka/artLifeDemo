@@ -46,9 +46,9 @@
           <router-link :to="`/agent/${scope.row.id}`">{{scope.row.name}}</router-link>
         </span>
         <span v-else-if="column.property === 'rank_end'">
-          <img
+          <!-- <img
           :src="`../icons/${scope.row.rank_end}${scope.row.depth === 0 ? '_white' : ''}.svg`"
-          :title="scope.row.rank_end" class="rank_icon mr-3">
+          :title="scope.row.rank_end" class="rank_icon mr-3"> -->
           <span>{{scope.row.rank_end}}</span>
         </span>
         <span v-else-if="column.property === 'depth'">
@@ -59,7 +59,7 @@
         </el-table-column>
       </el-table>
       </div>
-      <footer class="cust_modal">
+      <!-- <footer class="cust_modal">
               <div class="row">
         <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
           Поиск партнера <i class="el-icon-search search_icon"></i>
@@ -105,7 +105,7 @@
           </div>
         </div>
       </div>
-      </footer>
+      </footer> -->
     </div>
   </div>
 </template>

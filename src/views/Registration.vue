@@ -54,7 +54,8 @@
           <label for="city">Город</label>
           <span class="clear_icon" @click="clearInput('city')"></span>
         </div>
-        <div class="col-md-6 custom_input">
+        <div class="col-md-6">
+            <span v-if="newUser.bthdte" class="custom_label">Дата рождения</span>
             <date-picker
               v-model="newUser.bthdte"
               value-type="YYYY-MM-DD"
@@ -68,12 +69,14 @@
       </div>
       <div class="row mt-md-5">
         <div class="col-md-6 custom_input">
-          <input type="text" name="phone" id="phone" required v-model="newUser.phone" />
+          <input type="text" name="phone" id="phone"
+          v-mask="'# (###)-###-##-##'"
+          required v-model="newUser.phone" />
           <label for="phone">Телефон</label>
           <span class="clear_icon" @click="clearInput('phone')"></span>
         </div>
         <div class="col-md-6 custom_input">
-          <input type="text" name="email" id="email" required v-model="newUser.email" />
+          <input type="email" name="email" id="email" required v-model="newUser.email" />
           <label for="email">Е-mail</label>
           <span class="clear_icon" @click="clearInput('email')"></span>
         </div>
@@ -98,6 +101,7 @@ export default {
   components: { DatePicker },
   data() {
     return {
+      phone: '',
       newUser: {
         role: 0,
         sex: 0,
@@ -139,7 +143,8 @@ export default {
     },
     registr() {
       if (
-        this.newUser.fio !== '' && this.newUser.country !== '' && this.newUser.city !== '' && this.newUser.bthdte !== ''
+        this.newUser.fio !== '' && this.newUser.country !== ''
+        && this.newUser.city !== '' && this.newUser.bthdte !== ''
         && this.newUser.phone !== '' && this.newUser.email !== ''
       ) {
         const data = {
@@ -149,13 +154,15 @@ export default {
           country: this.newUser.country,
           city: this.newUser.city,
           bthdte: this.newUser.bthdte,
-          mobile_phone: this.newUser.phone,
+          mobile_phone: this.newUser.phone.replace(/[-,(,), ]/g, ''),
           email: this.newUser.email,
         };
         backApi.post('/agent/signup-start', data);
         this.showToast('Регистрация', 'На вашу почту пришло письмо!', 'success');
       } else {
-        this.showToast('Регистрация', 'Заполните все поля для продолжения регистрации!', 'danger');
+        this.showToast('Регистрация',
+          'Заполните все поля для продолжения регистрации!',
+          'danger');
       }
     },
     clearInput(name) {

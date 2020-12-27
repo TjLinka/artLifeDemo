@@ -70,6 +70,10 @@ url('/fonts/FuturaPT-Book.ttf') format('truetype');
 .el-scrollbar__thumb{
   background-color: #afafaf;
 }
+.el-input__inner::placeholder{
+  color: #9a9a9a;
+  font-size: 16px;
+}
 .dropdown-toggle::after{
   content: none;
 }
@@ -120,6 +124,9 @@ button:focus{
 }
 input[type='radio']{
   outline: none !important;
+}
+.el-select-dropdown__item.selected{
+  color:  #32aaa7;
 }
 // СТИЛИЯ ЯЧЕЕК EL-TABLE
 .el-table td, .el-table th{
@@ -262,6 +269,7 @@ main {
 }
 .el-input__inner{
   padding-left: 5px !important;
+  font-size: 16px;
 }
 .el-input__inner:hover{
   transition: none;
@@ -298,7 +306,7 @@ main {
 }
 // СТИЛЬ КНОПКИ ОЧИСТИ el-input
 .el-icon-circle-close:before{
-  position: relative;
+  position: absolute;
   content: ' ';
   display: block;
   background-image: url('assets/imgs/close_btn.svg');
@@ -306,8 +314,8 @@ main {
   background-size: 85%;
   width: 13px;
   height: 13px;
-  top: 5px;
-  right: 2px;
+  bottom: 5px;
+  right: -5px;
 }
 .no_scroll {
   overflow: hidden;
@@ -340,7 +348,12 @@ main {
 .mx-input {
   border: 0;
   border-bottom: 1px solid #dee2f3;
+  font-family: 'Futura PT Book';
+  font-weight: 500;
   border-radius: 0;
+  font-size: 20px !important;
+  padding-left: 0!important;
+  color: black !important;
   box-shadow: none !important;
 }
 .mx-input:hover,
@@ -460,6 +473,10 @@ input[type='number'] {
   content: '-';
   top: -1px;
 }
+.depth-0 .el-table__expand-icon--expanded .el-icon-arrow-right:before{
+  content: '-';
+  top: -1px;
+}
 .el-icon-arrow-right:before{
   position: relative;
   top: 1px;
@@ -543,6 +560,7 @@ input[type='number'] {
   color: black;
   font-weight: 500;
   margin-right: 10px;
+  margin-bottom: 10px;
   height: auto;
   padding: 3px 10px;
   font-size: 14px;
@@ -632,6 +650,12 @@ th[aria-colindex='1']{
 }
 .b-table-sticky-header, .table-responsive, [class*="table-responsive-"]{
   margin-bottom: 0;
+}
+.b-table-sticky-header{
+  max-height: 65vh;
+}
+.b-table-sticky-header > .table.b-table > thead > tr > th{
+  top: -1px;
 }
 // Mobile_Modal_Mask
 .mobile_modal_mask{

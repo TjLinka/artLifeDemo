@@ -99,14 +99,14 @@
                 <b-form-radio
                   v-model="points_rule"
                   name="some-radios-1"
-                  :value="0"
+                  :value="1"
                   class="radio mr-3"
                   >Все баллы в трансферт</b-form-radio
                 >
                 <b-form-radio
                   v-model="points_rule"
                   name="some-radios-1"
-                  :value="1"
+                  :value="0"
                   class="radio mr-3"
                   >Баллы в резерв после обязательного трансферта</b-form-radio
                 >
@@ -122,7 +122,7 @@
           </div>
           <div class="row edit mt-4">
             <div class="col-md-6 custom_input">
-              <div v-if="points_rule === 1">
+              <div v-if="points_rule === 0">
               <input type="number" name="autoship" id="autoship" required v-model="autoship" />
               <label for="autoship">Количество баллов</label>
               <span class="clear_icon" @click="clearInput('autoship')"></span>

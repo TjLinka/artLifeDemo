@@ -8,6 +8,7 @@
       </h4>
       <div class="row edit">
         <div class="col-md-6 mt-4">
+          <span v-if="state" class="custom_label">Партнер получатель</span>
           <el-autocomplete
             v-model="state"
             :fetch-suggestions="querySearchAsync"

@@ -25,11 +25,8 @@
             <li><router-link to="/">Карточка партнера</router-link></li>
             <li><router-link to="/myinfoedit">Редактирование личных данных</router-link></li>
             <li><router-link to="/sponsorcard">Данные спонсора</router-link></li>
-            <li><router-link to="/rights">Передача прав</router-link></li>
+            <li v-if="role !== 'Клиент'"><router-link to="/rights">Передача прав</router-link></li>
             <li><a href="https://www.artlife.ru/">Мои реферальные ссылки</a></li>
-            <li><router-link to="/client-bonus"
-            v-if="role === 'Клиент'"
-            >Количество бонусных баллов</router-link></li>
           </ul>
         </li>
         <li>
@@ -39,20 +36,18 @@
           </a>
           <ul class="sub_menu">
             <li class="mobilis"><span class="i_m">Структура</span></li>
-            <li>
+            <li v-if="role === 'Клиент'">
               <router-link to="/organization-period"
-              v-if="role === 'Клиент'"
               >Организация текущего периода</router-link>
             </li>
-            <li>
+            <li v-if="role !=='Клиент'">
               <router-link to="/organization-by-period"
-              v-if="role !=='Клиент'"
               >
                 История организации по периодам
               </router-link>
             </li>
-            <li>
-              <router-link to="/transfermanagement" v-if="role !== 'Клиент'">
+            <li v-if="role !== 'Клиент'">
+              <router-link to="/transfermanagement">
               Управление трансфертами структуры(плоское дерево)
               </router-link>
             </li>
@@ -65,17 +60,19 @@
           </a>
           <ul class="sub_menu">
             <li class="mobilis"><span class="i_m">Отчеты</span></li>
-            <li>
-            <router-link to="/indicators" v-if="role !== 'Клиент'">
+            <li v-if="role !== 'Клиент'">
+            <router-link to="/indicators">
             Показатели
             </router-link></li>
             <li><router-link to="/bonus-history">История бонусов (КЕ)</router-link></li>
-            <li><router-link to="/points-history"
-            v-show="role !== 'Клиент'">История баллов </router-link></li>
-            <li><router-link to="/account-detail">Движение по лицевому счёту</router-link></li>
+            <li v-show="role !== 'Клиент'"><router-link to="/points-history"
+            >История баллов </router-link></li>
+            <li><router-link to="/account-detail">Детализация лицевого счёта</router-link></li>
             <li><router-link to="/partnerindicators">
             История показателей партнера по периодам
             </router-link></li>
+            <li v-if="role === 'Клиент'"><router-link to="/client-bonus"
+            >Количество бонусных баллов</router-link></li>
           </ul>
         </li>
         <li>

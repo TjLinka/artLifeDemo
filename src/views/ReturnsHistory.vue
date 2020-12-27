@@ -19,6 +19,18 @@
       range-separator=" - "
       >
       </date-picker>
+      <div class="tags">
+      <el-tag
+        v-for="tag in tags"
+        :key="tag.name"
+        closable
+        @close="handleClose($event, tag)"
+        :type="tag.type"
+        :disable-transitions="true"
+      >
+        {{ tag.name }}
+      </el-tag>
+      </div>
         <div class="row mobile_search">
           <div class="col search__btn" @click="toggleSearch" v-if="!searchActive">
             Поиск возврата <i class="el-icon-search search_icon"></i>
@@ -28,7 +40,10 @@
         <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
-        <span class="mr-3" >Экспорт возвратной накладной в pdf</span>
+        <button
+        :class="`mr-3 nak ${printNakAccess ? '' : 'disabled'}`"
+        :disabled="!printNakAccess"
+        >Экспорт возвратной накладной в pdf</button>
         <!-- <span class="mr-3">Экспорт возвратной накладной в pdf</span> -->
       </p>
       <div class="refound_table">
@@ -64,7 +79,7 @@
           </h3>
           <div class="row edit">
             <div class="col-sm-6 custom_input">
-              <input type="text" name="articul" id="articul"
+              <input type="number" name="articul" id="articul"
               required v-model="filterData.articul" />
               <label for="articul">Артикул</label>
               <span class="clear_icon" @click="clearInput('articul')"></span>
@@ -78,15 +93,15 @@
           </div>
           <div class="row edit">
             <div class="col-sm-6 custom_input">
-              <input type="text" name="naknum" id="naknum"
+              <input type="number" name="naknum" id="naknum"
               required v-model="filterData.naknum" />
               <label for="naknum">Номер накладной</label>
               <span class="clear_icon" @click="clearInput('naknum')"></span>
             </div>
             <div class="col-sm-6 custom_input">
-              <input type="text" name="docnum" id="docnum"
+              <input type="number" name="docnum" id="docnum"
               required v-model="filterData.docnum" />
-              <label for="docnum">Номер документа</label>
+              <label for="docnum">Номер возвратной накладной</label>
               <span class="clear_icon" @click="clearInput('docnum')"></span>
             </div>
           </div>
@@ -122,11 +137,18 @@ export default {
   components: { DatePicker },
   data() {
     return {
-      filterData: {},
+      tags: [],
+      filterData: {
+        articul: '',
+        name: '',
+        naknum: '',
+        docnum: '',
+      },
       user: null,
       lang: {
         monthBeforeYear: false,
       },
+      printNakAccess: false,
       searchActive: false,
       rangeDate: {},
       entries: [],
@@ -254,6 +276,26 @@ export default {
     },
   },
   methods: {
+    handleClose(event, tag) {
+      // this.tags.splice(this.dynamicTags.indexOf(tag), 1);
+      this.tags.splice(this.tags.indexOf(tag), 1);
+      if (tag.key === 'articul') {
+        this.filterData.articul = null;
+      }
+      if (tag.key === 'name') {
+        this.filterData.name = null;
+      }
+      if (tag.key === 'naknum') {
+        this.filterData.naknum = null;
+      }
+      if (tag.key === 'docnum') {
+        this.filterData.docnum = null;
+      }
+      // if (tag.key === 'period') {
+      //   this.period_enabled = false;
+      // }
+      this.updateData(false);
+    },
     clearInput(name) {
       this.filterData[name] = null;
     },
@@ -266,10 +308,8 @@ export default {
             end_dte: this.rangeDate[1] ? this.rangeDate[1] : null,
             articul: this.filterData.articul,
             name: this.filterData.name,
-            // eslint-disable-next-line radix
-            saleid: this.filterData.naknum ? parseInt(this.filterData.naknum) : null,
-            // eslint-disable-next-line radix
-            refund_id: this.filterData.docnum ? parseInt(this.filterData.docnum) : null,
+            saleid: this.filterData.naknum ? this.filterData.naknum : null,
+            refund_id: this.filterData.docnum ? this.filterData.docnum : null,
           },
           responseType: 'blob',
         })
@@ -322,7 +362,77 @@ export default {
       this.filterData.naknum = null;
       this.filterData.docnum = null;
     },
-    updateData() {
+    updateData(shouldClose) {
+      const data = {
+        params: {
+          beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
+          end_dte: this.rangeDate[1] ? this.rangeDate[1] : null,
+          articul: this.filterData.articul,
+          name: this.filterData.name,
+          // eslint-disable-next-line radix
+          saleid: this.filterData.naknum ? parseInt(this.filterData.naknum) : null,
+          // eslint-disable-next-line radix
+          refund_id: this.filterData.docnum ? parseInt(this.filterData.docnum) : null,
+        },
+      };
+      // Articul
+      if (this.filterData.articul !== null && this.filterData.articul !== '') {
+        const tag = this.tags.find((t) => t.key === 'articul');
+        if (tag) {
+          tag.name = `Артикул: ${this.filterData.articul}`;
+        } else if (this.tree_type !== 'full') {
+          this.tags.push({ name: `Артикул: ${this.filterData.articul}`, key: 'articul' });
+        }
+      }
+      // Name
+      if (this.filterData.name !== null && this.filterData.name !== '') {
+        const tag = this.tags.find((t) => t.key === 'name');
+        if (tag) {
+          tag.name = `Наименование: ${this.filterData.name}`;
+        } else {
+          this.tags.push({ name: `Наименование: ${this.filterData.name}`, key: 'name' });
+        }
+      }
+      // Номер накладной
+      if (this.filterData.naknum !== null && this.filterData.naknum !== '') {
+        const tag = this.tags.find((t) => t.key === 'naknum');
+        if (tag) {
+          tag.name = `Номер накладной: ${this.filterData.naknum}`;
+        } else {
+          this.tags.push({ name: `Номер накладной: ${this.filterData.naknum}`, key: 'naknum' });
+        }
+      }
+      // Номер возвратной накладной
+      if (this.filterData.docnum !== null && this.filterData.docnum !== '') {
+        const tag = this.tags.find((t) => t.key === 'docnum');
+        if (tag) {
+          tag.name = `Номер возвратной накладной: ${this.filterData.docnum}`;
+        } else {
+          this.tags.push({ name: `Номер возвратной накладной: ${this.filterData.docnum}`, key: 'docnum' });
+        }
+      }
+      backApi.get('/agent/refunds', data).then((Response) => {
+        this.entries = Response.data.entries;
+      });
+      // this.articul = null;
+      // this.name = null;
+      // this.naknum = null;
+      // this.docnum = null;
+      if (shouldClose) {
+        this.searchActive = !this.searchActive;
+      }
+    },
+    // eslint-disable-next-line no-unused-vars
+    filterFunc(row, filter) {
+      return 1;
+    },
+    toggleSearch() {
+      this.searchActive = !this.searchActive;
+    },
+    back() {
+      this.$router.go(-1);
+    },
+    getSelectedDataRange() {
       const data = {
         params: {
           beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
@@ -338,44 +448,32 @@ export default {
       backApi.get('/agent/refunds', data).then((Response) => {
         this.entries = Response.data.entries;
       });
-      // this.articul = null;
-      // this.name = null;
-      // this.naknum = null;
-      // this.docnum = null;
-      this.searchActive = !this.searchActive;
-    },
-    // eslint-disable-next-line no-unused-vars
-    filterFunc(row, filter) {
-      return 1;
-    },
-    toggleSearch() {
-      this.searchActive = !this.searchActive;
-    },
-    back() {
-      this.$router.go(-1);
-    },
-    getSelectedDataRange() {
       // eslint-disable-next-line max-len
-      if (this.rangeDate[0] != null && this.rangeDate[1] != null) {
-        backApi
-          .get('agent/refunds', {
-            params: {
-              beg_dte: String(this.rangeDate[0]),
-              end_dte: String(this.rangeDate[1]),
-            },
-          })
-          .then((Response) => {
-            this.entries = Response.data.entries;
-            this.return_details = new Array(this.total_rows).fill(undefined);
-          });
-      } else {
-        backApi.get('agent/refunds').then((Response) => {
-          this.entries = Response.data.entries;
-          this.return_details = new Array(this.total_rows).fill(undefined);
-        });
-      }
+      // if (this.rangeDate[0] != null && this.rangeDate[1] != null) {
+      //   backApi
+      //     .get('agent/refunds', {
+      //       params: {
+      //         beg_dte: String(this.rangeDate[0]),
+      //         end_dte: String(this.rangeDate[1]),
+      //       },
+      //     })
+      //     .then((Response) => {
+      //       this.entries = Response.data.entries;
+      //       this.return_details = new Array(this.total_rows).fill(undefined);
+      //     });
+      // } else {
+      //   backApi.get('agent/refunds').then((Response) => {
+      //     this.entries = Response.data.entries;
+      //     this.return_details = new Array(this.total_rows).fill(undefined);
+      //   });
+      // }
     },
     show_details(row) {
+      if (!row.detailsShowing) {
+        this.printNakAccess = true;
+      } else {
+        this.printNakAccess = false;
+      }
       if (row.detailsShowing === true) {
         row.toggleDetails();
       } else if (!this.return_details[row.item.webshop_id]) {
@@ -394,6 +492,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.nak{
+  background: none;
+  border: none;
+  color:  #32aaa7;
+  &.disabled{
+    color: gray !important;
+  }
+}
 .mobile_search{
   display: none;
 }
@@ -405,6 +511,9 @@ export default {
     color: #9A9A9A !important;
     background-color: #DEE2F3 !important;
   }
+}
+.tags{
+  margin: 10px 0px 20px 0px;
 }
 .organization__modal {
   position: relative;

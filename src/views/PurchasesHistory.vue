@@ -46,7 +46,10 @@
         <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
-        <span class="mr-3" >Экспорт накладной в pdf</span>
+        <button
+        :class="`mr-3 nak ${printNakAccess ? '' : 'disabled'}`"
+        :disabled="!printNakAccess"
+        >Экспорт накладной в pdf</button>
         <!-- <span class="mr-3">Экспорт накладной в pdf</span> -->
       </p>
       <div class="perchases_table">
@@ -56,7 +59,7 @@
             <b-button size="sm" @click="show_details(row)" class="mr-2">
               {{ row.detailsShowing ? '-' : '+' }}
             </b-button>
-            <span>{{ row.item.webshop_id }}</span>
+            <span>{{ row.item.sale_id }}</span>
           </template>
           <template v-slot:cell(delivery)="row">
               <span>{{row.item.delivery === 'нет' ? 'Самовывоз' : 'Доставка до адреса'}}</span>
@@ -95,21 +98,34 @@
               <label for="articul">Артикул</label>
               <span class="clear_icon" @click="clearArticul()"></span>
             </div>
-            <div class="col-sm-6 custom_input">
-              <input type="text" name="status" id="status" required v-model="status" />
-              <label for="status">Статус</label>
-              <span class="clear_icon" @click="clearStatus()"></span>
+            <div class="col-sm-6">
+            <span
+            v-if="status"
+            class="custom_label"
+            >
+            Статус</span>
+            <el-select
+            v-model="status"
+            clearable
+            placeholder="Статус">
+              <el-option
+                v-for="item in statusList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.name">
+              </el-option>
+            </el-select>
             </div>
           </div>
           <div class="row edit mt-5">
             <div class="col-sm-6 custom_input">
-              <input type="text" name="naknum" id="naknum" required v-model="naknum" />
+              <input type="number" name="naknum" id="naknum" required v-model="naknum" />
               <label for="naknum">Номер накладной</label>
               <span class="clear_icon" @click="clearNaknum()"></span>
             </div>
           <div class="col-md-6">
             <span
-            v-if="delivery"
+            v-if="delivery !== null && this.delivery !== ''"
             class="custom_label"
             >
             Доставка</span>
@@ -119,9 +135,9 @@
             placeholder="Доставка">
               <el-option
                 v-for="item in deliveryList"
-                :key="item"
-                :label="item"
-                :value="item">
+                :key="item.id"
+                :label="item.name"
+                :value="item.name">
               </el-option>
             </el-select>
           </div>
@@ -160,10 +176,11 @@ export default {
   },
   data() {
     return {
-      deliveryList: ['Самовывоз', 'Доставка до адреса'],
-      delivery: '',
-      status: '',
-      naknum: '',
+      deliveryList: [],
+      delivery: null,
+      statusList: [],
+      status: null,
+      naknum: null,
       allData: [],
       lang: {
         monthBeforeYear: false,
@@ -192,6 +209,7 @@ export default {
       saleid: null,
       // rangeDate: {},
       entries: [],
+      printNakAccess: false,
       return_details: [],
       tags: [],
       returnFields: [
@@ -292,7 +310,7 @@ export default {
         },
         {
           key: 'dte',
-          label: 'Дата',
+          label: 'Дата сервера',
           sortable: true,
           formatter(v) {
             return new Date(v).toLocaleDateString();
@@ -308,11 +326,11 @@ export default {
           label: 'Адрес',
           sortable: true,
         },
-        {
-          key: 'contacts',
-          label: 'Контакты',
-          sortable: true,
-        },
+        // {
+        //   key: 'contacts',
+        //   label: 'Контакты',
+        //   sortable: true,
+        // },
         {
           key: 'status',
           label: 'Статус',
@@ -333,6 +351,12 @@ export default {
       this.entries = Response.data.entries;
       this.return_details = new Array(this.total_rows).fill(undefined);
     });
+    backApi.get('/agent/sales/deliveries').then((Response) => {
+      this.deliveryList = Response.data.entries;
+    });
+    backApi.get('/agent/sales/statuses').then((Response) => {
+      this.statusList = Response.data.entries;
+    });
   },
   computed: {
     currentPeriod() {
@@ -347,8 +371,15 @@ export default {
     getSelectedDataRange() {
       const data = {
         params: {
+          articul: this.articul !== '' ? this.articul : null,
+          name: this.name,
+          // eslint-disable-next-line radix
+          saleid: this.naknum !== '' ? this.naknum : null,
           beg_dte: this.rangeDate ? this.rangeDate[0] : null,
           end_dte: this.rangeDate ? this.rangeDate[1] : null,
+          i_delivery: this.delivery !== '' ? this.delivery : null,
+          // eslint-disable-next-line radix
+          i_status: this.status !== '' ? this.status : null,
         },
       };
       backApi.get('/agent/sales', data).then((Response) => {
@@ -410,9 +441,9 @@ export default {
     clearNaknum() {
       this.naknum = '';
     },
-    clearStatus() {
-      this.status = '';
-    },
+    // clearStatus() {
+    //   this.status = '';
+    // },
     back() {
       this.$router.go(-1);
     },
@@ -425,11 +456,22 @@ export default {
       this.tags.splice(this.tags.indexOf(tag), 1);
       if (tag.key === 'articul') {
         this.articul = null;
-      } else if (tag.key === 'name') {
-        this.name = null;
-      } else if (tag.key === 'period') {
-        this.period_enabled = false;
       }
+      if (tag.key === 'name') {
+        this.name = null;
+      }
+      if (tag.key === 'naknum') {
+        this.naknum = null;
+      }
+      if (tag.key === 'delivery') {
+        this.delivery = null;
+      }
+      if (tag.key === 'status') {
+        this.status = null;
+      }
+      // if (tag.key === 'period') {
+      //   this.period_enabled = false;
+      // }
       this.updateData();
     },
     updateData() {
@@ -438,43 +480,72 @@ export default {
           articul: this.articul !== '' ? this.articul : null,
           name: this.name,
           // eslint-disable-next-line radix
-          saleid: this.naknum !== '' ? parseInt(this.naknum) : null,
+          saleid: this.naknum !== '' ? this.naknum : null,
           beg_dte: this.rangeDate ? this.rangeDate[0] : null,
           end_dte: this.rangeDate ? this.rangeDate[1] : null,
           i_delivery: this.delivery !== '' ? this.delivery : null,
+          // eslint-disable-next-line radix
           i_status: this.status !== '' ? this.status : null,
         },
       };
+      // Articul
       if (this.articul !== null && this.articul !== '') {
         const tag = this.tags.find((t) => t.key === 'articul');
         if (tag) {
-          tag.name = this.articul;
+          tag.name = `Артикул: ${this.articul}`;
         } else if (this.tree_type !== 'full') {
           this.tags.push({ name: `Артикул: ${this.articul}`, key: 'articul' });
         }
       }
+      // Name
       if (this.name !== null && this.name !== '') {
         const tag = this.tags.find((t) => t.key === 'name');
         if (tag) {
-          tag.name = this.name;
+          tag.name = `Наименование: ${this.name}`;
         } else {
           this.tags.push({ name: `Наименование: ${this.name}`, key: 'name' });
         }
-        data.params.agent_id = this.agent_id;
       }
-      const tag = this.tags.find((t) => t.key === 'period');
-      if (tag) {
-        tag.name = `${this.months[new Date(this.currentPeriod).getMonth()]} ${new Date(
-          this.currentPeriod,
-        ).getFullYear()}`;
-      } else if (this.currentPeriod !== this.periods[this.periods.length - 1].comdte) {
-        this.tags.push({
-          name: `${this.months[new Date(this.currentPeriod).getMonth()]} ${new Date(
-            this.currentPeriod,
-          ).getFullYear()}`,
-          key: 'period',
-        });
+      // Номер накладной
+      if (this.naknum !== null && this.naknum !== '') {
+        const tag = this.tags.find((t) => t.key === 'naknum');
+        if (tag) {
+          tag.name = `Номер накладной: ${this.naknum}`;
+        } else {
+          this.tags.push({ name: `Номер накладной: ${this.naknum}`, key: 'naknum' });
+        }
       }
+      // Статус
+      if (this.status !== null && this.status !== '') {
+        const tag = this.tags.find((t) => t.key === 'status');
+        if (tag) {
+          tag.name = `Статус: ${this.status}`;
+        } else {
+          this.tags.push({ name: `Статус: ${this.status}`, key: 'status' });
+        }
+      }
+      // Доставка
+      if (this.delivery !== null && this.delivery !== '') {
+        const tag = this.tags.find((t) => t.key === 'delivery');
+        if (tag) {
+          tag.name = `Доставка: ${this.delivery}`;
+        } else {
+          this.tags.push({ name: `Доставка: ${this.delivery}`, key: 'delivery' });
+        }
+      }
+      // const tag = this.tags.find((t) => t.key === 'period');
+      // if (tag) {
+      //   tag.name = `${this.months[new Date(this.currentPeriod).getMonth()]} ${new Date(
+      //     this.currentPeriod,
+      //   ).getFullYear()}`;
+      // } else if (this.currentPeriod !== this.periods[this.periods.length - 1].comdte) {
+      //   this.tags.push({
+      //     name: `${this.months[new Date(this.currentPeriod).getMonth()]} ${new Date(
+      //       this.currentPeriod,
+      //     ).getFullYear()}`,
+      //     key: 'period',
+      //   });
+      // }
       // const params = { name: this.name, articul: this.articul, saleid: this.number };
       backApi.get('agent/sales', data).then((Response) => {
         this.entries = Response.data.entries;
@@ -485,9 +556,9 @@ export default {
       }
     },
     clearSelectedFilters() {
-      this.name = '';
-      this.articul = '';
-      this.naknum = '';
+      this.name = null;
+      this.articul = null;
+      this.naknum = null;
       this.tags = [];
       backApi.get('agent/sales').then((Response) => {
         this.entries = Response.data.entries;
@@ -499,6 +570,11 @@ export default {
       this.searchActive = !this.searchActive;
     },
     show_details(row) {
+      if (!row.detailsShowing) {
+        this.printNakAccess = true;
+      } else {
+        this.printNakAccess = false;
+      }
       if (row.detailsShowing === true) {
         row.toggleDetails();
       } else if (!this.return_details[row.item.webshop_id]) {
@@ -516,6 +592,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.nak{
+  background: none;
+  border: none;
+  color:  #32aaa7;
+  &.disabled{
+    color: gray !important;
+  }
+}
 .el-select{
   width: 100%;
 }
@@ -650,7 +734,7 @@ table[aria-colcount='7'] > tbody > tr.b-table-has-details > td {
 .refound_table table[aria-colcount="2"] > thead > tr > th[role="columnheader"]:nth-of-type(1){
   width: 20% !important;
 } */
-.perchases_table table[aria-colcount='7'] tr[tabindex='-1'] > td {
+.perchases_table td[colspan='6'] {
   padding: 0;
   /* padding-top: 10px !important; */
 }

@@ -34,6 +34,11 @@
         </div>
       </div>
       <div class="row edit mt-4">
+        <div class="col-md-6 custom_input">
+              <input type="text" name="comm" id="comm" required v-model="comm" />
+              <label for="comm">Комментарий</label>
+              <span class="clear_icon" @click="clearComm()"></span>
+        </div>
         <div class="col-md trans_btns">
           <button
           :disabled="!pointsGo"
@@ -55,6 +60,7 @@ export default {
   data() {
     return {
       state: '',
+      comm: '',
       links: [],
       sum: null,
       toastCount: 0,
@@ -80,6 +86,9 @@ export default {
   methods: {
     clearSum() {
       this.sum = null;
+    },
+    clearComm() {
+      this.comm = null;
     },
     querySearchAsync(queryString, cb) {
       const qr = queryString === '' ? 'а' : queryString;
@@ -112,6 +121,7 @@ export default {
           .post('/agent/send_money', {
             agent_to: this.selectedUser,
             amount: this.sum,
+            comm: this.comm,
           })
           .then(() => {
             this.$bvToast.show('my-toast-money');
@@ -130,7 +140,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .custom_input{
-  margin-top: 29px !important;
+  // margin-top: 29px !important;
 }
 .close_btn{
   display: inline-block;
@@ -168,9 +178,8 @@ div[role='combobox']{
   }
 }
 .trans_btns {
-  // display: flex;
-  // justify-content: space-between;
   & button{
+    width: 100%;
     float: right;
   }
   & button.disabled{

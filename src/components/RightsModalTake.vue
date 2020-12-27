@@ -6,6 +6,7 @@
       </h4>
       <div class="row transfert mt-5 edit">
         <div class="col-xl-6">
+          <span v-if="state" class="custom_label">Партнер получатель</span>
           <el-autocomplete
             v-model="state"
             :fetch-suggestions="querySearchAsync"
@@ -60,7 +61,7 @@ export default {
   methods: {
     querySearchAsync(queryString, cb) {
       const qr = queryString === '' ? 'а' : queryString;
-      backApi.get('/agent/agent-list', { params: { q: qr } }).then((Response) => {
+      backApi.get('/agent/distr-agents-list', { params: { q: qr } }).then((Response) => {
         Response.data.entries.forEach((u) => {
           // eslint-disable-next-line no-param-reassign
           u.value = `${u.agent_id}-${u.name}`;
