@@ -5,7 +5,7 @@
     </h2>
     <div class="row mt-4" v-if="errorStatus">
       <div class="col-md-6">
-        <div class="custom_input" v-if="!codeCome">
+        <div class="custom_input" v-show="!codeCome">
           <input type="text"
           v-mask="'# (###)-###-##-##'"
           name="mobile_phone" id="mobile_phone"
@@ -13,7 +13,7 @@
           <label for="mobile_phone">Номер телефона:</label>
           <span class="clear_icon" @click="clearPhone()"></span>
         </div>
-        <div class="custom_input" v-else>
+        <div class="custom_input" v-show="codeCome">
           <input type="text" name="mobile_phone_code"
           id="mobile_phone_code" required v-model="mobile_phone_code" />
           <label for="mobile_phone_code">Смс код:</label>
@@ -47,7 +47,7 @@
       </div>
       <div class="col-md-6">
         <h4>Ваша почта подтверждена</h4>
-        <p class="posr">{{ newUser.email }} awdadawd<span class="chval"></span></p>
+        <p class="posr">{{ newUser.email }}<span class="chval"></span></p>
       </div>
     </div>
     <div v-else>
