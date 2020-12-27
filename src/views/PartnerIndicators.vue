@@ -73,7 +73,7 @@
         <h4>{{ scope.emptyText }}</h4>
       </template>
     </b-table>
-    <footer class="container-fluid cust_modal">
+    <!-- <footer class="container-fluid cust_modal">
       <div class="row" v-if="!showModal">
         <div class="col text-center search__btn desktop"
         @click="showModal = !showModal" v-if="!showModal">
@@ -86,18 +86,16 @@
           v-on:enlarge-text="toggleShow"
         />
       </div>
-    </footer>
+    </footer> -->
   </div>
 </template>
 
 <script>
 /* eslint-disable quote-props */
 import backApi from '../assets/backApi';
-import PartnerIndicatorsModal from '../components/PartnerIndicatorsModal.vue';
 
 export default {
   name: 'PartnerIndicators',
-  components: { PartnerIndicatorsModal },
   data() {
     return {
       iconDict: {
