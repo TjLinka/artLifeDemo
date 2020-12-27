@@ -61,7 +61,6 @@ export default {
         };
         backApi.get('/remind-password', data).then(() => {
           this.showToast('Восстановление пароля', 'На вашу почту пришло письмо!', 'success');
-          setTimeout(() => { this.$router.push('/login'); }, 3000);
         }).catch(() => {
           this.showToast('Восстановление пароля', 'Почта указана не верно', 'danger');
         });

@@ -9,6 +9,18 @@
       </p>
         История бонусов(КЕ)
         </h2>
+      <div class="row cur_p">
+        <div class="col-sm current_period">
+            <p>Текущий период:
+              {{ months[new Date(currentPeriodTop.comdte).getMonth()] }}
+              {{new Date(currentPeriodTop.comdte).getFullYear()}}.<br>
+            Статус предыдущего периода:
+            <span :style="`color: ${periodStatus}`">
+              {{ currentPeriodTop.prev_status }}
+            </span>
+            </p>
+        </div>
+      </div>
       <div class="row mt-3">
         <div class="col-md-6 perioad__picker">
         <BasePeriodPicker :currentPeriod="currentPeriod"
@@ -59,6 +71,7 @@ export default {
   },
   data() {
     return {
+      currentPeriodTop: {},
       periods: [],
       periodIndex: 0,
       months: ['Январь', 'Ферваль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
@@ -197,6 +210,9 @@ export default {
     };
   },
   mounted() {
+    backApi.get('/agent/get-current-period').then((Response2) => {
+      this.currentPeriodTop = Response2.data;
+    });
     backApi.get('agent/bonus-detail/periods').then((Response) => {
       this.periods = Response.data.entries.sort((a, b) => {
         const result = a.comdte > b.comdte ? 1 : -1;
@@ -214,6 +230,9 @@ export default {
     });
   },
   computed: {
+    periodStatus() {
+      return this.currentPeriodTop.prev_status === 'не выплачен' ? '#BD0A0A' : 'green';
+    },
     currentPeriod() {
       try {
         return this.periods[this.periodIndex].comdte;
@@ -310,6 +329,9 @@ export default {
 .btn{
   border: 0 !important;
 }
+.cur_p{
+  margin: 0;
+}
 .btn-secondary {
   color: black;
   background: none;
@@ -318,6 +340,19 @@ export default {
   box-shadow: none;
   font-weight: 500;
   font-size: 18px;
+}
+.current_period{
+  background-color: #EBEEFA;
+  padding: 16px 12px;
+  display: inline-block;
+  border-radius: 1px;
+
+  & br{
+    display: none;
+  }
+  & p {
+    margin-bottom: 0 ;
+  }
 }
 .btn-secondary:not(:disabled):not(.disabled):active,
 .btn-secondary:not(:disabled):not(.disabled).active,

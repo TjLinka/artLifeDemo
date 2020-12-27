@@ -6,7 +6,9 @@
     <div class="row mt-4" v-if="errorStatus">
       <div class="col-md-6">
         <div class="custom_input" v-if="!codeCome">
-          <input type="text" name="mobile_phone" id="mobile_phone"
+          <input type="text"
+          v-mask="'# (###)-###-##-##'"
+          name="mobile_phone" id="mobile_phone"
           required v-model="newUser.mobile_phone" />
           <label for="mobile_phone">Номер телефона:</label>
           <span class="clear_icon" @click="clearPhone()"></span>
@@ -44,8 +46,8 @@
         @click="$router.push('/');">Перейти в профиль</button>
       </div>
       <div class="col-md-6">
-        <p>Ваша почта подтверждена</p>
-        <span>{{ newUser.email }}</span>
+        <h4>Ваша почта подтверждена</h4>
+        <p class="posr">{{ newUser.email }} awdadawd<span class="chval"></span></p>
       </div>
     </div>
     <div v-else>
@@ -152,11 +154,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.posr{
+  position: relative;
+  display: inline-block;
+}
+.chval{
+    position: absolute;
+    background: url('../assets/imgs/chval.svg') no-repeat;
+    width: 12px;
+    height: 12px;
+    top: 8px;
+    right: -40px;
+    // top: 80%;
+}
 p{
     margin: 0;
     padding: 0;
 }
 .custom_input {
+  margin-top: 10px;;
     width: 50%;
   input {
     // width: 50%;
@@ -171,8 +187,8 @@ button:nth-of-type(1) {
   border: 2px solid #32aaa7;
   color: #32aaa7;
   font-weight: 500;
-  width: 30%;
-  padding: 4px 0px;
+  // width: 30%;
+  padding: 4px 20px;
   margin-top: 30px;
   margin-bottom: 30px;
   &.disabled{

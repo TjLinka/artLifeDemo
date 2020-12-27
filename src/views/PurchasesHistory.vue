@@ -53,8 +53,12 @@
         <!-- <span class="mr-3">Экспорт накладной в pdf</span> -->
       </p>
       <div class="perchases_table">
-        <b-table :fields="fields" :items="entries"
-        head-variant="light" responsive outlined>
+        <b-table
+        :fields="fields"
+        :items="entries"
+        head-variant="light"
+        responsive
+        outlined>
           <template v-slot:cell(nomer)="row">
             <b-button size="sm" @click="show_details(row)" class="mr-2">
               {{ row.detailsShowing ? '-' : '+' }}
@@ -322,6 +326,11 @@ export default {
           sortable: true,
         },
         {
+          key: 'status',
+          label: 'Статус',
+          sortable: true,
+        },
+        {
           key: 'address',
           label: 'Адрес',
           sortable: true,
@@ -331,11 +340,6 @@ export default {
         //   label: 'Контакты',
         //   sortable: true,
         // },
-        {
-          key: 'status',
-          label: 'Статус',
-          sortable: true,
-        },
       ],
     };
   },

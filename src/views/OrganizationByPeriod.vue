@@ -10,7 +10,7 @@
         История организации по периодам
         </h2>
         <div class="row mb-4">
-          <div class="col-md-3">
+          <div class="col-md-6">
           <el-autocomplete
             v-model="state"
             :fetch-suggestions="querySearchAsync"

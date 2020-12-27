@@ -24,7 +24,7 @@
             <b-dropdown-item disabled>
               <span><small style="color: grey; font-size: 12px;">Статус</small></span
               ><br />
-              Директор
+              {{role}}
             </b-dropdown-item>
             <b-dropdown-item class="logout" v-on:click="out">Выйти</b-dropdown-item>
           </b-nav-item-dropdown>

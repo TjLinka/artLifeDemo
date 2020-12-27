@@ -157,8 +157,13 @@ export default {
           mobile_phone: this.newUser.phone.replace(/[-,(,), ]/g, ''),
           email: this.newUser.email,
         };
-        backApi.post('/agent/signup-start', data);
-        this.showToast('Регистрация', 'На вашу почту пришло письмо!', 'success');
+        backApi.post('/agent/signup-start', data)
+          .then(() => {
+            this.showToast('Регистрация', 'На вашу почту пришло письмо!', 'success');
+          })
+          .catch((error) => {
+            this.showToast('Регистрация', error.response.data.detail, 'danger');
+          });
       } else {
         this.showToast('Регистрация',
           'Заполните все поля для продолжения регистрации!',
@@ -166,7 +171,7 @@ export default {
       }
     },
     clearInput(name) {
-      this.newUser[name] = null;
+      this.newUser[name] = '';
     },
   },
 };

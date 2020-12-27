@@ -35,7 +35,7 @@
         </div>
       </div> -->
       <div class="row mb-4">
-        <div class="col-md-4 uptran">
+        <div class="col-md-6 uptran">
           <el-autocomplete
             v-model="state"
             :fetch-suggestions="querySearchAsync"
@@ -941,6 +941,14 @@ export default {
 <style>
 .transmaneg_table th[aria-colindex='1']{
     width: 15%;
+}
+.uptran{
+  min-width: 360px;
+}
+@media (max-width: 330px) {
+  .uptran{
+    width: 100%;
+  }
 }
 .uptran .el-icon-circle-close:before{
   /* top: 20px;

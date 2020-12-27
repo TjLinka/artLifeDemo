@@ -82,7 +82,10 @@
           <div class="col-md-6">
             <p class="page__caption">Смена телефона</p>
             <div class="custom_input t" v-if="!smsStatus">
-              <input type="text" name="phone" id="phone" required v-model="userInfo.phone" />
+              <input type="text"
+              v-mask="'# (###)-###-##-##'"
+              name="phone" id="phone"
+              required v-model="userInfo.phone" />
               <label for="phone">Телефон</label>
               <span class="clear_icon" @click="clearInput('phone')"></span>
               <button class="save__newinfo mt-3" v-on:click="savePhone">
