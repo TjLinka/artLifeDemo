@@ -445,17 +445,6 @@ export default {
       this.agent_id = null;
     },
     downloadXls() {
-      const dataS = {
-        params:
-          {
-            agent_id: this.modal_agent.agent_id !== '' ? this.modal_agent.agent_id : null,
-            period: this.currentPeriod,
-            filter: this.tree_type,
-            get_root: true,
-            context: this.currentUserID,
-          },
-        responseType: 'blob',
-      };
       backApi.get('/agents-tree-hist/period/excel',
         {
           params:
