@@ -40,10 +40,10 @@
         <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
-        <button
+        <!-- <button
         :class="`mr-3 nak ${printNakAccess ? '' : 'disabled'}`"
         :disabled="!printNakAccess"
-        >Экспорт возвратной накладной в pdf</button>
+        >Экспорт возвратной накладной в pdf</button> -->
         <!-- <span class="mr-3">Экспорт возвратной накладной в pdf</span> -->
       </p>
       <div class="refound_table">

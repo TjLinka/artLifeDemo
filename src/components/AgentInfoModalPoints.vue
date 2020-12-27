@@ -91,12 +91,13 @@ export default {
   methods: {
     querySearchAsync(queryString, cb) {
       const qr = queryString === '' ? 'а' : queryString;
-      backApi.get('/agent/agent-list', { params: { q: qr } }).then((Response) => {
+      backApi.get('/agent/distr-agents-list', { params: { q: qr } }).then((Response) => {
         Response.data.entries.forEach((u) => {
           // eslint-disable-next-line no-param-reassign
           u.value = `${u.agent_id}-${u.name}`;
         });
-        cb(Response.data.entries.slice(0, 10));
+        const newMass = Response.data.entries.filter((u) => u.agent_id > 0);
+        cb(newMass.slice(0, 10));
       });
     },
     back() {
