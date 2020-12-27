@@ -94,8 +94,10 @@
             <img :src="`../icons/${row.item.rank_calc}${row.item.lvl === '0' ? '_white' : ''}.svg`"
               :title="row.item.rank_end" class="rank_icon" />
               <span style="display: inline-block; float:right">{{ row.item.id }}</span><br>
+              <router-link :to="`/agent/${row.item.id}`">
               <span :class="`user_name ${row.item.lvl === '0' ? 'depth-main' : ''}`">
               {{row.item.name}}</span>
+              </router-link>
             </p>
             <p style="text-align: right">{{ row.item.fio }}</p>
           </template>
@@ -788,6 +790,7 @@ export default {
   display: inline-block;
   position: relative;
   text-align: right;
+  color: black;
   float: right;
   padding-bottom: 0;
   margin-top: 10px;
@@ -809,6 +812,9 @@ export default {
       bottom: 0;
       height: 2px;
       border-bottom: 1px dotted white;
+}
+.user_name.depth-main{
+  color: white;
 }
 .mobile_br{
   display: none;
