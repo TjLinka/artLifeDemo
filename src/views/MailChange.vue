@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="row" v-if="errorStatus">
+    <div class="row" v-if="!errorStatus">
       <div class="col">
         <h2 class="page__title">Смена адреса почтового ящика</h2>
         <p class="p-0 m-0 mt-4">Ваша почта подтверждена</p>
