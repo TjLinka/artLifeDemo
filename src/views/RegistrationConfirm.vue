@@ -1,9 +1,9 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="errorStatus">
     <h2 class="page__title">
       Верификация
     </h2>
-    <div class="row mt-4" v-if="errorStatus">
+    <div class="row mt-4">
       <div class="col-md-6">
         <div class="custom_input" v-show="!codeCome">
           <input type="text"
@@ -51,12 +51,12 @@
         <p class="posr">{{ newUser.email }}<span class="chval"></span></p>
       </div>
     </div>
+  </div>
     <div v-else>
     <h2 class="page__title">
-      Произошла ошибка! Приносим свои извенения.
+      Страница не найдена.
     </h2>
     </div>
-  </div>
 </template>
 
 <script>
@@ -81,7 +81,7 @@ export default {
     backApi.get('/agent/new-agent', { params: { hash_content: this.$route.params.signup_hash } }).then((Response) => {
       this.newUser = Response.data;
     }).catch(() => {
-      this.showToast('', 'Произошла ошибка!', 'danger');
+      // this.showToast('', 'Произошла ошибка!', 'danger');
       this.errorStatus = false;
     });
   },
