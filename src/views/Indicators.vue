@@ -12,8 +12,13 @@
       <div class="row cur_p">
         <div class="col-sm current_period">
             <p>Текущий период:
+            <span v-if="months[new Date(currentPeriodTop.comdte).getMonth()]">
               {{ months[new Date(currentPeriodTop.comdte).getMonth()] }}
-              {{new Date(currentPeriodTop.comdte).getFullYear()}}.<br>
+              {{ new Date(currentPeriodTop.comdte).getFullYear()}}.
+            </span>
+            <span v-else>
+            </span>
+            <br>
             Статус предыдущего периода:
             <span :style="`color: ${periodStatus}`">
               {{ currentPeriodTop.prev_status }}

@@ -84,6 +84,29 @@ export default {
     },
   },
   methods: {
+    showToast(title, message, status) {
+      // Use a shorter name for this.$createElement
+      const h = this.$createElement;
+      // Increment the toast count
+      // Create the message
+      const vNodesMsg = h('p', { class: ['text-center', 'mb-0'] }, [
+        h('strong', { class: 'mr-2' }, message),
+      ]);
+      // Create the title
+      const vNodesTitle = h(
+        'div',
+        { class: ['d-flex', 'flex-grow-1', 'align-items-baseline', 'mr-2'] },
+        [
+          h('strong', { class: 'mr-2' }, title),
+        ],
+      );
+      // Pass the VNodes as an array for message and title
+      this.$bvToast.toast([vNodesMsg], {
+        title: [vNodesTitle],
+        solid: true,
+        variant: status,
+      });
+    },
     clearSum() {
       this.sum = null;
     },
@@ -117,22 +140,26 @@ export default {
     },
     async send() {
       if (this.sum !== null && this.sum !== '') {
-        await backApi
-          .post('/agent/send_money', {
-            agent_to: this.selectedUser,
-            amount: this.sum,
-            comm: this.comm,
-          })
-          .then(() => {
-            this.$bvToast.show('my-toast-money');
-          })
-          .catch(() => {
-            // this.$bvToast.show('my-toast');
+        if (this.sum <= this.balance) {
+          await backApi
+            .post('/agent/send_money', {
+              agent_to: this.selectedUser,
+              amount: this.sum,
+              comm: this.comm,
+            })
+            .then(() => {
+              this.$bvToast.show('my-toast-money');
+            })
+            .catch(() => {
+              // this.$bvToast.show('my-toast');
+            });
+          backApi.get('/agent/profile').then((Response) => {
+            this.transfertInfo = Response.data;
           });
-        backApi.get('/agent/profile').then((Response) => {
-          this.transfertInfo = Response.data;
-        });
-        this.$emit('enlarge-text');
+          this.$emit('enlarge-text');
+        } else {
+          this.showToast('Ошибка операции!', 'Введённая вами сумма превышает ваш баланс!', 'danger');
+        }
       }
     },
   },

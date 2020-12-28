@@ -1,10 +1,14 @@
 <template>
   <div class="date_picker_comp">
     <i class="arrow_left"  @click="$emit('next-period', -1)"></i>
-    <span class="date_show">
+    <span class="date_show" v-if="currentPeriod">
       <!-- <i class="arrow_left"  @click="$emit('next-period', -1)"></i> -->
       {{ months[new Date(currentPeriod).getMonth()] }}
       {{ new Date(currentPeriod).getFullYear() }}
+      <!-- <i class="arrow_right" @click="$emit('next-period', 1)"></i> -->
+    </span>
+    <span class="date_show" v-else>
+      <!-- <i class="arrow_left"  @click="$emit('next-period', -1)"></i> -->
       <!-- <i class="arrow_right" @click="$emit('next-period', 1)"></i> -->
     </span>
     <!-- <span></span> -->

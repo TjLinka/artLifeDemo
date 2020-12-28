@@ -324,6 +324,7 @@ export default {
           e.children = [];
         });
       });
+      this.tree_key += 1;
     },
   },
   methods: {
