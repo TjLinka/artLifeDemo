@@ -221,7 +221,7 @@
     <footer class="container-fluid cust_modal" v-if="showModal1">
       <div>
         <AgentInfoModalPoints
-          v-on:enlarge-text="showModal1 = false"
+          v-on:enlarge-text="pointsAction"
           :lo="transfertInfo.lo"
           :reserve="transfertInfo.reserve"
           :id="userinfo.id"
@@ -231,7 +231,7 @@
     <footer class="container-fluid cust_modal" v-if="showModal2">
       <div>
         <AgentInfoModalMoney
-          v-on:enlarge-text="showModal2 = false"
+          v-on:enlarge-text="moneyAction"
           :balance="userinfo.balance"
           :id="userinfo.id"
         />
@@ -303,6 +303,20 @@ export default {
     };
   },
   methods: {
+    moneyAction() {
+      this.showModal2 = false;
+      backApi.get('/agent/profile').then((Response) => {
+        this.userinfo = Response.data;
+      });
+    },
+    pointsAction() {
+      this.showModal1 = false;
+      backApi.get('/agent/profile').then((Response) => {
+        backApi.get('/agent/transfer-info', { params: { another_agent_id: Response.data.id } }).then((Response2) => {
+          this.transfertInfo = Response2.data;
+        });
+      });
+    },
     showToast(title, message, status) {
       // Use a shorter name for this.$createElement
       const h = this.$createElement;

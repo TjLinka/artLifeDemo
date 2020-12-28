@@ -48,6 +48,7 @@
       head-variant="light"
       responsive
       selectable
+      select-mode="single"
       @row-selected="onRowSelected"
       outlined>
         <template v-slot:cell(id)="row">

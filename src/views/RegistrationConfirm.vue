@@ -23,6 +23,7 @@
             Отправить код потверждения
         </button>
         <b-form-checkbox
+          class="mt-3"
           id="checkbox-1"
           v-model="status"
           name="checkbox-1"
@@ -33,7 +34,7 @@
           Согласен на обработку данных
         </b-form-checkbox>
         <button
-        v-else
+        v-if="codeCome"
         @click="getAccess"
         :disabled="!status"
         :class="`${status ? '' : 'disabled'}`">

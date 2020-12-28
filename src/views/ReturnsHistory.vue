@@ -361,6 +361,7 @@ export default {
       this.filterData.name = null;
       this.filterData.naknum = null;
       this.filterData.docnum = null;
+      this.tags = [];
     },
     updateData(shouldClose) {
       const data = {
