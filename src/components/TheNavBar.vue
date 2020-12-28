@@ -65,11 +65,13 @@
             <router-link to="/indicators">
             Показатели
             </router-link></li>
-            <li><router-link to="/bonus-history">История бонусов (КЕ)</router-link></li>
+            <li
+            v-show="role !== 'Клиент'">
+            <router-link to="/bonus-history">История бонусов (КЕ)</router-link></li>
             <li v-show="role !== 'Клиент'"><router-link to="/points-history"
             >История баллов </router-link></li>
             <li><router-link to="/account-detail">Детализация лицевого счёта</router-link></li>
-            <li><router-link to="/partnerindicators">
+            <li  v-show="role !== 'Клиент'"><router-link to="/partnerindicators">
             История показателей партнера по периодам
             </router-link></li>
             <li v-if="role === 'Клиент'"><router-link to="/client-bonus"

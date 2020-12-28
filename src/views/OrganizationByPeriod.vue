@@ -147,11 +147,11 @@
         </div>
         <div class="row mt-3 edit">
           <div class="col-sm-6 mb-4">
-            <span v-if="state2" class="custom_label">Партнер получатель</span>
+            <span v-if="state2" class="custom_label">Партнер</span>
           <el-autocomplete
             v-model="state2"
             :fetch-suggestions="querySearchAsync2"
-            placeholder="Партнер получатель"
+            placeholder="Партнер"
             @select="handleSelect2"
             clearable
             v-on:clear="dd2"

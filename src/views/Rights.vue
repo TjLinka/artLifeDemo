@@ -37,8 +37,8 @@
       <h2 class="mt-4">Переданные мне права</h2>
       <p class="exp_print mt-3">
         <!-- <span class="mr-3">Печать</span> -->
-        <span class="mr-3" >Экспорт в xlsx</span>
-        <span class="mr-3" >Экспорт в pdf</span>
+        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
+        <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
         <!-- <span class="mr-3" >Экспорт возвратной накладной в pdf</span> -->
         <!-- <span class="mr-3">Экспорт возвратной накладной в pdf</span> -->
       </p>
@@ -169,6 +169,32 @@ export default {
     });
   },
   methods: {
+    downloadXls() {
+      backApi.get('/agent/share-transfert-list/excel', { responseType: 'blob' })
+        .then(({ data }) => {
+          const filename = 'Переданные мне права.xlsx';
+          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        });
+    },
+    downloadPdf() {
+      backApi.get('/agent/share-transfert-list/pdf', { responseType: 'blob' })
+        .then(({ data }) => {
+          const filename = 'Переданные мне права.pdf';
+          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        });
+    },
     onRowSelected(item) {
       if (item.length > 0) {
         this.selectedUserId = item[0].id;

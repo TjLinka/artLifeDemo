@@ -198,7 +198,7 @@ export default {
           responseType: 'blob',
         })
         .then(({ data }) => {
-          const filename = 'История организации текущего периода.xlsx';
+          const filename = 'Организация текущего периода.xlsx';
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;
@@ -221,7 +221,7 @@ export default {
           responseType: 'blob',
         })
         .then(({ data }) => {
-          const filename = 'История организации текущего периода.pdf';
+          const filename = 'Организация текущего периода.pdf';
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;

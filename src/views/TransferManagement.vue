@@ -102,7 +102,7 @@
             <p style="text-align: right">{{ row.item.fio }}</p>
           </template>
           <template v-slot:cell(isterminated)="row">
-              {{row.item.isterminated === 0 ? 'Нет' : 'Да'}}
+              {{row.item.isterminated === '0' ? 'Нет' : 'Да'}}
           </template>
         </b-table>
       </div>
@@ -144,9 +144,9 @@
               id="checkbox-1"
               v-model="filterData.status"
               name="checkbox-1"
-              value="1"
+              :value="1"
               checked
-              unchecked-value="0"
+              :unchecked-value="0"
             >
               Показывать терминированных
             </b-form-checkbox>
@@ -396,6 +396,7 @@ export default {
         params: {
           agent_id: this.$route.params.id,
           tree_type: 2,
+          with_terminated: 1,
         },
       }).then((Response) => {
         this.entries = Response.data.entries;
@@ -416,6 +417,7 @@ export default {
           params: {
             agent_id: Response.data.id,
             tree_type: 2,
+            with_terminated: 1,
           },
         }).then((Response2) => {
           this.entries = Response2.data.entries;
@@ -562,9 +564,10 @@ export default {
       const dataa = {
         params: {
           context: this.currentUserId,
-          with_terminated: this.filterData.status,
+          // eslint-disable-next-line radix
+          with_terminated: parseInt(this.filterData.status),
           tree_type: this.tree_type,
-          agent_id: this.filterData.agent_id,
+          num: this.filterData.agent_id,
           fullname: this.filterData.fullname,
           area_name: areaName,
           area_id: this.filterData.area_id,
@@ -629,9 +632,10 @@ export default {
       const dataa = {
         params: {
           context: this.currentUserId,
-          with_terminated: this.filterData.status,
+          // eslint-disable-next-line radix
+          with_terminated: parseInt(this.filterData.status),
           tree_type: this.tree_type,
-          agent_id: this.filterData.agent_id,
+          num: this.filterData.agent_id,
           fullname: this.filterData.fullname,
           area_id: this.filterData.area_id,
           area_name: areaName,
@@ -679,7 +683,8 @@ export default {
 
       const data = {
         params: {
-          with_terminated: this.filterData.status,
+          // eslint-disable-next-line radix
+          with_terminated: parseInt(this.filterData.status),
           tree_type: this.tree_type,
           num: this.filterData.agent_id,
           fullname: this.filterData.fullname,
