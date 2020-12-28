@@ -1,10 +1,15 @@
 <template>
   <div class="container">
-    <div class="row">
+    <div class="row" v-if="errorStatus">
       <div class="col">
         <h2 class="page__title">Смена адреса почтового ящика</h2>
         <p class="p-0 m-0 mt-4">Ваша почта подтверждена</p>
-        <p>super@mail.ru  <span class="chval"></span></p>
+        <p> {{email}} <span class="chval"></span></p>
+      </div>
+    </div>
+    <div class="row" v-else>
+      <div class="col">
+        <h2 class="page__title">Такой старницы не существует</h2>
       </div>
     </div>
   </div>
@@ -15,12 +20,22 @@ import backApi from '../assets/backApi';
 
 export default {
   name: 'MailChange',
+  data() {
+    return {
+      errorStatus: false,
+      email: '',
+    };
+  },
   mounted() {
+    this.email = this.$route.query.email;
     backApi
       .post('/agent/change-mail-end', {
         hash_content: this.$route.params.mail_hash,
       })
       .then(() => {
+      })
+      .catch(() => {
+        this.errorStatus = true;
       });
   },
 };

@@ -140,7 +140,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .custom_input{
-  margin-top: 29px !important;
+  // margin-top: 29px !important;
 }
 .close_btn{
   display: inline-block;
@@ -168,7 +168,7 @@ div[role='combobox']{
 }
 .edit {
   & button {
-    width: 48%;
+    width: 100%;
     padding: 8px 0px;
     background: white;
     color: #32aaa7;

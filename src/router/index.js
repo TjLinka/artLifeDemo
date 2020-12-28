@@ -148,6 +148,7 @@ const routes = [
     path: '/change_mail/:mail_hash',
     name: 'MailChange',
     component: () => import('../views/MailChange.vue'),
+    // meta: { requiresAuth: true },
   },
   {
     path: '/signup/:signup_hash',

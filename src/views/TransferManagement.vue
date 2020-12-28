@@ -686,6 +686,7 @@ export default {
           // eslint-disable-next-line radix
           with_terminated: parseInt(this.filterData.status),
           tree_type: this.tree_type,
+          agent_id: this.currentUserId,
           num: this.filterData.agent_id,
           fullname: this.filterData.fullname,
           area_id: this.filterData.area_id,

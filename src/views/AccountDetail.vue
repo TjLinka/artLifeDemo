@@ -215,14 +215,14 @@ export default {
       this.income.forEach((item) => {
         summ += item.amount;
       });
-      return summ;
+      return summ.toFixed(2);
     },
     outcomes() {
       let summ = 0;
       this.outcome.forEach((item) => {
         summ += item.amount;
       });
-      return summ;
+      return summ.toFixed(2);
     },
     changes() {
       let summ = 0;

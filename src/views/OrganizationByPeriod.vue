@@ -313,7 +313,8 @@ export default {
           filter: this.tree_type,
           get_root: true,
           period: v,
-          agent_id: this.currentUserID,
+          // agent_id: this.currentUserID,
+          agent_id: this.modal_agent.agent_id !== '' ? this.modal_agent.agent_id : this.currentUserID,
         },
       };
       backApi.get('/agents-tree-hist/period', data).then((response) => {

@@ -333,12 +333,18 @@ export default {
     },
     showTransfModal() {
       this.showModal = !this.showModal;
+      this.showModal1 = false;
+      this.showModal2 = false;
     },
     showTransfModal1() {
       this.showModal1 = !this.showModal1;
+      this.showModal2 = false;
+      this.showModal = false;
     },
     showTransfModal2() {
       this.showModal2 = !this.showModal2;
+      this.showModal1 = false;
+      this.showModal = false;
     },
     back() {
       this.$router.go(-1);
