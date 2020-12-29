@@ -1,6 +1,6 @@
 <template>
   <div class="sponsor__page">
-    <div class="container-md">
+    <div class="container-md" v-loading="loading">
       <h2 class="page__title">
                               <p class="mobile_back" @click="back">
         <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -172,6 +172,7 @@ export default {
   },
   data() {
     return {
+      loading: true,
       currentPeriodTop: {},
       userInfo: {},
       points_rule: '2',
@@ -203,6 +204,8 @@ export default {
         .then((response) => {
           const data = ReplaceNull(response.data);
           this.userInfo = data;
+        }).then(() => {
+          setTimeout(() => { this.loading = false; });
         });
     });
     backApi.get('agent/bonus-detail/periods').then((Response) => {

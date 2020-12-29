@@ -55,6 +55,16 @@
       </template>
       Данные указаны не верно
     </b-toast>
+    <b-toast id="my-toast-good" variant="success" solid>
+      <template #toast-title>
+        <div class="d-flex flex-grow-1 align-items-baseline">
+          <b-img blank blank-color="#32aaa7" class="mr-2" width="12" height="12"></b-img>
+          <strong class="mr-auto">Успех!</strong>
+          <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
+        </div>
+      </template>
+      Операция выполнена успешно
+    </b-toast>
   </div>
 </template>
 
@@ -107,6 +117,9 @@ export default {
             sum: this.sum,
             direction: 'lo2reserve',
           })
+          .then(() => {
+            this.$bvToast.show('my-toast-good');
+          })
           .catch(() => {
             this.$bvToast.show('my-toast');
           });
@@ -121,6 +134,9 @@ export default {
           .post(`agent/transfert/${this.id}`, {
             sum: this.sum,
             direction: 'reserve2lo',
+          })
+          .then(() => {
+            this.$bvToast.show('my-toast-good');
           })
           .catch(() => {
             this.$bvToast.show('my-toast');

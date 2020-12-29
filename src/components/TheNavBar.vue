@@ -177,7 +177,7 @@ export default {
   float: right;
 }
 .left_menu {
-  z-index: 11;
+  z-index: 30;
 }
 .left_menu:hover .nav ul li:hover a {
   background: url('../assets/imgs/ardv.svg') no-repeat 100% center;

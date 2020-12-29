@@ -1,6 +1,6 @@
 <template>
   <div class="licevoischet__page">
-    <div class="container-fluid table_container">
+    <div class="container-fluid table_container"  v-loading="loading">
       <h2 class="page__title">
         <p class="mobile_back" @click="back">
           <svg
@@ -75,7 +75,7 @@
           </p>
         </div>
       </div>
-      <div class="transmaneg_table" v-loading="loading">
+      <div class="transmaneg_table">
         <b-table
         outlined
         responsive

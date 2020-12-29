@@ -1,6 +1,6 @@
 <template>
   <div class="licevoischet__page">
-    <div class="container-fluid table_container">
+    <div class="container-fluid table_container" v-loading="loading">
       <h2 class="page__title">
                               <p class="mobile_back" @click="back">
         <svg width="18" height="12" viewBox="0 0 18 12" fill="none"  xmlns="http://www.w3.org/2000/svg">
@@ -131,12 +131,14 @@ import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/ru';
 import backApi from '../assets/backApi';
+import dateFormat from '../assets/localDateFunc';
 
 export default {
   name: 'AccountDetail',
   components: { DatePicker },
   data() {
     return {
+      loading: true,
       tags: [],
       filterData: {
         articul: '',
@@ -224,7 +226,7 @@ export default {
           label: 'Дата сервера',
           sortable: true,
           formatter(v) {
-            return new Date(v).toLocaleDateString();
+            return dateFormat(v);
           },
         },
         {
@@ -254,6 +256,8 @@ export default {
     backApi.get('agent/refunds').then((Response) => {
       this.entries = Response.data.entries;
       this.return_details = new Array(this.total_rows).fill(undefined);
+    }).then(() => {
+      this.loading = false;
     });
   },
   computed: {

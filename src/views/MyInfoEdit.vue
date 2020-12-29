@@ -1,6 +1,6 @@
 <template>
   <div class="myinfoedit__page">
-    <div class="container">
+    <div class="container"  v-loading="loading">
       <h2 class="page__title">
         <p class="mobile_back" @click="back">
           <svg
@@ -96,7 +96,7 @@
               <input type="text"
               name="smsCode" id="smsCode"
               required v-model="smsCode" />
-              <label for="smsCode">Код потверждения</label>
+              <label for="smsCode">Код подтверждения</label>
               <span class="clear_icon" @click="clearInput('phone')"></span>
               <button class="save__newinfo mt-3" v-on:click="checkSmsCode">
                 Потвердить
@@ -201,6 +201,7 @@ export default {
   components: { DatePicker },
   data() {
     return {
+      loading: true,
       phoneHash: null,
       smsCode: null,
       smsStatus: false,
@@ -217,6 +218,8 @@ export default {
   mounted() {
     backApi.get('/agent/profile').then((Response) => {
       this.userInfo = Response.data;
+    }).then(() => {
+      setTimeout(() => { this.loading = false; });
     });
   },
   methods: {
@@ -347,6 +350,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.el-loading-mask{
+    background-color: red
+}
 .error{
   border-bottom: 1px solid red;
 }

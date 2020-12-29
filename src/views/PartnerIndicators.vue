@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid table_container">
+  <div class="container-fluid table_container" v-loading="loading">
     <h2 class="page__title">
       <p class="mobile_back" @click="back">
         <svg
@@ -98,6 +98,7 @@ export default {
   name: 'PartnerIndicators',
   data() {
     return {
+      loading: true,
       iconDict: {
         'Клиент': {
           'full': 'Клиент',
@@ -270,6 +271,10 @@ export default {
     if (this.$route.params.id) {
       backApi.get(`/agent/all-periods-indicators/${this.$route.params.id}`).then((Response) => {
         this.entries = Response.data.entries;
+      }).then(() => {
+        setTimeout(() => {
+          this.loading = false;
+        });
       });
       backApi
         .get('/agent/profile/child/', { params: { another_agent_id: this.$route.params.id } })
@@ -279,6 +284,10 @@ export default {
     } else {
       backApi.get('/agent/all-periods-indicators').then((Response) => {
         this.entries = Response.data.entries;
+      }).then(() => {
+        setTimeout(() => {
+          this.loading = false;
+        });
       });
       backApi.get('/agent/profile/').then((Response) => {
         this.userInfo = Response.data;

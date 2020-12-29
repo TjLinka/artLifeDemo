@@ -1,6 +1,6 @@
 <template>
   <div class="licevoischet__page">
-    <div class="container-fluid table_container">
+    <div class="container-fluid table_container" v-loading="loading">
       <h2 class="page__title">
                               <p class="mobile_back" @click="back">
         <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -243,6 +243,8 @@ export default {
       },
     ];
     return {
+      loading: true,
+      loading2: true,
       state: '',
       state2: '',
       searchActive: false,
@@ -282,6 +284,10 @@ export default {
         this.rows.forEach((e) => {
           e.depth = 0;
           e.children = [];
+        });
+      }).then(() => {
+        setTimeout(() => {
+          this.loading = false;
         });
       });
     });
@@ -523,6 +529,7 @@ export default {
           agent_id: tree.id,
           filter: this.tree_type,
           get_root: false,
+          period: this.currentPeriod,
         },
       };
       backApi.get('/agents-tree-hist/period', data).then((Response) => {
@@ -780,7 +787,7 @@ span[class*="el-tag"] deep i{
   border-right: 1px solid #9A9A9A;
 }
 .orgbyhist{
-  border: 1px solid #BABABA;
+  /* border: 1px solid #BABABA; */
 }
 .orgbyhist .el-table td, .el-table th.is-leaf{
   border-bottom: 1px solid #9A9A9A;

@@ -1,6 +1,6 @@
 <template>
   <div class="licevoischet__page">
-    <div class="container-fluid table_container">
+    <div class="container-fluid table_container" v-loading="loading">
       <h2 class="page__title">
         <p class="mobile_back" @click="back">
           <svg
@@ -171,6 +171,7 @@ import backApi from '../assets/backApi';
 // import BasePeriodPicker from '../components/BasePeriodPicker.vue';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/ru';
+import dateFormat from '../assets/localDateFunc';
 
 export default {
   name: 'AccountDetail',
@@ -180,6 +181,7 @@ export default {
   },
   data() {
     return {
+      loading: true,
       deliveryList: [],
       delivery: null,
       statusList: [],
@@ -317,7 +319,7 @@ export default {
           label: 'Дата сервера',
           sortable: true,
           formatter(v) {
-            return new Date(v).toLocaleDateString();
+            return dateFormat(v);
           },
         },
         {
@@ -354,6 +356,8 @@ export default {
     backApi.get('agent/sales').then((Response) => {
       this.entries = Response.data.entries;
       this.return_details = new Array(this.total_rows).fill(undefined);
+    }).then(() => {
+      setTimeout(() => { this.loading = false; });
     });
     backApi.get('/agent/sales/deliveries').then((Response) => {
       this.deliveryList = Response.data.entries;

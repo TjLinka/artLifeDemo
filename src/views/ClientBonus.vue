@@ -1,6 +1,6 @@
 <template>
   <div class="sponsor__page">
-    <div class="container">
+    <div class="container" v-loading="loading">
       <h2 class="page__title">
                               <p class="mobile_back" @click="back">
         <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -50,6 +50,7 @@ export default {
   name: 'SponsorCard',
   data() {
     return {
+      loading: true,
       bonusInfo: {},
       areaList: [],
       area: null,
@@ -63,6 +64,8 @@ export default {
       backApi.get('/agent/bonuses', { params: { area_id: Response.data.entries[0].area_id } })
         .then((response) => {
           this.bonusInfo = response.data;
+        }).then(() => {
+          setTimeout(() => { this.loading = false; });
         });
     });
   },

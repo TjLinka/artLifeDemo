@@ -1,6 +1,6 @@
 <template>
   <div class="licevoischet__page">
-    <div class="container-fluid table_container">
+    <div class="container-fluid table_container" v-loading="loading">
       <h2 class="page__title">
                       <p class="mobile_back" @click="back">
         <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -110,6 +110,7 @@ import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/ru';
 import backApi from '../assets/backApi';
+import dateFormat from '../assets/localDateFunc';
 
 export default {
   name: 'AccountDetail',
@@ -117,6 +118,7 @@ export default {
   data() {
     return {
       tags: [],
+      loading: true,
       balance: null,
       filter: {
         comment: null,
@@ -140,7 +142,7 @@ export default {
             minWidth: '120px',
           },
           formatter(v) {
-            return new Date(v).toLocaleDateString();
+            return dateFormat(v);
           },
         },
         {
@@ -196,6 +198,10 @@ export default {
         i.income = i.amount;
         // eslint-disable-next-line no-param-reassign
         i.outcome = i.amount;
+      });
+    }).then(() => {
+      setTimeout(() => {
+        this.loading = false;
       });
     });
     backApi.get('/agent/profile').then((Response) => {

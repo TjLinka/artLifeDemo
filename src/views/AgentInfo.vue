@@ -1,5 +1,5 @@
 <template>
-  <div class="myinfo__page" v-if="loaded">
+  <div class="myinfo__page">
     <div class="container-md" v-if="!success">
       <h2 class="page__title">
         <p class="mobile_back" @click="back">

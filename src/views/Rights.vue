@@ -1,6 +1,6 @@
 <template>
   <div class="licevoischet__page">
-    <div class="container-md">
+    <div class="container-md"  v-loading="loading">
       <h2 class="page__title">
         <p class="mobile_back" @click="back">
           <svg
@@ -42,6 +42,7 @@
         <!-- <span class="mr-3" >Экспорт возвратной накладной в pdf</span> -->
         <!-- <span class="mr-3">Экспорт возвратной накладной в pdf</span> -->
       </p>
+      <div>
       <b-table
       :fields="fields"
       :items="entries"
@@ -56,6 +57,7 @@
           {{row.item.id}}</router-link>
         </template>
       </b-table>
+      </div>
     </div>
     <footer class="container-fluid cust_modal" v-if="showModal1">
       <div>
@@ -108,6 +110,7 @@ export default {
   components: { RightsModalTake },
   data() {
     return {
+      loading: true,
       showModal1: false,
       ruleGiver: '',
       selectedUserId: null,
@@ -167,6 +170,8 @@ export default {
     });
     backApi.get('/agent/share-transfert-list').then((Response) => {
       this.entries = Response.data.entries;
+    }).then(() => {
+      setTimeout(() => { this.loading = false; });
     });
   },
   methods: {

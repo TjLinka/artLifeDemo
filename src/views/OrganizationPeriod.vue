@@ -1,6 +1,6 @@
 <template>
   <div class="licevoischet__page">
-    <div class="container-fluid table_container">
+    <div class="container-fluid table_container" v-loading="loading">
       <h2 class="page__title">
         <p class="mobile_back" @click="back">
         <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -162,6 +162,7 @@ export default {
       },
     ];
     return {
+      loading: true,
       searchActive: false,
       tree_type: 'full',
       agent_id: null,
@@ -181,6 +182,8 @@ export default {
         e.depth = 0;
         e.children = [];
       });
+    }).then(() => {
+      this.loading = false;
     });
   },
   computed: {},

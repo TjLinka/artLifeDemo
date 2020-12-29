@@ -50,6 +50,9 @@ url('/fonts/FuturaPT-Book.ttf') format('truetype');
     max-width: 1920px;
   }
 }
+// .el-loading-mask{
+//   background: red;
+// }
 ::-webkit-scrollbar {
     width: 8px; /* ширина нового скроллбара */
     height: 5px;
@@ -63,7 +66,10 @@ url('/fonts/FuturaPT-Book.ttf') format('truetype');
     border-radius: 8px; /* скругление углов */
     // border: 3px solid #f5cdcd; /* толщина, стиль и цвет рамки */
 }
-
+.el-loading-mask{
+  z-index: 20;
+  background-color: rgb(255 255 255);
+}
 ::-webkit-scrollbar-thumb:hover {
     background: #727272; /* ползунок меняет цвет при наведении */
 }

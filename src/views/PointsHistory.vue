@@ -1,6 +1,6 @@
 <template>
   <div class="licevoischet__page">
-    <div class="container-fluid table_container">
+    <div class="container-fluid table_container" v-loading="loading">
       <h2 class="page__title">
                               <p class="mobile_back" @click="back">
         <svg width="18" height="12" viewBox="0 0 18 12" fill="none"  xmlns="http://www.w3.org/2000/svg">
@@ -145,12 +145,14 @@ import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/ru';
 import backApi from '../assets/backApi';
 // import { ReplaceNull } from '../assets/utils';
+import dateFormat from '../assets/localDateFunc';
 
 export default {
   name: 'PointsHistory',
   components: { DatePicker },
   data() {
     return {
+      loading: true,
       tags: [],
       operType: null,
       comment: null,
@@ -185,7 +187,7 @@ export default {
             minWidth: '120px',
           },
           formatter(v) {
-            return new Date(v).toLocaleDateString();
+            return dateFormat(v);
           },
         },
         {
@@ -258,6 +260,10 @@ export default {
   mounted() {
     backApi.get('agent/points-detail').then((Response) => {
       this.entries = Response.data.entries;
+    }).then(() => {
+      setTimeout(() => {
+        this.loading = false;
+      });
     });
     const treeNameTranslate = { 0: 'Резерв', 1: 'ЛО', null: 'Все' };
     const treeName = treeNameTranslate.null;
