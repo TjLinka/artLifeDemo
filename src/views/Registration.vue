@@ -70,7 +70,7 @@
       <div class="row mt-md-5">
         <div class="col-md-6 custom_input">
           <input type="text" name="phone" id="phone"
-          v-mask="'# (###)-###-##-##'"
+          v-mask="'+7(###)-###-##-##'"
           required v-model="newUser.phone" />
           <label for="phone">Телефон</label>
           <span class="clear_icon" @click="clearInput('phone')"></span>

@@ -83,7 +83,7 @@
             <p class="page__caption">Смена телефона</p>
             <div class="custom_input t" v-show="!smsStatus">
               <input type="text"
-              v-mask="'# (###)-###-##-##'"
+              v-mask="'+7(###)-###-##-##'"
               name="phone" id="phone"
               required v-model="userInfo.phone" />
               <label for="phone">Телефон</label>

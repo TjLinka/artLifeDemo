@@ -7,7 +7,7 @@
       <div class="col-md-6">
         <div class="custom_input" v-show="!codeCome">
           <input type="text"
-          v-mask="'# (###)-###-##-##'"
+          v-mask="'+7(###)-###-##-##'"
           name="mobile_phone" id="mobile_phone"
           required v-model="newUser.mobile_phone" />
           <label for="mobile_phone">Номер телефона:</label>
