@@ -1,6 +1,7 @@
 <template>
   <div class="licevoischet__page">
-    <div class="container-md">
+    <div  v-loading="loading">
+    <div class="container-md" v-show="!loading">
       <h2 class="page__title">
         <p class="mobile_back" @click="back">
           <svg
@@ -87,6 +88,7 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
 </template>
 
@@ -101,6 +103,7 @@ export default {
   components: { DatePicker },
   data() {
     return {
+      loading: true,
       phone: '',
       newUser: {
         role: 0,
@@ -113,6 +116,9 @@ export default {
         email: '',
       },
     };
+  },
+  mounted() {
+    this.loading = false;
   },
   methods: {
     showToast(title, message, status) {

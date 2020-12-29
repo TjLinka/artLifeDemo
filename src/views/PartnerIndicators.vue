@@ -1,5 +1,6 @@
 <template>
-  <div class="container-fluid table_container" v-loading="loading">
+  <div v-loading="loading">
+  <div class="container-fluid table_container" v-show="!loading">
     <h2 class="page__title">
       <p class="mobile_back" @click="back">
         <svg
@@ -87,6 +88,7 @@
         />
       </div>
     </footer> -->
+  </div>
   </div>
 </template>
 

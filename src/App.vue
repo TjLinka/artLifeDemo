@@ -67,7 +67,9 @@ url('/fonts/FuturaPT-Book.ttf') format('truetype');
     // border: 3px solid #f5cdcd; /* толщина, стиль и цвет рамки */
 }
 .el-loading-mask{
+  position: fixed;
   z-index: 20;
+  top: 64px;
   background-color: rgb(255 255 255);
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -590,7 +592,7 @@ input[type='number'] {
   stroke: #32aaa7;
 }
 .el-loading-spinner{
-  top: 10%;
+  top: 45%;
 }
 .table thead th {
   vertical-align: middle;

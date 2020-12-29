@@ -1,6 +1,7 @@
 <template>
   <div class="licevoischet__page">
-    <div class="container-fluid table_container" v-loading="loading">
+    <div v-loading="loading">
+    <div class="container-fluid table_container" v-show="!loading">
       <h2 class="page__title">
         <p class="mobile_back" @click="back">
         <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -106,6 +107,7 @@
         </div>
       </div>
       </footer> -->
+    </div>
     </div>
   </div>
 </template>

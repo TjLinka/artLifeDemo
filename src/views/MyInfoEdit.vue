@@ -1,6 +1,7 @@
 <template>
   <div class="myinfoedit__page">
-    <div class="container"  v-loading="loading">
+    <div v-loading="loading">
+    <div class="container"  v-show="!loading">
       <h2 class="page__title">
         <p class="mobile_back" @click="back">
           <svg
@@ -164,6 +165,7 @@
           </div>
         </div>
       </div>
+    </div>
     </div>
     <b-toast id="my-toast-success" variant="warning" solid>
       <template #toast-title>

@@ -1,6 +1,7 @@
 <template>
   <div class="licevoischet__page">
-    <div class="container-md"  v-loading="loading">
+    <div v-loading="loading">
+    <div class="container-md"  v-show="!loading">
       <h2 class="page__title">
         <p class="mobile_back" @click="back">
           <svg
@@ -58,6 +59,7 @@
         </template>
       </b-table>
       </div>
+    </div>
     </div>
     <footer class="container-fluid cust_modal" v-if="showModal1">
       <div>

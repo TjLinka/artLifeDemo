@@ -1,6 +1,7 @@
 <template>
   <div class="myinfo__page">
-    <div class="container-md" v-if="!success" v-loading="loading">
+    <div v-loading="loading">
+    <div class="container-md" v-if="!success" v-show="!loading">
       <h2 class="page__title">
         <p class="mobile_back" @click="back">
           <svg
@@ -196,7 +197,7 @@
         </div>
       </div>
     </div>
-    <div v-else>
+    <div v-else v-show="!loading">
       <h2 class="page__title">
         <p class="mobile_back" @click="back">
           <svg
@@ -212,6 +213,7 @@
         Карточка партнера
       </h2>
       <h2>У вас нет прав доступа</h2>
+    </div>
     </div>
     <footer class="container-fluid cust_modal" v-if="showModal">
       <div>
