@@ -199,7 +199,7 @@ export default {
       ],
       fields: [
         {
-          key: 'nomer',
+          key: 'refund_doc_id',
           label: 'Номер возвратной накладной',
           sortable: true,
           // thStyle: {
@@ -232,7 +232,7 @@ export default {
           },
         },
         {
-          key: 'sale_id',
+          key: 'source_doc_id',
           label: 'Номер накладной',
           sortable: true,
         },
