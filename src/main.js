@@ -30,12 +30,13 @@ Vue.filter('localInt', (value) => {
 });
 Vue.filter('localDate', (value) => {
   const formatter = new Intl.DateTimeFormat('ru');
-  const date = new Date(value);
   // eslint-disable-next-line no-restricted-globals
-  if (value === '' || value === null || value === '-') {
+  try {
+    const date = new Date(value);
+    return formatter.format(date);
+  } catch {
     return '-';
   }
-  return formatter.format(date);
 });
 new Vue({
   router,

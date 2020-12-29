@@ -111,7 +111,7 @@ export default {
           };
         } else {
           data = {
-            phone: this.log.login_phone.replace(/[-,(,), ]/g, ''),
+            phone: this.log.login_phone.replace(/[-,(,),+]/g, ''),
             pwd_hash: md5(this.log.password),
             authMethod: this.value2,
           };

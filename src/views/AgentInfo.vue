@@ -1,6 +1,6 @@
 <template>
   <div class="myinfo__page">
-    <div class="container-md" v-if="!success">
+    <div class="container-md" v-if="!success" v-loading="loading">
       <h2 class="page__title">
         <p class="mobile_back" @click="back">
           <svg
@@ -291,6 +291,7 @@ export default {
   components: { Transfert, AgentInfoModalPoints, AgentInfoModalMoney },
   data() {
     return {
+      loading: true,
       showModal: false,
       showModal1: false,
       showModal2: false,
@@ -372,6 +373,9 @@ export default {
         this.transfertInfo = transer;
         this.transLoaded = true;
       }
+      setTimeout(() => {
+        this.loading = false;
+      }, 2000);
       this.loaded = true;
     },
   },

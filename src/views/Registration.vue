@@ -154,7 +154,7 @@ export default {
           country: this.newUser.country,
           city: this.newUser.city,
           bthdte: this.newUser.bthdte,
-          mobile_phone: this.newUser.phone.replace(/[-,(,), ]/g, ''),
+          mobile_phone: this.newUser.phone.replace(/[-,(,),+]/g, ''),
           email: this.newUser.email,
         };
         backApi.post('/agent/signup-start', data)
