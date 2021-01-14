@@ -114,6 +114,7 @@ url('/fonts/FuturaPT-Book.ttf') format('truetype');
   top: -15px;
   left: 19px;
   z-index: 10;
+  color: #9a9a9a;
 }
 * {
   padding: 0;

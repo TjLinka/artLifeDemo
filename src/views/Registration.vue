@@ -225,3 +225,13 @@ export default {
   }
 }
 </style>
+<style>
+input.mx-input::placeholder{
+  color: #9a9a9a;
+  font-size: 16px;
+}
+input.mx-input{
+  color: #9a9a9a;
+  font-size: 16px !important;
+}
+</style>
