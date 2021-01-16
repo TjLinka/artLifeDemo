@@ -52,6 +52,7 @@
       selectable
       select-mode="single"
       @row-selected="onRowSelected"
+      style="margin-bottom: 70px;"
       outlined>
         <template v-slot:cell(id)="row">
           <router-link :to="`/agent/${row.item.id}`" class="link">
@@ -104,6 +105,7 @@
 </template>
 
 <script>
+import $ from 'jquery';
 import backApi from '../assets/backApi';
 import RightsModalTake from '../components/RightsModalTake.vue';
 
@@ -226,7 +228,12 @@ export default {
       this.$bvToast.show('my-toast-1');
     },
     back() {
-      this.$router.go(-1);
+      const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
+      $(navEl[0])
+        .parent()
+        .parent()
+        .siblings()
+        .addClass('active');
     },
   },
 };
@@ -297,6 +304,9 @@ export default {
         margin-bottom: 15px;
       }
     }
+  }
+  .search__btn{
+    padding: 10px;
   }
 }
 </style>

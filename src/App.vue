@@ -472,7 +472,7 @@ input[type='number'] {
 }
 .history_title {
   // color: #9a9a9a;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 500;
 }
 .el-table__expand-icon--expanded{
@@ -750,7 +750,7 @@ th[aria-colindex='1']{
   }
   // СТИЛИ ДЛЯ ЗАГОЛОВКА СТРАНИЦ
   .page__title{
-    font-size: 22px;
+    font-size: 28px;
   }
   // СТИЛИ ДЛЯ ЗАГОЛОВКА МОДАЛКИ
   .modal_title{
@@ -770,7 +770,7 @@ th[aria-colindex='1']{
   }
   // ЗАГОЛОВОК СТРАНИЦЫ
   .page__title{
-    font-size: 18px;
+    font-size: 24px;
   }
   // ЗАГОЛОВОК РАЗДЕЛА СТРАНИЦЫ
   .page__caption{

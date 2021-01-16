@@ -21,7 +21,7 @@
       value-type="YYYY-MM-DD"
       >
       </date-picker>
-          <span class="licshet ml-5">Состояние лицевого счёта:
+          <span class="licshet">Состояние лицевого счёта:
           <span :class="balance < 0 ? 'red' : ''">{{balance === null ? 0 : balance}}</span></span>
         </div>
       </div>
@@ -108,6 +108,7 @@
 </template>
 
 <script>
+import $ from 'jquery';
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/ru';
@@ -343,7 +344,12 @@ export default {
       this.searchActive = !this.searchActive;
     },
     back() {
-      this.$router.go(-1);
+      const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
+      $(navEl[0])
+        .parent()
+        .parent()
+        .siblings()
+        .addClass('active');
     },
     clearInput(name) {
       this.filter[name] = '';
@@ -376,7 +382,7 @@ export default {
 
 <style lang="scss" scoped>
 .licshet{
-  // color: #BD0A0A;
+  margin-left: 30px;
   font-size: 25px;
   position: relative;
   top: 10px;
@@ -436,6 +442,12 @@ export default {
       display: block;
       margin-top: 10px;
     }
+  }
+  .licshet{
+    display: block;
+    text-align: center;
+    font-size: 20px;
+    margin-left: 0;
   }
 }
 .organization__modal {

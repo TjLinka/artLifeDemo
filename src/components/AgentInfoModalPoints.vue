@@ -34,7 +34,7 @@
         </div>
       </div>
       <div class="row edit mt-4">
-        <div class="col-md-6 custom_input">
+        <div class="col-md-6 custom_input comment">
               <input type="text" name="comm" id="comm" required v-model="comm" />
               <label for="comm">Комментарий</label>
               <span class="clear_icon" @click="clearComm()"></span>
@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import $ from 'jquery';
 import backApi from '../assets/backApi';
 
 export default {
@@ -119,12 +120,20 @@ export default {
           // eslint-disable-next-line no-param-reassign
           u.value = `${u.agent_id}-${u.name}`;
         });
-        const newMass = Response.data.entries.filter((u) => u.agent_id > 0);
+        // eslint-disable-next-line arrow-body-style
+        const newMass = Response.data.entries.filter((u) => {
+          return u.agent_id > 0 && u.agent_id !== this.id;
+        });
         cb(newMass.slice(0, 10));
       });
     },
     back() {
-      this.$router.go(-1);
+      const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
+      $(navEl[0])
+        .parent()
+        .parent()
+        .siblings()
+        .addClass('active');
     },
     handleSelect(item) {
       this.selectedUser = item.agent_id;
@@ -224,6 +233,9 @@ div[role='combobox']{
   }
 }
 @media (max-width: 425px) {
+  .comment{
+    margin-bottom: 30px;
+  }
   .perevod {
     font-size: 16px;
     // text-transform: uppercase;

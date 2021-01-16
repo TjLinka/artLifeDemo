@@ -93,6 +93,7 @@
 </template>
 
 <script>
+import $ from 'jquery';
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/ru';
@@ -145,7 +146,12 @@ export default {
       });
     },
     back() {
-      this.$router.go(-1);
+      const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
+      $(navEl[0])
+        .parent()
+        .parent()
+        .siblings()
+        .addClass('active');
     },
     registr() {
       if (

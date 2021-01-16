@@ -281,6 +281,7 @@
 </template>
 
 <script>
+import $ from 'jquery';
 import { mapState } from 'vuex';
 import Transfert from '../components/Transfert.vue';
 import AgentInfoModalPoints from '../components/AgentInfoModalPoints.vue';
@@ -364,7 +365,12 @@ export default {
       this.showModal = false;
     },
     back() {
-      this.$router.go(-1);
+      const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
+      $(navEl[1])
+        .parent()
+        .parent()
+        .siblings()
+        .addClass('active');
     },
     toggleTransfertVisible() {
       this.showTransfertInfo = !this.showTransfertInfo;

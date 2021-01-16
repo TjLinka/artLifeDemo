@@ -69,6 +69,7 @@
 </template>
 
 <script>
+import $ from 'jquery';
 import backApi from '../assets/backApi';
 
 export default {
@@ -99,7 +100,12 @@ export default {
       this.sum = null;
     },
     back() {
-      this.$router.go(-1);
+      const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
+      $(navEl[0])
+        .parent()
+        .parent()
+        .siblings()
+        .addClass('active');
     },
     makeToast(append = false) {
       // eslint-disable-next-line no-plusplus

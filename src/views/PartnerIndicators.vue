@@ -94,6 +94,7 @@
 
 <script>
 /* eslint-disable quote-props */
+import $ from 'jquery';
 import backApi from '../assets/backApi';
 
 export default {
@@ -366,7 +367,16 @@ export default {
       this.showModal = !this.showModal;
     },
     back() {
-      this.$router.go(-1);
+      const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
+      console.log(navEl);
+      console.log($(navEl[0])
+        .parent()
+        .parent());
+      $(navEl[0])
+        .parent()
+        .parent()
+        .siblings()
+        .addClass('active');
     },
   },
   computed: {

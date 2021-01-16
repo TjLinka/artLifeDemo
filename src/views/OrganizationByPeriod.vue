@@ -23,8 +23,8 @@
           ></el-autocomplete>
           </div>
         </div>
-        <div class="col search__btn mobile" @click="toggleSearch" v-if="!searchActive">
-          Настройки дерева <i class="el-icon-search search_icon"></i>
+        <div class="col search__btn mobile" @click="toggleSearch">
+          Настройки дерева <i class="el-icon-search search_icon" style="float: right"></i>
         </div>
         <!-- <div class="date_picker_comp">
           <div>
@@ -77,6 +77,7 @@
           :key="index"
           :label="column.title"
           :min-width="col_width(column)"
+          :fixed="index === 0"
         >
           <!--  -->
 
@@ -177,6 +178,7 @@
 
 <script>
 /* eslint-disable quote-props */
+import $ from 'jquery';
 import backApi from '../assets/backApi';
 import BasePeriodPicker from '../components/BasePeriodPicker.vue';
 
@@ -503,7 +505,12 @@ export default {
         });
     },
     back() {
-      this.$router.go(-1);
+      const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
+      $(navEl[0])
+        .parent()
+        .parent()
+        .siblings()
+        .addClass('active');
     },
     col_width(col) {
       if (col.property === 'id') {

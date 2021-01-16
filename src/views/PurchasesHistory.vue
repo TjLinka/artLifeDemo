@@ -122,7 +122,7 @@
             </el-select>
             </div>
           </div>
-          <div class="row edit mt-5">
+          <div class="row edit">
             <div class="col-sm-6 custom_input">
               <input type="number" name="naknum" id="naknum" required v-model="naknum" />
               <label for="naknum">Номер накладной</label>
@@ -147,7 +147,7 @@
             </el-select>
           </div>
           </div>
-          <div class="row mt-5 edit justify-content-end">
+          <div class="row edit justify-content-end">
             <div class="col-sm-6 custom_input">
               <input type="text" name="name" id="name" required v-model="name" />
               <label for="name">Наименование товара</label>
@@ -167,6 +167,7 @@
 </template>
 
 <script>
+import $ from 'jquery';
 /* eslint-disable no-param-reassign */
 import DatePicker from 'vue2-datepicker';
 import backApi from '../assets/backApi';
@@ -452,18 +453,29 @@ export default {
     },
     clearArticul() {
       this.articul = '';
+      const pos = this.tags.map((i) => i.key).indexOf('articul');
+      this.tags.splice(pos, 1);
     },
     clearName() {
       this.name = '';
+      const pos = this.tags.map((i) => i.key).indexOf('name');
+      this.tags.splice(pos, 1);
     },
     clearNaknum() {
       this.naknum = '';
+      // const pos = this.tags.map((i) => i.key).indexOf('naknum');
+      // this.tags.splice(pos, 1);
     },
     // clearStatus() {
     //   this.status = '';
     // },
     back() {
-      this.$router.go(-1);
+      const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
+      $(navEl[0])
+        .parent()
+        .parent()
+        .siblings()
+        .addClass('active');
     },
     nextPeriod(x) {
       this.period_enabled = true;
@@ -656,6 +668,10 @@ export default {
     bottom: 0;
 
     & .edit {
+      margin-bottom: 0px;
+      & > div{
+        margin-bottom: 30px;
+      }
       input {
         // margin-bottom: 20px;
       }

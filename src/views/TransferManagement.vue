@@ -17,10 +17,6 @@
         Управление трансфертами структуры
       </h2>
       <!-- <h2>История организации</h2> -->
-        <div class="col search__btn mobile"
-        @click="searchActive = !searchActive" v-if="!searchActive">
-          Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
-        </div>
       <!-- <div class="row">
         <div class="col-xl-6 mt-4">
           <button
@@ -48,6 +44,10 @@
           ></el-autocomplete>
         </div>
       </div>
+        <div class="col mb-3 search__btn mobile"
+        @click="searchActive = !searchActive">
+          Настройки трансфера <i class="el-icon-s-tools search_icon" style="float: right;"></i>
+        </div>
       <div class="row">
         <div class="col">
           <el-tag
@@ -264,6 +264,7 @@
 </template>
 
 <script>
+import $ from 'jquery';
 import backApi from '../assets/backApi';
 import Transfert from '../components/Transfert.vue';
 
@@ -811,7 +812,12 @@ export default {
         });
     },
     back() {
-      this.$router.go(-1);
+      const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
+      $(navEl[0])
+        .parent()
+        .parent()
+        .siblings()
+        .addClass('active');
     },
   },
 };

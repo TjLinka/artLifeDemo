@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import $ from 'jquery';
 import backApi from '../assets/backApi';
 
 export default {
@@ -73,7 +74,12 @@ export default {
   },
   methods: {
     back() {
-      this.$router.go(-1);
+      const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
+      $(navEl[0])
+        .parent()
+        .parent()
+        .siblings()
+        .addClass('active');
     },
   },
 };

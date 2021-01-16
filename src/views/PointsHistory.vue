@@ -35,7 +35,7 @@
       </div>
       <div class="row mobile_search">
         <div class="col search__btn" @click="toggleSearch">
-          Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
+          Фильтры <i class="el-icon-search search_icon"></i>
         </div>
       </div>
       <p class="exp_print mt-3">
@@ -74,7 +74,7 @@
       <footer class="container-fluid cust_modal pb-4">
       <div class="row desk_trans">
         <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
-          Фильтры <i class="el-icon-search   search_icon"></i>
+          Фильтры <i class="el-icon-search search_icon"></i>
         </div>
       </div>
       <div v-if="searchActive" class="organization__modal">
@@ -142,6 +142,7 @@
 </template>
 
 <script>
+import $ from 'jquery';
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/ru';
@@ -427,7 +428,12 @@ export default {
       }
     },
     back() {
-      this.$router.go(-1);
+      const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
+      $(navEl[0])
+        .parent()
+        .parent()
+        .siblings()
+        .addClass('active');
     },
     getSelectedDataRange() {
       // eslint-disable-next-line max-len
