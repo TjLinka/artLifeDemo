@@ -33,25 +33,14 @@
       </div> -->
       <div class="row mb-4">
         <div class="col-md-6 uptran">
-          <el-select
+          <el-autocomplete
             v-model="state"
-            filterable
-            remote
+            :fetch-suggestions="querySearchAsync"
+            placeholder="Партнёр получатель"
             clearable
-            @claer="dd"
-            @change="handleSelect"
-            reserve-keyword
-            placeholder="Партнер получатель"
-            :remote-method="remoteMethod"
-            style="width: 100%"
-            >
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="`${item.id}-${item.agentname}`"
-              :value="item.id">
-            </el-option>
-          </el-select>
+            @clear="dd"
+            @select="handleSelect"
+          ></el-autocomplete>
         </div>
       </div>
         <div class="col mb-3 search__btn mobile"
@@ -461,24 +450,15 @@ export default {
         });
       });
     },
-    remoteMethod(qr) {
-      if (qr !== '') {
-        backApi.get('/agent/share-transfert-list', { params: { show_root: 1 } }).then((Response) => {
-          console.log(Response.data);
-          this.options = Response.data.entries.filter((u) => u.agent_id !== this.id);
+    querySearchAsync(queryString, cb) {
+      backApi.get('/agent/share-transfert-list', { params: { show_root: 1 } }).then((Response2) => {
+        Response2.data.entries.forEach((u) => {
+          // eslint-disable-next-line no-param-reassign
+          u.value = `${u.id}-${u.agentname}`;
         });
-      }
+        cb(Response2.data.entries.slice(0, 10));
+      });
     },
-    // querySearchAsync(queryString, cb) {
-    //   backApi.get('/agent/share-transfert-list',
-    // { params: { show_root: 1 } }).then((Response2) => {
-    //     Response2.data.entries.forEach((u) => {
-    //       // eslint-disable-next-line no-param-reassign
-    //       u.value = `${u.id}-${u.agentname}`;
-    //     });
-    //     cb(Response2.data.entries.slice(0, 10));
-    //   });
-    // },
     handleSelect(item) {
       this.loading = true;
       this.currentUserId = item.id;

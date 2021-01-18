@@ -12,25 +12,16 @@
         </h2>
         <div class="row mb-4">
           <div class="col-md-6">
-          <el-select
+          <el-autocomplete
             v-model="state"
-            filterable
-            remote
+            :fetch-suggestions="querySearchAsync"
+            placeholder="Партнёр получатель"
             clearable
             @clear="dd"
-            @change="handleSelect"
-            reserve-keyword
-            placeholder="Партнер получатель"
-            :remote-method="remoteMethod"
+            @change="gg"
+            @select="handleSelect"
             style="width: 100%"
-            >
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="`${item.agent_id}-${item.name}`"
-              :value="item.agent_id">
-            </el-option>
-          </el-select>
+          ></el-autocomplete>
           </div>
         </div>
         <div class="col search__btn mobile" @click="toggleSearch">
@@ -160,25 +151,16 @@
         <div class="row mt-3 edit">
           <div class="col-sm-6 mb-4">
             <span v-if="state2" class="custom_label">Партнер</span>
-          <el-select
+          <el-autocomplete
             v-model="state2"
-            filterable
-            remote
+            :fetch-suggestions="querySearchAsync2"
+            placeholder="Партнёр получатель"
             clearable
             @clear="dd2"
-            @change="handleSelect2"
-            reserve-keyword
-            placeholder="Партнер*"
-            :remote-method="remoteMethod"
-            style="width: 100%"
-            >
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="`${item.agent_id}-${item.name}`"
-              :value="item.agent_id">
-            </el-option>
-          </el-select>
+            @change="gg2"
+            @select="handleSelect2"
+            style='width: 100%'
+          ></el-autocomplete>
           </div>
           <div class="col-sm-6">
             <button
@@ -318,6 +300,7 @@ export default {
     backApi.get('/agent/profile').then((Response) => {
       this.state = `${Response.data.id} - ${Response.data.name}`;
       this.currentUserID = Response.data.id;
+      this.currentUserIDName = { id: Response.data.id, agentname: Response.data.name };
     });
     this.tags.push({ name: 'Полное дерево', key: 'tree_type' });
   },
@@ -358,6 +341,14 @@ export default {
     },
   },
   methods: {
+    gg() {
+      this.state = `${this.currentUserIDName.id}-${this.currentUserIDName.agentname}`;
+      console.log('gg');
+    },
+    gg2() {
+      this.state2 = `${this.modal_agent.agent_id}-${this.modal_agent.name}`;
+      console.log('gg2');
+    },
     dd() {
       // this.loading = true;
       const data = {
@@ -377,6 +368,7 @@ export default {
       backApi.get('/agent/profile').then((Response) => {
         this.state = `${Response.data.id} - ${Response.data.name}`;
         this.currentUserID = Response.data.id;
+        this.currentUserIDName = { id: Response.data.id, agentname: Response.data.name };
       });
     },
     querySearchAsync(queryString, cb) {
@@ -411,6 +403,8 @@ export default {
         });
       });
       this.currentUserID = item.id;
+      this.currentUserIDName = item;
+      console.log(this.currentUserIDName);
     },
     dd2() {
       // this.loading = true;
@@ -472,6 +466,7 @@ export default {
         });
       });
       this.modal_agent = item;
+      console.log(this.modal_agent);
     },
     clearAgentId() {
       this.agent_id = null;

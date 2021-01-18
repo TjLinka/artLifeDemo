@@ -19,42 +19,31 @@
       <div class="row edit end">
         <div class="col-md-6 mt-4">
           <span v-if="state" class="custom_label">Партнёр получатель</span>
-          <el-select
+          <el-autocomplete
             v-model="state"
-            filterable
-            remote
+            :fetch-suggestions="querySearchAsync"
+            placeholder="Партнёр получатель"
             clearable
-            reserve-keyword
-            placeholder="Партнер получатель"
-            :remote-method="remoteMethod"
-            style="width: 100%"
-            >
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="`${item.agent_id}-${item.name}`"
-              :value="item.agent_id">
-            </el-option>
-          </el-select>
+            @clear="dd"
+            @change="gg"
+            @select="handleSelect"
+          ></el-autocomplete>
         </div>
         <div class="col-md-6 mt-4 custom_input">
-              <input type="number" name="sum" id="sum" required v-model="sum" step="0.1"/>
-              <label for="sum">Сумма</label>
-              <span class="clear_icon" @click="clearSum()"></span>
+          <input type="number" name="sum" id="sum" required v-model="sum" step="0.1" />
+          <label for="sum">Сумма</label>
+          <span class="clear_icon" @click="clearSum()"></span>
         </div>
       </div>
       <div class="row edit mt-4">
         <div class="col-md-6 custom_input comment">
-              <input type="text" name="comm" id="comm" required v-model="comm" />
-              <label for="comm">Комментарий</label>
-              <span class="clear_icon" @click="clearComm()"></span>
+          <input type="text" name="comm" id="comm" required v-model="comm" />
+          <label for="comm">Комментарий</label>
+          <span class="clear_icon" @click="clearComm()"></span>
         </div>
         <div class="col-md trans_btns">
-          <button
-          :disabled="!pointsGo"
-          @click="send"
-          :class="pointsGo ? '' : 'disabled'">
-          Перевести
+          <button :disabled="!pointsGo" @click="send" :class="pointsGo ? '' : 'disabled'">
+            Перевести
           </button>
         </div>
       </div>
@@ -63,11 +52,13 @@
 </template>
 
 <script>
-// import $ from 'jquery';
+import $ from 'jquery';
+// import Multiselect from 'vue-multiselect';
 import backApi from '../assets/backApi';
 
 export default {
   name: 'AgentInfoModalPoints',
+  // components: { Multiselect },
   props: ['lo', 'reserve', 'id'],
   data() {
     return {
@@ -77,10 +68,15 @@ export default {
       options: [],
       sum: null,
       toastCount: 0,
-      // selectedUser: null,
+      loading: false,
+      selectedUser: null,
     };
   },
   mounted() {
+    // backApi.get('/agent/agent-list', { params: { q: 'а' } }).then((Response) => {
+    //   this.options = Response.data.entries;
+    //   console.log();
+    // });
   },
   computed: {
     pointsGo() {
@@ -89,9 +85,10 @@ export default {
         && this.state !== null
         && this.state !== ''
         && this.sum !== null
-        && this.sum !== '') {
+        && this.sum !== ''
+      ) {
         return true;
-      // eslint-disable-next-line no-else-return
+        // eslint-disable-next-line no-else-return
       } else {
         return false;
       }
@@ -101,13 +98,13 @@ export default {
     this.sum = null;
   },
   methods: {
-    remoteMethod(qr) {
-      if (qr !== '') {
-        backApi.get('/agent/agent-list', { params: { q: qr } }).then((Response) => {
-          console.log(Response.data);
-          this.options = Response.data.entries.filter((u) => u.agent_id !== this.id);
-        });
-      }
+    back() {
+      const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
+      $(navEl[0])
+        .parent()
+        .parent()
+        .siblings()
+        .addClass('active');
     },
     showToast(title, message, status) {
       // Use a shorter name for this.$createElement
@@ -121,9 +118,7 @@ export default {
       const vNodesTitle = h(
         'div',
         { class: ['d-flex', 'flex-grow-1', 'align-items-baseline', 'mr-2'] },
-        [
-          h('strong', { class: 'mr-2' }, title),
-        ],
+        [h('strong', { class: 'mr-2' }, title)],
       );
       // Pass the VNodes as an array for message and title
       this.$bvToast.toast([vNodesMsg], {
@@ -132,32 +127,32 @@ export default {
         variant: status,
       });
     },
-    // querySearchAsync(queryString, cb) {
-    //   const qr = queryString === '' ? 'а' : queryString;
-    //   backApi.get('/agent/distr-agents-list', { params: { q: qr } }).then((Response) => {
-    //     Response.data.entries.forEach((u) => {
-    //       // eslint-disable-next-line no-param-reassign
-    //       u.value = `${u.agent_id}-${u.name}`;
-    //     });
-    //     // eslint-disable-next-line arrow-body-style
-    //     const newMass = Response.data.entries.filter((u) => {
-    //       return u.agent_id > 0 && u.agent_id !== this.id;
-    //     });
-    //     cb(newMass.slice(0, 10));
-    //   });
-    // },
-    // back() {
-    //   const navEl =
-    // document.getElementsByClassName('router-link-exact-active router-link-active');
-    //   $(navEl[0])
-    //     .parent()
-    //     .parent()
-    //     .siblings()
-    //     .addClass('active');
-    // },
-    // handleSelect(item) {
-    //   this.selectedUser = item.agent_id;
-    // },
+    querySearchAsync(queryString, cb) {
+      const qr = queryString === '' ? 'а' : queryString;
+      backApi.get('/agent/distr-agents-list', { params: { q: qr } }).then((Response) => {
+        Response.data.entries.forEach((u) => {
+          // eslint-disable-next-line no-param-reassign
+          u.value = `${u.agent_id}-${u.name}`;
+        });
+        // eslint-disable-next-line arrow-body-style
+        const newMass = Response.data.entries.filter((u) => {
+          return u.agent_id > 0 && u.agent_id !== this.id;
+        });
+        cb(newMass.slice(0, 10));
+      });
+    },
+    handleSelect(item) {
+      this.selectedUser = item;
+    },
+    gg() {
+      this.state = `${this.selectedUser.agent_id}-${this.selectedUser.name}`;
+      console.log('gg');
+    },
+    dd() {
+      this.state = '';
+      this.selectedUser = null;
+      console.log('dd');
+    },
     makeToast(append = false) {
       // eslint-disable-next-line no-plusplus
       this.toastCount++;
@@ -172,7 +167,7 @@ export default {
         if (this.sum <= this.reserve) {
           await backApi
             .post('/agent/send_points', {
-              agent_to: this.state,
+              agent_to: this.selectedUser.agent_id,
               amount: this.sum,
               comm: this.comm,
             })
@@ -187,23 +182,28 @@ export default {
           });
           this.$emit('enlarge-text');
         } else {
-          this.showToast('Ошибка операции!', 'Введённая вами сумма превышает ваш резерв!', 'danger');
+          this.showToast(
+            'Ошибка операции!',
+            'Введённая вами сумма превышает ваш резерв!',
+            'danger',
+          );
         }
       }
     },
   },
 };
 </script>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style lang="scss" scoped>
-.custom_input{
+.custom_input {
   // margin-top: 29px !important;
 }
-.close_btn{
+.close_btn {
   display: inline-block;
   position: absolute;
   right: 0;
 }
-div[role='combobox']{
+div[role='combobox'] {
   width: 100%;
 }
 .transfert {
@@ -236,12 +236,12 @@ div[role='combobox']{
 .trans_btns {
   // display: flex;
   // justify-content: space-between;
-  & button{
+  & button {
     float: right;
   }
-  & button.disabled{
-    color: #9A9A9A;
-    border-color: #C4C4C4;
+  & button.disabled {
+    color: #9a9a9a;
+    border-color: #c4c4c4;
     cursor: auto;
   }
 }
@@ -251,9 +251,12 @@ div[role='combobox']{
     // text-transform: uppercase;
     margin-bottom: 0;
   }
+  .comment {
+    margin-bottom: 30px;
+  }
 }
 @media (max-width: 425px) {
-  .comment{
+  .comment {
     margin-bottom: 30px;
   }
   .perevod {
@@ -270,15 +273,15 @@ div[role='combobox']{
     }
   }
   .transfert {
-      & p {
-        font-size: 14px;
+    & p {
+      font-size: 14px;
+    }
+    & > .col-md-6 {
+      p:nth-of-type(1) {
       }
-      & > .col-md-6 {
-        p:nth-of-type(1) {
-        }
-        p:nth-of-type(2) {
-        }
+      p:nth-of-type(2) {
       }
+    }
   }
 }
 </style>

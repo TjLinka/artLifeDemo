@@ -8,7 +8,7 @@ const routes = [
     path: '/login',
     name: 'Auth',
     component: () => import('../views/Auth.vue'),
-    meta: { requiresAuth: false },
+    // meta: { requiresGuest: true },
     // Видят все
   },
   {
@@ -212,6 +212,14 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     // Есле не требуется авторизация, то осуществляем переход по ссылке
+    // eslint-disable-next-line no-lonely-if
+    // if (to.matched.some((record) => record.meta.requiresGuest)) {
+    //   next({
+    //     path: '/',
+    //   });
+    // } else {
+    //   next();
+    // }
     next();
   }
 });

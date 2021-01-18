@@ -19,23 +19,15 @@
       <div class="row edit end">
         <div class="col-md-6 mt-4">
           <span v-if="state" class="custom_label">Партнер получатель</span>
-          <el-select
+          <el-autocomplete
             v-model="state"
-            filterable
-            remote
+            :fetch-suggestions="querySearchAsync"
+            placeholder="Партнёр получатель"
             clearable
-            reserve-keyword
-            placeholder="Партнер получатель"
-            :remote-method="remoteMethod"
-            style="width: 100%"
-            >
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="`${item.agent_id}-${item.name}`"
-              :value="item.agent_id">
-            </el-option>
-          </el-select>
+            @clear="dd"
+            @change="gg"
+            @select="handleSelect"
+          ></el-autocomplete>
         </div>
         <div class="col-md-6 mt-4 custom_input">
               <input type="number" name="sum" id="sum" required v-model="sum" step="0.1" />
@@ -62,7 +54,7 @@
 </template>
 
 <script>
-// import $ from 'jquery';
+import $ from 'jquery';
 import backApi from '../assets/backApi';
 
 export default {
@@ -76,6 +68,7 @@ export default {
       options: [],
       sum: null,
       toastCount: 0,
+      selectedUser: null,
     };
   },
   mounted() {
@@ -125,40 +118,40 @@ export default {
     clearComm() {
       this.comm = null;
     },
-    remoteMethod(qr) {
-      if (qr !== '') {
-        backApi.get('/agent/agent-list', { params: { q: qr } }).then((Response) => {
-          console.log(Response.data);
-          this.options = Response.data.entries.filter((u) => u.agent_id !== this.id);
+    querySearchAsync(queryString, cb) {
+      const qr = queryString === '' ? 'а' : queryString;
+      backApi.get('/agent/agent-list', { params: { q: qr } }).then((Response) => {
+        Response.data.entries.forEach((u) => {
+          // eslint-disable-next-line no-param-reassign
+          u.value = `${u.agent_id}-${u.name}`;
         });
-      }
+        // eslint-disable-next-line arrow-body-style
+        const newMass = Response.data.entries.filter((u) => {
+          return u.agent_id > 0 && u.agent_id !== this.id;
+        });
+        cb(newMass.slice(0, 10));
+      });
     },
-    // querySearchAsync(queryString, cb) {
-    //   const qr = queryString === '' ? 'а' : queryString;
-    //   backApi.get('/agent/agent-list', { params: { q: qr } }).then((Response) => {
-    //     Response.data.entries.forEach((u) => {
-    //       // eslint-disable-next-line no-param-reassign
-    //       u.value = `${u.agent_id}-${u.name}`;
-    //     });
-    //     // eslint-disable-next-line arrow-body-style
-    //     const newMass = Response.data.entries.filter((u) => {
-    //       return u.agent_id > 0 && u.agent_id !== this.id;
-    //     });
-    //     cb(newMass.slice(0, 10));
-    //   });
-    // },
-    // back() {
-    //   const navEl =
-    //  document.getElementsByClassName('router-link-exact-active router-link-active');
-    //   $(navEl[0])
-    //     .parent()
-    //     .parent()
-    //     .siblings()
-    //     .addClass('active');
-    // },
-    // handleSelect(item) {
-    //   this.selectedUser = item.agent_id;
-    // },
+    back() {
+      const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
+      $(navEl[0])
+        .parent()
+        .parent()
+        .siblings()
+        .addClass('active');
+    },
+    handleSelect(item) {
+      this.selectedUser = item.agent_id;
+    },
+    gg() {
+      this.state = `${this.selectedUser.agent_id}-${this.selectedUser.name}`;
+      console.log('gg');
+    },
+    dd() {
+      this.state = '';
+      this.selectedUser = null;
+      console.log('dd');
+    },
     makeToast(append = false) {
       // eslint-disable-next-line no-plusplus
       this.toastCount++;

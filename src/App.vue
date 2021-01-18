@@ -72,6 +72,15 @@ url('/fonts/FuturaPT-Book.ttf') format('truetype');
   top: 64px;
   background-color: rgb(255 255 255);
 }
+.multiselect__tags{
+  padding-left: 0 !important;
+  border:0 !important;
+  border-bottom: 1px solid #dee2f3 !important;
+}
+.multiselect__placeholder{
+  font-size: 16px !important;
+  color: #9a9a9a !important;
+}
 ::-webkit-scrollbar-thumb:hover {
     background: #727272; /* ползунок меняет цвет при наведении */
 }
@@ -751,6 +760,7 @@ th[aria-colindex='1']{
   .cust_modal{
     padding-left: 0 !important;
     padding-bottom: 60px !important;
+    overflow: scroll;
   }
   // СТИЛИ ДЛЯ КНОПКИ "Назад"
   .mobile_back{

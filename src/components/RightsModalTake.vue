@@ -7,23 +7,15 @@
       <div class="row transfert mt-5 edit">
         <div class="col-xl-6">
           <span v-if="state" class="custom_label">Партнер получатель</span>
-          <el-select
+          <el-autocomplete
             v-model="state"
-            filterable
-            remote
+            :fetch-suggestions="querySearchAsync"
+            placeholder="Партнёр получатель"
             clearable
-            reserve-keyword
-            placeholder="Партнер получатель"
-            :remote-method="remoteMethod"
-            style="width: 100%"
-            >
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="`${item.agent_id}-${item.name}`"
-              :value="item.agent_id">
-            </el-option>
-          </el-select>
+            @clear="dd"
+            @change="gg"
+            @select="handleSelect"
+          ></el-autocomplete>
         </div>
         <div class="col-xl-6 trans_btns">
           <button
@@ -68,28 +60,37 @@ export default {
     });
   },
   methods: {
-    remoteMethod(qr) {
-      if (qr !== '') {
-        backApi.get('/agent/agent-list', { params: { q: qr } }).then((Response) => {
-          console.log(Response.data);
-          this.options = Response.data.entries.filter((u) => u.agent_id !== this.id);
-        });
-      }
-    },
-    // querySearchAsync(queryString, cb) {
-    //   const qr = queryString === '' ? 'а' : queryString;
-    //   backApi.get('/agent/distr-agents-list', { params: { q: qr } }).then((Response) => {
-    //     Response.data.entries.forEach((u) => {
-    //       // eslint-disable-next-line no-param-reassign
-    //       u.value = `${u.agent_id}-${u.name}`;
+    // remoteMethod(qr) {
+    //   if (qr !== '') {
+    //     backApi.get('/agent/agent-list', { params: { q: qr } }).then((Response) => {
+    //       console.log(Response.data);
+    //       this.options = Response.data.entries.filter((u) => u.agent_id !== this.id);
     //     });
-    //     const newMass = Response.data.entries.filter((u) => u.agent_id > 0);
-    //     cb(newMass.slice(0, 10));
-    //   });
+    //   }
     // },
-    // handleSelect(item) {
-    //   this.selectedUser = item.agent_id;
-    // },
+    querySearchAsync(queryString, cb) {
+      const qr = queryString === '' ? 'а' : queryString;
+      backApi.get('/agent/distr-agents-list', { params: { q: qr } }).then((Response) => {
+        Response.data.entries.forEach((u) => {
+          // eslint-disable-next-line no-param-reassign
+          u.value = `${u.agent_id}-${u.name}`;
+        });
+        const newMass = Response.data.entries.filter((u) => u.agent_id > 0);
+        cb(newMass.slice(0, 10));
+      });
+    },
+    handleSelect(item) {
+      this.selectedUser = item;
+    },
+    gg() {
+      this.state = `${this.selectedUser.agent_id}-${this.selectedUser.name}`;
+      console.log('gg');
+    },
+    dd() {
+      this.state = '';
+      this.selectedUser = null;
+      console.log('dd');
+    },
     resetData() {
       this.selectedUser = null;
       this.$emit('enlarge-text');

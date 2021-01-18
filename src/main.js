@@ -14,6 +14,7 @@ import router from './router';
 import store from './store';
 
 locale.use(lang);
+
 Vue.use(BootstrapVue);
 Vue.use(VueMask);
 Vue.use(VueTheMask);
