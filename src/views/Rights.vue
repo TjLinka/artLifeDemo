@@ -138,17 +138,14 @@ export default {
         {
           key: 'rank_beg',
           label: 'Ранг на начало',
-          sortable: true,
         },
         {
           key: 'rank_calc',
           label: 'Расчётный ранг',
-          sortable: true,
         },
         {
           key: 'rank_end',
           label: 'Ранг на конец',
-          sortable: true,
         },
         {
           key: 'lo',

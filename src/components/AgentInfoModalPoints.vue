@@ -19,13 +19,23 @@
       <div class="row edit end">
         <div class="col-md-6 mt-4">
           <span v-if="state" class="custom_label">Партнёр получатель</span>
-          <el-autocomplete
+          <el-select
             v-model="state"
-            :fetch-suggestions="querySearchAsync"
-            placeholder="Партнер получатель"
-            @select="handleSelect"
+            filterable
+            remote
             clearable
-          ></el-autocomplete>
+            reserve-keyword
+            placeholder="Партнер получатель"
+            :remote-method="remoteMethod"
+            style="width: 100%"
+            >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="`${item.agent_id}-${item.name}`"
+              :value="item.agent_id">
+            </el-option>
+          </el-select>
         </div>
         <div class="col-md-6 mt-4 custom_input">
               <input type="number" name="sum" id="sum" required v-model="sum" />
@@ -53,7 +63,7 @@
 </template>
 
 <script>
-import $ from 'jquery';
+// import $ from 'jquery';
 import backApi from '../assets/backApi';
 
 export default {
@@ -64,9 +74,10 @@ export default {
       state: '',
       comm: null,
       links: [],
+      options: [],
       sum: null,
       toastCount: 0,
-      selectedUser: null,
+      // selectedUser: null,
     };
   },
   mounted() {
@@ -74,8 +85,8 @@ export default {
   computed: {
     pointsGo() {
       if (
-        this.selectedUser !== ''
-        && this.selectedUser !== null
+        this.state !== ''
+        && this.state !== null
         && this.state !== ''
         && this.sum !== null
         && this.sum !== '') {
@@ -90,6 +101,14 @@ export default {
     this.sum = null;
   },
   methods: {
+    remoteMethod(qr) {
+      if (qr !== '') {
+        backApi.get('/agent/agent-list', { params: { q: qr } }).then((Response) => {
+          console.log(Response.data);
+          this.options = Response.data.entries.filter((u) => u.agent_id !== this.id);
+        });
+      }
+    },
     showToast(title, message, status) {
       // Use a shorter name for this.$createElement
       const h = this.$createElement;
@@ -113,31 +132,32 @@ export default {
         variant: status,
       });
     },
-    querySearchAsync(queryString, cb) {
-      const qr = queryString === '' ? 'а' : queryString;
-      backApi.get('/agent/distr-agents-list', { params: { q: qr } }).then((Response) => {
-        Response.data.entries.forEach((u) => {
-          // eslint-disable-next-line no-param-reassign
-          u.value = `${u.agent_id}-${u.name}`;
-        });
-        // eslint-disable-next-line arrow-body-style
-        const newMass = Response.data.entries.filter((u) => {
-          return u.agent_id > 0 && u.agent_id !== this.id;
-        });
-        cb(newMass.slice(0, 10));
-      });
-    },
-    back() {
-      const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
-      $(navEl[0])
-        .parent()
-        .parent()
-        .siblings()
-        .addClass('active');
-    },
-    handleSelect(item) {
-      this.selectedUser = item.agent_id;
-    },
+    // querySearchAsync(queryString, cb) {
+    //   const qr = queryString === '' ? 'а' : queryString;
+    //   backApi.get('/agent/distr-agents-list', { params: { q: qr } }).then((Response) => {
+    //     Response.data.entries.forEach((u) => {
+    //       // eslint-disable-next-line no-param-reassign
+    //       u.value = `${u.agent_id}-${u.name}`;
+    //     });
+    //     // eslint-disable-next-line arrow-body-style
+    //     const newMass = Response.data.entries.filter((u) => {
+    //       return u.agent_id > 0 && u.agent_id !== this.id;
+    //     });
+    //     cb(newMass.slice(0, 10));
+    //   });
+    // },
+    // back() {
+    //   const navEl =
+    // document.getElementsByClassName('router-link-exact-active router-link-active');
+    //   $(navEl[0])
+    //     .parent()
+    //     .parent()
+    //     .siblings()
+    //     .addClass('active');
+    // },
+    // handleSelect(item) {
+    //   this.selectedUser = item.agent_id;
+    // },
     makeToast(append = false) {
       // eslint-disable-next-line no-plusplus
       this.toastCount++;
@@ -152,7 +172,7 @@ export default {
         if (this.sum <= this.reserve) {
           await backApi
             .post('/agent/send_points', {
-              agent_to: this.selectedUser,
+              agent_to: this.state,
               amount: this.sum,
               comm: this.comm,
             })

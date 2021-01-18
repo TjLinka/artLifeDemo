@@ -75,6 +75,14 @@ url('/fonts/FuturaPT-Book.ttf') format('truetype');
 ::-webkit-scrollbar-thumb:hover {
     background: #727272; /* ползунок меняет цвет при наведении */
 }
+input.mx-input::placeholder{
+  color: #9a9a9a;
+  font-size: 16px;
+}
+input.mx-input{
+  color: #9a9a9a;
+  font-size: 16px !important;
+}
 .el-scrollbar__thumb{
   background-color: #afafaf;
 }

@@ -187,7 +187,6 @@ export default {
         {
           key: 'rankname',
           label: 'Ранг',
-          sortable: true,
         },
         {
           key: 'volume',

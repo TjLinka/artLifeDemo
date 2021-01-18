@@ -160,7 +160,6 @@ export default {
       {
         property: 'rank_end',
         title: 'Ранг',
-        sortable: true,
         formater: (item) => item.rank_end,
       },
     ];

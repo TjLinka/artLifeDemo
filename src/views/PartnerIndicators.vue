@@ -245,7 +245,6 @@ export default {
         {
           key: 'rank_beg',
           label: 'Ранг на начало',
-          sortable: true,
           thStyle: {
             minWidth: '120px',
           },
@@ -253,7 +252,6 @@ export default {
         {
           key: 'rank_calc',
           label: 'Расчётный ранг',
-          sortable: true,
           thStyle: {
             minWidth: '120px',
           },
@@ -261,7 +259,6 @@ export default {
         {
           key: 'rank_end',
           label: 'Ранг на конец',
-          sortable: true,
           thStyle: {
             minWidth: '120px',
           },

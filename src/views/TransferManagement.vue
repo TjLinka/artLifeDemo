@@ -341,19 +341,16 @@ export default {
           key: 'rank_beg',
           label: 'Ранг на начало',
           formater: (item) => item.rank_beg,
-          sortable: true,
         },
         {
           key: 'rank_calc',
           label: 'Расчетный ранг',
           formater: (item) => item.rank_calc,
-          sortable: true,
         },
         {
           key: 'rank_end',
           label: 'Ранг на конец',
           formater: (item) => item.rank_end,
-          sortable: true,
         },
         {
           key: 'cityname',
