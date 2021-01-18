@@ -8,7 +8,7 @@ const routes = [
     path: '/login',
     name: 'Auth',
     component: () => import('../views/Auth.vue'),
-    // meta: { requiresAuth: true },
+    meta: { requiresAuth: false },
     // Видят все
   },
   {
