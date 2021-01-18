@@ -12,15 +12,25 @@
         </h2>
         <div class="row mb-4">
           <div class="col-md-6">
-          <el-autocomplete
+          <el-select
             v-model="state"
-            :fetch-suggestions="querySearchAsync"
-            placeholder="Партнер получатель"
-            @select="handleSelect"
+            filterable
+            remote
             clearable
-            v-on:clear="dd"
-            style="width: 100%;"
-          ></el-autocomplete>
+            @clear="dd"
+            @change="handleSelect"
+            reserve-keyword
+            placeholder="Партнер получатель"
+            :remote-method="remoteMethod"
+            style="width: 100%"
+            >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="`${item.agent_id}-${item.name}`"
+              :value="item.agent_id">
+            </el-option>
+          </el-select>
           </div>
         </div>
         <div class="col search__btn mobile" @click="toggleSearch">
@@ -150,15 +160,25 @@
         <div class="row mt-3 edit">
           <div class="col-sm-6 mb-4">
             <span v-if="state2" class="custom_label">Партнер</span>
-          <el-autocomplete
+          <el-select
             v-model="state2"
-            :fetch-suggestions="querySearchAsync2"
-            placeholder="Партнер"
-            @select="handleSelect2"
+            filterable
+            remote
             clearable
-            v-on:clear="dd2"
-            style="width: 100%;"
-          ></el-autocomplete>
+            @clear="dd2"
+            @change="handleSelect2"
+            reserve-keyword
+            placeholder="Партнер*"
+            :remote-method="remoteMethod"
+            style="width: 100%"
+            >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="`${item.agent_id}-${item.name}`"
+              :value="item.agent_id">
+            </el-option>
+          </el-select>
           </div>
           <div class="col-sm-6">
             <button

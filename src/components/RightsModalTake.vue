@@ -7,15 +7,23 @@
       <div class="row transfert mt-5 edit">
         <div class="col-xl-6">
           <span v-if="state" class="custom_label">Партнер получатель</span>
-          <el-autocomplete
+          <el-select
             v-model="state"
-            :fetch-suggestions="querySearchAsync"
-            placeholder="Партнер получатель"
-            @select="handleSelect"
-            style="width: 100%"
-            class="autocomplete_input"
+            filterable
+            remote
             clearable
-          ></el-autocomplete>
+            reserve-keyword
+            placeholder="Партнер получатель"
+            :remote-method="remoteMethod"
+            style="width: 100%"
+            >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="`${item.agent_id}-${item.name}`"
+              :value="item.agent_id">
+            </el-option>
+          </el-select>
         </div>
         <div class="col-xl-6 trans_btns">
           <button
@@ -50,6 +58,7 @@ export default {
   data() {
     return {
       state: '',
+      options: [],
       selectedUser: null,
     };
   },
@@ -59,20 +68,28 @@ export default {
     });
   },
   methods: {
-    querySearchAsync(queryString, cb) {
-      const qr = queryString === '' ? 'а' : queryString;
-      backApi.get('/agent/distr-agents-list', { params: { q: qr } }).then((Response) => {
-        Response.data.entries.forEach((u) => {
-          // eslint-disable-next-line no-param-reassign
-          u.value = `${u.agent_id}-${u.name}`;
+    remoteMethod(qr) {
+      if (qr !== '') {
+        backApi.get('/agent/agent-list', { params: { q: qr } }).then((Response) => {
+          console.log(Response.data);
+          this.options = Response.data.entries.filter((u) => u.agent_id !== this.id);
         });
-        const newMass = Response.data.entries.filter((u) => u.agent_id > 0);
-        cb(newMass.slice(0, 10));
-      });
+      }
     },
-    handleSelect(item) {
-      this.selectedUser = item.agent_id;
-    },
+    // querySearchAsync(queryString, cb) {
+    //   const qr = queryString === '' ? 'а' : queryString;
+    //   backApi.get('/agent/distr-agents-list', { params: { q: qr } }).then((Response) => {
+    //     Response.data.entries.forEach((u) => {
+    //       // eslint-disable-next-line no-param-reassign
+    //       u.value = `${u.agent_id}-${u.name}`;
+    //     });
+    //     const newMass = Response.data.entries.filter((u) => u.agent_id > 0);
+    //     cb(newMass.slice(0, 10));
+    //   });
+    // },
+    // handleSelect(item) {
+    //   this.selectedUser = item.agent_id;
+    // },
     resetData() {
       this.selectedUser = null;
       this.$emit('enlarge-text');
@@ -92,7 +109,7 @@ export default {
   },
   computed: {
     isDisabled() {
-      if (this.state === '' || this.state === null || this.selectedUser === null || this.selectedUser === '') {
+      if (this.state === '' || this.state === null) {
         return true;
       }
       return false;

@@ -526,6 +526,11 @@ export default {
         } else if (this.tree_type !== 'full') {
           this.tags.push({ name: `Артикул: ${this.articul}`, key: 'articul' });
         }
+      } else {
+        const pos = this.tags.map((i) => i.key).indexOf('articul');
+        if (pos !== -1) {
+          this.tags.splice(pos, 1);
+        }
       }
       // Name
       if (this.name !== null && this.name !== '') {
@@ -534,6 +539,11 @@ export default {
           tag.name = `Наименование: ${this.name}`;
         } else {
           this.tags.push({ name: `Наименование: ${this.name}`, key: 'name' });
+        }
+      } else {
+        const pos = this.tags.map((i) => i.key).indexOf('name');
+        if (pos !== -1) {
+          this.tags.splice(pos, 1);
         }
       }
       // Номер накладной
@@ -544,6 +554,11 @@ export default {
         } else {
           this.tags.push({ name: `Номер накладной: ${this.naknum}`, key: 'naknum' });
         }
+      } else {
+        const pos = this.tags.map((i) => i.key).indexOf('naknum');
+        if (pos !== -1) {
+          this.tags.splice(pos, 1);
+        }
       }
       // Статус
       if (this.status !== null && this.status !== '') {
@@ -553,6 +568,11 @@ export default {
         } else {
           this.tags.push({ name: `Статус: ${this.status}`, key: 'status' });
         }
+      } else {
+        const pos = this.tags.map((i) => i.key).indexOf('status');
+        if (pos !== -1) {
+          this.tags.splice(pos, 1);
+        }
       }
       // Доставка
       if (this.delivery !== null && this.delivery !== '') {
@@ -561,6 +581,11 @@ export default {
           tag.name = `Доставка: ${this.delivery}`;
         } else {
           this.tags.push({ name: `Доставка: ${this.delivery}`, key: 'delivery' });
+        }
+      } else {
+        const pos = this.tags.map((i) => i.key).indexOf('delivery');
+        if (pos !== -1) {
+          this.tags.splice(pos, 1);
         }
       }
       // const tag = this.tags.find((t) => t.key === 'period');
