@@ -453,7 +453,6 @@ export default {
     },
     getSelectedDataRange() {
       // eslint-disable-next-line max-len
-      console.log(this.rangeDate);
       if (this.rangeDate[0] != null && this.rangeDate[1] != null) {
         backApi
           .get('agent/points-detail', {
@@ -468,10 +467,16 @@ export default {
             this.entries = Response.data.entries;
           });
       } else {
+        this.rangeDate = [
+          this.$moment().startOf('month').format('YYYY-MM-DD'),
+          this.$moment().endOf('month').format('YYYY-MM-DD'),
+        ];
         backApi.get('agent/points-detail', {
           params: {
             points_type: this.points_type,
             comm_find: this.comment,
+            beg_dte: this.$moment().startOf('month').format('YYYY-MM-DD'),
+            end_dte: this.$moment().endOf('month').format('YYYY-MM-DD'),
           },
         }).then((Response) => {
           this.entries = Response.data.entries;
