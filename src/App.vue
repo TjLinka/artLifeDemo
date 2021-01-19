@@ -709,6 +709,7 @@ th[aria-colindex='1']{
     font-weight: bold;
     & .search_icon {
       color: #32aaa7;
+      float: right;
     }
   }
 // СТИЛЬ ДЛЯ СТРАНИЦ С ТАБЛИЦАМИ БОЛЬШЕ 1920PX
