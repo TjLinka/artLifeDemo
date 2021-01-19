@@ -184,9 +184,8 @@ export default {
         'Ноябрь',
         'Декабрь',
       ],
-      rangeDate: {
-        0: '2020',
-      },
+      rangeDate: [
+      ],
       entries: [],
       fields: [
         {
@@ -271,9 +270,17 @@ export default {
   mounted() {
     const date = new Date();
     console.log(formatDate(date));
-    this.rangeDate[0] = formatDate(date);
-    this.rangeDate[1] = formatDate(date);
-    backApi.get('agent/points-detail', { params: { beg_dte: formatDate(date), end_dte: formatDate(date) } }).then((Response) => {
+    this.rangeDate = [
+      this.$moment().startOf('month').format('YYYY-MM-DD'),
+      this.$moment().endOf('month').format('YYYY-MM-DD'),
+    ];
+    backApi.get('agent/points-detail',
+      {
+        params: {
+          beg_dte: this.$moment().startOf('month').format('YYYY-MM-DD'),
+          end_dte: this.$moment().endOf('month').format('YYYY-MM-DD'),
+        },
+      }).then((Response) => {
       this.entries = Response.data.entries;
       this.loading = false;
     });

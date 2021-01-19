@@ -713,7 +713,6 @@ th[aria-colindex='1']{
     font-weight: bold;
     & .search_icon {
       color: #32aaa7;
-      float: right;
     }
   }
 // СТИЛЬ ДЛЯ СТРАНИЦ С ТАБЛИЦАМИ БОЛЬШЕ 1920PX
@@ -789,6 +788,10 @@ th[aria-colindex='1']{
   .date_show{
     display: block !important;
     margin-left: 0 !important;
+  }
+  .search_icon {
+    color: #32aaa7;
+    float: right;
   }
   // MAIN БЛОК
   main{

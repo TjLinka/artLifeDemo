@@ -8,6 +8,7 @@ import lang from 'element-ui/lib/locale/lang/ru-RU';
 import locale from 'element-ui/lib/locale';
 import VueMask from 'v-mask';
 import VueTheMask from 'vue-the-mask';
+import VueMomentLib from 'vue-moment-lib';
 
 import App from './App.vue';
 import router from './router';
@@ -16,6 +17,7 @@ import store from './store';
 locale.use(lang);
 
 Vue.use(BootstrapVue);
+Vue.use(VueMomentLib);
 Vue.use(VueMask);
 Vue.use(VueTheMask);
 Vue.use(ElementUI);
