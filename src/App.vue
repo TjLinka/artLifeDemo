@@ -127,6 +127,7 @@ input.mx-input{
   position: relative;
 }
 .custom_label{
+  font-size: 13px;
   position: absolute;
   top: -15px;
   left: 19px;
