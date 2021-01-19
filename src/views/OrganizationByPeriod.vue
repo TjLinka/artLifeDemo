@@ -343,11 +343,9 @@ export default {
   methods: {
     gg() {
       this.state = `${this.currentUserIDName.id}-${this.currentUserIDName.agentname}`;
-      console.log('gg');
     },
     gg2() {
       this.state2 = `${this.modal_agent.agent_id}-${this.modal_agent.name}`;
-      console.log('gg2');
     },
     dd() {
       // this.loading = true;
@@ -370,6 +368,26 @@ export default {
         this.currentUserID = Response.data.id;
         this.currentUserIDName = { id: Response.data.id, agentname: Response.data.name };
       });
+    },
+    dd2() {
+      // this.loading = true;
+      const data = {
+        params: {
+          filter: this.tree_type,
+          get_root: true,
+          period: this.currentPeriod,
+          agent_id: this.currentUserID,
+        },
+      };
+      backApi.get('/agents-tree-hist/period', data).then((response) => {
+        this.rows = response.data.entries;
+        this.rows.forEach((e) => {
+          e.depth = 0;
+          e.children = [];
+        });
+      });
+      this.modal_agent_id = null;
+      this.state2 = '';
     },
     querySearchAsync(queryString, cb) {
       // const qr = queryString === '' ? 'а' : queryString;
@@ -405,25 +423,6 @@ export default {
       this.currentUserID = item.id;
       this.currentUserIDName = item;
       console.log(this.currentUserIDName);
-    },
-    dd2() {
-      // this.loading = true;
-      const data = {
-        params: {
-          filter: this.tree_type,
-          get_root: true,
-          period: this.currentPeriod,
-          agent_id: this.currentUserID,
-        },
-      };
-      backApi.get('/agents-tree-hist/period', data).then((response) => {
-        this.rows = response.data.entries;
-        this.rows.forEach((e) => {
-          e.depth = 0;
-          e.children = [];
-        });
-      });
-      this.modal_agent_id = this.currentUserID;
     },
     querySearchAsync2(queryString, cb) {
       const qr = queryString === '' ? 'а' : queryString;
