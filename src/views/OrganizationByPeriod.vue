@@ -10,7 +10,7 @@
       </p>
         История организации по периодам
         </h2>
-        <div class="row mb-4">
+        <div class="row mb-1">
           <div class="col-md-6">
           <el-autocomplete
             v-model="state"
@@ -78,10 +78,8 @@
           :key="index"
           :label="column.title"
           :min-width="col_width(column)"
-          :fixed="index === 0"
         >
           <!--  -->
-
           <template slot-scope="scope">
             <!-- {{column.property}} -->
             <span v-if="column.property != 'id'">{{ column.formater(scope.row) }}</span>
@@ -543,6 +541,7 @@ export default {
       }
       if (tag.key === 'modal_agent_id') {
         this.modal_agent.agent_id = null;
+        this.state2 = '';
       }
       this.updateData();
     },

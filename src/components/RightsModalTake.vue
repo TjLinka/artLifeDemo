@@ -182,6 +182,9 @@ export default {
       margin-bottom: 20px;
     }
   }
+  .edit > .col-xl-6{
+    margin-bottom: 20px;
+  }
   .autocomplete_input{
     margin-bottom: 25px;
   }

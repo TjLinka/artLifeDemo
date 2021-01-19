@@ -51,7 +51,7 @@
         </div>
       </div>
         <div class="row mobile_search">
-          <div class="col search__btn" @click="toggleSearch" v-if="!searchActive">
+          <div class="col search__btn" @click="toggleSearch">
             Фильтр <i class="el-icon-search search_icon"></i>
           </div>
         </div>
@@ -65,6 +65,7 @@
       :items="entries"
       head-variant="light"
       responsive
+      sticky-header
       outlined>
       <template #cell(amount)="data">
         <b class="text-info">{{ data.value }}</b>

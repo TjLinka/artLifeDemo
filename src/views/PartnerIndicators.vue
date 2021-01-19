@@ -466,7 +466,7 @@ export default {
     width: 100%;
   }
   .el-date-range-picker{
-    max-width: 420px !important;
+    max-width: 320px !important;
   }
   .el-date-range-picker .el-picker-panel__body{
     min-width: unset !important;

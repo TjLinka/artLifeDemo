@@ -48,7 +48,7 @@
         <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
       </p>
-      <b-table responsive :fields="fields" :items="entries" head-variant="light"
+      <b-table responsive :fields="fields" :items="entries" sticky-header head-variant="light"
       class="points_history_table" outlined>
         <template #table-colgroup="scope">
           <col
@@ -154,6 +154,7 @@ import 'vue2-datepicker/locale/ru';
 import backApi from '../assets/backApi';
 // import { ReplaceNull } from '../assets/utils';
 import dateFormat from '../assets/localDateFunc';
+import formatDate from '../assets/localDateFuncEng';
 
 export default {
   name: 'PointsHistory',
@@ -183,7 +184,9 @@ export default {
         'Ноябрь',
         'Декабрь',
       ],
-      rangeDate: {},
+      rangeDate: {
+        0: '2020',
+      },
       entries: [],
       fields: [
         {
@@ -266,15 +269,14 @@ export default {
     };
   },
   mounted() {
-    backApi.get('agent/points-detail').then((Response) => {
+    const date = new Date();
+    console.log(formatDate(date));
+    this.rangeDate[0] = formatDate(date);
+    this.rangeDate[1] = formatDate(date);
+    backApi.get('agent/points-detail', { params: { beg_dte: formatDate(date), end_dte: formatDate(date) } }).then((Response) => {
       this.entries = Response.data.entries;
       this.loading = false;
     });
-    // .then(() => {
-    //   setTimeout(() => {
-    //     this.loading = false;
-    //   });
-    // });
     const treeNameTranslate = { 0: 'Резерв', 1: 'ЛО', null: 'Все' };
     const treeName = treeNameTranslate.null;
     this.tags.push({ name: `Тип баллов: ${treeName}`, key: 'points_type' });
@@ -444,6 +446,7 @@ export default {
     },
     getSelectedDataRange() {
       // eslint-disable-next-line max-len
+      console.log(this.rangeDate);
       if (this.rangeDate[0] != null && this.rangeDate[1] != null) {
         backApi
           .get('agent/points-detail', {

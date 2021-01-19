@@ -57,6 +57,10 @@ url('/fonts/FuturaPT-Book.ttf') format('truetype');
     width: 8px; /* ширина нового скроллбара */
     height: 5px;
 }
+.el-date-editor .el-range__icon{
+  position: absolute;
+  right: 0;
+}
 ::-webkit-scrollbar-track {
     // background: #afafaf; /* цвет фона у дорожки */
     box-shadow: 0 0 2px rgba(0, 0, 0, .2) inset; /* тень у дорожки */
