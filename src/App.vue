@@ -789,7 +789,7 @@ th[aria-colindex='1']{
   }
   // ЗАГОЛОВОК СТРАНИЦЫ
   .page__title{
-    font-size: 24px;
+    font-size: 16px;
   }
   // ЗАГОЛОВОК РАЗДЕЛА СТРАНИЦЫ
   .page__caption{
