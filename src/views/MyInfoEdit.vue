@@ -357,6 +357,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.custom_label{
+  font-size: 13px;
+}
 .el-loading-mask{
     background-color: red
 }

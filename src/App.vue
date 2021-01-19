@@ -378,7 +378,7 @@ main {
   font-weight: 500;
   border-radius: 0;
   font-size: 20px !important;
-  padding-left: 0!important;
+  padding-left: 5px !important;
   color: black !important;
   box-shadow: none !important;
 }
