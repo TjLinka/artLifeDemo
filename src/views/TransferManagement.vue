@@ -40,6 +40,7 @@
             clearable
             @clear="dd"
             @select="handleSelect"
+            style="width: 100%"
           ></el-autocomplete>
         </div>
       </div>

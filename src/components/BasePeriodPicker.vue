@@ -88,22 +88,22 @@ export default {
   }
   .arrow_left{
       background-image: url('../assets/imgs/arrow_left.svg');
-      left: 60px;
+      left: 0px;
   }
   .arrow_right{
       background-image: url('../assets/imgs/arrow_right.svg');
-      right: 60px;
+      right: 0px;
       left: unset;
   }
 }
 @media (max-width: 320px) {
   .arrow_left{
       background-image: url('../assets/imgs/arrow_left.svg');
-      left: 40px;
+      left: 0px;
   }
   .arrow_right{
       background-image: url('../assets/imgs/arrow_right.svg');
-      right: 40px;
+      right: 0px;
       left: unset;
   }
 }

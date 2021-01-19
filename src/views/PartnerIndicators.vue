@@ -32,6 +32,16 @@
           style="width: 100%"
           >
         </el-date-picker>
+        <!-- <el-date-picker
+          v-model="monthRange"
+          type="month"
+          range-separator="-"
+          v-on:change="dd"
+          value-format="yyyy-MM-dd"
+          :format="`MMMM yyyy`"
+          style="width: 100%"
+          >
+        </el-date-picker> -->
       </div>
       </div>
     <div class="row mt-3">
@@ -430,6 +440,7 @@ export default {
 }
 </style>
 <style>
+
 .el-month-table td.start-date .cell{
   background-color: #32aaa7;
   border-radius: 0;
@@ -449,5 +460,19 @@ export default {
 }
 .el-month-table td.today .cell{
   color: #32aaa7;
+}
+@media (max-width: 525px) {
+  .el-date-range-picker__content{
+    width: 100%;
+  }
+  .el-date-range-picker{
+    max-width: 420px !important;
+  }
+  .el-date-range-picker .el-picker-panel__body{
+    min-width: unset !important;
+  }
+  .el-month-table td{
+    padding: 0;
+  }
 }
 </style>

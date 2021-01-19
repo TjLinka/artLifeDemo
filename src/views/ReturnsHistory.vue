@@ -20,6 +20,7 @@
       format="DD.MM.YYYY"
       value-type="YYYY-MM-DD"
       range-separator=" - "
+      style="width: 100%"
       >
       </date-picker>
         </div>
