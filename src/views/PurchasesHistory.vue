@@ -17,6 +17,8 @@
         История покупок
       </h2>
       <p class="p-0 m-0 history_title">Период от и до</p>
+        <div class="row">
+          <div class="col-md-6">
       <date-picker
       v-model="rangeDate"
       range-separator=" - "
@@ -24,8 +26,11 @@
       @change="getSelectedDataRange"
       format="DD.MM.YYYY"
       value-type="YYYY-MM-DD"
+      style="width: 100%"
       >
       </date-picker>
+          </div>
+        </div>
         <div class="row mobile_search">
           <div class="col search__btn" @click="toggleSearch" v-if="!searchActive">
             Поиск покупки <i class="el-icon-search search_icon"></i>

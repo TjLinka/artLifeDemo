@@ -20,7 +20,8 @@
           Настройки партнера <i class="el-icon-search search_icon"></i>
         </div>
       <p class="p-0 m-0 history_title">Период от и до</p>
-      <div class="month_range_indicators">
+      <div class="row">
+      <div class="col-md-6 month_range_indicators">
         <el-date-picker
           v-model="monthRange"
           type="monthrange"
@@ -28,8 +29,10 @@
           v-on:change="dd"
           value-format="yyyy-MM-dd"
           :format="`MMMM yyyy`"
+          style="width: 100%"
           >
         </el-date-picker>
+      </div>
       </div>
     <div class="row mt-3">
       <div class="col">

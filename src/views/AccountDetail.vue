@@ -12,19 +12,24 @@
         </h2>
       <p>
         <span class="licshet">Состояние лицевого счёта:
-        <span :class="balance < 0 ? 'red' : ''">{{balance === null ? 0 : balance}}</span></span>
+        <span :class="balance < 0 ? 'red' : ''">{{balance === null ? 0 : balance}} Р.</span></span>
       </p>
       <p class="p-0 m-0 history_title">Период от и до</p>
       <div class="row">
         <div class="col">
+      <div class="row">
+        <div class="col-md-6">
       <date-picker
       v-model="rangeDate"
       range-separator=" - "
       range @change="getSelectedDataRange"
       format="DD.MM.YYYY"
       value-type="YYYY-MM-DD"
+      style="width: 100%"
       >
       </date-picker>
+        </div>
+      </div>
       <!-- <p>
         <span class="licshet">Состояние лицевого счёта:
         <span :class="balance < 0 ? 'red' : ''">{{balance === null ? 0 : balance}}</span></span>
@@ -451,7 +456,6 @@ export default {
   }
   .licshet{
     display: block;
-    text-align: center;
     font-size: 20px;
     margin-left: 0;
   }

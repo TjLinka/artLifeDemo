@@ -11,6 +11,8 @@
         История возвратов
         </h2>
       <p class="p-0 m-0 history_title">Период от и до</p>
+      <div class="row">
+        <div class="col-md-6">
       <date-picker
       v-model="rangeDate"
       range
@@ -20,6 +22,8 @@
       range-separator=" - "
       >
       </date-picker>
+        </div>
+      </div>
       <div class="tags">
       <el-tag
         v-for="tag in tags"
