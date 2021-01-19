@@ -268,11 +268,13 @@ export default {
   mounted() {
     backApi.get('agent/points-detail').then((Response) => {
       this.entries = Response.data.entries;
-    }).then(() => {
-      setTimeout(() => {
-        this.loading = false;
-      });
+      this.loading = false;
     });
+    // .then(() => {
+    //   setTimeout(() => {
+    //     this.loading = false;
+    //   });
+    // });
     const treeNameTranslate = { 0: 'Резерв', 1: 'ЛО', null: 'Все' };
     const treeName = treeNameTranslate.null;
     this.tags.push({ name: `Тип баллов: ${treeName}`, key: 'points_type' });

@@ -747,6 +747,9 @@ th[aria-colindex='1']{
   body {
     // overflow-x: hidden !important;
   }
+  .history_title{
+    font-size: 14px;
+  }
   main {
     padding-left: 15px !important;
     padding-right: 15px;

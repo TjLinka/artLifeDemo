@@ -15,10 +15,10 @@
       </p>
       История показателей партнера по периодам
     </h2>
-        <div class="col mt-4 search__btn mobile"
+        <!-- <div class="col mt-4 search__btn mobile"
         @click="showModal = !showModal" v-if="!showModal">
           Настройки партнера <i class="el-icon-search search_icon"></i>
-        </div>
+        </div> -->
       <p class="p-0 m-0 history_title">Период от и до</p>
       <div class="row">
       <div class="col-md-6 month_range_indicators">
@@ -421,6 +421,11 @@ export default {
   }
   .desktop{
     display: none;
+  }
+  .userInfo {
+    font-size: 18px;
+    color: gray;
+    font-weight: 400;
   }
 }
 </style>
