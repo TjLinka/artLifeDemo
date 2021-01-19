@@ -10,6 +10,10 @@
       </p>
         Детализация лицевого счёта
         </h2>
+      <p>
+        <span class="licshet">Состояние лицевого счёта:
+        <span :class="balance < 0 ? 'red' : ''">{{balance === null ? 0 : balance}}</span></span>
+      </p>
       <p class="p-0 m-0 history_title">Период от и до</p>
       <div class="row">
         <div class="col">
@@ -21,8 +25,10 @@
       value-type="YYYY-MM-DD"
       >
       </date-picker>
-          <span class="licshet">Состояние лицевого счёта:
-          <span :class="balance < 0 ? 'red' : ''">{{balance === null ? 0 : balance}}</span></span>
+      <!-- <p>
+        <span class="licshet">Состояние лицевого счёта:
+        <span :class="balance < 0 ? 'red' : ''">{{balance === null ? 0 : balance}}</span></span>
+      </p> -->
         </div>
       </div>
       <div class="row mt-4">
@@ -382,7 +388,7 @@ export default {
 
 <style lang="scss" scoped>
 .licshet{
-  margin-left: 30px;
+  // margin-left: 30px;
   font-size: 25px;
   position: relative;
   top: 10px;
