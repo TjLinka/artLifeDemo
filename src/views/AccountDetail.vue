@@ -446,12 +446,23 @@ export default {
   .custom_input{
     margin-top: 20px;
   }
+  .licevoischet__page__summ{
+    position: fixed;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+    font-size: 12px !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    & span{
+      display: inline;
+    }
+  }
 }
 @media (max-width: 450px) {
   .licevoischet__page__summ{
     font-size: 16px;
     & span{
-      display: block;
       margin-top: 10px;
     }
   }

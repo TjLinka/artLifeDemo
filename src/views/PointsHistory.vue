@@ -154,7 +154,7 @@ import 'vue2-datepicker/locale/ru';
 import backApi from '../assets/backApi';
 // import { ReplaceNull } from '../assets/utils';
 import dateFormat from '../assets/localDateFunc';
-import formatDate from '../assets/localDateFuncEng';
+// import formatDate from '../assets/localDateFuncEng';
 
 export default {
   name: 'PointsHistory',
@@ -268,17 +268,18 @@ export default {
     };
   },
   mounted() {
-    const date = new Date();
-    console.log(formatDate(date));
+    // const date = new Date();
+    // console.log(formatDate(date));
     this.rangeDate = [
-      this.$moment().startOf('month').format('YYYY-MM-DD'),
-      this.$moment().endOf('month').format('YYYY-MM-DD'),
+      this.$moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD'),
+      this.$moment().subtract(1, 'months').endOf('month').format('YYYY-MM-DD'),
     ];
+    // console.log(this.$moment().format('Y-MM-DD'));
     backApi.get('agent/points-detail',
       {
         params: {
-          beg_dte: this.$moment().startOf('month').format('YYYY-MM-DD'),
-          end_dte: this.$moment().endOf('month').format('YYYY-MM-DD'),
+          beg_dte: this.$moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD'),
+          end_dte: this.$moment().subtract(1, 'months').endOf('month').format('YYYY-MM-DD'),
         },
       }).then((Response) => {
       this.entries = Response.data.entries;
@@ -468,15 +469,15 @@ export default {
           });
       } else {
         this.rangeDate = [
-          this.$moment().startOf('month').format('YYYY-MM-DD'),
-          this.$moment().endOf('month').format('YYYY-MM-DD'),
+          this.$moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD'),
+          this.$moment().subtract(1, 'months').endOf('month').format('YYYY-MM-DD'),
         ];
         backApi.get('agent/points-detail', {
           params: {
             points_type: this.points_type,
             comm_find: this.comment,
-            beg_dte: this.$moment().startOf('month').format('YYYY-MM-DD'),
-            end_dte: this.$moment().endOf('month').format('YYYY-MM-DD'),
+            beg_dte: this.$moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD'),
+            end_dte: this.$moment().subtract(1, 'months').endOf('month').format('YYYY-MM-DD'),
           },
         }).then((Response) => {
           this.entries = Response.data.entries;
@@ -554,6 +555,14 @@ export default {
   input[id='comment']{
     margin-bottom: 20px;
   }
+  .licevoischet__page__summ{
+    position: fixed;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+    font-size: 12px;
+    padding-left: 15px;
+  }
   .update{
     width: 100%;
   }
@@ -562,6 +571,16 @@ export default {
   }
   .organization__modal{
     padding: 0;
+  }
+}
+@media (max-width: 320px) {
+  .licevoischet__page__summ{
+    position: fixed;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+    font-size: 13px;
+    padding-left: 0px;
   }
 }
 </style>

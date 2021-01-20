@@ -789,6 +789,9 @@ th[aria-colindex='1']{
     display: block !important;
     margin-left: 0 !important;
   }
+  .b-table-sticky-header{
+    margin-bottom: 20px;
+  }
   .search_icon {
     color: #32aaa7;
     float: right;

@@ -16,9 +16,9 @@
         </p>
         Редактирование личных данных
       </h2>
-      <div class="myfoto">
+      <!-- <div class="myfoto">
         <img src="../assets/imgs/unnamed 1.png" alt="" />
-      </div>
+      </div> -->
       <div class="top__info mt-3">
         <div class="row edit ">
           <div class="col-md-6 custom_input mt-3">
