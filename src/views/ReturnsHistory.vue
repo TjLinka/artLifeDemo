@@ -56,7 +56,7 @@
       <b-table :fields="fields" :items="entries"
       head-variant="light" responsive outlined
       >
-        <template v-slot:cell(nomer)="row">
+        <template v-slot:cell(refund_doc_id)="row">
           <b-button size="sm" @click="show_details(row)" class="mr-2">
             <span>{{ row.detailsShowing ? '-' : '+' }}</span>
           </b-button>
