@@ -47,8 +47,8 @@
     <div class="row mt-3">
       <div class="col">
         <p class="userInfo">
+          <img class="mb-1 mr-2" :src="`../icons/${userIcon}.svg`" alt="" />
           <span class="mr-3">{{ userInfo.name }} {{ userInfo.id }}</span>
-          <img class="mb-1" :src="`../icons/${userIcon}.svg`" alt="" />
         </p>
       </div>
     </div>

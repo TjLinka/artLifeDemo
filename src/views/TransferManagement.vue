@@ -88,6 +88,7 @@
         :items="entries"
         :tbody-tr-class="rowClass"
         sticky-header
+        v-b-tooltip title="Online!"
         class="mt-4">
           <template v-slot:cell(id)="row">
             <p>

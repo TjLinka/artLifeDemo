@@ -20,6 +20,7 @@
         <div class="row">
           <div class="col-md-6">
       <date-picker
+      :editable='false'
       v-model="rangeDate"
       range-separator=" - "
       range

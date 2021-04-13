@@ -10,7 +10,7 @@
       </p>
         История бонусов(КЕ)
         </h2>
-      <div class="row cur_p">
+      <!-- <div class="row cur_p">
         <div class="col-sm current_period">
             <p>Текущий период:
               {{ months[new Date(currentPeriodTop.comdte).getMonth()] }}
@@ -21,7 +21,7 @@
             </span>
             </p>
         </div>
-      </div>
+      </div> -->
       <div class="row mt-3">
         <div class="col-md-6 perioad__picker">
         <BasePeriodPicker :currentPeriod="currentPeriod"
@@ -221,7 +221,7 @@ export default {
         const result = a.comdte > b.comdte ? 1 : -1;
         return result;
       });
-      this.periodIndex = this.periods.length - 1;
+      this.periodIndex = this.periods.length - 2;
       backApi
         .get('agent/bonus-detail', { params: { comdte: this.currentPeriod } })
         .then((response) => {

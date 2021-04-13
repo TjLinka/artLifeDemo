@@ -271,8 +271,8 @@ export default {
     // const date = new Date();
     // console.log(formatDate(date));
     this.rangeDate = [
-      this.$moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD'),
-      this.$moment().subtract(1, 'months').endOf('month').format('YYYY-MM-DD'),
+      this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+      this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
     ];
     // console.log(this.$moment().format('Y-MM-DD'));
     backApi.get('agent/points-detail',

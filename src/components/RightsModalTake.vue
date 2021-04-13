@@ -97,7 +97,7 @@ export default {
     },
     async takeRights() {
       if (this.selectedUser !== null && this.selectedUser !== '') {
-        await backApi.post('/agent/share-transfert', { agent_to: this.selectedUser });
+        await backApi.post('/agent/share-transfert', { agent_to: this.selectedUser.agent_id });
         await backApi.get('/agent/profile/').then((Response) => {
           this.$emit('rulegiver', Response.data.agent2transfer_name);
         });
