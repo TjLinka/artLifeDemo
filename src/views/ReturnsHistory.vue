@@ -10,16 +10,17 @@
       </p>
         История возвратов
         </h2>
-      <p class="p-0 m-0 history_title">Период от и до</p>
+      <p class="p-0 m-0 history_title"
+      v-if="rangeDate[0] !== null && rangeDate.length > 0">Период от и до</p>
       <div class="row">
         <div class="col-md-6">
       <date-picker
       v-model="rangeDate"
-      range
-      @change="getSelectedDataRange"
-      format="DD.MM.YYYY"
-      value-type="YYYY-MM-DD"
       range-separator=" - "
+      range @change="getSelectedDataRange"
+      format="DD.MM.YYYY"
+      placeholder="Период от и до"
+      value-type="YYYY-MM-DD"
       style="width: 100%"
       >
       </date-picker>
@@ -39,7 +40,7 @@
       </div>
         <div class="row mobile_search">
           <div class="col search__btn" @click="toggleSearch" v-if="!searchActive">
-            Поиск возврата <i class="el-icon-search search_icon"></i>
+            Поиск возврата <span class="search_icons mobi"></span>
           </div>
         </div>
       <p class="exp_print mt-3">
@@ -77,7 +78,7 @@
         <div class="container-md">
           <div class="row desktop_search">
           <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
-            Фильтр <i class="el-icon-search search_icon"></i>
+            Фильтр <span class="search_icons"></span>
           </div>
         </div>
         <div v-if="searchActive" class="organization__modal">
@@ -510,6 +511,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.search_icons{
+  position: relative;
+  top: 5px;
+  display: inline-block;
+  width: 24px !important;
+  height: 24px;
+  background-image: url('../../public/icons/search.svg');
+  background-size: contain;
+  &.mobi{
+    position: absolute;
+    top: 20px;
+    right: 15px;
+  }
+}
 .nak{
   background: none;
   border: none;

@@ -25,7 +25,7 @@
           </div>
         </div>
         <div class="col search__btn mobile" @click="toggleSearch">
-          Настройки дерева <i class="el-icon-search search_icon" style="float: right"></i>
+          Настройки дерева <span class="search_icons mobi"></span>
         </div>
         <!-- <div class="date_picker_comp">
           <div>
@@ -42,7 +42,7 @@
             @click="periodIndex = (periodIndex + 1) % periods.length"></i>
           </div>
         </div> -->
-        <div class="perioad__picker mb-3">
+        <div class="perioad__picker mb-3 mt-3">
         <BasePeriodPicker :currentPeriod="currentPeriod"
         v-on:next-period="nextPeriod" class="period_picker"/>
         </div>
@@ -80,6 +80,12 @@
           :min-width="col_width(column)"
         >
           <!--  -->
+          <template slot="header" v-if="column.property === 'id'">
+           {{column.title}}
+          </template>
+          <template v-else slot="header">
+            {{column.title}}
+          </template>
           <template slot-scope="scope">
             <!-- {{column.property}} -->
             <span v-if="column.property != 'id'">{{ column.formater(scope.row) }}</span>
@@ -99,7 +105,7 @@
       <footer class="cust_modal">
               <div class="row">
         <div class="col text-center search__btn desktop" @click="toggleSearch" v-if="!searchActive">
-          Настройки дерева <i class="el-icon-search search_icon"></i>
+          Настройки дерева <span class="search_icons"></span>
         </div>
       </div>
       <div v-if="searchActive" class="organization__modal">
@@ -148,11 +154,11 @@
         </div>
         <div class="row mt-3 edit">
           <div class="col-sm-6 mb-4">
-            <span v-if="state2" class="custom_label">Партнер</span>
+            <span v-if="state2" class="custom_label">Построить дерево для партнёра</span>
           <el-autocomplete
             v-model="state2"
             :fetch-suggestions="querySearchAsync2"
-            placeholder="Партнёр получатель"
+            placeholder="Построить дерево для партнёра"
             clearable
             @clear="dd2"
             @change="gg2"
@@ -634,6 +640,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.hide_btn{
+  color: #32aaa7;
+  float: right;
+  cursor: pointer;
+}
+.search_icons{
+  position: relative;
+  top: 5px;
+  display: inline-block;
+  width: 24px !important;
+  height: 24px;
+  background-image: url('../../public/icons/search.svg');
+  background-size: contain;
+  &.mobi{
+    position: absolute;
+    top: 20px;
+    right: 15px;
+  }
+}
 .mobile{
   display: none;
   margin-bottom: 20px;

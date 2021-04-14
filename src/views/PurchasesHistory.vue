@@ -16,16 +16,16 @@
         </p>
         История покупок
       </h2>
-      <p class="p-0 m-0 history_title">Период от и до</p>
+      <p class="p-0 m-0 history_title"
+      v-if="rangeDate[0] !== null && rangeDate.length > 0">Период от и до</p>
         <div class="row">
           <div class="col-md-6">
       <date-picker
-      :editable='false'
       v-model="rangeDate"
       range-separator=" - "
-      range
-      @change="getSelectedDataRange"
+      range @change="getSelectedDataRange"
       format="DD.MM.YYYY"
+      placeholder="Период от и до"
       value-type="YYYY-MM-DD"
       style="width: 100%"
       >
@@ -34,7 +34,7 @@
         </div>
         <div class="row mobile_search">
           <div class="col search__btn" @click="toggleSearch" v-if="!searchActive">
-            Поиск покупки <i class="el-icon-search search_icon"></i>
+            Поиск покупки <span class="search_icons mobi"></span>
           </div>
         </div>
       <div class="tags">
@@ -79,6 +79,7 @@
           <template v-slot:row-details="row">
             <div class="sub_table">
               <b-table
+
                 :fields="returnFields"
                 :items="return_details[row.item.webshop_id]"
                 head-variant="light"
@@ -92,7 +93,7 @@
         <div class="container-md">
         <div class="row desktop_search">
           <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
-            Фильтр <i class="el-icon-search search_icon"></i>
+            Фильтр <span class="search_icons"></span>
           </div>
         </div>
         <div v-if="searchActive" class="organization__modal">
@@ -385,6 +386,17 @@ export default {
     },
   },
   methods: {
+    // eslint-disable-next-line consistent-return
+    sortCompare(aRow, bRow, key) {
+      const a = aRow[key];
+      const b = bRow[key];
+      if (
+        (typeof a === 'number' && typeof b === 'number')
+      ) {
+        // eslint-disable-next-line no-nested-ternary
+        return a < b ? -1 : a > b ? 1 : 0;
+      }
+    },
     getSelectedDataRange() {
       const data = {
         params: {
@@ -653,6 +665,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.search_icons{
+  position: relative;
+  top: 5px;
+  display: inline-block;
+  width: 24px !important;
+  height: 24px;
+  background-image: url('../../public/icons/search.svg');
+  background-size: contain;
+  &.mobi{
+    position: absolute;
+    top: 20px;
+    right: 15px;
+  }
+}
 .nak{
   background: none;
   border: none;

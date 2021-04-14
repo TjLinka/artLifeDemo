@@ -19,7 +19,8 @@
         @click="showModal = !showModal" v-if="!showModal">
           Настройки партнера <i class="el-icon-search search_icon"></i>
         </div> -->
-      <p class="p-0 m-0 history_title">Период от и до</p>
+      <p class="p-0 m-0 history_title"
+      v-if="monthRange[0] !== null && monthRange.length > 0">Период от и до</p>
       <div class="row">
       <div class="col-md-6 month_range_indicators">
         <el-date-picker

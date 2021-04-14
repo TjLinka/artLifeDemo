@@ -40,7 +40,7 @@
       </div>
       <div class="row mobile_search">
         <div class="col search__btn" @click="toggleSearch">
-          Фильтры <i class="el-icon-search search_icon"></i>
+          Фильтры <span class="search_icons mobi"></span>
         </div>
       </div>
       <p class="exp_print mt-3">
@@ -66,9 +66,6 @@
             {{ data.value | localInt}}
           </template>
       </b-table>
-      <!-- <h2 class="licevoischet__page__summ">
-        НА СЧЁТ = {{ summIncome }} , СО СЧЕТА = {{ summOutcome }}, ИЗМЕНЕНИЯ = {{ changes }}
-      </h2> -->
       <h2 class="licevoischet__page__summ">
         <span class="mr-4">НА СЧЁТ = {{ summIncome }}        </span>
         <span class="mr-4">СО СЧЕТА = {{ summOutcome }}        </span>
@@ -79,7 +76,7 @@
       <footer class="container-fluid cust_modal pb-4">
       <div class="row desk_trans">
         <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
-          Фильтры <i class="el-icon-search search_icon"></i>
+          Фильтры <span class="search_icons"></span>
         </div>
       </div>
       <div v-if="searchActive" class="organization__modal">
@@ -489,6 +486,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.search_icons{
+  position: relative;
+  top: 5px;
+  display: inline-block;
+  width: 24px !important;
+  height: 24px;
+  background-image: url('../../public/icons/search.svg');
+  background-size: contain;
+  &.mobi{
+    position: absolute;
+    top: 20px;
+    right: 15px;
+  }
+}
 .aq{
   color: red;
 }
