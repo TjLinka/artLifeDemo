@@ -57,7 +57,7 @@
         {{ tag.name }}
       </el-tag>
       <p class="exp_print mt-3">
-        <!-- <span class="mr-3">Печать</span> -->
+        <span class="mr-3" v-b-modal.modal-scrollable>Легенда</span>
         <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
       </p>
@@ -80,16 +80,20 @@
           :min-width="col_width(column)"
         >
           <!--  -->
-          <template slot="header" v-if="column.property === 'id'">
-           {{column.title}}
+          <template slot="header" v-if="column.property === 'id' && !colHide">
+             <div class="idBlock" ref="idBlock">
+               {{column.label}}
+             </div>
+             <span class="hide_arrow" @click="toogleColumn()" ref="hideBtn"></span>
           </template>
           <template v-else slot="header">
-            {{column.title}}
+            {{column.label}}
           </template>
           <template slot-scope="scope">
             <!-- {{column.property}} -->
             <span v-if="column.property != 'id'">{{ column.formater(scope.row) }}</span>
             <span v-else>
+              <div v-if="!colHide" style="display: inline">
               <span>{{scope.row.depth}} УР</span>
               <img
               :src="`../icons/${scope.row.rank_calc}${scope.row.depth === 0 ? '_white' : ''}.svg`"
@@ -97,6 +101,15 @@
               <span class="user_id">{{ scope.row.id }}</span><br />
               <router-link :to="`/agent/${scope.row.id}`"
               class="user_name">{{scope.row.name}}</router-link>
+              </div>
+              <!-- Мобильный вид -->
+              <div v-else style="text-align: center; margin-top: -25px;">
+              <img
+              style="margin-left: 10px;"
+              :src="`../icons/${scope.row.rank_calc}${scope.row.depth === 0 ? '_white' : ''}.svg`"
+              :title="scope.row.rank_end" class="rank_icon">
+              <span style="display: block; margin-left: 10px;">{{scope.row.depth}} УР</span>
+              </div>
             </span>
           </template>
         </el-table-column>
@@ -178,6 +191,41 @@
       </footer>
     </div>
     </div>
+  <b-modal v-model="show"
+  id="modal-scrollable" centered scrollable title="Легенда" style="max-height: 100px;">
+    <div class="modal_icons">
+      <img :src="`../icons/Клиент.svg`"
+      class="rank_icon"> <span>Привилегированный клиент</span></div> <br>
+    <div class="modal_icons">
+      <img :src="`../icons/Консультант.svg`" class="rank_icon"> <span>Консультант</span></div><br>
+    <div class="modal_icons">
+      <img :src="`../icons/Мастер.svg`" class="rank_icon"><span>Мастер</span></div><br>
+    <div class="modal_icons">
+      <img :src="`../icons/Управляющий.svg`"
+      class="rank_icon"><span>Управляющий</span></div><br><br>
+    <div class="modal_icons">
+      <img :src="`../icons/Директор.svg`" class="rank_icon"><span>Директор</span></div><br>
+    <div class="modal_icons"><img :src="`../icons/Серебряный Директор.svg`" class="rank_icon">
+    <span>Серебряный Директор</span></div><br>
+    <div class="modal_icons"><img :src="`../icons/Золотой Директор.svg`" class="rank_icon">
+    <span>Золотой Директор</span></div><br><br>
+    <div class="modal_icons"><img :src="`../icons/Рубиновый Директор.svg`" class="rank_icon">
+    <span>Рубиновый Директор</span></div><br>
+    <div class="modal_icons"><img :src="`../icons/Бриллиантовый Директор.svg`" class="rank_icon">
+    <span>Бриллиантовый Директор</span></div><br>
+    <div class="modal_icons">
+      <img :src="`../icons/Президент_1.svg`" class="rank_icon"><span>Президент</span></div><br>
+    <template #modal-footer>
+          <b-button
+            variant="primary"
+            size="sm"
+            class="float-right cls_btn"
+            @click="show=false"
+          >
+            Закрыть
+          </b-button>
+    </template>
+  </b-modal>
     <!-- <div :class="`mobile_modal_mask ${searchActive ? 'active' : ''}`"></div> -->
   </div>
 </template>
@@ -198,47 +246,47 @@ export default {
     const columns = [
       {
         property: 'id',
-        title: 'P/номер / Ранг / ФИО',
+        label: 'P/номер / Ранг / ФИО',
         formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
       },
       {
         property: 'lo',
-        title: 'ЛО',
+        label: 'ЛО',
         formater: (item) => item.lo,
       },
       {
         property: 'go',
-        title: 'ГО',
+        label: 'ГО',
         formater: (item) => item.go,
       },
       {
         property: 'ngo',
-        title: 'НГО',
+        label: 'НГО',
         formater: (item) => item.ngo,
       },
       {
         property: 'oo',
-        title: 'ОО',
+        label: 'ОО',
         formater: (item) => item.oo,
       },
       {
         property: 'ko',
-        title: 'КО',
+        label: 'КО',
         formater: (item) => item.ko,
       },
       {
         property: 'noact',
-        title: 'Не активность',
+        label: 'Не активность',
         formater: (item) => item.noact,
       },
       {
         property: 'rank_beg',
-        title: 'Ранг на начало',
+        label: 'Ранг на начало',
         formater: (item) => item.rank_beg,
       },
       {
         property: 'rank_calc',
-        title: 'Расчетный ранг',
+        label: 'Расчетный ранг',
         formater: (item) => item.rank_calc,
       },
       // {
@@ -248,11 +296,13 @@ export default {
       // },
       {
         property: 'rank_end',
-        title: 'Ранг на конец',
+        label: 'Ранг на конец',
         formater: (item) => item.rank_end,
       },
     ];
     return {
+      show: false,
+      colHide: false,
       loading: true,
       loading2: true,
       state: '',
@@ -345,6 +395,17 @@ export default {
     },
   },
   methods: {
+    toogleColumn() {
+      this.colHide = !this.colHide;
+      if (this.$refs.hideBtn[0].classList.contains('hide')) {
+        this.$refs.hideBtn[0].classList.remove('hide');
+        this.$refs.idBlock[0].classList.remove('hide');
+      } else {
+        this.$refs.hideBtn[0].classList.add('hide');
+        this.$refs.idBlock[0].classList.add('hide');
+        this.columns[0].label = '';
+      }
+    },
     gg() {
       this.state = `${this.currentUserIDName.id}-${this.currentUserIDName.agentname}`;
     },
@@ -532,6 +593,9 @@ export default {
     },
     col_width(col) {
       if (col.property === 'id') {
+        if (this.colHide) {
+          return 70;
+        }
         return 250;
       }
       return 100;
@@ -640,10 +704,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.hide_btn{
-  color: #32aaa7;
-  float: right;
-  cursor: pointer;
+.idBlock.hide{
+  display: none;
+}
+.cls_btn{
+  background-color: #32aaa7;
+  border: 0;
+}
+.modal_icons{
+}
+.hide_arrow{
+  display: none;
 }
 .search_icons{
   position: relative;
@@ -712,6 +783,25 @@ span[class*="el-tag"] deep i{
   }
 }
 @media (max-width: 575px) {
+.hide_arrow{
+  position: absolute;
+  right: 10px;
+  top: 2px;
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+  background-image: url('../../public/icons/vector.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  transform: rotate(-180deg);
+  &.hide{
+    transform: rotate(0deg);
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%, -0%);
+  }
+}
   .date_picker_comp{
     & > div{
       display: flex;
@@ -815,7 +905,17 @@ span[class*="el-tag"] deep i{
 }
 </style>
 <style>
-
+button.close{
+  color: #32aaa7;
+  opacity: 1;
+}
+button.close:hover{
+  color: #32aaa7;
+  opacity: 1;
+}
+.modal-dialog-centered.modal-dialog-scrollable .modal-content{
+  max-height: calc(100vh - 14rem);
+}
 .el-table__expand-icon > .el-icon-arrow-right {
         color: white;
         left: 0;
