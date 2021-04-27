@@ -173,11 +173,11 @@
             v-if="filterData.area_id"
             class="custom_label"
             >
-            Территория</span>
+            Регион</span>
             <el-select
             v-model="filterData.area_id"
             clearable
-            placeholder="Территория">
+            placeholder="Регион">
               <el-option
                 v-for="item in areaList"
                 :key="item.area_id"
@@ -362,7 +362,7 @@ export default {
         },
         {
           key: 'areaname',
-          label: 'Территория',
+          label: 'Регион',
           formater: (item) => item.areaname,
           sortable: true,
         },
@@ -782,15 +782,15 @@ export default {
           this.tags.push({ name: `Рассчётный ранг: ${this.filterData.rank_calc}`, key: 'rank_calc' });
         }
       }
-      // Территория
+      // Регион
       if (this.filterData.area_id !== null
       && this.filterData.area_id !== ''
       && this.filterData.area_id !== undefined) {
         const tag = this.tags.find((t) => t.key === 'area_id');
         if (tag) {
-          tag.name = `Территория: ${this.areaList[this.filterData.area_id].area_name}`;
+          tag.name = `Регион: ${this.areaList[this.filterData.area_id].area_name}`;
         } else {
-          this.tags.push({ name: `Территория: ${this.areaList[this.filterData.area_id].area_name}`, key: 'area_id' });
+          this.tags.push({ name: `Регион: ${this.areaList[this.filterData.area_id].area_name}`, key: 'area_id' });
         }
       }
 

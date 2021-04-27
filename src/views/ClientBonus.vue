@@ -16,7 +16,7 @@
         <div class="container top__info">
           <div class="row">
             <div class="col-md-6">
-            <el-select v-model="area" placeholder="Территория">
+            <el-select v-model="area" placeholder="Регион">
               <el-option
                 v-for="item in areaList"
                 :key="item.area_id"

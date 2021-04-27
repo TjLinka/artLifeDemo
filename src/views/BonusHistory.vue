@@ -8,7 +8,7 @@
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
-        История бонусов(КЕ)
+        История начисления бонусов
         </h2>
       <!-- <div class="row cur_p">
         <div class="col-sm current_period">
@@ -153,7 +153,19 @@ export default {
         },
         {
           key: 'rank_calc',
-          label: 'Расчетный ранг ',
+          label: 'Расчетный ранг',
+        },
+        {
+          key: 'month_point',
+          label: 'Ежемесячные бонусы',
+        },
+        {
+          key: 'autodom',
+          label: 'Автодом',
+        },
+        {
+          key: 'vac',
+          label: 'Отпускной фонд',
         },
       ],
       mainFields: [
@@ -171,6 +183,14 @@ export default {
             }
             return null;
           },
+        },
+        {
+          key: 'total_bonus',
+          label: 'Итого накоплено бонусов',
+        },
+        {
+          key: 'count_month',
+          label: 'Месяцев накопления',
         },
       ],
       returnFields: [
