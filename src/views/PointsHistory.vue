@@ -16,6 +16,7 @@
       v-model="rangeDate"
       range-separator=" - "
       range
+      placeholder="дд.мм.гггг - дд.мм.гггг"
       @change="getSelectedDataRange"
       format="DD.MM.YYYY"
       value-type="YYYY-MM-DD"
@@ -45,10 +46,10 @@
       </div>
       <p class="exp_print mt-3">
         <!-- <span class="mr-3">Печать</span> -->
-        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
+        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
       </p>
-      <b-table responsive :fields="fields" :items="entries" sticky-header head-variant="light"
+      <b-table responsive :fields="fields" :items="entries" head-variant="light"
       class="points_history_table" outlined>
         <template #table-colgroup="scope">
           <col

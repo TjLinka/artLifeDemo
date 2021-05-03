@@ -38,13 +38,14 @@
       <h2 class="mt-4">Переданные мне права</h2>
       <p class="exp_print mt-3">
         <!-- <span class="mr-3">Печать</span> -->
-        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
+        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
         <!-- <span class="mr-3" >Экспорт возвратной накладной в pdf</span> -->
         <!-- <span class="mr-3">Экспорт возвратной накладной в pdf</span> -->
       </p>
       <div>
       <b-table
+      sticky-header
       :fields="fields"
       :items="entries"
       head-variant="light"

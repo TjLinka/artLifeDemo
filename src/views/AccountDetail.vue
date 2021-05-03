@@ -23,7 +23,7 @@
       range-separator=" - "
       range @change="getSelectedDataRange"
       format="DD.MM.YYYY"
-      placeholder="дд.мм.гггг - дд.мм.ггггИстория покупок"
+      placeholder="дд.мм.гггг - дд.мм.гггг"
       value-type="YYYY-MM-DD"
       style="width: 100%"
       >
@@ -51,8 +51,8 @@
         </div>
       <p class="exp_print">
         <!-- <span class="mr-3">Печать</span> -->
-        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
+        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
       </p>
       <b-table
       :fields="fields"
@@ -392,9 +392,10 @@ export default {
   top: 5px;
   display: inline-block;
   width: 24px !important;
-  height: 24px;
+  height: 21px;
   background-image: url('../../public/icons/search.svg');
   background-size: contain;
+  background-repeat: no-repeat;
   &.mobi{
     position: absolute;
     top: 20px;
@@ -465,6 +466,9 @@ export default {
     & span{
       display: inline;
     }
+  }
+  .search_icons{
+    height: 25px;
   }
 }
 @media (max-width: 450px) {

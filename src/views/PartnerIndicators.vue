@@ -23,7 +23,19 @@
       v-if="monthRange[0] !== null && monthRange.length > 0">Период от и до</p>
       <div class="row">
       <div class="col-md-6 month_range_indicators">
-        <el-date-picker
+        <date-picker
+        v-model="monthRange"
+        range-separator=" - "
+        range
+        type="month"
+        @change="dd"
+        format="DD.MM.YYYY"
+        placeholder="дд.мм.гггг - дд.мм.гггг"
+        value-type="YYYY-MM-DD"
+        style="width: 100%"
+        >
+        </date-picker>
+        <!-- <el-date-picker
           v-model="monthRange"
           type="monthrange"
           range-separator="-"
@@ -32,7 +44,7 @@
           :format="`MMMM yyyy`"
           style="width: 100%"
           >
-        </el-date-picker>
+        </el-date-picker> -->
         <!-- <el-date-picker
           v-model="monthRange"
           type="month"
@@ -56,8 +68,8 @@
     <div class="row mt-3 mb-4">
       <div class="col export_btns">
         <!-- <span>Печать</span> -->
-        <span @click="downloadXls">Экспорт в xlsx</span>
         <span @click="downloadPdf">Экспорт в pdf</span>
+        <span @click="downloadXls">Экспорт в xlsx</span>
       </div>
     </div>
     <b-table responsive outlined head-variant="light"
@@ -108,11 +120,17 @@
 
 <script>
 /* eslint-disable quote-props */
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
+import 'vue2-datepicker/locale/ru';
 import $ from 'jquery';
 import backApi from '../assets/backApi';
 
 export default {
   name: 'PartnerIndicators',
+  components: {
+    DatePicker,
+  },
   data() {
     return {
       loading: true,

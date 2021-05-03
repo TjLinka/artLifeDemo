@@ -57,9 +57,9 @@
         {{ tag.name }}
       </el-tag>
       <p class="exp_print mt-3">
-        <span class="mr-3" v-b-modal.modal-scrollable>Легенда</span>
-        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
+        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
+        <span class="mr-3" v-b-modal.modal-scrollable>Легенда</span>
       </p>
       <div class="orgbyhist">
         <el-table

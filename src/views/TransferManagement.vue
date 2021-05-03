@@ -46,7 +46,7 @@
       </div>
         <div class="col mb-3 search__btn mobile"
         @click="searchActive = !searchActive">
-          Настройки трансфера <i class="el-icon-s-tools search_icon" style="float: right;"></i>
+          Поиск <span class="search_icons mobi"></span>
         </div>
       <div class="row">
         <div class="col">
@@ -71,8 +71,8 @@
           >Трансферт</button>
           <br class="mobile_br">
           <p class="exp_print">
-            <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
             <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
+            <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
           </p>
         </div>
       </div>
@@ -114,7 +114,7 @@
       <div class="row desk_trans">
         <div class="col text-center search__btn desktop"
         @click="searchActive = !searchActive" v-if="!searchActive">
-          Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
+          Поиск <span class="search_icons"></span>
         </div>
       </div>
       <div v-if="searchActive" class="organization__modal container">
@@ -822,6 +822,21 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.search_icons{
+  position: relative;
+  top: 5px;
+  display: inline-block;
+  width: 24px !important;
+  height: 21px;
+  background-image: url('../../public/icons/search.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  &.mobi{
+    position: absolute;
+    // top: 20px;
+    right: 15px;
+  }
+}
 .el-icon-circle-close:before{
   // top: 20px;
 }
@@ -981,6 +996,10 @@ export default {
     & .col-md-6{
       margin-top: 20px;
     }
+  }
+  .search_icons{
+    height: 25px;
+    top: 0px;
   }
 }
 </style>

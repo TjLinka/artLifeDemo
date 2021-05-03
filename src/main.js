@@ -19,6 +19,13 @@ locale.use(lang);
 Vue.use(BootstrapVue);
 Vue.use(VueMomentLib);
 Vue.use(VueMask);
+Vue.use(VueMask, {
+  placeholders: {
+    '#': null, // passing `null` removes default placeholder, so `#` is treated as character
+    D: /\d/, // define new placeholder
+    Я: /[\wа-яА-Я]/, // cyrillic letter as a placeholder
+  },
+});
 Vue.use(VueTheMask);
 Vue.use(ElementUI);
 Vue.config.productionTip = false;

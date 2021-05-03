@@ -17,7 +17,8 @@
       <date-picker
       v-model="rangeDate"
       range-separator=" - "
-      range @change="getSelectedDataRange"
+      range
+      @change="getSelectedDataRange"
       format="DD.MM.YYYY"
       placeholder="дд.мм.гггг - дд.мм.гггг"
       value-type="YYYY-MM-DD"
@@ -45,15 +46,15 @@
         </div>
       <p class="exp_print mt-3">
         <!-- <span class="mr-3">Печать</span> -->
-        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
+        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
         <!-- <button
         :class="`mr-3 nak ${printNakAccess ? '' : 'disabled'}`"
         :disabled="!printNakAccess"
         >Экспорт возвратной накладной в pdf</button> -->
         <!-- <span class="mr-3">Экспорт возвратной накладной в pdf</span> -->
       </p>
-      <div class="refound_table">
+      <div class="refound_table mb-3">
       <b-table :fields="fields" :items="entries"
       head-variant="light" responsive outlined
       >

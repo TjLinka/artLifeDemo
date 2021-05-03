@@ -51,15 +51,15 @@
       </div>
       <p class="exp_print">
         <!-- <span class="mr-3">Печать</span> -->
-        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
+        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
         <!-- <button
         :class="`mr-3 nak ${printNakAccess ? '' : 'disabled'}`"
         :disabled="!printNakAccess"
         >Экспорт накладной в pdf</button> -->
         <!-- <span class="mr-3">Экспорт накладной в pdf</span> -->
       </p>
-      <div class="perchases_table">
+      <div class="perchases_table mb-3">
         <b-table
         :fields="fields"
         :items="entries"
