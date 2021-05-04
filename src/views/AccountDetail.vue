@@ -21,7 +21,8 @@
       <date-picker
       v-model="rangeDate"
       range-separator=" - "
-      range @change="getSelectedDataRange"
+      range
+      @change="getSelectedDataRange"
       format="DD.MM.YYYY"
       placeholder="дд.мм.гггг - дд.мм.гггг"
       value-type="YYYY-MM-DD"
@@ -198,7 +199,16 @@ export default {
     };
   },
   mounted() {
-    backApi.get('agent/account-detail').then((Response) => {
+    this.rangeDate = [
+      this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+      this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
+    ];
+    backApi.get('agent/account-detail', {
+      params: {
+        beg_dte: this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+        end_dte: this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
+      },
+    }).then((Response) => {
       this.entries = Response.data.entries;
       this.income = this.entries.filter((i) => i.amount > 0);
       this.outcome = this.entries.filter((i) => i.amount < 0);
@@ -248,6 +258,35 @@ export default {
     },
   },
   methods: {
+    clearDP() {
+      // this.rangeDate = [
+      //   this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+      //   this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
+      // ];
+      // backApi.get('agent/account-detail', {
+      //   params: {
+      //     beg_dte: this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+      //     end_dte: this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
+      //   },
+      // }).then((Response) => {
+      //   this.entries = Response.data.entries;
+      //   this.income = this.entries.filter((i) => i.amount > 0);
+      //   this.outcome = this.entries.filter((i) => i.amount < 0);
+      //   this.entries.forEach((i) => {
+      //     // eslint-disable-next-line no-param-reassign
+      //     i.income = i.amount;
+      //     // eslint-disable-next-line no-param-reassign
+      //     i.outcome = i.amount;
+      //   });
+      // }).then(() => {
+      //   setTimeout(() => {
+      //     this.loading = false;
+      //   });
+      // });
+      // backApi.get('/agent/profile').then((Response) => {
+      //   this.balance = Response.data.balance;
+      // });
+    },
     downloadXls() {
       backApi.get('/agent/account-detail/excel',
         {
@@ -361,6 +400,12 @@ export default {
       this.filter[name] = '';
     },
     getSelectedDataRange() {
+      if (this.rangeDate.some((d) => d === null)) {
+        this.rangeDate = [
+          this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+          this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
+        ];
+      }
       backApi
         .get('agent/account-detail', {
           params: {

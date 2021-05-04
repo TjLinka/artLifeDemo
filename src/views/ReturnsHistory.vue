@@ -18,6 +18,7 @@
       v-model="rangeDate"
       range-separator=" - "
       range
+      @clear="clearDP"
       @change="getSelectedDataRange"
       format="DD.MM.YYYY"
       placeholder="дд.мм.гггг - дд.мм.гггг"
@@ -263,7 +264,16 @@ export default {
     };
   },
   mounted() {
-    backApi.get('agent/refunds').then((Response) => {
+    this.rangeDate = [
+      this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+      this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
+    ];
+    backApi.get('agent/refunds', {
+      params: {
+        beg_dte: this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+        end_dte: this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
+      },
+    }).then((Response) => {
       this.entries = Response.data.entries;
       this.return_details = new Array(this.total_rows).fill(undefined);
     }).then(() => {
@@ -290,6 +300,23 @@ export default {
     },
   },
   methods: {
+    clearDP() {
+      // this.rangeDate = [
+      //   this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+      //   this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
+      // ];
+      // backApi.get('agent/refunds', {
+      //   params: {
+      //     beg_dte: this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+      //     end_dte: this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
+      //   },
+      // }).then((Response) => {
+      //   this.entries = Response.data.entries;
+      //   this.return_details = new Array(this.total_rows).fill(undefined);
+      // }).then(() => {
+      //   this.loading = false;
+      // });
+    },
     handleClose(event, tag) {
       // this.tags.splice(this.dynamicTags.indexOf(tag), 1);
       this.tags.splice(this.tags.indexOf(tag), 1);
@@ -453,6 +480,12 @@ export default {
         .addClass('active');
     },
     getSelectedDataRange() {
+      if (this.rangeDate.some((d) => d === null)) {
+        this.rangeDate = [
+          this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+          this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
+        ];
+      }
       const data = {
         params: {
           beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
@@ -468,25 +501,6 @@ export default {
       backApi.get('/agent/refunds', data).then((Response) => {
         this.entries = Response.data.entries;
       });
-      // eslint-disable-next-line max-len
-      // if (this.rangeDate[0] != null && this.rangeDate[1] != null) {
-      //   backApi
-      //     .get('agent/refunds', {
-      //       params: {
-      //         beg_dte: String(this.rangeDate[0]),
-      //         end_dte: String(this.rangeDate[1]),
-      //       },
-      //     })
-      //     .then((Response) => {
-      //       this.entries = Response.data.entries;
-      //       this.return_details = new Array(this.total_rows).fill(undefined);
-      //     });
-      // } else {
-      //   backApi.get('agent/refunds').then((Response) => {
-      //     this.entries = Response.data.entries;
-      //     this.return_details = new Array(this.total_rows).fill(undefined);
-      //   });
-      // }
     },
     show_details(row) {
       if (!row.detailsShowing) {

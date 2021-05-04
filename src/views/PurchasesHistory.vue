@@ -23,7 +23,8 @@
       <date-picker
       v-model="rangeDate"
       range-separator=" - "
-      range @change="getSelectedDataRange"
+      range
+      @change="getSelectedDataRange"
       format="DD.MM.YYYY"
       placeholder="дд.мм.гггг - дд.мм.гггг"
       value-type="YYYY-MM-DD"
@@ -356,6 +357,10 @@ export default {
     };
   },
   mounted() {
+    this.rangeDate = [
+      this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+      this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
+    ];
     backApi.get('agent/bonus-detail/periods').then((Response) => {
       this.periods = Response.data.entries.sort((a, b) => {
         const result = a.comdte > b.comdte ? 1 : -1;
@@ -363,7 +368,12 @@ export default {
       });
       this.periodIndex = this.periods.length - 1;
     });
-    backApi.get('agent/sales').then((Response) => {
+    backApi.get('agent/sales', {
+      params: {
+        beg_dte: this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+        end_dte: this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
+      },
+    }).then((Response) => {
       this.entries = Response.data.entries;
       this.return_details = new Array(this.total_rows).fill(undefined);
     }).then(() => {
@@ -398,14 +408,20 @@ export default {
       }
     },
     getSelectedDataRange() {
+      if (this.rangeDate.some((d) => d === null)) {
+        this.rangeDate = [
+          this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+          this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
+        ];
+      }
       const data = {
         params: {
           articul: this.articul !== '' ? this.articul : null,
           name: this.name,
           // eslint-disable-next-line radix
           saleid: this.naknum !== '' ? this.naknum : null,
-          beg_dte: this.rangeDate ? this.rangeDate[0] : null,
-          end_dte: this.rangeDate ? this.rangeDate[1] : null,
+          beg_dte: this.rangeDate[0] !== null ? this.rangeDate[0] : this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+          end_dte: this.rangeDate[1] !== null ? this.rangeDate[1] : this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
           i_delivery: this.delivery !== '' ? this.delivery : null,
           // eslint-disable-next-line radix
           i_status: this.status !== '' ? this.status : null,

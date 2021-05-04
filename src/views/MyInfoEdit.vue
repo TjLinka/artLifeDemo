@@ -84,10 +84,12 @@
             <p class="page__caption">Смена телефона</p>
             <div class="custom_input t" v-show="!smsStatus">
               <input type="text"
-              v-mask="'+7(###)-###-##-##'"
+              placeholder="+7(777)-777-77-77"
+              v-mask="userInfo.country.toLowerCase() === 'россия' ? '+#(###)-###-##-##'
+              : '+#(###)###########'"
               name="phone" id="phone"
               required v-model="userInfo.phone" />
-              <label for="phone">Телефон</label>
+              <label for="phone" class="up">Телефон в международном формате</label>
               <span class="clear_icon" @click="clearInput('phone')"></span>
               <button class="save__newinfo mt-3" v-on:click="savePhone">
                 Сохранить изменения
@@ -357,6 +359,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.up{
+  top: -13px;
+  font-size: 13px;
+}
 .custom_label{
   font-size: 13px;
 }

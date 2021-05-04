@@ -64,7 +64,7 @@
             </div>
             <div class="col-md-6 mt-3">
               <p>Телефон:</p>
-              <p>{{ userinfo.phone }}</p>
+              <p>+{{ userinfo.phone }}</p>
             </div>
           </div>
           <div class="row">

@@ -73,8 +73,7 @@
       </div>
     </div>
     <b-table responsive outlined head-variant="light"
-    :items="entries" :fields="fields" show-empty
-    emptyText="У вас нет истории показателей в выбранных периодах/в предыдущих периодах">
+    :items="entries" :fields="fields">
       <template v-slot:cell(comdte)="data">
         {{ data.value }}
       </template>
@@ -300,8 +299,17 @@ export default {
     };
   },
   mounted() {
+    this.monthRange = [
+      this.$moment().startOf('year').format('YYYY-MM-DD'),
+      this.$moment().endOf('year').format('YYYY-MM-DD'),
+    ];
     if (this.$route.params.id) {
-      backApi.get(`/agent/all-periods-indicators/${this.$route.params.id}`).then((Response) => {
+      backApi.get(`/agent/all-periods-indicators/${this.$route.params.id}`, {
+        params: {
+          beg_comdte: this.$moment().startOf('year').format('YYYY-MM-DD'),
+          end_comdte: this.$moment().endOf('year').format('YYYY-MM-DD'),
+        },
+      }).then((Response) => {
         this.entries = Response.data.entries;
       }).then(() => {
         setTimeout(() => {
@@ -314,7 +322,12 @@ export default {
           this.userInfo = Response.data;
         });
     } else {
-      backApi.get('/agent/all-periods-indicators').then((Response) => {
+      backApi.get('/agent/all-periods-indicators', {
+        params: {
+          beg_comdte: this.$moment().startOf('year').format('YYYY-MM-DD'),
+          end_comdte: this.$moment().endOf('year').format('YYYY-MM-DD'),
+        },
+      }).then((Response) => {
         this.entries = Response.data.entries;
       }).then(() => {
         setTimeout(() => {
@@ -331,6 +344,12 @@ export default {
   },
   methods: {
     dd() {
+      if (this.monthRange.some((m) => m === null)) {
+        this.monthRange = [
+          this.$moment().startOf('year').format('YYYY-MM-DD'),
+          this.$moment().endOf('year').format('YYYY-MM-DD'),
+        ];
+      }
       const data = {
         params: {
           beg_comdte: this.monthRange ? this.monthRange[0] : null,

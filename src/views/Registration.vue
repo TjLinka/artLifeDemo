@@ -71,9 +71,11 @@
       <div class="row mt-md-5">
         <div class="col-md-6 custom_input">
           <input type="text" name="phone" id="phone"
-          v-mask="'+7(###)-###-##-##'"
+          v-mask="newUser.country.toLowerCase() === 'россия' ? '+#(###)-###-##-##'
+          : '+#(###)###########'"
+          placeholder="+7(777)-777-77-77"
           required v-model="newUser.phone" />
-          <label for="phone">Телефон</label>
+          <label for="phone" class="up">Телефон в международном формате</label>
           <span class="clear_icon" @click="clearInput('phone')"></span>
         </div>
         <div class="col-md-6 custom_input">
@@ -190,6 +192,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.up{
+  top: -13px;
+  font-size: 13px;
+}
 .reg_input{
   position: relative;
   & label{

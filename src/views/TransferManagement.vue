@@ -76,7 +76,7 @@
           </p>
         </div>
       </div>
-      <div class="transmaneg_table">
+      <div class="transmaneg_table mb-3">
         <b-table
         outlined
         responsive
@@ -88,7 +88,6 @@
         :items="entries"
         :tbody-tr-class="rowClass"
         sticky-header
-        v-b-tooltip title="Online!"
         class="mt-4">
           <template v-slot:cell(id)="row">
             <p>
