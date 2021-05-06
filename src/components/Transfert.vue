@@ -149,6 +149,7 @@ export default {
         backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then((Response) => {
           this.transfertInfo = Response.data;
         });
+        this.$emit('action');
       }
     },
     async reserve2lo() {

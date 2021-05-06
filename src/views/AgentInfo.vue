@@ -214,7 +214,10 @@
     </div>
     <footer class="container-fluid cust_modal" v-if="showModal">
       <div>
-        <Transfert v-on:enlarge-text="showModal = false" :id="userinfo.id" />
+        <Transfert2
+        v-on:action="ddd"
+        v-on:enlarge-text="showModal = false"
+        :id="userinfo.id" />
       </div>
     </footer>
     <footer class="container-fluid cust_modal" v-if="showModal1">
@@ -280,7 +283,7 @@
 <script>
 import $ from 'jquery';
 import { mapState } from 'vuex';
-import Transfert from '../components/Transfert.vue';
+import Transfert2 from '../components/Transfert2.vue';
 import AgentInfoModalPoints from '../components/AgentInfoModalPoints.vue';
 import AgentInfoModalMoney from '../components/AgentInfoModalMoney.vue';
 import backApi from '../assets/backApi';
@@ -288,7 +291,7 @@ import { ReplaceNull } from '../assets/utils';
 
 export default {
   name: 'MyInfo',
-  components: { Transfert, AgentInfoModalPoints, AgentInfoModalMoney },
+  components: { Transfert2, AgentInfoModalPoints, AgentInfoModalMoney },
   data() {
     return {
       loading: true,
@@ -304,6 +307,35 @@ export default {
     };
   },
   methods: {
+    async ddd() {
+      if (this.$route.params.id) {
+        const response = await backApi.get('/agent/profile/child', {
+          params: {
+            another_agent_id: this.$route.params.id,
+          },
+        });
+        backApi.get('/agent/transfer-info', {
+          params: {
+            another_agent_id: response.data.id,
+          },
+        }).then((Response2) => {
+          this.setData(ReplaceNull(response.data), ReplaceNull(Response2.data));
+        }).catch(() => {
+          this.setData(ReplaceNull(ReplaceNull(response.data)));
+        });
+      } else {
+        const response = await backApi.get('/agent/profile');
+        backApi.get('/agent/transfer-info', {
+          params: {
+            another_agent_id: response.data.id,
+          },
+        }).then((Response2) => {
+          this.setData(ReplaceNull(response.data), ReplaceNull(Response2.data));
+        }).catch(() => {
+          this.setData(ReplaceNull(ReplaceNull(response.data)));
+        });
+      }
+    },
     moneyAction() {
       this.showModal2 = false;
       backApi.get('/agent/profile').then((Response) => {
