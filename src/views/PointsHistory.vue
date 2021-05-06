@@ -68,9 +68,9 @@
           </template>
       </b-table>
       <h2 class="licevoischet__page__summ">
-        <span class="mr-4">НА СЧЁТ = {{ summIncome }}        </span>
-        <span class="mr-4">СО СЧЕТА = {{ summOutcome }}        </span>
-        <span class="mr-4">ИЗМЕНЕНИЯ  = {{ changes }}         </span>
+        <span class="mr-4">НА СЧЁТ = {{ summIncome | localInt }}        </span>
+        <span class="mr-4">СО СЧЕТА = {{ summOutcome | localInt }}        </span>
+        <span class="mr-4">ИЗМЕНЕНИЯ  = {{ changes | localInt }}         </span>
         </h2>
     </div>
     </div>
@@ -276,8 +276,8 @@ export default {
     backApi.get('agent/points-detail',
       {
         params: {
-          beg_dte: this.$moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD'),
-          end_dte: this.$moment().subtract(1, 'months').endOf('month').format('YYYY-MM-DD'),
+          beg_dte: this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+          end_dte: this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
         },
       }).then((Response) => {
       this.entries = Response.data.entries;

@@ -140,15 +140,14 @@ export default {
           })
           .then(() => {
             this.$bvToast.show('my-toast-good');
-            this.createMessageBoxError('Операция выполнена успешно');
           })
           .catch(() => {
             this.$bvToast.show('my-toast');
-            this.createMessageBoxError('Что-то пошло не так');
           });
         backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then((Response) => {
           this.transfertInfo = Response.data;
         });
+        this.$emit('tran-action');
       }
     },
     async reserve2lo() {
@@ -160,38 +159,21 @@ export default {
           })
           .then(() => {
             this.$bvToast.show('my-toast-good');
-            this.createMessageBoxError('Операция выполнена успешно');
           })
           .catch(() => {
             this.$bvToast.show('my-toast');
-            this.createMessageBoxError('Что-то пошло не так');
           });
         backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then((Response) => {
           this.transfertInfo = Response.data;
         });
+        this.$emit('tran-action');
       }
-    },
-    createMessageBoxError(messageText) {
-      const h = this.$createElement;
-      // More complex structure
-      const messageVNode = h('div', { class: ['foobar'] }, [
-        h('h5', { class: ['text-center'] }, [messageText]),
-      ]);
-      // We must pass the generated VNodes as arrays
-      return this.$bvModal.msgBoxOk([messageVNode], {
-        buttonSize: 'xl',
-        centered: true,
-        cancelTitle: 'Нет',
-        okTitle: 'OK',
-        size: 'md',
-      });
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-
 .transfert {
   margin-bottom: 30px;
   margin-top: 30px;

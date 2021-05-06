@@ -184,11 +184,25 @@ export default {
           key: 'points',
           label: 'Баллы',
           sortable: true,
+          formatter(v) {
+            if (v > 0) {
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
+            }
+            return null;
+          },
         },
         {
           key: 'price',
           label: 'Цена',
           sortable: true,
+          formatter(v) {
+            if (v > 0) {
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
+            }
+            return null;
+          },
         },
         {
           key: 'cnt',
@@ -199,11 +213,25 @@ export default {
           key: 'points_cnt',
           label: 'Сумма баллов',
           sortable: true,
+          formatter(v) {
+            if (v > 0) {
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
+            }
+            return null;
+          },
         },
         {
           key: 'price_cnt',
           label: 'Стоимость',
           sortable: true,
+          formatter(v) {
+            if (v > 0) {
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
+            }
+            return null;
+          },
         },
       ],
       fields: [
@@ -225,9 +253,10 @@ export default {
           key: 'amount',
           label: 'Сумма',
           sortable: true,
-          fomratter(v) {
-            if (v !== null) {
-              return v.toFixed(2);
+          formatter(v) {
+            if (v > 0) {
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
             }
             return null;
           },

@@ -54,33 +54,33 @@
             </div>
             <div class="col-md-6 mt-4">
               <p>ЛО:</p>
-              <p>{{ userInfo.lo }}</p>
+              <p>{{ userInfo.lo | localInt }}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6 mt-4">
               <p>ГО:</p>
-              <p>{{ userInfo.go }}</p>
+              <p>{{ userInfo.go | localInt }}</p>
             </div>
             <div class="col-md-6 mt-4">
               <p>НГО:</p>
-              <p>{{ userInfo.ngo }}</p>
+              <p>{{ userInfo.ngo | localInt }}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6 mt-4">
               <p>ОО:</p>
-              <p>{{ userInfo.oo }}</p>
+              <p>{{ userInfo.oo | localInt }}</p>
             </div>
             <div class="col-md-6 mt-4">
               <p>КО:</p>
-              <p>{{ userInfo.ko }}</p>
+              <p>{{ userInfo.ko | localInt }}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6 mt-4">
               <p>Резерв:</p>
-              <p>{{ userInfo.reserve }}</p>
+              <p>{{ userInfo.reserve | localInt }}</p>
             </div>
             <div class="col-md-6 mt-4">
               <p>Неакт.:</p>

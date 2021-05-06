@@ -77,6 +77,9 @@
               <span>{{row.item.delivery}}</span>
             <!-- <span>{{ row.item.webshop_id }}</span> -->
           </template>
+          <template #cell(amount)='data'>
+            <span>{{data.value}}</span>
+          </template>
           <template v-slot:row-details="row">
             <div class="sub_table">
               <b-table
@@ -85,6 +88,9 @@
                 :items="return_details[row.item.webshop_id]"
                 head-variant="light"
               >
+              <template #cell()='data'>
+                {{data.value}}
+              </template>
               </b-table>
             </div>
           </template>
@@ -247,9 +253,10 @@ export default {
           key: 'points',
           label: 'Баллы',
           sortable: true,
-          fomratter(v) {
+          formatter(v) {
             if (v !== null) {
-              return v.toFixed(2);
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
             }
             return null;
           },
@@ -258,9 +265,10 @@ export default {
           key: 'price',
           label: 'Цена',
           sortable: true,
-          fomratter(v) {
+          formatter(v) {
             if (v !== null) {
-              return v.toFixed(2);
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
             }
             return null;
           },
@@ -269,9 +277,10 @@ export default {
           key: 'cnt',
           label: 'Кол-во',
           sortable: true,
-          fomratter(v) {
+          formatter(v) {
             if (v !== null) {
-              return v.toFixed(2);
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
             }
             return null;
           },
@@ -280,9 +289,10 @@ export default {
           key: 'points_all',
           label: 'Сумма балов',
           sortable: true,
-          fomratter(v) {
+          formatter(v) {
             if (v !== null) {
-              return v.toFixed(2);
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
             }
             return null;
           },
@@ -291,9 +301,10 @@ export default {
           key: 'price_total',
           label: 'Стоимость',
           sortable: true,
-          fomratter(v) {
+          formatter(v) {
             if (v !== null) {
-              return v.toFixed(2);
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
             }
             return null;
           },
@@ -317,13 +328,14 @@ export default {
         {
           key: 'amount',
           label: 'Сумма',
-          sortable: true,
-          fomratter(v) {
-            if (v !== null) {
-              return v.toFixed(2);
+          formatter(v) {
+            if (v > 0) {
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
             }
             return null;
           },
+          sortable: true,
         },
         {
           key: 'dte',

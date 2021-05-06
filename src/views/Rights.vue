@@ -152,16 +152,28 @@ export default {
           key: 'lo',
           label: 'ЛО',
           sortable: true,
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            return formatter.format(parseFloat(v, 0));
+          },
         },
         {
           key: 'go',
           label: 'ГО',
           sortable: true,
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            return formatter.format(parseFloat(v, 0));
+          },
         },
         {
           key: 'reserve',
           label: 'Резерв',
           sortable: true,
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            return formatter.format(parseFloat(v, 0));
+          },
         },
       ],
     };

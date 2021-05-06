@@ -67,9 +67,9 @@
       </template>
       </b-table>
       <h2 class="licevoischet__page__summ">
-        <span class="mr-4">НАЧИСЛЕНИЕ = {{ incomes }}        </span>
-        <span class="mr-4">СПИСАНИЕ = {{ outcomes }}        </span>
-        <span class="mr-4">ИЗМЕНЕНИЕ  = {{ changes }}         </span>
+        <span class="mr-4">НАЧИСЛЕНИЕ = {{ incomes | localInt }}        </span>
+        <span class="mr-4">СПИСАНИЕ = {{ outcomes | localInt }}        </span>
+        <span class="mr-4">ИЗМЕНЕНИЕ  = {{ changes | localInt }}         </span>
         </h2>
     </div>
     </div>
@@ -165,7 +165,8 @@ export default {
           },
           formatter(v) {
             if (v > 0) {
-              return v.toFixed(2);
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
             }
             return null;
           },
@@ -180,7 +181,8 @@ export default {
           },
           formatter(v) {
             if (v < 0) {
-              return v.toFixed(2);
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
             }
             return null;
           },

@@ -9,6 +9,7 @@ import locale from 'element-ui/lib/locale';
 import VueMask from 'v-mask';
 import VueTheMask from 'vue-the-mask';
 import VueMomentLib from 'vue-moment-lib';
+import VueCurrencyInput from 'vue-currency-input';
 
 import App from './App.vue';
 import router from './router';
@@ -16,6 +17,11 @@ import store from './store';
 
 locale.use(lang);
 
+const pluginOptions = {
+  /* see config reference */
+  globalOptions: { currency: 'USD' },
+};
+Vue.use(VueCurrencyInput, pluginOptions);
 Vue.use(BootstrapVue);
 Vue.use(VueMomentLib);
 Vue.use(VueMask);

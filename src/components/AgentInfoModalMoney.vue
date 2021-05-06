@@ -12,7 +12,7 @@
         </div> -->
         <div class="col-md-6">
           <p>Баланс:</p>
-          <p>{{ balance }}</p>
+          <p>{{ balance | localInt }}</p>
         </div>
       </div>
       <h3 class="perevod">Перевод средств</h3>
@@ -30,7 +30,9 @@
           ></el-autocomplete>
         </div>
         <div class="col-md-6 mt-4 custom_input">
-              <input type="text" name="sum" id="sum" required v-model="sum" step="0.1"/>
+              <input type="number" name="sum" id="sum" required v-model="sum" step="0.1"
+              @keydown="checkInput($event)"
+              />
               <label for="sum">Сумма</label>
               <span class="clear_icon" @click="clearSum()"></span>
         </div>
@@ -89,6 +91,15 @@ export default {
     },
   },
   methods: {
+    // eslint-disable-next-line consistent-return
+    checkInput(e) {
+      console.log();
+      if (e.which === 189 || e.which === 109 || e.which === 107 || e.which === 187) {
+        // eslint-disable-next-line no-restricted-globals
+        e.preventDefault();
+        return false;
+      }
+    },
     showToast(title, message, status) {
       // Use a shorter name for this.$createElement
       const h = this.$createElement;
@@ -166,29 +177,47 @@ export default {
         if (this.sum <= this.balance) {
           await backApi
             .post('/agent/send_money', {
-              agent_to: this.state,
-              amount: this.sum,
+              agent_to: this.state.replace(/\D/g, ''),
+              amount: parseFloat(this.sum),
               comm: this.comm,
             })
             .then(() => {
               this.$bvToast.show('my-toast-money');
+              this.createMessageBoxError('Операция выполнена успешно');
             })
             .catch(() => {
               // this.$bvToast.show('my-toast');
+              this.createMessageBoxError('Что-то пошло не так');
             });
           backApi.get('/agent/profile').then((Response) => {
             this.transfertInfo = Response.data;
           });
-          this.$emit('enlarge-text');
+          // this.$emit('enlarge-text');
         } else {
           this.showToast('Ошибка операции!', 'Введённая вами сумма превышает ваш баланс!', 'danger');
         }
       }
     },
+    createMessageBoxError(messageText) {
+      const h = this.$createElement;
+      // More complex structure
+      const messageVNode = h('div', { class: ['foobar'] }, [
+        h('h5', { class: ['text-center'] }, [messageText]),
+      ]);
+      // We must pass the generated VNodes as arrays
+      return this.$bvModal.msgBoxOk([messageVNode], {
+        buttonSize: 'xl',
+        centered: true,
+        cancelTitle: 'Нет',
+        okTitle: 'OK',
+        size: 'md',
+      });
+    },
   },
 };
 </script>
 <style lang="scss" scoped>
+
 .custom_input{
   // margin-top: 29px !important;
 }

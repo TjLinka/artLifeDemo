@@ -26,9 +26,6 @@
         <div class="container-md top__info">
           <div class="row" v-if="!this.$route.params.id">
             <div class="col-md mt-1">
-              <!-- <span class="modal_btn" @click="showTransfModal2">
-                Перевести между лицевыми счетами
-              </span> -->
               <span class="modal_btn" @click="showTransfModal1" v-if="transfertAccess">
                 Перевести баллы между партнерами
               </span>
@@ -125,7 +122,7 @@
             <div class="row">
               <div class="col-md-6 mt-3">
                 <p>Организационный объем (ОО):</p>
-                <p>{{ transfertInfo.so }}</p>
+                <p>{{ transfertInfo.so | localInt }}</p>
               </div>
               <div class="col-md-6 mt-3">
                 <p>Квалификационный объем (КО):</p>

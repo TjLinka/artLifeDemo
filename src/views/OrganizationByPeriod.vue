@@ -192,7 +192,7 @@
     </div>
     </div>
   <b-modal v-model="show"
-  id="modal-scrollable" centered scrollable title="Легенда" style="max-height: 100px;">
+  id="modal-scrollable" centered scrollable title="Легенда">
     <div class="modal_icons">
       <img :src="`../icons/Клиент.svg`"
       class="rank_icon"> <span>Привилегированный клиент</span></div> <br>
@@ -252,27 +252,42 @@ export default {
       {
         property: 'lo',
         label: 'ЛО',
-        formater: (item) => item.lo,
+        formater: (item) => {
+          const formatter = new Intl.NumberFormat('ru');
+          return formatter.format(item.lo);
+        },
       },
       {
         property: 'go',
         label: 'ГО',
-        formater: (item) => item.go,
+        formater: (item) => {
+          const formatter = new Intl.NumberFormat('ru');
+          return formatter.format(item.go);
+        },
       },
       {
         property: 'ngo',
         label: 'НГО',
-        formater: (item) => item.ngo,
+        formater: (item) => {
+          const formatter = new Intl.NumberFormat('ru');
+          return formatter.format(item.ngo);
+        },
       },
       {
         property: 'oo',
         label: 'ОО',
-        formater: (item) => item.oo,
+        formater: (item) => {
+          const formatter = new Intl.NumberFormat('ru');
+          return formatter.format(item.oo);
+        },
       },
       {
         property: 'ko',
         label: 'КО',
-        formater: (item) => item.ko,
+        formater: (item) => {
+          const formatter = new Intl.NumberFormat('ru');
+          return formatter.format(item.ko);
+        },
       },
       {
         property: 'noact',
@@ -914,7 +929,7 @@ button.close:hover{
   opacity: 1;
 }
 .modal-dialog-centered.modal-dialog-scrollable .modal-content{
-  max-height: calc(100vh - 14rem);
+  max-height: calc(100vh - 5rem) !important;
 }
 .el-table__expand-icon > .el-icon-arrow-right {
         color: white;

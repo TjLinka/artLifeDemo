@@ -96,7 +96,8 @@ export default {
           label: 'Бонусов всего',
           formatter(v) {
             if (v !== null) {
-              return v;
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
             }
             return null;
           },
@@ -106,7 +107,8 @@ export default {
           label: 'ЛО',
           formatter(v) {
             if (v !== null) {
-              return v;
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
             }
             return null;
           },
@@ -116,7 +118,8 @@ export default {
           label: 'ГО',
           formatter(v) {
             if (v !== null) {
-              return v;
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
             }
             return null;
           },
@@ -126,7 +129,8 @@ export default {
           label: 'НГО',
           formatter(v) {
             if (v !== null) {
-              return v;
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
             }
             return null;
           },
@@ -136,7 +140,8 @@ export default {
           label: 'ОО',
           formatter(v) {
             if (v !== null) {
-              return v;
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
             }
             return null;
           },
@@ -146,7 +151,8 @@ export default {
           label: 'КО',
           formatter(v) {
             if (v !== null) {
-              return v;
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
             }
             return null;
           },
@@ -179,7 +185,8 @@ export default {
           label: 'Бонус',
           formatter(v) {
             if (v !== null) {
-              return v;
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
             }
             return null;
           },
@@ -211,6 +218,13 @@ export default {
         {
           key: 'volume',
           label: 'Объем',
+          formatter(v) {
+            if (v !== null) {
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
+            }
+            return null;
+          },
           sortable: true,
         },
         {
@@ -227,6 +241,13 @@ export default {
         {
           key: 'bonus_value',
           label: 'Бонус',
+          formatter(v) {
+            if (v !== null) {
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
+            }
+            return null;
+          },
           sortable: true,
         },
       ],

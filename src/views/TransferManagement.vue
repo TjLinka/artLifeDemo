@@ -73,6 +73,7 @@
           <p class="exp_print">
             <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
             <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
+            <span class="mr-3" v-b-modal.modal-scrollable>Легенда</span>
           </p>
         </div>
       </div>
@@ -104,6 +105,9 @@
           </template>
           <template v-slot:cell(isterminated)="row">
               {{row.item.isterminated === '0' ? 'Нет' : 'Да'}}
+          </template>
+          <template #cell()="data">
+            {{data.value}}
           </template>
         </b-table>
       </div>
@@ -259,6 +263,41 @@
           <Transfert v-on:enlarge-text="showTrans = false" :id="id" />
         </div>
       </footer>
+  <b-modal v-model="show"
+  id="modal-scrollable" centered scrollable title="Легенда">
+    <div class="modal_icons">
+      <img :src="`../icons/Клиент.svg`"
+      class="rank_icon"> <span>Привилегированный клиент</span></div> <br>
+    <div class="modal_icons">
+      <img :src="`../icons/Консультант.svg`" class="rank_icon"> <span>Консультант</span></div><br>
+    <div class="modal_icons">
+      <img :src="`../icons/Мастер.svg`" class="rank_icon"><span>Мастер</span></div><br>
+    <div class="modal_icons">
+      <img :src="`../icons/Управляющий.svg`"
+      class="rank_icon"><span>Управляющий</span></div><br><br>
+    <div class="modal_icons">
+      <img :src="`../icons/Директор.svg`" class="rank_icon"><span>Директор</span></div><br>
+    <div class="modal_icons"><img :src="`../icons/Серебряный Директор.svg`" class="rank_icon">
+    <span>Серебряный Директор</span></div><br>
+    <div class="modal_icons"><img :src="`../icons/Золотой Директор.svg`" class="rank_icon">
+    <span>Золотой Директор</span></div><br><br>
+    <div class="modal_icons"><img :src="`../icons/Рубиновый Директор.svg`" class="rank_icon">
+    <span>Рубиновый Директор</span></div><br>
+    <div class="modal_icons"><img :src="`../icons/Бриллиантовый Директор.svg`" class="rank_icon">
+    <span>Бриллиантовый Директор</span></div><br>
+    <div class="modal_icons">
+      <img :src="`../icons/Президент_1.svg`" class="rank_icon"><span>Президент</span></div><br>
+    <template #modal-footer>
+          <b-button
+            variant="primary"
+            size="sm"
+            class="float-right cls_btn"
+            @click="show=false"
+          >
+            Закрыть
+          </b-button>
+    </template>
+  </b-modal>
       <div :class="`mobile_modal_mask ${searchActive ? 'active' : ''}`"></div>
   </div>
 </template>
@@ -273,6 +312,7 @@ export default {
   components: { Transfert },
   data() {
     return {
+      show: false,
       state: '',
       links: [],
       id: null,
@@ -299,37 +339,55 @@ export default {
         {
           key: 'lo',
           label: 'ЛО',
-          formater: (item) => item.lo,
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            return formatter.format(v);
+          },
           sortable: true,
         },
         {
           key: 'go',
           label: 'ГО',
-          formater: (item) => item.go,
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            return formatter.format(v);
+          },
           sortable: true,
         },
         {
           key: 'ngo',
           label: 'НГО',
-          formater: (item) => item.ngo,
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            return formatter.format(v);
+          },
           sortable: true,
         },
         {
           key: 'reserve',
           label: 'Резерв',
-          formater: (item) => item.reserve,
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            return formatter.format(v);
+          },
           sortable: true,
         },
         {
           key: 'oo',
           label: 'ОО',
-          formater: (item) => item.oo,
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            return formatter.format(v);
+          },
           sortable: true,
         },
         {
           key: 'ko',
           label: 'КО',
-          formater: (item) => item.ko,
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            return formatter.format(v);
+          },
           sortable: true,
         },
         {

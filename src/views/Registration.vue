@@ -71,8 +71,7 @@
       <div class="row mt-md-5">
         <div class="col-md-6 custom_input">
           <input type="text" name="phone" id="phone"
-          v-mask="newUser.country.toLowerCase() === 'россия' ? '+#(###)-###-##-##'
-          : '+#(###)###########'"
+          v-mask="'+#(###)###########'"
           placeholder="+7(777)-777-77-77"
           required v-model="newUser.phone" />
           <label for="phone" class="up">Телефон в международном формате</label>

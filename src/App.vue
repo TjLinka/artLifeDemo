@@ -76,6 +76,54 @@ url('/fonts/FuturaPT-Book.ttf') format('truetype');
   top: 64px;
   background-color: rgb(255 255 255);
 }
+#modal-scrollable .modal-content{
+  height: unset !important;
+}
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 70% !important;
+    height: 250px;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: unset !important;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0  !important;
+    outline: 0;
+    & .foobar{
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;;
+    }
+    & .modal-footer{
+      border: 0 !important;
+      display: flex;
+      justify-content: center;
+        & button{
+          width: 30%;
+          border-radius: 0 !important;
+          &:nth-of-type(1) {
+            background-color: #32aaa7;
+            color: white;
+            font-weight: 500;
+            border: 0;
+            padding: 7px 0px;
+          }
+          &:nth-of-type(2) {
+            color: #32aaa7;
+            font-weight: 500;
+            background: none;
+            border: 1px solid #32aaa7;
+            padding: 6px 0px;
+          }
+        }
+    }
+}
+.modal-dialog-centered{
+  justify-content: center;
+}
 .multiselect__tags{
   padding-left: 0 !important;
   border:0 !important;

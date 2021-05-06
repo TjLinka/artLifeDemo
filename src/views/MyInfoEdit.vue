@@ -85,8 +85,7 @@
             <div class="custom_input t" v-show="!smsStatus">
               <input type="text"
               placeholder="+7(777)-777-77-77"
-              v-mask="userInfo.country.toLowerCase() === 'россия' ? '+#(###)-###-##-##'
-              : '+#(###)###########'"
+              v-mask="'+#(###)###########'"
               name="phone" id="phone"
               required v-model="userInfo.phone" />
               <label for="phone" class="up">Телефон в международном формате</label>

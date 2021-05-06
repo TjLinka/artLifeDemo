@@ -12,7 +12,7 @@
         </div> -->
         <div class="col-md-6">
           <p>Резерв:</p>
-          <p>{{ reserve }} баллов</p>
+          <p>{{ reserve | localInt }} баллов</p>
         </div>
       </div>
       <h3 class="perevod">Перевод количества баллов</h3>
@@ -30,7 +30,10 @@
           ></el-autocomplete>
         </div>
         <div class="col-md-6 mt-4 custom_input">
-          <input type="number" name="sum" id="sum" required v-model="sum" step="0.1" />
+          <input type="number" name="sum" id="sum"
+          required v-model="sum" step="0.1"
+          @keydown="checkInput($event)"
+          />
           <label for="sum">Сумма</label>
           <span class="clear_icon" @click="clearSum()"></span>
         </div>
@@ -62,6 +65,7 @@ export default {
   props: ['lo', 'reserve', 'id'],
   data() {
     return {
+      testSumm: 0,
       state: '',
       comm: null,
       links: [],
@@ -98,6 +102,15 @@ export default {
     this.sum = null;
   },
   methods: {
+    // eslint-disable-next-line consistent-return
+    checkInput(e) {
+      console.log();
+      if (e.which === 189 || e.which === 109 || e.which === 107 || e.which === 187) {
+        // eslint-disable-next-line no-restricted-globals
+        e.preventDefault();
+        return false;
+      }
+    },
     back() {
       const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
       $(navEl[0])
@@ -168,19 +181,21 @@ export default {
           await backApi
             .post('/agent/send_points', {
               agent_to: this.selectedUser.agent_id,
-              amount: this.sum,
+              amount: parseFloat(this.sum),
               comm: this.comm,
             })
             .then(() => {
               this.$bvToast.show('my-toast-points');
+              this.createMessageBoxError('Операция выполнена успешно');
             })
             .catch(() => {
               this.$bvToast.show('my-toast');
+              this.createMessageBoxError('Что-то пошло не так');
             });
           backApi.get('/agent/profile').then((Response) => {
             this.transfertInfo = Response.data;
           });
-          this.$emit('enlarge-text');
+          // this.$emit('enlarge-text');
         } else {
           this.showToast(
             'Ошибка операции!',
@@ -190,11 +205,27 @@ export default {
         }
       }
     },
+    createMessageBoxError(messageText) {
+      const h = this.$createElement;
+      // More complex structure
+      const messageVNode = h('div', { class: ['foobar'] }, [
+        h('h5', { class: ['text-center'] }, [messageText]),
+      ]);
+      // We must pass the generated VNodes as arrays
+      return this.$bvModal.msgBoxOk([messageVNode], {
+        buttonSize: 'xl',
+        centered: true,
+        cancelTitle: 'Нет',
+        okTitle: 'OK',
+        size: 'md',
+      });
+    },
   },
 };
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style lang="scss" scoped>
+
 .custom_input {
   // margin-top: 29px !important;
 }
