@@ -83,14 +83,16 @@ export default {
       returnItems: [],
       topTableData: [],
       topFields: [
-        {
-          key: 'period',
-          label: 'Период',
-          formatter(v) {
-            const months = ['Январь', 'Ферваль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
-            return `${new Date(v).getFullYear()} ${months[new Date(v).getMonth()]}`;
-          },
-        },
+        // {
+        //   key: 'period',
+        //   label: 'Период',
+        //   formatter(v) {
+        //     const months = ['Январь', 'Ферваль', 'Март', 'Апрель', 'Май',
+        //       'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+        //     ];
+        //     return `${new Date(v).getFullYear()} ${months[new Date(v).getMonth()]}`;
+        //   },
+        // },
         {
           key: 'bonus',
           label: 'Бонусов всего',
