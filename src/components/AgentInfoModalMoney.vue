@@ -30,7 +30,14 @@
           ></el-autocomplete>
         </div>
         <div class="col-md-6 mt-4 custom_input">
-              <input type="number" name="sum" id="sum" required v-model="sum" step="0.1"
+              <input type="text" name="sum" id="sum" required v-model="sum" step="0.1"
+              v-currency="{
+                locale: 'en',
+                currency: null,
+                valueAsInteger: false,
+                distractionFree: false,
+                allowNegative: false
+              }"
               @keydown="checkInput($event)"
               />
               <label for="sum">Сумма</label>

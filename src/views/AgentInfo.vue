@@ -89,12 +89,12 @@
               <p>{{ userinfo.skype }}</p>
             </div>
           </div>
-          <!-- <div class="row">
+          <div class="row">
             <div class="col-md-6 mt-3">
-              <p>Доп. телефон:</p>
-              <p>{{ userinfo.phone }}</p>
+              <p>Склад обслуживания:</p>
+              <p>{{ userinfo.stock_id }} - {{userinfo.stock_name}}</p>
             </div>
-          </div> -->
+          </div>
         </div>
         <div class="transfert" v-if="transLoaded">
           <h2 class="page__caption mt-5">Дополнительная информация для трансферта</h2>

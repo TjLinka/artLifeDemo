@@ -73,7 +73,6 @@
 </template>
 
 <script>
-
 import $ from 'jquery';
 import backApi from '../assets/backApi';
 

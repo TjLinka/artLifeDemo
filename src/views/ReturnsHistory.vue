@@ -274,19 +274,19 @@ export default {
           label: 'Номер накладной',
           sortable: true,
         },
-        // {
-        //   key: 'address',
-        //   label: 'Пользователь',
-        //   sortable: true,
-        // },
-        // {
-        //   key: 'contacts',
-        //   label: 'Контакты',
-        //   sortable: true,
-        // },
         {
           key: 'status',
           label: 'Статус',
+          sortable: true,
+        },
+        {
+          key: 'points',
+          label: 'Сумма баллов',
+          sortable: true,
+        },
+        {
+          key: 'source_stock_name',
+          label: 'Склад покупки',
           sortable: true,
         },
       ],

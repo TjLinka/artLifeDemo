@@ -89,6 +89,7 @@
         :items="entries"
         :tbody-tr-class="rowClass"
         sticky-header
+        sortByFormatted
         class="mt-4">
           <template v-slot:cell(id)="row">
             <p>
@@ -108,6 +109,15 @@
           </template>
           <template #cell()="data">
             {{data.value}}
+          </template>
+          <template v-slot:cell(rank_end_npp)="row">
+            {{row.item.rank_end}}
+          </template>
+          <template v-slot:cell(rank_beg_npp)="row">
+            {{row.item.rank_beg}}
+          </template>
+          <template v-slot:cell(rank_calc_npp)="row">
+            {{row.item.rank_calc}}
           </template>
         </b-table>
       </div>
@@ -397,19 +407,21 @@ export default {
           sortable: true,
         },
         {
-          key: 'rank_beg',
+          key: 'rank_beg_npp',
           label: 'Ранг на начало',
           formater: (item) => item.rank_beg,
+          sortable: true,
         },
         {
-          key: 'rank_calc',
+          key: 'rank_calc_npp',
           label: 'Расчетный ранг',
           formater: (item) => item.rank_calc,
+          sortable: true,
         },
         {
-          key: 'rank_end',
+          key: 'rank_end_npp',
           label: 'Ранг на конец',
-          formater: (item) => item.rank_end,
+          sortable: true,
         },
         {
           key: 'cityname',

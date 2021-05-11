@@ -129,7 +129,15 @@
           <div class="row edit mt-4">
             <div class="col-md-6 custom_input">
               <div v-if="points_rule === 0">
-              <input type="number" name="autoship" id="autoship" required v-model="autoship" />
+              <input type="text" name="autoship" id="autoship" required v-model="autoship"
+              v-currency="{
+                locale: 'en',
+                currency: null,
+                valueAsInteger: false,
+                distractionFree: false,
+                allowNegative: false
+              }"
+              />
               <label for="autoship">Количество баллов</label>
               <span class="clear_icon" @click="clearInput('autoship')"></span>
               </div>

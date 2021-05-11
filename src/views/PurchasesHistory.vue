@@ -360,11 +360,16 @@ export default {
           label: 'Адрес',
           sortable: true,
         },
-        // {
-        //   key: 'contacts',
-        //   label: 'Контакты',
-        //   sortable: true,
-        // },
+        {
+          key: 'points',
+          label: 'Сумма баллов',
+          sortable: true,
+        },
+        {
+          key: 'stock_name',
+          label: 'Склад покупки',
+          sortable: true,
+        },
       ],
     };
   },

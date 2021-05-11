@@ -17,9 +17,16 @@
       <h3 class="perevod">Перевод количества баллов</h3>
       <div class="row edit">
         <div class="col-xl-6 mt-4 custom_input">
-              <input type="number" name="sum" id="sum"
+              <input type="text" name="sum" id="sum"
               required step="0.1"
               v-model="sum"
+              v-currency="{
+                locale: 'en',
+                currency: null,
+                valueAsInteger: false,
+                distractionFree: false,
+                allowNegative: false
+              }"
               @keydown="checkInput($event)"
                />
               <label for="sum">Сумма</label>
