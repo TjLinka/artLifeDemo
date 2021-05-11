@@ -43,9 +43,9 @@
             </b-form-radio-group>
           </b-form-group>
           <div class="reg_input custom_input">
-            <input type="text" name="country" id="country" required v-model="newUser.country" />
+            <input type="text" name="country" id="country" required v-model="country" />
             <label for="country">Страна</label>
-            <span class="clear_icon" @click="clearInput('country')"></span>
+            <span class="clear_icon" @click="clearCountry('country')"></span>
           </div>
         </div>
       </div>
@@ -71,9 +71,9 @@
       <div class="row mt-md-5">
         <div class="col-md-6 custom_input">
           <input type="text" name="phone" id="phone"
-          v-mask="'+#(###)###########'"
+          v-mask="mask"
           placeholder="+7(777)-777-77-77"
-          required v-model="newUser.phone" />
+          required v-model="phone" />
           <label for="phone" class="up">Телефон в международном формате</label>
           <span class="clear_icon" @click="clearInput('phone')"></span>
         </div>
@@ -105,16 +105,18 @@ export default {
   components: { DatePicker },
   data() {
     return {
+      mask: '+#(###)###########',
       loading: true,
       phone: '',
+      country: '',
       newUser: {
         role: 0,
         sex: 0,
         fio: '',
-        country: '',
+        // country: '',
         city: '',
         bthdte: '',
-        phone: '',
+        // phone: '',
         email: '',
       },
     };
@@ -156,18 +158,18 @@ export default {
     },
     registr() {
       if (
-        this.newUser.fio !== '' && this.newUser.country !== ''
+        this.newUser.fio !== '' && this.country !== ''
         && this.newUser.city !== '' && this.newUser.bthdte !== ''
-        && this.newUser.phone !== '' && this.newUser.email !== ''
+        && this.phone !== '' && this.newUser.email !== ''
       ) {
         const data = {
           access_level: this.newUser.role,
           male: this.newUser.sex,
           fullname: this.newUser.fio,
-          country: this.newUser.country,
+          country: this.country,
           city: this.newUser.city,
           bthdte: this.newUser.bthdte,
-          mobile_phone: this.newUser.phone.replace(/[-,(,),+]/g, ''),
+          mobile_phone: this.phone.replace(/[-,(,),+]/g, ''),
           email: this.newUser.email,
         };
         backApi.post('/agent/signup-start', data)
@@ -185,6 +187,22 @@ export default {
     },
     clearInput(name) {
       this.newUser[name] = '';
+    },
+    clearCountry() {
+      this.country = '';
+    },
+    clearPhone() {
+      this.phone = '';
+    },
+  },
+  watch: {
+    country() {
+      if (this.country.toLowerCase() === 'россия') {
+        this.mask = '+7(###)###-##-##';
+        this.phone = this.phone.substring(2);
+      } else {
+        this.mask = '+#(###)###########';
+      }
     },
   },
 };

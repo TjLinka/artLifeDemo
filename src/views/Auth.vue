@@ -23,7 +23,7 @@
           </div>
           </div>
         </div>
-        <form>
+        <form method="post">
           <div class="custom_input login_input" v-show="!value2">
             <input type="number" name="login" id="login" required v-model="log.login_ID" />
             <label for="login">ID</label>
@@ -41,7 +41,14 @@
             <label for="password">Пароль</label>
             <span class="clear_icon" @click="clearInput('password')"></span>
           </div>
-          <button class="btn__login" v-on:click.prevent="sf">Войти</button>
+          <vue-recaptcha
+            ref="recaptcha"
+            size="invisible"
+            :sitekey="sitekey"
+            @verify="sf"
+            @expired="onCaptchaExpired"
+          />
+          <button class="btn__login" type="submit" @click.prevent="validate">Войти</button>
         </form>
       </div>
       <div class="auth__page__help">
@@ -53,16 +60,21 @@
 </template>
 
 <script>
+import VueRecaptcha from 'vue-recaptcha';
 import md5 from 'md5';
 import { mapActions } from 'vuex';
 import $ from 'jquery';
 
 export default {
   name: 'Home',
+  components: {
+    VueRecaptcha,
+  },
   data() {
     return {
       value2: false,
       badLogin: false,
+      sitekey: '6LdD2c8aAAAAAOQXfujlkoLbR_bQyxI4kKLifnCU',
       log: {
         login: '',
         password: '',
@@ -97,7 +109,13 @@ export default {
       this.log[name] = '';
     },
     ...mapActions('auth', ['login']),
-    sf() {
+    validate() {
+      this.$refs.recaptcha.execute();
+    },
+    onCaptchaExpired() {
+      this.$refs.recaptcha.reset();
+    },
+    sf(recaptchaToken1) {
       if ((this.log.login_ID !== '' || this.log.login_ID !== null)
       && (this.log.password !== '' || this.log.password !== null)
       ) {
@@ -108,12 +126,14 @@ export default {
             login: this.log.login_ID,
             pwd_hash: md5(this.log.password),
             authMethod: this.value2,
+            recaptchaToken: recaptchaToken1,
           };
         } else {
           data = {
             phone: this.log.login_phone.replace(/[-,(,),+]/g, ''),
             pwd_hash: md5(this.log.password),
             authMethod: this.value2,
+            recaptchaToken: recaptchaToken1,
           };
         }
         this.login(data)

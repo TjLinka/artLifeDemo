@@ -22,9 +22,9 @@
       <div class="top__info mt-3">
         <div class="row edit ">
           <div class="col-md-6 custom_input mt-3">
-            <input type="text" name="country" id="country" required v-model="userInfo.country" />
+            <input type="text" name="country" id="country" required v-model="country" />
             <label for="country">Страна</label>
-            <span class="clear_icon" @click="clearInput('country')"></span>
+            <span class="clear_icon" @click="clearCountry('country')"></span>
           </div>
           <div class="col-md-6 custom_input mt-3">
             <input type="text" name="city" id="city" required v-model="userInfo.city" />
@@ -85,11 +85,11 @@
             <div class="custom_input t" v-show="!smsStatus">
               <input type="text"
               placeholder="+7(777)-777-77-77"
-              v-mask="'+#(###)###########'"
+              v-mask="mask"
               name="phone" id="phone"
-              required v-model="userInfo.phone" />
+              required v-model="phone" />
               <label for="phone" class="up">Телефон в международном формате</label>
-              <span class="clear_icon" @click="clearInput('phone')"></span>
+              <span class="clear_icon" @click="clearPhone('phone')"></span>
               <button class="save__newinfo mt-3" v-on:click="savePhone">
                 Сохранить изменения
               </button>
@@ -204,10 +204,13 @@ export default {
   components: { DatePicker },
   data() {
     return {
+      mask: '',
       loading: true,
       phoneHash: null,
       smsCode: null,
       smsStatus: false,
+      country: '',
+      phone: '',
       password: {
         newPass: '',
         newPassRepeat: '',
@@ -221,6 +224,13 @@ export default {
   mounted() {
     backApi.get('/agent/profile').then((Response) => {
       this.userInfo = Response.data;
+      this.country = Response.data.country;
+      if (this.country.toLowerCase() === 'россия') {
+        this.mask = '+7(###)###-##-##';
+      } else {
+        this.mask = '+#(###)###########';
+      }
+      this.phone = Response.data.phone;
     }).then(() => {
       setTimeout(() => { this.loading = false; });
     });
@@ -255,6 +265,12 @@ export default {
     clearPass(name) {
       this.password[name] = null;
     },
+    clearCountry() {
+      this.country = '';
+    },
+    clearPhone() {
+      this.phone = '';
+    },
     saveEmail() {
       if (this.userInfo.email !== '' && this.userInfo.email !== null) {
         backApi
@@ -268,9 +284,9 @@ export default {
       }
     },
     savePhone() {
-      if (this.userInfo.phone !== '' && this.userInfo.phone !== null) {
+      if (this.phone !== '' && this.phone !== null) {
         backApi
-          .post('/agent/change-phone-start', { new_phone: this.userInfo.phone.replace(/[-,(,),+]/g, '') })
+          .post('/agent/change-phone-start', { new_phone: this.phone.replace(/[-,(,),+]/g, '') })
           .then((Response) => {
             this.phoneHash = Response.data;
             this.smsStatus = true;
@@ -352,6 +368,16 @@ export default {
         this.userInfo = Response.data;
       });
       this.$bvToast.show('my-toast-success');
+    },
+  },
+  watch: {
+    country() {
+      if (this.country.toLowerCase() === 'россия') {
+        this.mask = '+7(###)###-##-##';
+        this.phone = this.phone.substring(2);
+      } else {
+        this.mask = '+#(###)###########';
+      }
     },
   },
 };
