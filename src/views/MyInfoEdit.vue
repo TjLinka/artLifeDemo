@@ -84,7 +84,7 @@
             <p class="page__caption">Смена телефона</p>
             <div class="custom_input t" v-show="!smsStatus">
               <input type="text"
-              placeholder="+7(777)-777-77-77"
+              placeholder="+77777777777"
               v-mask="mask"
               name="phone" id="phone"
               required v-model="phone" />

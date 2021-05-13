@@ -22,6 +22,7 @@
       v-model="rangeDate"
       range-separator=" - "
       range
+      :editable="false"
       @change="getSelectedDataRange"
       format="DD.MM.YYYY"
       placeholder="дд.мм.гггг - дд.мм.гггг"
@@ -164,7 +165,7 @@ export default {
             minWidth: '120px',
           },
           formatter(v) {
-            if (v > 0) {
+            if (v >= 0) {
               const formatter = new Intl.NumberFormat('ru');
               return formatter.format(v);
             }
@@ -180,7 +181,7 @@ export default {
             minWidth: '120px',
           },
           formatter(v) {
-            if (v < 0) {
+            if (v <= 0) {
               const formatter = new Intl.NumberFormat('ru');
               return formatter.format(v);
             }
@@ -212,8 +213,8 @@ export default {
       },
     }).then((Response) => {
       this.entries = Response.data.entries;
-      this.income = this.entries.filter((i) => i.amount > 0);
-      this.outcome = this.entries.filter((i) => i.amount < 0);
+      this.income = this.entries.filter((i) => i.amount >= 0);
+      this.outcome = this.entries.filter((i) => i.amount <= 0);
       this.entries.forEach((i) => {
         // eslint-disable-next-line no-param-reassign
         i.income = i.amount;

@@ -16,6 +16,7 @@
       v-model="rangeDate"
       range-separator=" - "
       range
+      :editable = "false"
       placeholder="дд.мм.гггг - дд.мм.гггг"
       @change="getSelectedDataRange"
       format="DD.MM.YYYY"

@@ -33,7 +33,7 @@
           <input type="text" name="sum" id="sum"
           required v-model="sum" step="0.1"
           v-currency="{
-            locale: 'en',
+            locale: 'de-DE',
             currency: null,
             valueAsInteger: false,
             distractionFree: false,

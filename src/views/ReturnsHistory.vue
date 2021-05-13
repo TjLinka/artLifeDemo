@@ -21,6 +21,7 @@
       @clear="clearDP"
       @change="getSelectedDataRange"
       format="DD.MM.YYYY"
+      :editable = "false"
       placeholder="дд.мм.гггг - дд.мм.гггг"
       value-type="YYYY-MM-DD"
       style="width: 100%"

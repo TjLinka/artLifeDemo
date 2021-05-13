@@ -131,7 +131,7 @@
               <div v-if="points_rule === 0">
               <input type="text" name="autoship" id="autoship" required v-model="autoship"
               v-currency="{
-                locale: 'en',
+                locale: 'de-DE',
                 currency: null,
                 valueAsInteger: false,
                 distractionFree: false,

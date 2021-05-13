@@ -29,6 +29,7 @@
         range
         type="month"
         @change="dd"
+        :editable = "false"
         format="DD.MM.YYYY"
         placeholder="дд.мм.гггг - дд.мм.гггг"
         value-type="YYYY-MM-DD"

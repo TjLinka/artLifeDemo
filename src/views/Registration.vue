@@ -72,7 +72,7 @@
         <div class="col-md-6 custom_input">
           <input type="text" name="phone" id="phone"
           v-mask="mask"
-          placeholder="+7(777)-777-77-77"
+          placeholder="+77777777777"
           required v-model="phone" />
           <label for="phone" class="up">Телефон в международном формате</label>
           <span class="clear_icon" @click="clearInput('phone')"></span>

@@ -15,13 +15,19 @@
         </div>
       </div>
       <h3 class="perevod">Перевод количества баллов</h3>
+      <div class="row mt-3">
+        <div class="col-md-6 perioad__picker">
+        <BasePeriodPicker :currentPeriod="currentPeriod"
+        v-on:next-period="nextPeriod" class="period_picker"/>
+        </div>
+      </div>
       <div class="row edit">
         <div class="col-xl-6 mt-4 custom_input">
               <input type="text" name="sum" id="sum"
               required step="0.1"
               v-model="sum"
               v-currency="{
-                locale: 'en',
+                locale: 'de-DE',
                 currency: null,
                 valueAsInteger: false,
                 distractionFree: false,
@@ -51,13 +57,19 @@
 
 import $ from 'jquery';
 import backApi from '../assets/backApi';
+import BasePeriodPicker from './BasePeriodPicker.vue';
 
 export default {
   name: 'Transfert',
+  components: {
+    BasePeriodPicker,
+  },
   props: ['id'],
   data() {
     return {
       transfertInfo: {},
+      periods: [],
+      periodIndex: 0,
       sum: null,
       another_agent_id: null,
     };
@@ -69,10 +81,24 @@ export default {
       }
       return false;
     },
+    currentPeriod() {
+      try {
+        return this.periods[this.periodIndex].period;
+      } catch (e) {
+        return '';
+      }
+    },
   },
   mounted() {
     backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then((response) => {
       this.transfertInfo = response.data;
+    });
+    backApi.get('/agent/get-open-periods').then((Response) => {
+      this.periods = Response.data.entries.sort((a, b) => {
+        const result = a.comdte > b.comdte ? 1 : -1;
+        return result;
+      });
+      this.periodIndex = this.periods.length - 1;
     });
   },
   methods: {
@@ -110,8 +136,9 @@ export default {
       if (this.sum !== null && this.sum !== '') {
         await backApi
           .post(`agent/transfert/${this.id}`, {
-            sum: this.sum,
+            sum: this.sum.replace(/,/, '.'),
             direction: 'lo2reserve',
+            comdte: this.currentPeriod,
           })
           .then(() => {
             this.createMessageBoxError('Операция выполнена успешно');
@@ -129,8 +156,9 @@ export default {
       if (this.sum !== null && this.sum !== '') {
         await backApi
           .post(`agent/transfert/${this.id}`, {
-            sum: this.sum,
+            sum: this.sum.replace(/,/, '.'),
             direction: 'reserve2lo',
+            comdte: this.currentPeriod,
           })
           .then(() => {
             this.createMessageBoxError('Операция выполнена успешно');
@@ -159,7 +187,21 @@ export default {
         size: 'md',
       });
     },
+    nextPeriod(x) {
+      this.period_enabled = true;
+      this.periodIndex = (this.periodIndex + this.periods.length + x) % this.periods.length;
+    },
   },
+  // watch: {
+  //   currentPeriod(v) {
+  //     backApi.get('agent/bonus-detail', { params: { comdte: v } }).then((response) => {
+  //       this.bonus = response.data.entries;
+  //       // eslint-disable-next-line no-param-reassign
+  //       response.data.header.period = this.currentPeriod;
+  //       this.topTableData = [response.data.header];
+  //     });
+  //   },
+  // },
 };
 </script>
 
