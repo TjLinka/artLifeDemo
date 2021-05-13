@@ -43,39 +43,7 @@
             >Перевести в трансферт</button>
           </div>
       </div>
-      <!-- <div class="row edit mt-4">
-        <div class="col-xl-6 trans_btns">
-          <button @click="lo2reserve"
-          :disabled="isDisabled"
-          :class="isDisabled ? 'disabled' : ''">
-          Перевести в резерв</button>
-          <button @click="reserve2lo"
-          :disabled="isDisabled"
-          :class="isDisabled ? 'disabled' : ''"
-          >Перевести в трансферт</button>
-        </div>
-      </div> -->
     </div>
-    <b-toast id="my-toast" variant="warning" solid>
-      <template #toast-title>
-        <div class="d-flex flex-grow-1 align-items-baseline">
-          <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
-          <strong class="mr-auto">Ошибка!</strong>
-          <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
-        </div>
-      </template>
-      Данные указаны не верно
-    </b-toast>
-    <b-toast id="my-toast-good" variant="success" solid>
-      <template #toast-title>
-        <div class="d-flex flex-grow-1 align-items-baseline">
-          <b-img blank blank-color="#32aaa7" class="mr-2" width="12" height="12"></b-img>
-          <strong class="mr-auto">Успех!</strong>
-          <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
-        </div>
-      </template>
-      Операция выполнена успешно
-    </b-toast>
   </div>
 </template>
 
@@ -146,11 +114,9 @@ export default {
             direction: 'lo2reserve',
           })
           .then(() => {
-            this.$bvToast.show('my-toast-good');
             this.createMessageBoxError('Операция выполнена успешно');
           })
           .catch(() => {
-            this.$bvToast.show('my-toast');
             this.createMessageBoxError('Что-то пошло не так');
           });
         backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then((Response) => {
@@ -167,11 +133,9 @@ export default {
             direction: 'reserve2lo',
           })
           .then(() => {
-            this.$bvToast.show('my-toast-good');
             this.createMessageBoxError('Операция выполнена успешно');
           })
           .catch(() => {
-            this.$bvToast.show('my-toast');
             this.createMessageBoxError('Что-то пошло не так');
           });
         backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then((Response) => {

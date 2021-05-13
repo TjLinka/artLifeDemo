@@ -228,7 +228,7 @@ export default {
       if (this.country.toLowerCase() === 'россия') {
         this.mask = '+7(###)###-##-##';
       } else {
-        this.mask = '+#(###)###########';
+        this.mask = '+###############';
       }
       this.phone = Response.data.phone;
     }).then(() => {
@@ -276,7 +276,9 @@ export default {
         backApi
           .post('/agent/change-mail-start', { new_mail: this.userInfo.email })
           .then(() => {
-            this.showToast('Смена почты', 'На вашу почту пришло письмо для потверждения!', 'success');
+            this.createMessageBoxError('На вашу почту пришло письмо для потверждения!');
+            // this.showToast('Смена почты',
+            //   'На вашу почту пришло письмо для потверждения!', 'success');
           })
           .catch((error) => {
             this.showToast('Ошибка!', error.response.data.detail, 'danger');
@@ -290,10 +292,12 @@ export default {
           .then((Response) => {
             this.phoneHash = Response.data;
             this.smsStatus = true;
-            this.showToast('Смена пароля', 'На ваш телефон придет сообщение с смс кодом!', 'success');
+            this.createMessageBoxError('На ваш телефон придет сообщение с смс кодом!');
+            // this.showToast('Смена пароля',
+            //   'На ваш телефон придет сообщение с смс кодом!', 'success');
           })
           .catch((error) => {
-            this.showToast('Ошибка', error.response.data.detail, 'danger');
+            this.createMessageBoxError(error.response.data.detail);
           });
       }
     },
@@ -303,11 +307,11 @@ export default {
         sms_code: this.smsCode,
       })
         .then(() => {
-          this.showToast('Смена телефона', 'Ваш номер телефона изменён!', 'success');
+          this.createMessageBoxError('Ваш номер телефона изменён!');
           this.smsStatus = false;
         })
         .catch((error) => {
-          this.showToast('Смена телефона', error.response.data.detail, 'danger');
+          this.createMessageBoxError(error.response.data.detail);
         });
     },
     savePassword() {
@@ -323,7 +327,7 @@ export default {
         backApi
           .post('/agent/change_password', data)
           .then(() => {
-            this.showToast('Смена пароля', 'Ваш пароль успешно изменён!', 'success');
+            this.createMessageBoxError('Ваш пароль успешно изменён!');
             this.password = {};
           })
           .catch((error) => {
@@ -369,6 +373,21 @@ export default {
       });
       this.$bvToast.show('my-toast-success');
     },
+    createMessageBoxError(messageText) {
+      const h = this.$createElement;
+      // More complex structure
+      const messageVNode = h('div', { class: ['foobar'] }, [
+        h('h5', { class: ['text-center'] }, [messageText]),
+      ]);
+      // We must pass the generated VNodes as arrays
+      return this.$bvModal.msgBoxOk([messageVNode], {
+        buttonSize: 'xl',
+        centered: true,
+        cancelTitle: 'Нет',
+        okTitle: 'OK',
+        size: 'md',
+      });
+    },
   },
   watch: {
     country() {
@@ -376,7 +395,7 @@ export default {
         this.mask = '+7(###)###-##-##';
         this.phone = this.phone.substring(2);
       } else {
-        this.mask = '+#(###)###########';
+        this.mask = '+###############';
       }
     },
   },

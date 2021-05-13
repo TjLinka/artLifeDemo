@@ -86,7 +86,7 @@
       <template v-slot:cell(ngo)="row">
         {{ row.item.ngo | localInt }}
       </template>
-      <template v-slot:cell(oo)="row">
+      <template v-slot:cell(so)="row">
         {{ row.item.so | localInt }}
       </template>
       <template v-slot:cell(ko)="row">

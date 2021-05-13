@@ -201,7 +201,7 @@ export default {
         this.mask = '+7(###)###-##-##';
         this.phone = this.phone.substring(2);
       } else {
-        this.mask = '+#(###)###########';
+        this.mask = '+###############';
       }
     },
   },

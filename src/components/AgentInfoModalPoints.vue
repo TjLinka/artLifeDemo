@@ -126,27 +126,6 @@ export default {
         .siblings()
         .addClass('active');
     },
-    showToast(title, message, status) {
-      // Use a shorter name for this.$createElement
-      const h = this.$createElement;
-      // Increment the toast count
-      // Create the message
-      const vNodesMsg = h('p', { class: ['text-center', 'mb-0'] }, [
-        h('strong', { class: 'mr-2' }, message),
-      ]);
-      // Create the title
-      const vNodesTitle = h(
-        'div',
-        { class: ['d-flex', 'flex-grow-1', 'align-items-baseline', 'mr-2'] },
-        [h('strong', { class: 'mr-2' }, title)],
-      );
-      // Pass the VNodes as an array for message and title
-      this.$bvToast.toast([vNodesMsg], {
-        title: [vNodesTitle],
-        solid: true,
-        variant: status,
-      });
-    },
     querySearchAsync(queryString, cb) {
       const qr = queryString === '' ? 'а' : queryString;
       backApi.get('/agent/distr-agents-list', { params: { q: qr } }).then((Response) => {
@@ -192,11 +171,9 @@ export default {
               comm: this.comm,
             })
             .then(() => {
-              this.$bvToast.show('my-toast-points');
               this.createMessageBoxError('Операция выполнена успешно');
             })
             .catch(() => {
-              this.$bvToast.show('my-toast');
               this.createMessageBoxError('Что-то пошло не так');
             });
           backApi.get('/agent/profile').then((Response) => {

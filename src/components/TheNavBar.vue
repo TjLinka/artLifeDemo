@@ -67,7 +67,7 @@
             </router-link></li>
             <li
             v-show="role !== 'Клиент'">
-            <router-link to="/bonus-history">История бонусов (КЕ)</router-link></li>
+            <router-link to="/bonus-history">История начисления бонусов</router-link></li>
             <li v-show="role !== 'Клиент'"><router-link to="/points-history"
             >История баллов </router-link></li>
             <li><router-link to="/account-detail">Детализация лицевого счёта</router-link></li>

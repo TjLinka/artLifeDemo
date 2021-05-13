@@ -10,18 +10,6 @@
       </p>
         История начисления бонусов
         </h2>
-      <!-- <div class="row cur_p">
-        <div class="col-sm current_period">
-            <p>Текущий период:
-              {{ months[new Date(currentPeriodTop.comdte).getMonth()] }}
-              {{new Date(currentPeriodTop.comdte).getFullYear()}}.<br>
-            Статус предыдущего периода:
-            <span :style="`color: ${periodStatus}`">
-              {{ currentPeriodTop.prev_status }}
-            </span>
-            </p>
-        </div>
-      </div> -->
       <div class="row mt-3">
         <div class="col-md-6 perioad__picker">
         <BasePeriodPicker :currentPeriod="currentPeriod"
@@ -83,16 +71,6 @@ export default {
       returnItems: [],
       topTableData: [],
       topFields: [
-        // {
-        //   key: 'period',
-        //   label: 'Период',
-        //   formatter(v) {
-        //     const months = ['Январь', 'Ферваль', 'Март', 'Апрель', 'Май',
-        //       'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
-        //     ];
-        //     return `${new Date(v).getFullYear()} ${months[new Date(v).getMonth()]}`;
-        //   },
-        // },
         {
           key: 'bonus',
           label: 'Бонусов всего',
@@ -103,6 +81,18 @@ export default {
             }
             return null;
           },
+        },
+        {
+          key: 'month_point',
+          label: 'Ежемесячные бонусы',
+        },
+        {
+          key: 'autodom',
+          label: 'Автодом',
+        },
+        {
+          key: 'vac',
+          label: 'Отпускной фонд',
         },
         {
           key: 'lo',
@@ -163,25 +153,9 @@ export default {
           key: 'rank_calc',
           label: 'Расчетный ранг',
         },
-        {
-          key: 'month_point',
-          label: 'Ежемесячные бонусы',
-        },
-        {
-          key: 'autodom',
-          label: 'Автодом',
-        },
-        {
-          key: 'vac',
-          label: 'Отпускной фонд',
-        },
       ],
       mainFields: [
         'Наименование',
-        // {
-        //   key: 'bonusname',
-        //   label: 'Наименование',
-        // },
         {
           key: 'sum',
           label: 'Бонус',
@@ -264,7 +238,7 @@ export default {
         const result = a.comdte > b.comdte ? 1 : -1;
         return result;
       });
-      this.periodIndex = this.periods.length - 2;
+      this.periodIndex = this.periods.length - 1;
       backApi
         .get('agent/bonus-detail', { params: { comdte: this.currentPeriod } })
         .then((response) => {
