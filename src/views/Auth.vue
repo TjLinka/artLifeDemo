@@ -41,13 +41,13 @@
             <label for="password">Пароль</label>
             <span class="clear_icon" @click="clearInput('password')"></span>
           </div>
-          <!-- <vue-recaptcha
+          <vue-recaptcha
             ref="recaptcha"
             size="invisible"
             :sitekey="sitekey"
             @verify="sf"
             @expired="onCaptchaExpired"
-          /> -->
+          />
           <button class="btn__login" type="submit" @click.prevent="sf">Войти</button>
         </form>
       </div>
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-// import VueRecaptcha from 'vue-recaptcha';
+import VueRecaptcha from 'vue-recaptcha';
 import md5 from 'md5';
 import { mapActions } from 'vuex';
 import $ from 'jquery';
@@ -68,7 +68,7 @@ import $ from 'jquery';
 export default {
   name: 'Home',
   components: {
-    // VueRecaptcha,
+    VueRecaptcha,
   },
   data() {
     return {
