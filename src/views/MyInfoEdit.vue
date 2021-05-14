@@ -339,18 +339,18 @@ export default {
         let errorMsg = '';
         if (this.password.currentPass === '') {
           $(this.$refs.currentPass).addClass('error');
-          errorMsg += 'Введите Текущий пароль';
-          this.showToast('Ошибка', 'Введите Текущий пароль!', 'danger');
+          errorMsg += 'Введите Текущий пароль<br/><br/>';
+          // this.showToast('Ошибка', 'Введите Текущий пароль!', 'danger');
         }
         if (this.password.newPass !== this.password.newPassRepeat) {
           $(this.$refs.newPass).addClass('error');
           $(this.$refs.newPassRepeat).addClass('error');
-          errorMsg += '<strong>Пароли не совпадают</strong>';
-          this.showToast('Ошибка', 'Пароли не совпадают!', 'danger');
+          errorMsg += 'Пароли не совпадают<br/><br/>';
+          // this.showToast('Ошибка', 'Пароли не совпадают!', 'danger');
         }
         if (this.password.newPass.length < 5) {
-          errorMsg += 'Длина пароля должна быть не меньше 5 символов';
-          this.showToast('Ошибка', 'Длина пароля должна быть не меньше 5 символов!', 'danger');
+          errorMsg += 'Длина пароля должна быть не меньше 5 символов<br/><br/>';
+          // this.showToast('Ошибка', 'Длина пароля должна быть не меньше 5 символов!', 'danger');
         }
         this.createMessageBoxError(errorMsg);
       }
@@ -392,7 +392,7 @@ export default {
         centered: true,
         cancelTitle: 'Нет',
         okTitle: 'OK',
-        size: 'md',
+        size: 'xl',
       });
     },
   },

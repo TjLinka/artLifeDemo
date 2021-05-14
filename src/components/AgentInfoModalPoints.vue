@@ -33,7 +33,6 @@
           <input type="text" name="sum" id="sum"
           required v-model="sum" step="0.1"
           v-currency="{
-
             currency: null,
             valueAsInteger: false,
             distractionFree: false,
@@ -163,11 +162,11 @@ export default {
     },
     async send() {
       if (this.sum !== null && this.sum !== '') {
-        if (this.sum <= this.reserve) {
+        if (this.sum.replace(/,/, '.') <= this.reserve) {
           await backApi
             .post('/agent/send_points', {
               agent_to: this.selectedUser.agent_id,
-              amount: parseFloat(this.sum),
+              amount: this.sum.replace(/,/, '.'),
               comm: this.comm,
             })
             .then(() => {
@@ -179,13 +178,6 @@ export default {
           backApi.get('/agent/profile').then((Response) => {
             this.transfertInfo = Response.data;
           });
-          // this.$emit('enlarge-text');
-        } else {
-          this.showToast(
-            'Ошибка операции!',
-            'Введённая вами сумма превышает ваш резерв!',
-            'danger',
-          );
         }
       }
     },

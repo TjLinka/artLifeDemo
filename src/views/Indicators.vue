@@ -275,15 +275,30 @@ export default {
     updateData() {
       backApi.post('/agent/points-rule', {
         points_rule: this.points_rule,
-        autoship: this.autoship === '' ? null : this.autoship,
+        autoship: this.autoship === '' ? null : this.autoship.replace(/,/, '.'),
       }).then(() => {
-        this.showToast('Успех!', 'Операция выполнена успешно!', 'success');
-      }).catch((error) => {
-        this.showToast('Ошибка', error.response.data.detail, 'danger');
+        this.createMessageBoxError('Операция выполнена успешно');
+      }).catch(() => {
+        this.createMessageBoxError('Что-то пошло не так');
       });
     },
     closeModal() {
       this.searchActive = !this.searchActive;
+    },
+    createMessageBoxError(messageText) {
+      const h = this.$createElement;
+      // More complex structure
+      const messageVNode = h('div', { class: ['foobar'] }, [
+        h('h5', { class: ['text-center'] }, [messageText]),
+      ]);
+      // We must pass the generated VNodes as arrays
+      return this.$bvModal.msgBoxOk([messageVNode], {
+        buttonSize: 'xl',
+        centered: true,
+        cancelTitle: 'Нет',
+        okTitle: 'OK',
+        size: 'md',
+      });
     },
   },
   computed: {

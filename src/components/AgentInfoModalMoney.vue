@@ -32,7 +32,6 @@
         <div class="col-md-6 mt-4 custom_input">
               <input type="text" name="sum" id="sum" required v-model="sum" step="0.1"
               v-currency="{
-
                 currency: null,
                 valueAsInteger: false,
                 distractionFree: false,
@@ -158,11 +157,13 @@ export default {
     },
     async send() {
       if (this.sum !== null && this.sum !== '') {
-        if (this.sum <= this.balance) {
+        console.log('1');
+        if (this.sum.replace(/,/, '.') <= this.balance) {
+          console.log('2');
           await backApi
             .post('/agent/send_money', {
               agent_to: this.state.replace(/\D/g, ''),
-              amount: parseFloat(this.sum),
+              amount: this.sum.replace(/,/, '.'),
               comm: this.comm,
             })
             .then(() => {
@@ -174,9 +175,6 @@ export default {
           backApi.get('/agent/profile').then((Response) => {
             this.transfertInfo = Response.data;
           });
-          // this.$emit('enlarge-text');
-        } else {
-          this.showToast('Ошибка операции!', 'Введённая вами сумма превышает ваш баланс!', 'danger');
         }
       }
     },
