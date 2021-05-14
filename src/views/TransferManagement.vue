@@ -168,6 +168,29 @@
             </b-form-checkbox>
           </div>
         </div>
+        <div class="row">
+          <div class="col">
+            <b-form-group label="Фильтр по ЛО">
+              <b-form-radio
+                v-model="lo_type"
+                name="some-radios-2"
+                value="0"
+                class="radio mr-3"
+                >Все</b-form-radio
+              >
+              <b-form-radio
+                v-model="lo_type"
+                name="some-radios-2"
+                value="1"
+                class="radio mr-3"
+                >Больше 0</b-form-radio
+              >
+              <b-form-radio v-model="lo_type" name="some-radios-2" value="2" class="radio"
+                >Меньше 0</b-form-radio
+              >
+            </b-form-group>
+          </div>
+        </div>
         <div class="row mt-md-5">
           <div class="col-md-6 custom_input">
             <input type="text" name="userId" id="userId" required v-model="filterData.agent_id"/>
@@ -332,6 +355,7 @@ export default {
       showTrans: false,
       loading: true,
       tree_type: 2,
+      lo_type: 1,
       tags: [],
       searchActive: false,
       filterData: {
@@ -404,6 +428,12 @@ export default {
           key: 'noact',
           label: 'Не активность',
           formater: (item) => item.noact,
+          sortable: true,
+        },
+        {
+          key: 'percent',
+          label: 'Выполнение пропорциональности,%',
+          // formater: (item) => item.noact,
           sortable: true,
         },
         {
