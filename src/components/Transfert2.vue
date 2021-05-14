@@ -27,7 +27,7 @@
               required step="0.1"
               v-model="sum"
               v-currency="{
-                locale: 'de-DE',
+
                 currency: null,
                 valueAsInteger: false,
                 distractionFree: false,

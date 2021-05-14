@@ -331,22 +331,28 @@ export default {
             this.password = {};
           })
           .catch((error) => {
-            this.showToast('Ошибка', error.response.data.detail, 'danger');
+            this.createMessageBoxError(error.response.data.detail);
+            // this.showToast('Ошибка', error.response.data.detail, 'danger');
           });
       }
       if (this.password.newPass !== this.password.newPassRepeat || this.password.currentPass === '' || this.password.newPass.length < 6) {
+        let errorMsg = '';
         if (this.password.currentPass === '') {
           $(this.$refs.currentPass).addClass('error');
+          errorMsg += 'Введите Текущий пароль';
           this.showToast('Ошибка', 'Введите Текущий пароль!', 'danger');
         }
         if (this.password.newPass !== this.password.newPassRepeat) {
           $(this.$refs.newPass).addClass('error');
           $(this.$refs.newPassRepeat).addClass('error');
+          errorMsg += '<strong>Пароли не совпадают</strong>';
           this.showToast('Ошибка', 'Пароли не совпадают!', 'danger');
         }
         if (this.password.newPass.length < 5) {
+          errorMsg += 'Длина пароля должна быть не меньше 5 символов';
           this.showToast('Ошибка', 'Длина пароля должна быть не меньше 5 символов!', 'danger');
         }
+        this.createMessageBoxError(errorMsg);
       }
     },
     back() {
@@ -371,13 +377,14 @@ export default {
       backApi.get('/agent/profile').then((Response) => {
         this.userInfo = Response.data;
       });
-      this.$bvToast.show('my-toast-success');
+      // this.$bvToast.show('my-toast-success');
+      this.createMessageBoxError('Данные успешно изменены!');
     },
     createMessageBoxError(messageText) {
       const h = this.$createElement;
       // More complex structure
       const messageVNode = h('div', { class: ['foobar'] }, [
-        h('h5', { class: ['text-center'] }, [messageText]),
+        h('h5', { class: ['text-center'], domProps: { innerHTML: messageText } }),
       ]);
       // We must pass the generated VNodes as arrays
       return this.$bvModal.msgBoxOk([messageVNode], {

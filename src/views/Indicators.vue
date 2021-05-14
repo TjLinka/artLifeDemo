@@ -20,7 +20,7 @@
             <span v-else>
             </span>
             <br>
-            Статус предыдущего периода:
+            Статус <strong>предыдущего</strong> периода:
             <span :style="`color: ${periodStatus}`">
               {{ currentPeriodTop.prev_status }}
             </span>
@@ -131,7 +131,6 @@
               <div v-if="points_rule === 0">
               <input type="text" name="autoship" id="autoship" required v-model="autoship"
               v-currency="{
-                locale: 'de-DE',
                 currency: null,
                 valueAsInteger: false,
                 distractionFree: false,

@@ -270,7 +270,7 @@
       </footer>
       <footer class="container-fluid cust_modal" v-if="showTrans">
         <div>
-          <Transfert v-on:enlarge-text="showTrans = false" :id="id" />
+          <Transfert2 v-on:enlarge-text="showTrans = false" :id="id" />
         </div>
       </footer>
   <b-modal v-model="show"
@@ -315,11 +315,11 @@
 <script>
 import $ from 'jquery';
 import backApi from '../assets/backApi';
-import Transfert from '../components/Transfert.vue';
+import Transfert2 from '../components/Transfert2.vue';
 
 export default {
   name: 'TransferManagement',
-  components: { Transfert },
+  components: { Transfert2 },
   data() {
     return {
       show: false,
