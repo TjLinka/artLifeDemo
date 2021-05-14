@@ -174,7 +174,7 @@
               <b-form-radio
                 v-model="lo_type"
                 name="some-radios-2"
-                value="0"
+                :value="null"
                 class="radio mr-3"
                 >Все</b-form-radio
               >
@@ -185,7 +185,7 @@
                 class="radio mr-3"
                 >Больше 0</b-form-radio
               >
-              <b-form-radio v-model="lo_type" name="some-radios-2" value="2" class="radio"
+              <b-form-radio v-model="lo_type" name="some-radios-2" value="-1" class="radio"
                 >Меньше 0</b-form-radio
               >
             </b-form-group>
@@ -355,7 +355,7 @@ export default {
       showTrans: false,
       loading: true,
       tree_type: 2,
-      lo_type: 1,
+      lo_type: null,
       tags: [],
       searchActive: false,
       filterData: {
@@ -431,7 +431,7 @@ export default {
           sortable: true,
         },
         {
-          key: 'percent',
+          key: 'proportional',
           label: 'Выполнение пропорциональности,%',
           // formater: (item) => item.noact,
           sortable: true,
@@ -766,6 +766,7 @@ export default {
         });
     },
     updateData() {
+      console.log(this.lo_type);
       this.loading = true;
       const rankBeg = this.rankList.find((i) => i.rankname === this.filterData.rank_beg)
         ? this.rankList.find((i) => i.rankname === this.filterData.rank_beg).i_rank : null;
@@ -798,6 +799,7 @@ export default {
           i_status_calc: statusCalc,
           i_rank_end: rankEnd,
           i_status_end: statusEnd,
+          i_lo: this.lo_type,
         },
       };
       const treeNameTranslate = {

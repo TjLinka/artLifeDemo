@@ -352,7 +352,9 @@ export default {
           errorMsg += 'Длина пароля должна быть не меньше 5 символов<br/><br/>';
           // this.showToast('Ошибка', 'Длина пароля должна быть не меньше 5 символов!', 'danger');
         }
-        this.createMessageBoxError(errorMsg);
+        if (errorMsg !== '') {
+          this.createMessageBoxError(errorMsg);
+        }
       }
     },
     back() {

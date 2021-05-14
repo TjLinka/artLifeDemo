@@ -53,7 +53,7 @@
       </div>
       <div class="auth__page__help">
         <p>Забыли пароль? <router-link to="/remind-password"
-        class="remind_link">Напомнить</router-link> на email</p>
+        class="remind_link">Напомнить</router-link></p>
       </div>
     </div>
   </div>

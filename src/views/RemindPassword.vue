@@ -3,29 +3,73 @@
     <h2 class="page__title">
       Восстановить пароль
     </h2>
-    <div class="row mt-4">
-      <div class="col-md-3 custom_input">
+      <div class="row">
+        <div class="col mt-3 switch">
+        <div class="auth_switch">
+                    <el-switch
+        style="display: block"
+        v-model="value2"
+        active-text="ТЕЛЕФОН"
+        inactive-text="EMAIL">
+      </el-switch>
+        </div>
+        </div>
+      </div>
+    <div class="row mt-4" v-show='!smsCodeCome'>
+      <div class="col-md-3 custom_input" v-show="!value2">
         <input type="text" name="email" id="email" required v-model="email" />
         <label for="email">Email</label>
-        <span class="clear_icon" @click="clearInput()"></span>
+        <span class="clear_icon" @click="clearEmail()"></span>
+      </div>
+      <div class="col-md-3 custom_input" v-show="value2">
+        <input type="text" name="phone" id="phone" required v-model="phone" />
+        <label for="phone">Телефон</label>
+        <span class="clear_icon" @click="clearPhone()"></span>
       </div>
     </div>
-    <div class="row mt-4">
+    <div class="row mt-4" v-show='smsCodeCome'>
+      <div class="col-md-3 custom_input">
+        <input type="text" name="smsCode" id="smsCode" required v-model="smsCode" />
+        <label for="smsCode">Код</label>
+        <span class="clear_icon" @click="clearSmsCode()"></span>
+      </div>
+      <div class="col-md-3 custom_input">
+        <input type="text" name="newPass" id="newPass" required v-model="newPass" />
+        <label for="newPass">Новый пароль</label>
+        <span class="clear_icon" @click="clearNewPass()"></span>
+      </div>
+    </div>
+    <div class="row mt-4" v-show='!smsCodeCome'>
       <div class="col-md-6 ">
-          <button class="rempass" @click="remindPass">Восстановить пароль</button>
+          <button class="rempass" @click="remindPassEmail"
+          v-show="!value2">Восстановить пароль</button>
+          <button class="rempass" @click="remindPassPhone" v-show="value2">
+            Восстановить пароль</button>
+      </div>
+    </div>
+    <div class="row mt-4" v-show='smsCodeCome'>
+      <div class="col-md-6 ">
+          <button class="rempass" @click="saveNewPass">Изменить пароль</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import md5 from 'md5';
 import backApi from '../assets/backApi';
 
 export default {
   name: 'RemindPassword',
   data() {
     return {
+      id_hash: '',
+      value2: false,
+      smsCodeCome: false,
+      smsCode: '',
+      newPass: '',
       email: '',
+      phone: '',
     };
   },
   methods: {
@@ -53,7 +97,7 @@ export default {
         variant: status,
       });
     },
-    remindPass() {
+    remindPassEmail() {
       if (this.email !== '') {
         const data = {
           params: {
@@ -68,14 +112,59 @@ export default {
         });
       }
     },
-    clearInput() {
+    remindPassPhone() {
+      if (this.phone !== '') {
+        const data = {
+          phone: Number(this.phone),
+        };
+        backApi.post('/agent/restore-request', data).then((Response) => {
+          this.showToast('Восстановление пароля', 'На ваш телефон придёт смс с кодом!', 'success');
+          this.smsCodeCome = true;
+          this.id_hash = Response.data.id;
+        }).catch(() => {
+          this.showToast('Восстановление пароля', 'Телефон указан не верно', 'danger');
+        });
+      }
+    },
+    saveNewPass() {
+      const data = {
+        id: this.id_hash,
+        code: Number(this.smsCode),
+        password: md5(this.newPass),
+      };
+      backApi.post('/agent/restore-submit', data)
+        .then(() => {
+          this.$router.push('/login');
+        })
+        .catch(() => {
+          console.log('Ошибка');
+        });
+    },
+    clearEmail() {
       this.email = '';
+    },
+    clearPhone() {
+      this.phone = '';
+    },
+    clearSmsCode() {
+      this.smsCode = '';
+    },
+    clearNewPass() {
+      this.newPass = '';
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.custom_input{
+  & input{
+    padding-left: 0 !important;
+  }
+  & label{
+    left: 14px !important;
+  }
+}
 .rempass{
     color: #32AAA7;
     padding: 2px 50px;

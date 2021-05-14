@@ -104,10 +104,13 @@ export default {
       }
     },
   },
-  clearSum() {
-    this.sum = null;
-  },
   methods: {
+    clearComm() {
+      this.comm = '';
+    },
+    clearSum() {
+      this.sum = '';
+    },
     // eslint-disable-next-line consistent-return
     checkInput(e) {
       console.log();
@@ -162,11 +165,11 @@ export default {
     },
     async send() {
       if (this.sum !== null && this.sum !== '') {
-        if (this.sum.replace(/,/, '.') <= this.reserve) {
+        if (Number(this.sum.replace(/,/, '.').replace(/\s/g, '')) <= this.reserve) {
           await backApi
             .post('/agent/send_points', {
               agent_to: this.selectedUser.agent_id,
-              amount: this.sum.replace(/,/, '.'),
+              amount: Number(this.sum.replace(/,/, '.').replace(/\s/g, '')),
               comm: this.comm,
             })
             .then(() => {
@@ -175,9 +178,12 @@ export default {
             .catch(() => {
               this.createMessageBoxError('Что-то пошло не так');
             });
-          backApi.get('/agent/profile').then((Response) => {
+          backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then((Response) => {
             this.transfertInfo = Response.data;
           });
+        } else {
+          // console.log(Number(this.sum.replace(/,/, '.').replace(/\s/g, '')), this.reserve);
+          this.createMessageBoxError('Превышен лемит');
         }
       }
     },

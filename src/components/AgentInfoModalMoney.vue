@@ -158,12 +158,12 @@ export default {
     async send() {
       if (this.sum !== null && this.sum !== '') {
         console.log('1');
-        if (this.sum.replace(/,/, '.') <= this.balance) {
+        if (Number(this.sum.replace(/,/, '.').replace(/\s/g, '')) <= this.balance) {
           console.log('2');
           await backApi
             .post('/agent/send_money', {
               agent_to: this.state.replace(/\D/g, ''),
-              amount: this.sum.replace(/,/, '.'),
+              amount: Number(this.sum.replace(/,/, '.').replace(/\s/g, '')),
               comm: this.comm,
             })
             .then(() => {
@@ -172,9 +172,8 @@ export default {
             .catch(() => {
               this.createMessageBoxError('Что-то пошло не так');
             });
-          backApi.get('/agent/profile').then((Response) => {
-            this.transfertInfo = Response.data;
-          });
+        } else {
+          this.createMessageBoxError('Превышен лемит');
         }
       }
     },

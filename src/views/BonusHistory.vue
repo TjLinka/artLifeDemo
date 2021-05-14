@@ -83,15 +83,22 @@ export default {
           },
         },
         {
-          key: 'month_point',
+          key: 'monthly_bonus',
           label: 'Ежемесячные бонусы',
+          formatter(v) {
+            if (v !== null) {
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
+            }
+            return null;
+          },
         },
         {
           key: 'autodom',
           label: 'Автодом',
         },
         {
-          key: 'vac',
+          key: 'otpusk',
           label: 'Отпускной фонд',
         },
         {
@@ -157,7 +164,7 @@ export default {
       mainFields: [
         'Наименование',
         {
-          key: 'sum',
+          key: 'bonus',
           label: 'Бонус',
           formatter(v) {
             if (v !== null) {
@@ -168,11 +175,11 @@ export default {
           },
         },
         {
-          key: 'total_bonus',
+          key: 'accumulated',
           label: 'Итого накоплено бонусов',
         },
         {
-          key: 'count_month',
+          key: 'acc_month',
           label: 'Месяцев накопления',
         },
       ],
@@ -240,7 +247,7 @@ export default {
       });
       this.periodIndex = this.periods.length - 1;
       backApi
-        .get('agent/bonus-detail', { params: { comdte: this.currentPeriod } })
+        .get('agent/bonus-detail-new', { params: { comdte: this.currentPeriod } })
         .then((response) => {
           this.bonus = response.data.entries;
           // eslint-disable-next-line no-param-reassign
@@ -267,7 +274,7 @@ export default {
   },
   watch: {
     currentPeriod(v) {
-      backApi.get('agent/bonus-detail', { params: { comdte: v } }).then((response) => {
+      backApi.get('agent/bonus-detail-new', { params: { comdte: v } }).then((response) => {
         this.bonus = response.data.entries;
         // eslint-disable-next-line no-param-reassign
         response.data.header.period = this.currentPeriod;
