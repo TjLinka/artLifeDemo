@@ -426,13 +426,13 @@ export default {
         },
         {
           key: 'noact',
-          label: 'Не активность',
+          label: 'Не активн.',
           formater: (item) => item.noact,
           sortable: true,
         },
         {
           key: 'proportional',
-          label: 'Выполнение пропорциональности,%',
+          label: 'Выполнение Пропорц. %',
           // formater: (item) => item.noact,
           sortable: true,
         },

@@ -183,7 +183,7 @@ export default {
           });
         } else {
           // console.log(Number(this.sum.replace(/,/, '.').replace(/\s/g, '')), this.reserve);
-          this.createMessageBoxError('Превышен лемит');
+          this.createMessageBoxError('Вы не можете перевести больше чем у Вас есть');
         }
       }
     },

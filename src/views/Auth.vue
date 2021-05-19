@@ -31,9 +31,9 @@
           </div>
           <div class="custom_input login_input"  v-show="value2">
             <input type="text"
-            v-mask="'+7(###)-###-##-##'"
+            v-mask="'+###############'"
             name="login" id="login" required v-model="log.login_phone" />
-            <label for="login">Телефон</label>
+            <label for="login">Телефон в международном формате</label>
             <span class="clear_icon" @click="clearInput('login_phone')"></span>
           </div>
           <div  class="custom_input password_input">

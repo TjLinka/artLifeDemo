@@ -21,8 +21,8 @@
         v-on:next-period="nextPeriod" class="period_picker"/>
         </div>
       </div>
-      <div class="row edit">
-        <div class="col-xl-6 mt-4 custom_input">
+      <b-row align-v="end" class="row edit">
+        <div class="col-xl mt-4 custom_input">
               <input type="text" name="sum" id="sum"
               required step="0.1"
               v-model="sum"
@@ -38,17 +38,22 @@
               <label for="sum">Сумма</label>
               <span class="clear_icon" @click="clearSum()"></span>
         </div>
-          <div class="col-xl-6 trans_btns">
-            <button @click="lo2reserve"
-            :disabled="isDisabled"
-            :class="isDisabled ? 'disabled' : ''">
-            Перевести в резерв</button>
-            <button @click="reserve2lo"
-            :disabled="isDisabled"
-            :class="isDisabled ? 'disabled' : ''"
-            >Перевести в трансферт</button>
-          </div>
-      </div>
+        <div class="col custom_input">
+          <input type="text" name="comm" id="comm" v-model="comm" required/>
+          <label for="comm">Комментарий</label>
+          <span class="clear_icon" @click="clearComm()"></span>
+        </div>
+        <div class="col-xl trans_btns">
+          <button @click="lo2reserve"
+          :disabled="isDisabled"
+          :class="isDisabled ? 'disabled' : ''">
+          Перевести в резерв</button>
+          <button @click="reserve2lo"
+          :disabled="isDisabled"
+          :class="isDisabled ? 'disabled' : ''"
+          >Перевести в трансферт</button>
+        </div>
+      </b-row>
     </div>
   </div>
 </template>
@@ -70,6 +75,7 @@ export default {
       transfertInfo: {},
       periods: [],
       periodIndex: 0,
+      comm: null,
       sum: null,
       another_agent_id: null,
     };
@@ -114,6 +120,9 @@ export default {
     },
     clearSum() {
       this.sum = null;
+    },
+    clearComm() {
+      this.comm = '';
     },
     back() {
       const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');

@@ -173,7 +173,7 @@ export default {
               this.createMessageBoxError('Что-то пошло не так');
             });
         } else {
-          this.createMessageBoxError('Превышен лемит');
+          this.createMessageBoxError('Вы не можете перевести больше чем у Вас есть');
         }
       }
     },
