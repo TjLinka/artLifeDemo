@@ -79,8 +79,9 @@
         </div>
         <div class="col-md-6 custom_input">
           <input type="email" name="email" id="email" required v-model="newUser.email" />
-          <label for="email">Е-mail</label>
-          <span class="clear_icon" @click="clearInput('email')"></span>
+          <label for="email" :class="this.newUser.email ? 'up' : ''">Е-mail</label>
+          <span :class="`clear_icon ${this.newUser.email ? 'd-block' : ''}`"
+          @click="clearInput('email')"></span>
         </div>
       </div>
       <div class="row mt-md-5">
@@ -157,10 +158,11 @@ export default {
         .addClass('active');
     },
     registr() {
+      const reMail = /^[\w-.]+@[\w-]+\.[a-z]{2,4}$/i;
       if (
         this.newUser.fio !== '' && this.country !== ''
         && this.newUser.city !== '' && this.newUser.bthdte !== ''
-        && this.phone !== '' && this.newUser.email !== ''
+        && this.phone !== '' && this.newUser.email !== '' && reMail.test(this.newUser.email)
       ) {
         const data = {
           access_level: this.newUser.role,
