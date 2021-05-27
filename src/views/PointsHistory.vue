@@ -69,7 +69,7 @@
           </template>
       </b-table>
       <h2 class="licevoischet__page__summ">
-        <span class="mr-4">НА СЧЁТ = {{ summIncome | localInt }}        </span>
+        <span class="mr-4">НА СЧеТ = {{ summIncome | localInt }}        </span>
         <span class="mr-4">СО СЧЕТА = {{ summOutcome | localInt }}        </span>
         <span class="mr-4">ИЗМЕНЕНИЯ  = {{ changes | localInt }}         </span>
         </h2>
@@ -227,7 +227,7 @@ export default {
         },
         {
           key: 'income',
-          label: 'На счёт',
+          label: 'На счет',
           sortable: true,
           thStyle: {
             minWidth: '100px',
@@ -235,7 +235,7 @@ export default {
         },
         {
           key: 'outcome',
-          label: 'Со счёта',
+          label: 'Со счета',
           sortable: true,
           thStyle: {
             minWidth: '100px',

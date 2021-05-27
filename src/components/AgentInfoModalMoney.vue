@@ -22,7 +22,7 @@
           <el-autocomplete
             v-model="state"
             :fetch-suggestions="querySearchAsync"
-            placeholder="Партнёр получатель"
+            placeholder="Партнер получатель"
             clearable
             @clear="dd"
             @change="gg"

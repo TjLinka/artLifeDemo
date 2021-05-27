@@ -118,7 +118,7 @@ export default {
           phone: Number(this.phone),
         };
         backApi.post('/agent/restore-request', data).then((Response) => {
-          this.showToast('Восстановление пароля', 'На ваш телефон придёт смс с кодом!', 'success');
+          this.showToast('Восстановление пароля', 'На ваш телефон придет смс с кодом!', 'success');
           this.smsCodeCome = true;
           this.id_hash = Response.data.id;
         }).catch(() => {

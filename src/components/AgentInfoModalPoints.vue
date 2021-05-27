@@ -2,7 +2,7 @@
   <div class="licevoischet__page">
     <div class="container-md">
       <h4 class="mt-4 modal_title">
-        Перевести баллы между партнёрами
+        Перевести баллы между партнерами
         <span class="close_btn" v-on:click="$emit('enlarge-text')"></span>
       </h4>
       <div class="row transfert">
@@ -18,11 +18,11 @@
       <h3 class="perevod">Перевод количества баллов</h3>
       <div class="row edit end">
         <div class="col-md-6 mt-4">
-          <span v-if="state" class="custom_label">Партнёр получатель</span>
+          <span v-if="state" class="custom_label">Партнер получатель</span>
           <el-autocomplete
             v-model="state"
             :fetch-suggestions="querySearchAsync"
-            placeholder="Партнёр получатель"
+            placeholder="Партнер получатель"
             clearable
             @clear="dd"
             @change="gg"

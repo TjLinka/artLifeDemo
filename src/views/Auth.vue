@@ -8,7 +8,7 @@
         Авторизация
       </h1>
       <h4 class="text-center mb-5 error_log" v-if="badLogin">
-        Введён неправильно логин или пароль!
+        Введен неправильно логин или пароль!
       </h4>
       <div class="auth__page__form">
         <div class="row">

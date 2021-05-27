@@ -36,7 +36,7 @@
           <el-autocomplete
             v-model="state"
             :fetch-suggestions="querySearchAsync"
-            placeholder="Партнёр получатель"
+            placeholder="Партнер получатель"
             clearable
             @clear="dd"
             @select="handleSelect"
@@ -132,7 +132,7 @@
       </div>
       <div v-if="searchActive" class="organization__modal container">
         <span @click="searchActive = !searchActive" class="close_btn"></span>
-        <h3 class="mt-4">Поиск партнёра</h3>
+        <h3 class="mt-4">Поиск партнера</h3>
         <div class="row mt-md-5">
           <div class="col-xl-6">
             <b-form-group label="Выбор дерева">
@@ -272,11 +272,11 @@
             v-if="filterData.rank_calc"
             class="custom_label"
             >
-            Расчётный ранг</span>
+            Расчетный ранг</span>
             <el-select
             v-model="filterData.rank_calc"
             clearable
-            placeholder="Расчётный ранг">
+            placeholder="Расчетный ранг">
               <el-option
                 v-for="item in rankList"
                 :key="item.rankname"
@@ -430,12 +430,12 @@ export default {
           formater: (item) => item.noact,
           sortable: true,
         },
-        {
-          key: 'proportional',
-          label: 'Выполнение Пропорц. %',
-          // formater: (item) => item.noact,
-          sortable: true,
-        },
+        // {
+        //   key: 'proportional',
+        //   label: 'Выполнение Пропорц. %',
+        //   // formater: (item) => item.noact,
+        //   sortable: true,
+        // },
         {
           key: 'rank_beg_npp',
           label: 'Ранг на начало',
@@ -872,15 +872,15 @@ export default {
           this.tags.push({ name: `Ранг на конец: ${this.filterData.rank_end}`, key: 'rank_end' });
         }
       }
-      // Рассчётный ранг
+      // Рассчетный ранг
       if (this.filterData.rank_calc !== null
       && this.filterData.rank_calc !== ''
       && this.filterData.rank_calc !== undefined) {
         const tag = this.tags.find((t) => t.key === 'rank_calc');
         if (tag) {
-          tag.name = `Рассчётный ранг: ${this.filterData.rank_calc}`;
+          tag.name = `Рассчетный ранг: ${this.filterData.rank_calc}`;
         } else {
-          this.tags.push({ name: `Рассчётный ранг: ${this.filterData.rank_calc}`, key: 'rank_calc' });
+          this.tags.push({ name: `Рассчетный ранг: ${this.filterData.rank_calc}`, key: 'rank_calc' });
         }
       }
       // Регион

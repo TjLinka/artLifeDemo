@@ -15,7 +15,7 @@
           <el-autocomplete
             v-model="state"
             :fetch-suggestions="querySearchAsync"
-            placeholder="Партнёр получатель"
+            placeholder="Партнер получатель"
             clearable
             @clear="dd"
             @change="gg"
@@ -167,11 +167,11 @@
         </div>
         <div class="row mt-3 edit">
           <div class="col-sm-6 mb-4">
-            <span v-if="state2" class="custom_label">Построить дерево для партнёра</span>
+            <span v-if="state2" class="custom_label">Построить дерево для партнера</span>
           <el-autocomplete
             v-model="state2"
             :fetch-suggestions="querySearchAsync2"
-            placeholder="Построить дерево для партнёра"
+            placeholder="Построить дерево для партнера"
             clearable
             @clear="dd2"
             @change="gg2"
@@ -291,7 +291,7 @@ export default {
       },
       {
         property: 'noact',
-        label: 'Не активность',
+        label: 'Неактивность',
         formater: (item) => item.noact,
       },
       {

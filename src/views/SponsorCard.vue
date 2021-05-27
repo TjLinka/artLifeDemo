@@ -25,7 +25,7 @@
               <p>{{userInfo.id}}</p>
             </div>
             <div class="col-md-6 mt-4">
-              <p>E-mail:</p>
+              <p>Электронная почта:</p>
               <p>{{userInfo.email}}</p>
             </div>
           </div>

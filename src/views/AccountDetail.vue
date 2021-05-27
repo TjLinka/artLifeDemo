@@ -8,10 +8,10 @@
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
-        Детализация лицевого счёта
+        Детализация лицевого счета
         </h2>
       <p>
-        <span class="licshet">Состояние лицевого счёта:
+        <span class="licshet">Состояние лицевого счета:
         <span :class="balance < 0 ? 'red' : ''">{{balance === null ? 0 : balance}} Р.</span></span>
       </p>
       <p class="p-0 m-0 history_title"
@@ -303,7 +303,7 @@ export default {
           responseType: 'blob',
         })
         .then(({ data }) => {
-          const filename = 'Движение по лицевому счёту.xlsx';
+          const filename = 'Движение по лицевому счету.xlsx';
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;
@@ -326,7 +326,7 @@ export default {
           responseType: 'blob',
         })
         .then(({ data }) => {
-          const filename = 'Движение по лицевому счёту.pdf';
+          const filename = 'Движение по лицевому счету.pdf';
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;

@@ -123,7 +123,7 @@ export default {
       fields: [
         {
           key: 'id',
-          label: 'Номер партнёра',
+          label: 'Номер партнера',
           sortable: true,
         },
         {
@@ -142,7 +142,7 @@ export default {
         },
         {
           key: 'rank_calc',
-          label: 'Расчётный ранг',
+          label: 'Расчетный ранг',
         },
         {
           key: 'rank_end',

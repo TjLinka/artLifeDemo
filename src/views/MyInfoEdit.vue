@@ -307,7 +307,7 @@ export default {
         sms_code: this.smsCode,
       })
         .then(() => {
-          this.createMessageBoxError('Ваш номер телефона изменён!');
+          this.createMessageBoxError('Ваш номер телефона изменен!');
           this.smsStatus = false;
         })
         .catch((error) => {
@@ -327,7 +327,7 @@ export default {
         backApi
           .post('/agent/change_password', data)
           .then(() => {
-            this.createMessageBoxError('Ваш пароль успешно изменён!');
+            this.createMessageBoxError('Ваш пароль успешно изменен!');
             this.password = {};
           })
           .catch((error) => {

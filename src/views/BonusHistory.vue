@@ -191,7 +191,7 @@ export default {
         },
         {
           key: 'agent_from',
-          label: 'Номер партнёра',
+          label: 'Номер партнера',
           sortable: true,
         },
         {

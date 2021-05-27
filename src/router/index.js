@@ -192,7 +192,7 @@ router.beforeEach((to, from, next) => {
         path: '/login',
       });
     } else {
-      // Если авторизировался и ещё требуется проверка по Ролям для доступа к странице
+      // Если авторизировался и еще требуется проверка по Ролям для доступа к странице
       const user = JSON.parse(localStorage.getItem('access_token'));
       if (to.matched.some((record) => record.meta.requiresRole)) {
         // Если требуется, смотрим на права доступа

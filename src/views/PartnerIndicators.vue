@@ -267,7 +267,7 @@ export default {
         },
         {
           key: 'noact',
-          label: 'Не активность',
+          label: 'Неактивность',
           sortable: true,
           thStyle: {
             width: '150px',
@@ -283,7 +283,7 @@ export default {
         },
         {
           key: 'rank_calc',
-          label: 'Расчётный ранг',
+          label: 'Расчетный ранг',
           thStyle: {
             minWidth: '120px',
           },

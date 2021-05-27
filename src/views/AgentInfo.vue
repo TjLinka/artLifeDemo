@@ -33,14 +33,14 @@
                 Перевести между лицевыми счетами
               </span>
               <span class="modal_btn" @click="becomePartner" v-if="!transfertAccess">
-                Стать партнёром
+                Стать партнером
               </span>
             </div>
           </div>
           <!-- <div class="row" v-if="transfertAccess && !this.$route.params.id">
             <div class="col">
               <p class="show__transfert p-0" @click="becomePartner">
-                Стать партнёром
+                Стать партнером
               </p>
             </div>
           </div> -->
@@ -187,7 +187,7 @@
           <!-- <div class="row" v-if="transfertAccess">
             <div class="col">
               <p class="show__transfert p-0 mt-5" @click="becomePartner">
-                Стать партнёром
+                Стать партнером
               </p>
             </div>
           </div> -->
@@ -255,7 +255,7 @@
           <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
         </div>
       </template>
-      Вы стали парнёром!
+      Вы стали парнером!
     </b-toast>
     <b-toast id="my-toast-money" variant="warning" solid>
       <template #toast-title>
@@ -375,7 +375,7 @@ export default {
     },
     becomePartner() {
       backApi.post('/agent/become_partner').then(() => {
-        this.showToast('Стать партнёром', 'Заявка на становление дистрибьютором отправлена!', 'success');
+        this.showToast('Стать партнером', 'Заявка на становление дистрибьютором отправлена!', 'success');
       });
     },
     showTransfModal() {
@@ -417,7 +417,7 @@ export default {
     },
   },
   async beforeRouteEnter(to, from, next) {
-    // Загрузка данных, если перешли на чужую карточку партнёра
+    // Загрузка данных, если перешли на чужую карточку партнера
     if (to.params.id !== undefined) {
       const response = await backApi.get('/agent/profile/child', {
         params: {
@@ -442,7 +442,7 @@ export default {
         });
       }
     } else {
-      // Загрузка данных, если перешли на свою карточку партнёра
+      // Загрузка данных, если перешли на свою карточку партнера
       const response = await backApi.get('/agent/profile');
       // Если 200, то грузим информацию о трансферте
       if (response.status === 200) {
@@ -467,7 +467,7 @@ export default {
     }
   },
   async beforeRouteUpdate(to, from, next) {
-    // Загрузка данных, если перешли на чужую карточку партнёра
+    // Загрузка данных, если перешли на чужую карточку партнера
     if (to.params.id) {
       const response = await backApi.get('/agent/profile/child', {
         params: {
@@ -492,7 +492,7 @@ export default {
         });
       }
     } else {
-      // Загрузка данных, если перешли на свою карточку партнёра
+      // Загрузка данных, если перешли на свою карточку партнера
       const response = await backApi.get('/agent/profile');
       // Если 200, то грузим информацию о трансферте
       if (response.status === 200) {
