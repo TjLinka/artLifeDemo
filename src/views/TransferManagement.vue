@@ -186,7 +186,7 @@
                 >Больше 0</b-form-radio
               >
               <b-form-radio v-model="lo_type" name="some-radios-2" value="-1" class="radio"
-                >Меньше 0</b-form-radio
+                >Нулевые</b-form-radio
               >
             </b-form-group>
           </div>
