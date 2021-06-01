@@ -22,8 +22,10 @@
         <span class="clear_icon" @click="clearEmail()"></span>
       </div>
       <div class="col-md-3 custom_input" v-show="value2">
-        <input type="text" name="phone" id="phone" required v-model="phone" />
-        <label for="phone">Телефон</label>
+        <input type="text" name="phone" id="phone"
+        v-mask="'+###############'"
+        required v-model="phone" />
+        <label for="phone">Телефон в международном формате</label>
         <span class="clear_icon" @click="clearPhone()"></span>
       </div>
     </div>

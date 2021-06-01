@@ -183,11 +183,11 @@
                 name="some-radios-2"
                 value="1"
                 class="radio mr-3"
-                >Больше 0</b-form-radio
+                > > 0</b-form-radio
               >
-              <b-form-radio v-model="lo_type" name="some-radios-2" value="-1" class="radio"
-                >Нулевые</b-form-radio
-              >
+              <b-form-radio v-model="lo_type" name="some-radios-2" value="-1" class="radio">
+                {{lower}}
+              </b-form-radio>
             </b-form-group>
           </div>
         </div>
@@ -345,6 +345,7 @@ export default {
   components: { Transfert2 },
   data() {
     return {
+      lower: '< либо = 0',
       show: false,
       state: '',
       links: [],
@@ -430,12 +431,12 @@ export default {
           formater: (item) => item.noact,
           sortable: true,
         },
-        // {
-        //   key: 'proportional',
-        //   label: 'Выполнение Пропорц. %',
-        //   // formater: (item) => item.noact,
-        //   sortable: true,
-        // },
+        {
+          key: 'proportional',
+          label: 'Выполнение Пропорц. %',
+          formater: (item) => item.noact,
+          sortable: true,
+        },
         {
           key: 'rank_beg_npp',
           label: 'Ранг на начало',
