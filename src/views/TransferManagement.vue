@@ -16,21 +16,6 @@
         </p>
         Управление трансфертами структуры
       </h2>
-      <!-- <h2>История организации</h2> -->
-      <!-- <div class="row">
-        <div class="col-xl-6 mt-4">
-          <button
-          :class="`update ${transAccess ? 'disabled' : ''}`"
-          @click="showTrans = !showTrans"
-          :disabled="transAccess"
-          >Трансферт</button>
-          <br class="mobile_br">
-          <p class="exp_print">
-            <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
-            <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
-          </p>
-        </div>
-      </div> -->
       <div class="row mb-4">
         <div class="col-md-6 uptran">
           <el-autocomplete
@@ -63,13 +48,33 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-xl-6 mt-4">
+        <div class="col mt-4">
           <button
           :class="`update ${transAccess ? 'disabled' : ''}`"
           @click="showTrans = !showTrans"
           :disabled="transAccess"
           >Трансферт</button>
-          <br class="mobile_br">
+          <button
+          v-show="!massTranseftEdit"
+          :class="`update`"
+          @click="massTranseftAction"
+          >Массовый трансферт</button>
+          <button
+          v-show="massTranseftEdit"
+          :class="`update ${!canMultiTrans ? 'disabled' : ''}`"
+          @click="makeAllTransfer"
+          :disabled="!canMultiTrans"
+          >Применить</button>
+          <button
+          v-show="massTranseftEdit"
+          :class="`update`"
+          @click="cancelTransfer"
+          >Отмена</button>
+          <!-- <br class="mobile_br"> -->
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
           <p class="exp_print">
             <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
             <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
@@ -118,6 +123,22 @@
           </template>
           <template v-slot:cell(rank_calc_npp)="row">
             {{row.item.rank_calc}}
+          </template>
+          <template v-slot:cell(trans)="row">
+          <div class="custom_input" v-show="row.item.is_can_transfer">
+            <input type="text"
+            :data-userid="row.item.id"
+            :ref="`user${row.item.id}`"
+            :name="`trans${row.item.id}`"
+            :id="`trans${row.item.id}`"
+            :value="row.item.transfer"
+            :class="row.item.transfer > (row.item.lo + row.item.reserve) ? 'error' : ''"
+            required
+            @input="transferEdit(row.item.id)"
+            />
+            <label :for="`trans${row.item.id}`">Трансферт</label>
+            <span class="clear_icon" @click="clearTranfer($event, row.item.id)"></span>
+          </div>
           </template>
         </b-table>
       </div>
@@ -336,6 +357,7 @@
 </template>
 
 <script>
+/* eslint-disable no-param-reassign */
 import $ from 'jquery';
 import backApi from '../assets/backApi';
 import Transfert2 from '../components/Transfert2.vue';
@@ -345,6 +367,9 @@ export default {
   components: { Transfert2 },
   data() {
     return {
+      transMass: [],
+      entriesCache: new Map(),
+      massTranseftEdit: false,
       lower: '< либо = 0',
       show: false,
       state: '',
@@ -372,6 +397,19 @@ export default {
           formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
         },
         {
+          key: 'reserve',
+          label: 'Резерв',
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            return formatter.format(v);
+          },
+          sortable: true,
+        },
+        // {
+        //   key: 'trans',
+        //   label: 'Трансферт',
+        // },
+        {
           key: 'lo',
           label: 'ЛО',
           formatter: (v) => {
@@ -392,15 +430,6 @@ export default {
         {
           key: 'ngo',
           label: 'НГО',
-          formatter: (v) => {
-            const formatter = new Intl.NumberFormat('ru');
-            return formatter.format(v);
-          },
-          sortable: true,
-        },
-        {
-          key: 'reserve',
-          label: 'Резерв',
           formatter: (v) => {
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(v);
@@ -501,6 +530,12 @@ export default {
           with_terminated: 1,
         },
       }).then((Response) => {
+        Response.data.entries.forEach((r) => {
+          r.transfer = r.lo;
+          if (r.is_can_transfer) {
+            this.entriesCache.set(r, r.transfer);
+          }
+        });
         this.entries = Response.data.entries;
         this.loading = false;
       });
@@ -522,6 +557,15 @@ export default {
             with_terminated: 1,
           },
         }).then((Response2) => {
+          // eslint-disable-next-line no-return-assign
+          Response2.data.entries.forEach((r) => {
+            r.transfer = r.lo;
+            if (r.is_can_transfer) {
+              this.entriesCache.set(r, r.transfer);
+            }
+          });
+          // Response2.data.entries.forEach((r) => {
+          // });
           this.entries = Response2.data.entries;
           this.loading = false;
         });
@@ -536,6 +580,406 @@ export default {
     }
   },
   methods: {
+    clearTranfer(evt, id) {
+      this.entries.find((e) => e.id === id).transfer = this.entries.find((e) => e.id === id).lo;
+      this.transMass = this.transMass.filter((u) => u.id !== id);
+      this.$refs[`user${id}`].classList.remove('changed');
+      this.$refs[`user${id}`].classList.remove('error');
+      evt.stopPropagation();
+    },
+    massTranseftAction() {
+      this.massTranseftEdit = true;
+      this.fields = [
+        {
+          key: 'id',
+          label: 'P/номер / Ранг / ФИО',
+          formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
+        },
+        {
+          key: 'reserve',
+          label: 'Резерв',
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            return formatter.format(v);
+          },
+          sortable: true,
+        },
+        {
+          key: 'trans',
+          label: 'Трансферт',
+        },
+        {
+          key: 'lo',
+          label: 'ЛО',
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            return formatter.format(v);
+          },
+          sortable: true,
+        },
+        {
+          key: 'go',
+          label: 'ГО',
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            return formatter.format(v);
+          },
+          sortable: true,
+        },
+        {
+          key: 'ngo',
+          label: 'НГО',
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            return formatter.format(v);
+          },
+          sortable: true,
+        },
+        {
+          key: 'oo',
+          label: 'ОО',
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            return formatter.format(v);
+          },
+          sortable: true,
+        },
+        {
+          key: 'ko',
+          label: 'КО',
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            return formatter.format(v);
+          },
+          sortable: true,
+        },
+        {
+          key: 'noact',
+          label: 'Не активн.',
+          formater: (item) => item.noact,
+          sortable: true,
+        },
+        {
+          key: 'proportional',
+          label: 'Выполнение Пропорц. %',
+          formater: (item) => item.noact,
+          sortable: true,
+        },
+        {
+          key: 'rank_beg_npp',
+          label: 'Ранг на начало',
+          formater: (item) => item.rank_beg,
+          sortable: true,
+        },
+        {
+          key: 'rank_calc_npp',
+          label: 'Расчетный ранг',
+          formater: (item) => item.rank_calc,
+          sortable: true,
+        },
+        {
+          key: 'rank_end_npp',
+          label: 'Ранг на конец',
+          sortable: true,
+        },
+        {
+          key: 'cityname',
+          label: 'Город склада обслуживания',
+          formater: (item) => item.cityname,
+          sortable: true,
+        },
+        {
+          key: 'areaname',
+          label: 'Регион',
+          formater: (item) => item.areaname,
+          sortable: true,
+        },
+        {
+          key: 'isterminated',
+          label: 'Терминирован',
+          // formatter: (item) => {
+          //   if (item.isterminated === 0) {
+          //     return 'Нет';
+          //   }
+          //   return 'Да';
+          // },
+          sortable: true,
+        },
+      ];
+    },
+    cancelTransfer() {
+      this.massTranseftEdit = false;
+      this.fields = [
+        {
+          key: 'id',
+          label: 'P/номер / Ранг / ФИО',
+          formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
+        },
+        {
+          key: 'reserve',
+          label: 'Резерв',
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            return formatter.format(v);
+          },
+          sortable: true,
+        },
+        {
+          key: 'lo',
+          label: 'ЛО',
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            return formatter.format(v);
+          },
+          sortable: true,
+        },
+        {
+          key: 'go',
+          label: 'ГО',
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            return formatter.format(v);
+          },
+          sortable: true,
+        },
+        {
+          key: 'ngo',
+          label: 'НГО',
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            return formatter.format(v);
+          },
+          sortable: true,
+        },
+        {
+          key: 'oo',
+          label: 'ОО',
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            return formatter.format(v);
+          },
+          sortable: true,
+        },
+        {
+          key: 'ko',
+          label: 'КО',
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            return formatter.format(v);
+          },
+          sortable: true,
+        },
+        {
+          key: 'noact',
+          label: 'Не активн.',
+          formater: (item) => item.noact,
+          sortable: true,
+        },
+        {
+          key: 'proportional',
+          label: 'Выполнение Пропорц. %',
+          formater: (item) => item.noact,
+          sortable: true,
+        },
+        {
+          key: 'rank_beg_npp',
+          label: 'Ранг на начало',
+          formater: (item) => item.rank_beg,
+          sortable: true,
+        },
+        {
+          key: 'rank_calc_npp',
+          label: 'Расчетный ранг',
+          formater: (item) => item.rank_calc,
+          sortable: true,
+        },
+        {
+          key: 'rank_end_npp',
+          label: 'Ранг на конец',
+          sortable: true,
+        },
+        {
+          key: 'cityname',
+          label: 'Город склада обслуживания',
+          formater: (item) => item.cityname,
+          sortable: true,
+        },
+        {
+          key: 'areaname',
+          label: 'Регион',
+          formater: (item) => item.areaname,
+          sortable: true,
+        },
+        {
+          key: 'isterminated',
+          label: 'Терминирован',
+          // formatter: (item) => {
+          //   if (item.isterminated === 0) {
+          //     return 'Нет';
+          //   }
+          //   return 'Да';
+          // },
+          sortable: true,
+        },
+      ];
+    },
+    async makeAllTransfer() {
+      const errorMass = Array.from(document.getElementsByClassName('error'));
+      const transMass = Array.from(document.getElementsByClassName('changed'));
+      const res = await this.createMessageBox('Вы уверены?', errorMass);
+      if (res) {
+        Promise.all(
+          [
+            ...transMass.map((u) => new Promise((result) => {
+              backApi.post(`/agent/transfer-lo/${u.dataset.userid}`,
+                {
+                  lo: this.entries.find((user) => user.id === Number(u.dataset.userid)).transfer,
+                }).then(() => result('done'));
+            })),
+          ],
+        ).then((resolve) => {
+          console.log(resolve);
+          this.massTranseftEdit = false;
+          this.fields = [
+            {
+              key: 'id',
+              label: 'P/номер / Ранг / ФИО',
+              formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
+            },
+            {
+              key: 'reserve',
+              label: 'Резерв',
+              formatter: (v) => {
+                const formatter = new Intl.NumberFormat('ru');
+                return formatter.format(v);
+              },
+              sortable: true,
+            },
+            {
+              key: 'lo',
+              label: 'ЛО',
+              formatter: (v) => {
+                const formatter = new Intl.NumberFormat('ru');
+                return formatter.format(v);
+              },
+              sortable: true,
+            },
+            {
+              key: 'go',
+              label: 'ГО',
+              formatter: (v) => {
+                const formatter = new Intl.NumberFormat('ru');
+                return formatter.format(v);
+              },
+              sortable: true,
+            },
+            {
+              key: 'ngo',
+              label: 'НГО',
+              formatter: (v) => {
+                const formatter = new Intl.NumberFormat('ru');
+                return formatter.format(v);
+              },
+              sortable: true,
+            },
+            {
+              key: 'oo',
+              label: 'ОО',
+              formatter: (v) => {
+                const formatter = new Intl.NumberFormat('ru');
+                return formatter.format(v);
+              },
+              sortable: true,
+            },
+            {
+              key: 'ko',
+              label: 'КО',
+              formatter: (v) => {
+                const formatter = new Intl.NumberFormat('ru');
+                return formatter.format(v);
+              },
+              sortable: true,
+            },
+            {
+              key: 'noact',
+              label: 'Не активн.',
+              formater: (item) => item.noact,
+              sortable: true,
+            },
+            {
+              key: 'proportional',
+              label: 'Выполнение Пропорц. %',
+              formater: (item) => item.noact,
+              sortable: true,
+            },
+            {
+              key: 'rank_beg_npp',
+              label: 'Ранг на начало',
+              formater: (item) => item.rank_beg,
+              sortable: true,
+            },
+            {
+              key: 'rank_calc_npp',
+              label: 'Расчетный ранг',
+              formater: (item) => item.rank_calc,
+              sortable: true,
+            },
+            {
+              key: 'rank_end_npp',
+              label: 'Ранг на конец',
+              sortable: true,
+            },
+            {
+              key: 'cityname',
+              label: 'Город склада обслуживания',
+              formater: (item) => item.cityname,
+              sortable: true,
+            },
+            {
+              key: 'areaname',
+              label: 'Регион',
+              formater: (item) => item.areaname,
+              sortable: true,
+            },
+            {
+              key: 'isterminated',
+              label: 'Терминирован',
+              // formatter: (item) => {
+              //   if (item.isterminated === 0) {
+              //     return 'Нет';
+              //   }
+              //   return 'Да';
+              // },
+              sortable: true,
+            },
+          ];
+          this.loading = true;
+          this.updateData();
+        }).catch((error) => {
+          console.log(error);
+          this.showToast('Ошибка', 'Что-то пошло не так', 'danger');
+        });
+      }
+    },
+    transferEdit(id) {
+      const user = this.entries.find((u) => u.id === id);
+      user.transfer = this.$refs[`user${id}`].value;
+      if (Number(user.transfer) !== this.entriesCache.get(user)) {
+        this.$refs[`user${id}`].classList.add('changed');
+        if (!this.transMass.find((u) => u.id === id)) {
+          this.transMass.push(user);
+        }
+        if (Number(user.transfer) > (user.lo + user.reserve)) {
+          this.$refs[`user${id}`].classList.remove('changed');
+          this.$refs[`user${id}`].classList.add('error');
+        } else {
+          this.$refs[`user${id}`].classList.remove('error');
+        }
+      } else {
+        this.$refs[`user${id}`].classList.remove('changed');
+        this.transMass = this.transMass.filter((u) => u.id !== id);
+      }
+    },
     dd() {
       this.loading = true;
       backApi.get('/agent/profile').then((Response) => {
@@ -572,6 +1016,65 @@ export default {
       }).then((Response2) => {
         this.entries = Response2.data.entries;
         this.loading = false;
+      });
+    },
+    showToast(title, message, status) {
+      // Use a shorter name for this.$createElement
+      const h = this.$createElement;
+      // Increment the toast count
+      // Create the message
+      const vNodesMsg = h('p', { class: ['text-center', 'mb-0'] }, [
+        h('strong', { class: 'mr-2' }, message),
+      ]);
+      // Create the title
+      const vNodesTitle = h(
+        'div',
+        { class: ['d-flex', 'flex-grow-1', 'align-items-baseline', 'mr-2'] },
+        [
+          h('strong', { class: 'mr-2' }, title),
+        ],
+      );
+      // Pass the VNodes as an array for message and title
+      this.$bvToast.toast([vNodesMsg], {
+        title: [vNodesTitle],
+        solid: true,
+        variant: status,
+      });
+    },
+    createMessageBox(messageText, arr = []) {
+      const h = this.$createElement;
+      // More complex structure
+      const messageVNode = h('div', { class: ['foobar'] },
+        [
+          h('h3', { class: ['text-center'] },
+            [
+              messageText,
+              arr.length > 0 ? arr.map((e) => h('p', { class: ['modal_p', 'error'] }, [`Превышен лимит у ${e.dataset.userid}`])) : '',
+              arr.length > 0 ? h('p', { class: ['modal_p'] }, ['Всё равно продолжить?']) : '',
+            ]),
+        ]);
+      // We must pass the generated VNodes as arrays
+      return this.$bvModal.msgBoxConfirm([messageVNode], {
+        buttonSize: 'md',
+        centered: true,
+        cancelTitle: 'Нет',
+        okTitle: 'Да',
+        size: 'xl',
+      });
+    },
+    createMessageBoxInfo(messageText) {
+      const h = this.$createElement;
+      // More complex structure
+      const messageVNode = h('div', { class: ['foobar'] }, [
+        h('h5', { class: ['text-center'] }, [messageText]),
+      ]);
+      // We must pass the generated VNodes as arrays
+      return this.$bvModal.msgBoxOk([messageVNode], {
+        buttonSize: 'xl',
+        centered: true,
+        cancelTitle: 'Нет',
+        okTitle: 'OK',
+        size: 'md',
       });
     },
     onRowSelected(item) {
@@ -767,7 +1270,6 @@ export default {
         });
     },
     updateData() {
-      console.log(this.lo_type);
       this.loading = true;
       const rankBeg = this.rankList.find((i) => i.rankname === this.filterData.rank_beg)
         ? this.rankList.find((i) => i.rankname === this.filterData.rank_beg).i_rank : null;
@@ -908,6 +1410,12 @@ export default {
       this.searchActive = false;
       backApi.get('/agent/flat_genealogy', data)
         .then((Response) => {
+          Response.data.entries.forEach((r) => {
+            r.transfer = r.lo;
+            if (r.is_can_transfer) {
+              this.entriesCache.set(r, r.transfer);
+            }
+          });
           this.entries = Response.data.entries;
           this.loading = false;
         });
@@ -921,9 +1429,52 @@ export default {
         .addClass('active');
     },
   },
+  computed: {
+    canMultiTrans() {
+      return this.transMass.length > 0;
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
+.modal_p{
+  margin-top: 10px;
+  font-family: "FuturaPTDemi";
+  &.error{
+    color: red;
+  }
+}
+.custom_input{
+  input{
+    padding-left: 0;
+    background: transparent;
+    border-bottom: 1px solid black;
+    &:hover ~ label{
+      // color: white;
+    }
+    &:hover{
+      border-bottom: 1px solid black;
+    }
+    &.error{
+      border-bottom: 1px solid red;
+    }
+    &.changed{
+      border-bottom: 1px solid green;
+    }
+  }
+  label{
+    color: black;
+    left: 0;
+    z-index: 1;
+    &:hover{
+      color: white;
+    }
+  }
+  .clear_icon{
+    right: 0;
+    background-image: url('../assets/imgs/close_btn_white.svg');
+  }
+}
 .search_icons{
   position: relative;
   top: 5px;
@@ -999,10 +1550,11 @@ export default {
     }
 }
 .update{
-  display: block;
-  float: right;
-  width: 100%;
+  display: inline-block;
+  // float: right;
+  width: 25%;
   border: 0;
+  margin-right: 10px;
   padding: 5px 30px;
   font-size: 16px;
   margin-bottom: 20px;
@@ -1012,12 +1564,18 @@ export default {
     color: #9A9A9A;
     background-color: #DEE2F3;
   }
-  &:nth-of-type(1){
-    width: 40%;
-    float: none;
-    display: inline;
-    margin-right: 10px;
-  }
+  // &:nth-of-type(1){
+  //   width: 25%;
+  //   float: none;
+  //   display: inline;
+  //   margin-right: 10px;
+  // }
+  // &:nth-of-type(2){
+  //   width: 25%;
+  //   float: none;
+  //   display: inline;
+  //   margin-right: 10px;
+  // }
 }
 .cust_modal{
     position: fixed;
@@ -1106,6 +1664,9 @@ export default {
 }
 </style>
 <style>
+.table th, .table td{
+  vertical-align: middle;
+}
 .transmaneg_table th[aria-colindex='1']{
     width: 15%;
 }

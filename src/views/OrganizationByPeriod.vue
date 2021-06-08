@@ -27,21 +27,6 @@
         <div class="col search__btn mobile" @click="toggleSearch">
           Настройки дерева <span class="search_icons mobi"></span>
         </div>
-        <!-- <div class="date_picker_comp">
-          <div>
-          <i
-            class="arrow_left"
-            @click="periodIndex = periodIndex - 1 >= 0 ? periodIndex - 1 : periods.length - 1"
-          >
-          </i>
-          <span class="date_show">
-            {{ months[new Date(currentPeriod).getMonth()] }}
-            {{ new Date(currentPeriod).getFullYear() }}
-          </span>
-            <i class="arrow_right"
-            @click="periodIndex = (periodIndex + 1) % periods.length"></i>
-          </div>
-        </div> -->
         <div class="perioad__picker mb-3 mt-3">
         <BasePeriodPicker :currentPeriod="currentPeriod"
         v-on:next-period="nextPeriod" class="period_picker"/>
@@ -90,19 +75,11 @@
             {{column.label}}
           </template>
           <template slot-scope="scope">
-            <!-- {{column.property}} -->
-            <span v-if="column.property != 'id'">{{ column.formater(scope.row) }}</span>
-            <span v-else>
+            <span v-if="column.property === 'id'">
               <div v-if="!colHide" style="display: inline">
               <span>{{scope.row.depth}} УР</span>
-              <img
-              :src="`../icons/${scope.row.rank_calc}${scope.row.depth === 0 ? '_white' : ''}.svg`"
-              :title="scope.row.rank_end" class="rank_icon">
               <span class="user_id">{{ scope.row.id }}</span><br />
-              <router-link :to="`/agent/${scope.row.id}`"
-              class="user_name">{{scope.row.name}}</router-link>
               </div>
-              <!-- Мобильный вид -->
               <div v-else style="text-align: center; margin-top: -25px;">
               <img
               style="margin-left: 10px;"
@@ -110,6 +87,45 @@
               :title="scope.row.rank_end" class="rank_icon">
               <span style="display: block; margin-left: 10px;">{{scope.row.depth}} УР</span>
               </div>
+            </span>
+            <span v-if="column.property === 'name'">
+              {{scope.row.name}}
+            </span>
+            <span v-if="column.property === 'lo'">
+              {{column.formater(scope.row)}}
+            </span>
+            <span v-if="column.property === 'go'">
+              {{column.formater(scope.row)}}
+            </span>
+            <span v-if="column.property === 'ngo'">
+              {{column.formater(scope.row)}}
+            </span>
+            <span v-if="column.property === 'oo'">
+              {{column.formater(scope.row)}}
+            </span>
+            <span v-if="column.property === 'ko'">
+              {{column.formater(scope.row)}}
+            </span>
+            <span v-if="column.property === 'noact'">
+              {{scope.row.noact}}
+            </span>
+            <span v-if="column.property === 'rank_beg'">
+              <img
+              :src="`../icons/${scope.row.rank_beg}${scope.row.depth === 0 ? '_white' : ''}.svg`"
+              :title="scope.row.rank_beg" class="rank_icon_rank">
+              {{scope.row.rank_beg}}
+            </span>
+            <span v-if="column.property === 'rank_calc'">
+              <img
+              :src="`../icons/${scope.row.rank_calc}${scope.row.depth === 0 ? '_white' : ''}.svg`"
+              :title="scope.row.rank_calc" class="rank_icon_rank">
+              {{scope.row.rank_calc}}
+            </span>
+            <span v-if="column.property === 'rank_end'">
+              <img
+              :src="`../icons/${scope.row.rank_end}${scope.row.depth === 0 ? '_white' : ''}.svg`"
+              :title="scope.row.rank_end" class="rank_icon_rank">
+              {{scope.row.rank_end}}
             </span>
           </template>
         </el-table-column>
@@ -127,21 +143,6 @@
             Настройки дерева
             <span class="close_btn" @click="searchActive = !searchActive"></span>
             </h3>
-        <!-- <div class="date_picker_comp">
-          <div>
-          <i
-            class="arrow_left"
-            @click="periodIndex = periodIndex - 1 >= 0 ? periodIndex - 1 : periods.length - 1"
-          >
-          </i>
-          <span class="date_show">
-            {{ months[new Date(currentPeriod).getMonth()] }}
-            {{ new Date(currentPeriod).getFullYear() }}
-          </span>
-            <i class="arrow_right"
-            @click="periodIndex = (periodIndex + 1) % periods.length"></i>
-          </div>
-        </div> -->
         <div class="row">
           <div class="col-md-12 mt-3">
             <b-form-group label="Выбор дерева">
@@ -195,26 +196,32 @@
   id="modal-scrollable" centered scrollable title="Легенда">
     <div class="modal_icons">
       <img :src="`../icons/Клиент.svg`"
-      class="rank_icon"> <span>Привилегированный клиент</span></div> <br>
+      class="rank_icon_legend"> <span>Привилегированный клиент</span></div> <br>
     <div class="modal_icons">
-      <img :src="`../icons/Консультант.svg`" class="rank_icon"> <span>Консультант</span></div><br>
+      <img :src="`../icons/Консультант.svg`"
+      class="rank_icon_legend"> <span>Консультант</span></div><br>
     <div class="modal_icons">
-      <img :src="`../icons/Мастер.svg`" class="rank_icon"><span>Мастер</span></div><br>
+      <img :src="`../icons/Мастер.svg`"
+      class="rank_icon_legend"><span>Мастер</span></div><br>
     <div class="modal_icons">
       <img :src="`../icons/Управляющий.svg`"
-      class="rank_icon"><span>Управляющий</span></div><br><br>
+      class="rank_icon_legend"><span>Управляющий</span></div><br><br>
     <div class="modal_icons">
-      <img :src="`../icons/Директор.svg`" class="rank_icon"><span>Директор</span></div><br>
-    <div class="modal_icons"><img :src="`../icons/Серебряный Директор.svg`" class="rank_icon">
+      <img :src="`../icons/Директор.svg`" class="rank_icon_legend"><span>Директор</span></div><br>
+    <div class="modal_icons"><img :src="`../icons/Серебряный Директор.svg`"
+    class="rank_icon_legend">
     <span>Серебряный Директор</span></div><br>
-    <div class="modal_icons"><img :src="`../icons/Золотой Директор.svg`" class="rank_icon">
+    <div class="modal_icons"><img :src="`../icons/Золотой Директор.svg`"
+    class="rank_icon_legend">
     <span>Золотой Директор</span></div><br><br>
-    <div class="modal_icons"><img :src="`../icons/Рубиновый Директор.svg`" class="rank_icon">
+    <div class="modal_icons"><img :src="`../icons/Рубиновый Директор.svg`" class="rank_icon_legend">
     <span>Рубиновый Директор</span></div><br>
-    <div class="modal_icons"><img :src="`../icons/Бриллиантовый Директор.svg`" class="rank_icon">
+    <div class="modal_icons"><img :src="`../icons/Бриллиантовый Директор.svg`"
+    class="rank_icon_legend">
     <span>Бриллиантовый Директор</span></div><br>
     <div class="modal_icons">
-      <img :src="`../icons/Президент_1.svg`" class="rank_icon"><span>Президент</span></div><br>
+      <img :src="`../icons/Президент_1.svg`"
+      class="rank_icon_legend"><span>Президент</span></div><br>
     <template #modal-footer>
           <b-button
             variant="primary"
@@ -226,7 +233,6 @@
           </b-button>
     </template>
   </b-modal>
-    <!-- <div :class="`mobile_modal_mask ${searchActive ? 'active' : ''}`"></div> -->
   </div>
 </template>
 
@@ -248,6 +254,10 @@ export default {
         property: 'id',
         label: 'P/номер / Ранг / ФИО',
         formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
+      },
+      {
+        property: 'name',
+        label: 'ФИО',
       },
       {
         property: 'lo',
@@ -611,9 +621,15 @@ export default {
         if (this.colHide) {
           return 70;
         }
-        return 250;
+        return 100;
+      } if (col.property === 'name') {
+        return 100;
+      } if (col.property === 'lo' || col.property === 'lo' || col.property === 'go' || col.property === 'ngo' || col.property === 'oo' || col.property === 'ko') {
+        return 50;
+      } if (col.property === 'noact') {
+        return 50;
       }
-      return 100;
+      return 0;
     },
     tableRowClassName({ row }) {
       return `depth-${row.depth}`;
@@ -727,6 +743,16 @@ export default {
   border: 0;
 }
 .modal_icons{
+  font-size: 0;
+  display: flex;
+  align-items: center;
+  & > img{
+    position: relative;
+    top: 2px;
+  }
+  & > span{
+    font-size: 16px;
+  }
 }
 .hide_arrow{
   display: none;
@@ -843,6 +869,14 @@ span[class*="el-tag"] deep i{
   width: 25px;
   margin-left: 10px;
 }
+.rank_icon_rank{
+  width: 20px;
+  // margin-left: -10px;
+}
+.rank_icon_legend{
+  width: 25px;
+  margin-right: 10px;
+}
 .user_id{
   display: inline-block;
   float: right;
@@ -920,6 +954,9 @@ span[class*="el-tag"] deep i{
 }
 </style>
 <style>
+.el-table__header-wrapper{
+  background: #DEE2F3 !important;
+}
 button.close{
   color: #32aaa7;
   opacity: 1;
@@ -936,7 +973,7 @@ button.close:hover{
         left: 0;
       }
 .el-table__indent {
-  padding-left: 0 !important;
+  /* padding-left: 0 !important; */
 }
 .el-table{
   font-weight: 500;

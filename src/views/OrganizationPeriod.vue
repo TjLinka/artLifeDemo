@@ -331,6 +331,10 @@ export default {
   width: 25px;
   margin-left: 10px;
 }
+.rank_icon{
+  width: 25px;
+  margin-left: 10px;
+}
 .licevoischet__page {
   position: relative;
   &__summ {

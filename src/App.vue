@@ -84,7 +84,7 @@ url('/fonts/FuturaPT-Book.ttf') format('truetype');
     display: flex;
     flex-direction: column;
     width: 70% !important;
-    height: 250px;
+    min-height: 200px;
     pointer-events: auto;
     background-color: #fff;
     background-clip: unset !important;
