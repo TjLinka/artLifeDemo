@@ -709,6 +709,10 @@ export default {
     },
     cancelTransfer() {
       this.massTranseftEdit = false;
+      this.entries.forEach((e) => {
+        e.transfer = e.lo;
+      });
+      this.transMass = [];
       this.fields = [
         {
           key: 'id',
