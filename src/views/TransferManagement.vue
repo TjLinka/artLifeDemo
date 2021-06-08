@@ -370,7 +370,7 @@ export default {
       transMass: [],
       entriesCache: new Map(),
       massTranseftEdit: false,
-      lower: '< либо = 0',
+      lower: '<= 0',
       show: false,
       state: '',
       links: [],

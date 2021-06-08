@@ -101,7 +101,7 @@
           <div class="container-md transfert__info" v-if="showTransfertInfo">
             <div class="row">
               <div class="col-md-6 mt-3">
-                <p>Нективность:</p>
+                <p>Неактивность:</p>
                 <p>{{ transfertInfo.noact }}</p>
               </div>
               <div class="col-md-6 mt-3">
