@@ -160,6 +160,11 @@ const routes = [
     name: 'RemindPassword',
     component: () => import('../views/RemindPassword.vue'),
   },
+  {
+    path: '/auth-by-token*',
+    name: 'AuthIntegration',
+    component: () => import('../views/AuthIntegration.vue'),
+  },
 ];
 
 const router = new VueRouter({

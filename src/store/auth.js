@@ -82,6 +82,26 @@ export default {
         }
       });
     },
+    loginIntegration({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        commit('AUTH_REQUEST');
+        backApi
+          .post('/agent/login/token', { access_token: data.access_token })
+          .then((resp) => {
+            const data = JSON.stringify(resp.data);
+            const token = resp.data.access_token;
+            localStorage.setItem('access_token', data);
+            backApi.defaults.headers.common['access-token'] = token;
+            commit('AUTH_SUCCESS', resp.data);
+            resolve(resp);
+          })
+          .catch((err) => {
+            commit('AUTH_ERROR', err);
+            localStorage.removeItem('access-token');
+            reject(err);
+          });
+      });
+    },
     register({ commit }, user) {
       return new Promise((resolve, reject) => {
         commit('AUTH_REQUEST');
