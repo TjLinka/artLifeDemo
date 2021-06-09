@@ -832,137 +832,127 @@ export default {
       const transMass = Array.from(document.getElementsByClassName('changed'));
       const res = await this.createMessageBox('Вы уверены?', errorMass);
       if (res) {
-        Promise.all(
-          [
-            ...transMass.map((u) => new Promise((result) => {
-              backApi.post(`/agent/transfer-lo/${u.dataset.userid}`,
-                {
-                  lo: this.entries.find((user) => user.id === Number(u.dataset.userid)).transfer,
-                }).then(() => result('done'));
-            })),
-          ],
-        ).then((resolve) => {
-          console.log(resolve);
-          this.massTranseftEdit = false;
-          this.fields = [
-            {
-              key: 'id',
-              label: 'P/номер / Ранг / ФИО',
-              formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
+        // eslint-disable-next-line no-restricted-syntax
+        for (const val of transMass) {
+          // eslint-disable-next-line no-await-in-loop
+          await backApi.post(`/agent/transfer-lo/${val.dataset.userid}`, { lo: this.entries.find((user) => user.id === Number(val.dataset.userid)).transfer });
+        }
+        this.massTranseftEdit = false;
+        this.fields = [
+          {
+            key: 'id',
+            label: 'P/номер / Ранг / ФИО',
+            formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
+          },
+          {
+            key: 'reserve',
+            label: 'Резерв',
+            formatter: (v) => {
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
             },
-            {
-              key: 'reserve',
-              label: 'Резерв',
-              formatter: (v) => {
-                const formatter = new Intl.NumberFormat('ru');
-                return formatter.format(v);
-              },
-              sortable: true,
+            sortable: true,
+          },
+          {
+            key: 'lo',
+            label: 'ЛО',
+            formatter: (v) => {
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
             },
-            {
-              key: 'lo',
-              label: 'ЛО',
-              formatter: (v) => {
-                const formatter = new Intl.NumberFormat('ru');
-                return formatter.format(v);
-              },
-              sortable: true,
+            sortable: true,
+          },
+          {
+            key: 'go',
+            label: 'ГО',
+            formatter: (v) => {
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
             },
-            {
-              key: 'go',
-              label: 'ГО',
-              formatter: (v) => {
-                const formatter = new Intl.NumberFormat('ru');
-                return formatter.format(v);
-              },
-              sortable: true,
+            sortable: true,
+          },
+          {
+            key: 'ngo',
+            label: 'НГО',
+            formatter: (v) => {
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
             },
-            {
-              key: 'ngo',
-              label: 'НГО',
-              formatter: (v) => {
-                const formatter = new Intl.NumberFormat('ru');
-                return formatter.format(v);
-              },
-              sortable: true,
+            sortable: true,
+          },
+          {
+            key: 'oo',
+            label: 'ОО',
+            formatter: (v) => {
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
             },
-            {
-              key: 'oo',
-              label: 'ОО',
-              formatter: (v) => {
-                const formatter = new Intl.NumberFormat('ru');
-                return formatter.format(v);
-              },
-              sortable: true,
+            sortable: true,
+          },
+          {
+            key: 'ko',
+            label: 'КО',
+            formatter: (v) => {
+              const formatter = new Intl.NumberFormat('ru');
+              return formatter.format(v);
             },
-            {
-              key: 'ko',
-              label: 'КО',
-              formatter: (v) => {
-                const formatter = new Intl.NumberFormat('ru');
-                return formatter.format(v);
-              },
-              sortable: true,
-            },
-            {
-              key: 'noact',
-              label: 'Не активн.',
-              formater: (item) => item.noact,
-              sortable: true,
-            },
-            {
-              key: 'proportional',
-              label: 'Выполнение Пропорц. %',
-              formater: (item) => item.noact,
-              sortable: true,
-            },
-            {
-              key: 'rank_beg_npp',
-              label: 'Ранг на начало',
-              formater: (item) => item.rank_beg,
-              sortable: true,
-            },
-            {
-              key: 'rank_calc_npp',
-              label: 'Расчетный ранг',
-              formater: (item) => item.rank_calc,
-              sortable: true,
-            },
-            {
-              key: 'rank_end_npp',
-              label: 'Ранг на конец',
-              sortable: true,
-            },
-            {
-              key: 'cityname',
-              label: 'Город склада обслуживания',
-              formater: (item) => item.cityname,
-              sortable: true,
-            },
-            {
-              key: 'areaname',
-              label: 'Регион',
-              formater: (item) => item.areaname,
-              sortable: true,
-            },
-            {
-              key: 'isterminated',
-              label: 'Терминирован',
-              // formatter: (item) => {
-              //   if (item.isterminated === 0) {
-              //     return 'Нет';
-              //   }
-              //   return 'Да';
-              // },
-              sortable: true,
-            },
-          ];
-          this.loading = true;
-          this.updateData();
-        }).catch((error) => {
-          console.log(error);
-          this.showToast('Ошибка', 'Что-то пошло не так', 'danger');
-        });
+            sortable: true,
+          },
+          {
+            key: 'noact',
+            label: 'Не активн.',
+            formater: (item) => item.noact,
+            sortable: true,
+          },
+          {
+            key: 'proportional',
+            label: 'Выполнение Пропорц. %',
+            formater: (item) => item.noact,
+            sortable: true,
+          },
+          {
+            key: 'rank_beg_npp',
+            label: 'Ранг на начало',
+            formater: (item) => item.rank_beg,
+            sortable: true,
+          },
+          {
+            key: 'rank_calc_npp',
+            label: 'Расчетный ранг',
+            formater: (item) => item.rank_calc,
+            sortable: true,
+          },
+          {
+            key: 'rank_end_npp',
+            label: 'Ранг на конец',
+            sortable: true,
+          },
+          {
+            key: 'cityname',
+            label: 'Город склада обслуживания',
+            formater: (item) => item.cityname,
+            sortable: true,
+          },
+          {
+            key: 'areaname',
+            label: 'Регион',
+            formater: (item) => item.areaname,
+            sortable: true,
+          },
+          {
+            key: 'isterminated',
+            label: 'Терминирован',
+            // formatter: (item) => {
+            //   if (item.isterminated === 0) {
+            //     return 'Нет';
+            //   }
+            //   return 'Да';
+            // },
+            sortable: true,
+          },
+        ];
+        this.loading = true;
+        this.updateData();
       }
     },
     transferEdit(id) {
@@ -1448,7 +1438,7 @@ export default {
     color: red;
   }
 }
-.custom_input{
+.transmaneg_table .custom_input{
   input{
     padding-left: 0;
     background: transparent;
