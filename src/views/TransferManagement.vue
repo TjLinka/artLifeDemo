@@ -125,20 +125,7 @@
             {{row.item.rank_calc}}
           </template>
           <template v-slot:cell(trans)="row">
-          <div class="custom_input" v-show="row.item.is_can_transfer">
-            <input type="text"
-            :data-userid="row.item.id"
-            :ref="`user${row.item.id}`"
-            :name="`trans${row.item.id}`"
-            :id="`trans${row.item.id}`"
-            :value="row.item.transfer"
-            :class="row.item.transfer > (row.item.lo + row.item.reserve) ? 'error' : ''"
-            required
-            @input="transferEdit(row.item.id)"
-            />
-            <label :for="`trans${row.item.id}`">Трансферт</label>
-            <span class="clear_icon" @click="clearTranfer($event, row.item.id)"></span>
-          </div>
+          <CustomInput :rowa="row" v-show="row.item.is_can_transfer"/>
           </template>
         </b-table>
       </div>
@@ -358,13 +345,18 @@
 
 <script>
 /* eslint-disable no-param-reassign */
+import { mapActions, mapGetters } from 'vuex';
 import $ from 'jquery';
 import backApi from '../assets/backApi';
 import Transfert2 from '../components/Transfert2.vue';
+import CustomInput from '../components/CustomInput.vue';
 
 export default {
   name: 'TransferManagement',
-  components: { Transfert2 },
+  components: {
+    Transfert2,
+    CustomInput,
+  },
   data() {
     return {
       transMass: [],
@@ -537,6 +529,7 @@ export default {
           }
         });
         this.entries = Response.data.entries;
+        this.setData(this.entries);
         this.loading = false;
       });
       const treeNameTranslate = {
@@ -564,9 +557,8 @@ export default {
               this.entriesCache.set(r, r.transfer);
             }
           });
-          // Response2.data.entries.forEach((r) => {
-          // });
           this.entries = Response2.data.entries;
+          this.setData(this.entries);
           this.loading = false;
         });
         const treeNameTranslate = {
@@ -580,11 +572,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions('transStore', ['setData', 'setAllDefault', 'setDefault', 'clearAll']),
     clearTranfer(evt, id) {
-      this.entries.find((e) => e.id === id).transfer = this.entries.find((e) => e.id === id).lo;
-      this.transMass = this.transMass.filter((u) => u.id !== id);
-      this.$refs[`user${id}`].classList.remove('changed');
-      this.$refs[`user${id}`].classList.remove('error');
+      this.setDefault(id);
       evt.stopPropagation();
     },
     massTranseftAction() {
@@ -709,10 +699,6 @@ export default {
     },
     cancelTransfer() {
       this.massTranseftEdit = false;
-      this.entries.forEach((e) => {
-        e.transfer = e.lo;
-      });
-      this.transMass = [];
       this.fields = [
         {
           key: 'id',
@@ -826,17 +812,21 @@ export default {
           sortable: true,
         },
       ];
+      this.setAllDefault();
     },
     async makeAllTransfer() {
-      const errorMass = Array.from(document.getElementsByClassName('error'));
-      const transMass = Array.from(document.getElementsByClassName('changed'));
-      const res = await this.createMessageBox('Вы уверены?', errorMass);
+      // const errorMass = Array.from(document.getElementsByClassName('error'));
+      // const transMass = Array.from(document.getElementsByClassName('changed'));
+      const res = await this.createMessageBox('Вы уверены?', this.getErrorMulti);
       if (res) {
         // eslint-disable-next-line no-restricted-syntax
-        for (const val of transMass) {
+        for (const val of this.getReadyMulti) {
           // eslint-disable-next-line no-await-in-loop
-          await backApi.post(`/agent/transfer-lo/${val.dataset.userid}`, { lo: this.entries.find((user) => user.id === Number(val.dataset.userid)).transfer });
+          await backApi.post(`/agent/transfer-lo/${val.id}`, {
+            lo: val.transData.transfert,
+          });
         }
+        this.clearAll();
         this.massTranseftEdit = false;
         this.fields = [
           {
@@ -955,25 +945,25 @@ export default {
         this.updateData();
       }
     },
-    transferEdit(id) {
-      const user = this.entries.find((u) => u.id === id);
-      user.transfer = this.$refs[`user${id}`].value;
-      if (Number(user.transfer) !== this.entriesCache.get(user)) {
-        this.$refs[`user${id}`].classList.add('changed');
-        if (!this.transMass.find((u) => u.id === id)) {
-          this.transMass.push(user);
-        }
-        if (Number(user.transfer) > (user.lo + user.reserve)) {
-          this.$refs[`user${id}`].classList.remove('changed');
-          this.$refs[`user${id}`].classList.add('error');
-        } else {
-          this.$refs[`user${id}`].classList.remove('error');
-        }
-      } else {
-        this.$refs[`user${id}`].classList.remove('changed');
-        this.transMass = this.transMass.filter((u) => u.id !== id);
-      }
-    },
+    // transferEdit(id) {
+    //   const user = this.entries.find((u) => u.id === id);
+    //   user.transfer = this.$refs[`user${id}`].value;
+    //   if (Number(user.transfer) !== this.entriesCache.get(user)) {
+    //     this.$refs[`user${id}`].classList.add('changed');
+    //     if (!this.transMass.find((u) => u.id === id)) {
+    //       this.transMass.push(user);
+    //     }
+    //     if (Number(user.transfer) > (user.lo + user.reserve)) {
+    //       this.$refs[`user${id}`].classList.remove('changed');
+    //       this.$refs[`user${id}`].classList.add('error');
+    //     } else {
+    //       this.$refs[`user${id}`].classList.remove('error');
+    //     }
+    //   } else {
+    //     this.$refs[`user${id}`].classList.remove('changed');
+    //     this.transMass = this.transMass.filter((u) => u.id !== id);
+    //   }
+    // },
     dd() {
       this.loading = true;
       backApi.get('/agent/profile').then((Response) => {
@@ -1043,7 +1033,7 @@ export default {
           h('h3', { class: ['text-center'] },
             [
               messageText,
-              arr.length > 0 ? arr.map((e) => h('p', { class: ['modal_p', 'error'] }, [`Превышен лимит у ${e.dataset.userid}`])) : '',
+              arr.length > 0 ? arr.map((e) => h('p', { class: ['modal_p', 'error'] }, [`Превышен лимит у ${e.id}`])) : '',
               arr.length > 0 ? h('p', { class: ['modal_p'] }, ['Всё равно продолжить?']) : '',
             ]),
         ]);
@@ -1411,6 +1401,7 @@ export default {
             }
           });
           this.entries = Response.data.entries;
+          this.setData(this.entries);
           this.loading = false;
         });
     },
@@ -1424,8 +1415,9 @@ export default {
     },
   },
   computed: {
+    ...mapGetters('transStore', ['getReadyMulti', 'getErrorMulti']),
     canMultiTrans() {
-      return this.transMass.length > 0;
+      return this.getReadyMulti.length > 0;
     },
   },
 };
