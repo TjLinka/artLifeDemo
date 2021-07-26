@@ -374,7 +374,7 @@ export default {
       });
     },
     becomePartner() {
-      backApi.post('/agent/become_partner').then(() => {
+      backApi.post('/agent/become_partner', { comm: '' }).then(() => {
         this.showToast('Стать партнером', 'Заявка на становление дистрибьютором отправлена!', 'success');
       });
     },
