@@ -13,30 +13,42 @@
       <div class="auth__page__form">
         <div class="row">
           <div class="col mb-4 text-center switch">
-          <div class="auth_switch">
-                      <el-switch
-          style="display: block"
-          v-model="value2"
-          active-text="ЛОГИН ТЕЛЕФОН"
-          inactive-text="ЛОГИН ID">
-        </el-switch>
-          </div>
+            <div class="auth_switch">
+              <el-switch
+                style="display: block"
+                v-model="value2"
+                active-text="ЛОГИН ТЕЛЕФОН"
+                inactive-text="ЛОГИН ID"
+              >
+              </el-switch>
+            </div>
           </div>
         </div>
         <form method="post">
           <div class="custom_input login_input" v-show="!value2">
-            <input type="number" name="login" id="login" required v-model="log.login_ID" />
+            <input
+            type="number"
+            name="login"
+            id="login"
+            required
+            @keydown="checkInput($event)"
+            v-model="log.login_ID" />
             <label for="login">ID</label>
             <span class="clear_icon" @click="clearInput('login_ID')"></span>
           </div>
-          <div class="custom_input login_input"  v-show="value2">
-            <input type="text"
-            v-mask="'+###############'"
-            name="phone" id="phone" required v-model="log.login_phone" />
+          <div class="custom_input login_input" v-show="value2">
+            <input
+              type="text"
+              v-mask="'+###############'"
+              name="phone"
+              id="phone"
+              required
+              v-model="log.login_phone"
+            />
             <label for="phone">Телефон в международном формате</label>
             <span class="clear_icon" @click="clearInput('login_phone')"></span>
           </div>
-          <div  class="custom_input password_input">
+          <div class="custom_input password_input">
             <input type="password" name="password" id="password" required v-model="log.password" />
             <label for="password">Пароль</label>
             <span class="clear_icon" @click="clearInput('password')"></span>
@@ -52,8 +64,10 @@
         </form>
       </div>
       <div class="auth__page__help">
-        <p>Забыли пароль? <router-link to="/remind-password"
-        class="remind_link">Напомнить</router-link></p>
+        <p>
+          Забыли пароль?
+          <router-link to="/remind-password" class="remind_link">Напомнить</router-link>
+        </p>
       </div>
     </div>
   </div>
@@ -82,6 +96,16 @@ export default {
     };
   },
   methods: {
+    // eslint-disable-next-line consistent-return
+    checkInput(e) {
+      // console.log(e.which);
+      if (e.which === 189 || e.which === 109 || e.which === 107
+      || e.which === 187 || e.which === 190) {
+        // eslint-disable-next-line no-restricted-globals
+        e.preventDefault();
+        return false;
+      }
+    },
     showToast(title, message, status) {
       // Use a shorter name for this.$createElement
       const h = this.$createElement;
@@ -94,9 +118,7 @@ export default {
       const vNodesTitle = h(
         'div',
         { class: ['d-flex', 'flex-grow-1', 'align-items-baseline', 'mr-2'] },
-        [
-          h('strong', { class: 'mr-2' }, title),
-        ],
+        [h('strong', { class: 'mr-2' }, title)],
       );
       // Pass the VNodes as an array for message and title
       this.$bvToast.toast([vNodesMsg], {
@@ -116,8 +138,9 @@ export default {
       this.$refs.recaptcha.reset();
     },
     sf(recaptchaToken1) {
-      if ((this.log.login_ID !== '' || this.log.login_ID !== null)
-      && (this.log.password !== '' || this.log.password !== null)
+      if (
+        (this.log.login_ID !== '' || this.log.login_ID !== null)
+        && (this.log.password !== '' || this.log.password !== null)
       ) {
         $('.login_input, .password_input').removeClass('error');
         let data = {};
@@ -161,35 +184,35 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.remind_link{
-  color: #32AAA7;
+.remind_link {
+  color: #32aaa7;
 }
-.error_log{
+.error_log {
   color: red;
 }
-.error{
+.error {
   border-bottom: 2px solid red;
 }
-.mobile_logo{
+.mobile_logo {
   display: none;
 }
-.custom_input{
+.custom_input {
   width: 60%;
-  & input{
+  & input {
     font-size: 20px;
   }
-  &:nth-of-type(1){
+  &:nth-of-type(1) {
     margin-bottom: 30px;
   }
-  &:nth-of-type(2){
+  &:nth-of-type(2) {
     margin-bottom: 30px;
   }
-  & label{
+  & label {
     left: 5px;
     font-size: 18px;
   }
 }
-.switch{
+.switch {
   width: 80%;
 }
 .auth__page {
@@ -238,25 +261,25 @@ export default {
   }
 }
 @media (max-width: 768px) {
-  .auth__page{
-    h1{
+  .auth__page {
+    h1 {
       font-size: 24px;
     }
-    form{
-      .custom_input{
+    form {
+      .custom_input {
         width: 100%;
       }
-      .btn__login{
+      .btn__login {
         width: 100%;
       }
     }
   }
 }
 @media (max-width: 575px) {
-  .auth__page__copy{
+  .auth__page__copy {
     display: none;
   }
-  .mobile_logo{
+  .mobile_logo {
     display: block;
     margin-bottom: 50px;
   }
