@@ -252,7 +252,7 @@ export default {
     const columns = [
       {
         property: 'id',
-        label: 'P/номер / Ранг / ФИО',
+        label: 'P/номер / Ранг',
         formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
       },
       {

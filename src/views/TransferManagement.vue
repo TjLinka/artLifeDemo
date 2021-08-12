@@ -97,17 +97,17 @@
         sortByFormatted
         class="mt-4">
           <template v-slot:cell(id)="row">
-            <p>
+            <p style="margin: 0;">
               <span class="mr-4">{{ row.item.lvl }} УР</span>
             <img :src="`../icons/${row.item.rank_calc}${row.item.lvl === '0' ? '_white' : ''}.svg`"
               :title="row.item.rank_end" class="rank_icon" />
               <span style="display: inline-block; float:right">{{ row.item.id }}</span><br>
               <router-link :to="`/agent/${row.item.id}`">
-              <span :class="`user_name ${row.item.lvl === '0' ? 'depth-main' : ''}`">
-              {{row.item.name}}</span>
+              <!-- <span :class="`user_name ${row.item.lvl === '0' ? 'depth-main' : ''}`">
+              {{row.item.name}}</span> -->
               </router-link>
             </p>
-            <p style="text-align: right">{{ row.item.fio }}</p>
+            <p style="text-align: right; margin: 0">{{ row.item.fio }}</p>
           </template>
           <template v-slot:cell(isterminated)="row">
               {{row.item.isterminated === '0' ? 'Нет' : 'Да'}}
@@ -385,7 +385,13 @@ export default {
       fields: [
         {
           key: 'id',
-          label: 'P/номер / Ранг / ФИО',
+          label: 'P/номер / Ранг',
+          formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
+          thClass: 'fsth',
+        },
+        {
+          key: 'name',
+          label: 'ФИО',
           formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
         },
         {
@@ -1650,6 +1656,9 @@ export default {
 }
 </style>
 <style>
+.fsth{
+  width: 170px !important;
+}
 .table th, .table td{
   vertical-align: middle;
 }
