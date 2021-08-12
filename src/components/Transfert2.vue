@@ -145,7 +145,7 @@ export default {
       if (this.sum !== null && this.sum !== '') {
         await backApi
           .post(`agent/transfert/${this.id}`, {
-            sum: this.sum.replace(/,/, '.'),
+            sum: this.sum.replace(/,/, '.').replace(/\s/g, ''),
             direction: 'lo2reserve',
             comdte: this.currentPeriod,
           })
@@ -165,7 +165,7 @@ export default {
       if (this.sum !== null && this.sum !== '') {
         await backApi
           .post(`agent/transfert/${this.id}`, {
-            sum: this.sum.replace(/,/, '.'),
+            sum: this.sum.replace(/,/, '.').replace(/\s/g, ''),
             direction: 'reserve2lo',
             comdte: this.currentPeriod,
           })
