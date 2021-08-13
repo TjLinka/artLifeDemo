@@ -64,7 +64,7 @@
           <b-button size="sm" @click="show_details(row)" class="mr-2">
             <span>{{ row.detailsShowing ? '-' : '+' }}</span>
           </b-button>
-            <span>{{row.item.webshop_id}}</span>
+            <span>{{row.item.refund_doc_id}}</span>
         </template>
         <template v-slot:row-details="row">
           <div class="sub_table">
@@ -153,8 +153,8 @@ export default {
       loading: true,
       tags: [],
       filterData: {
-        articul: '',
-        name: '',
+        articul: null,
+        name: null,
         naknum: '',
         docnum: '',
       },
@@ -423,9 +423,20 @@ export default {
         });
     },
     resetData() {
-      backApi.get('agent/refunds').then((Response) => {
+      this.rangeDate = [
+        this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+        this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
+      ];
+      backApi.get('agent/refunds', {
+        params: {
+          beg_dte: this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+          end_dte: this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
+        },
+      }).then((Response) => {
         this.entries = Response.data.entries;
         this.return_details = new Array(this.total_rows).fill(undefined);
+      }).then(() => {
+        this.loading = false;
       });
       this.searchActive = !this.searchActive;
       this.filterData.articul = null;
@@ -452,7 +463,7 @@ export default {
         const tag = this.tags.find((t) => t.key === 'articul');
         if (tag) {
           tag.name = `Артикул: ${this.filterData.articul}`;
-        } else if (this.tree_type !== 'full') {
+        } else {
           this.tags.push({ name: `Артикул: ${this.filterData.articul}`, key: 'articul' });
         }
       }
@@ -486,10 +497,6 @@ export default {
       backApi.get('/agent/refunds', data).then((Response) => {
         this.entries = Response.data.entries;
       });
-      // this.articul = null;
-      // this.name = null;
-      // this.naknum = null;
-      // this.docnum = null;
       if (shouldClose) {
         this.searchActive = !this.searchActive;
       }
