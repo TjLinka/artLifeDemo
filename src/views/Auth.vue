@@ -98,9 +98,10 @@ export default {
   methods: {
     // eslint-disable-next-line consistent-return
     checkInput(e) {
-      // console.log(e.which);
+      console.log(e.which);
       if (e.which === 189 || e.which === 109 || e.which === 107
-      || e.which === 187 || e.which === 190) {
+      || e.which === 187 || e.which === 190 || e.which === 191
+      || e.which === 188 || e.which === 110) {
         // eslint-disable-next-line no-restricted-globals
         e.preventDefault();
         return false;
