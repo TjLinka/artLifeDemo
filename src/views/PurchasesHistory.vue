@@ -3,7 +3,7 @@
     <div v-loading="loading">
     <div class="container-fluid table_container" v-show="!loading">
       <h2 class="page__title">
-        <p class="mobile_back" @click="back">
+        <p class="mobile_back noprint" @click="back">
           <svg
             width="18"
             height="12"
@@ -36,7 +36,7 @@
           </div>
         </div>
         <div class="row mobile_search">
-          <div class="col search__btn" @click="toggleSearch" v-if="!searchActive">
+          <div class="col search__btn noprint" @click="toggleSearch" v-if="!searchActive">
             Поиск покупки <span class="search_icons mobi"></span>
           </div>
         </div>
@@ -52,7 +52,7 @@
         {{ tag.name }}
       </el-tag>
       </div>
-      <p class="exp_print">
+      <p class="exp_print noprint">
         <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
         <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>

@@ -3,7 +3,7 @@
     <div  v-loading="loading">
     <div class="container-fluid table_container" v-show="!loading">
       <h2 class="page__title">
-                              <p class="mobile_back" @click="back">
+                              <p class="mobile_back noprint" @click="back">
         <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
@@ -24,13 +24,14 @@
           ></el-autocomplete>
           </div>
         </div>
-        <div class="col search__btn mobile" @click="toggleSearch">
+        <div class="col search__btn mobile noprint" @click="toggleSearch">
           Настройки дерева <span class="search_icons mobi"></span>
         </div>
         <div class="perioad__picker mb-3 mt-3">
         <BasePeriodPicker :currentPeriod="currentPeriod"
         v-on:next-period="nextPeriod" class="period_picker"/>
         </div>
+      <div class="noprint">
       <el-tag
         v-for="tag in tags"
         :key="tag.name"
@@ -41,7 +42,8 @@
       >
         {{ tag.name }}
       </el-tag>
-      <p class="exp_print mt-3">
+      </div>
+      <p class="exp_print mt-3 noprint">
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
         <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
         <span class="mr-3" v-b-modal.modal-scrollable>Легенда</span>

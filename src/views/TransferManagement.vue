@@ -3,7 +3,7 @@
     <div v-loading="loading">
     <div class="container-fluid table_container"  v-show="!loading">
       <h2 class="page__title">
-        <p class="mobile_back" @click="back">
+        <p class="mobile_back noprint" @click="back">
           <svg
             width="18"
             height="12"
@@ -29,11 +29,11 @@
           ></el-autocomplete>
         </div>
       </div>
-        <div class="col mb-3 search__btn mobile"
+        <div class="col mb-3 search__btn mobile noprint"
         @click="searchActive = !searchActive">
-          Поиск <span class="search_icons mobi"></span>
+          <span class="noprint">Поиск</span> <span class="search_icons mobi"></span>
         </div>
-      <div class="row">
+      <div class="row noprint">
         <div class="col">
           <el-tag
             v-for="tag in tags"
@@ -47,7 +47,7 @@
           </el-tag>
         </div>
       </div>
-      <div class="row">
+      <div class="row noprint">
         <div class="col mt-4">
           <button
           :class="`update ${transAccess ? 'disabled' : ''}`"
@@ -73,9 +73,9 @@
           <!-- <br class="mobile_br"> -->
         </div>
       </div>
-      <div class="row">
-        <div class="col">
-          <p class="exp_print">
+      <div class="row noprint">
+        <div class="col noprint">
+          <p class="exp_print noprint">
             <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
             <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
             <span class="mr-3" v-b-modal.modal-scrollable>Легенда</span>

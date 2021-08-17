@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <TheNavBarTop class="nav_top"></TheNavBarTop>
-    <TheNavBar v-show="is_authorized"></TheNavBar>
+    <TheNavBar v-show="is_authorized" class="noprint"></TheNavBar>
     <main id="main">
       <transition name="fade" mode="out-in">
         <router-view />
@@ -889,5 +889,17 @@ th[aria-colindex='1']{
     color: black;
   }
 }
+}
+@media print {
+  // ГЛОБАЛЬНЫЕ
+  .noprint{
+    display: none;
+  }
+  // Показатели
+  .indicat{
+    div.col-md-6{
+      width: 50% !important;
+    }
+  }
 }
 </style>

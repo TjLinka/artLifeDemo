@@ -1,9 +1,9 @@
 <template>
   <div class="sponsor__page">
     <div v-loading="loading">
-    <div class="container-md" v-show="!loading">
+    <div class="container-md indicat" v-show="!loading">
       <h2 class="page__title">
-                              <p class="mobile_back" @click="back">
+                              <p class="mobile_back noprint" @click="back">
         <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
@@ -28,8 +28,8 @@
         </div>
       </div>
       <div class="sponsor__page__description">
-        <div class="row mobile_trans">
-          <div class="col search__btn" @click="toggleSearch">
+        <div class="row mobile_trans noprint">
+          <div class="col search__btn noprint" @click="toggleSearch">
             Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
           </div>
         </div>

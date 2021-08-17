@@ -2,7 +2,7 @@
   <div v-loading="loading">
   <div class="container-fluid table_container" v-show="!loading">
     <h2 class="page__title">
-      <p class="mobile_back" @click="back">
+      <p class="mobile_back noprint" @click="back">
         <svg
           width="18"
           height="12"
@@ -66,8 +66,8 @@
         </p>
       </div>
     </div>
-    <div class="row mt-3 mb-4">
-      <div class="col export_btns">
+    <div class="row mt-3 mb-4 noprint">
+      <div class="col export_btns noprint">
         <!-- <span>Печать</span> -->
         <span @click="downloadPdf">Экспорт в pdf</span>
         <span @click="downloadXls">Экспорт в xlsx</span>

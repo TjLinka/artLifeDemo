@@ -3,20 +3,20 @@
     <div v-loading="loading">
     <div class="container-fluid table_container" v-show="!loading">
       <h2 class="page__title">
-                              <p class="mobile_back" @click="back">
+                              <p class="mobile_back noprint" @click="back">
         <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
         История начисления бонусов
         </h2>
-      <div class="row mt-3">
+      <div class="row mt-3 mb-3">
         <div class="col-md-6 perioad__picker">
         <BasePeriodPicker :currentPeriod="currentPeriod"
         v-on:next-period="nextPeriod" class="period_picker"/>
         </div>
       </div>
-      <p class="exp_print mt-3">
+      <p class="exp_print mt-3 noprint">
         <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
         <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
