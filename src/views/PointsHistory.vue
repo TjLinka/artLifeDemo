@@ -9,6 +9,11 @@
         </svg>
       </p>
         История баллов</h2>
+      <p>
+        <span class="transInfo">Состояние лицевого счета:</span>
+        <span class="lo">ЛО: {{transInfo.lo}}</span>
+        <span class="res">Резерв: {{transInfo.reserve}}</span>
+      </p>
       <p class="p-0 m-0 history_title">Период от и до</p>
       <div class="row">
         <div class="col-md-6">
@@ -162,6 +167,7 @@ export default {
     return {
       loading: true,
       tags: [],
+      transInfo: {},
       operType: null,
       comment: null,
       points_type: null,
@@ -266,9 +272,15 @@ export default {
       ],
     };
   },
-  mounted() {
-    // const date = new Date();
-    // console.log(formatDate(date));
+  async mounted() {
+    const response = await backApi.get('/agent/profile');
+    backApi.get('/agent/transfer-info', {
+      params: {
+        another_agent_id: response.data.id,
+      },
+    }).then((Response) => {
+      this.transInfo = Response.data;
+    });
     this.rangeDate = [
       this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
       this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
@@ -488,6 +500,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.transInfo{
+  font-size: 25px;
+}
+.lo{
+  font-size: 20px;
+  margin-left: 10px;
+  font-weight: bold;
+  display: inline-block;
+}
+.res{
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 10px;
+  display: inline-block;
+}
 .search_icons{
   position: relative;
   top: 5px;

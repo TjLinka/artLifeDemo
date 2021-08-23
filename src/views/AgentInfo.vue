@@ -513,25 +513,6 @@ export default {
     }
   },
   mounted() {
-    // if (this.$route.params.id) {
-    //   backApi
-    //     .get('/agent/profile/child', { params: { another_agent_id: this.$route.params.id } })
-    //     .then((Response) => {
-    //       this.loaded = !this.loaded;
-    //       const data = ReplaceNull(Response.data);
-    //       this.userinfo = data;
-    //     })
-    //     .catch(() => {
-    //       this.loaded = !this.loaded;
-    //       this.success = !this.success;
-    //     });
-    // } else {
-    //   backApi.get('/agent/profile').then((Response) => {
-    //     this.loaded = !this.loaded;
-    //     const data = ReplaceNull(Response.data);
-    //     this.userinfo = data;
-    //   });
-    // }
   },
   computed: {
     ...mapState('auth', ['role']),
@@ -539,15 +520,6 @@ export default {
       return this.role !== 'Клиент';
     },
   },
-  // filters: {
-  //   localInt: (value) => {
-  //     const formatter = new Intl.NumberFormat('ru');
-  //     if (!value) {
-  //       return '-';
-  //     }
-  //     return formatter.format(value);
-  //   },
-  // },
 };
 </script>
 
