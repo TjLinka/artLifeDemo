@@ -321,11 +321,11 @@ export default {
         && this.password.newPass.length >= 5
       ) {
         const data = {
-          old_password: md5(this.password.currentPass),
-          new_password: md5(this.password.newPass),
+          pwd_old: md5(this.password.currentPass),
+          pwd_new: md5(this.password.newPass),
         };
         backApi
-          .post('/agent/change_password', data)
+          .post('/agent/password-change', data)
           .then(() => {
             this.createMessageBoxError('Ваш пароль успешно изменен!');
             this.password = {};
