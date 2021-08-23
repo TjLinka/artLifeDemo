@@ -396,7 +396,7 @@ export default {
         },
         {
           key: 'reserve',
-          label: 'Резерв',
+          label: 'Текущий резерв',
           formatter: (v) => {
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(v);
