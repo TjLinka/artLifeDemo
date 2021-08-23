@@ -225,11 +225,12 @@ export default {
     backApi.get('/agent/profile').then((Response) => {
       this.userInfo = Response.data;
       this.country = Response.data.country;
-      if (this.country.toLowerCase() === 'россия') {
-        this.mask = '+7(###)###-##-##';
-      } else {
-        this.mask = '+###############';
-      }
+      // if (this.country.toLowerCase() === 'россия') {
+      //   this.mask = '+7(###)###-##-##';
+      // } else {
+      //   this.mask = '+###############';
+      // }
+      console.log(Response.data.phone);
       this.phone = Response.data.phone;
     }).then(() => {
       setTimeout(() => { this.loading = false; });
@@ -402,7 +403,7 @@ export default {
     country() {
       if (this.country.toLowerCase() === 'россия') {
         this.mask = '+7(###)###-##-##';
-        this.phone = this.phone.substring(2);
+        // this.phone = this.phone.substring(2);
       } else {
         this.mask = '+###############';
       }
