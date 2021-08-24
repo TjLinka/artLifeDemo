@@ -93,7 +93,6 @@
         :fields="fields"
         :items="entries"
         :tbody-tr-class="rowClass"
-        sticky-header
         sortByFormatted
         class="mt-4">
           <template v-slot:cell(id)="row">
@@ -340,11 +339,13 @@
     </template>
   </b-modal>
       <div :class="`mobile_modal_mask ${searchActive ? 'active' : ''}`"></div>
+      <infinite-loading :identifier="infiniteId" @infinite="infiniteHandler"></infinite-loading>
   </div>
 </template>
 
 <script>
 /* eslint-disable no-param-reassign */
+import InfiniteLoading from 'vue-infinite-loading';
 import { mapActions, mapGetters } from 'vuex';
 import $ from 'jquery';
 import backApi from '../assets/backApi';
@@ -356,9 +357,13 @@ export default {
   components: {
     Transfert2,
     CustomInput,
+    InfiniteLoading,
   },
   data() {
     return {
+      infiniteId: +new Date(),
+      offset: 0,
+      count: 50,
       transMass: [],
       entriesCache: new Map(),
       massTranseftEdit: false,
@@ -506,76 +511,6 @@ export default {
         },
       ],
     };
-  },
-  mounted() {
-    backApi.get('/agent/rank-list').then((Response) => {
-      this.rankList = Response.data.entries;
-    });
-    backApi.get('/agent/area-list').then((Response) => {
-      this.areaList = Response.data.entries;
-    });
-    if (this.$route.params.id) {
-      backApi.get('agent/share-transfert-list', { params: { show_root: 1 } }).then((Response) => {
-        // eslint-disable-next-line eqeqeq
-        const user = Response.data.entries.filter((u) => u.id == this.$route.params.id);
-        this.state = `${user[0].id} - ${user[0].agentname}`;
-        this.currentUserId = user[0].id;
-      });
-      backApi.get('/agent/flat_genealogy', {
-        params: {
-          agent_id: this.$route.params.id,
-          tree_type: 2,
-          with_terminated: 1,
-        },
-      }).then((Response) => {
-        Response.data.entries.forEach((r) => {
-          r.transfer = r.lo;
-          if (r.is_can_transfer) {
-            this.entriesCache.set(r, r.transfer);
-          }
-        });
-        this.entries = Response.data.entries;
-        this.setData(this.entries);
-        this.loading = false;
-      });
-      const treeNameTranslate = {
-        2: 'Своя группа',
-        0: 'Полное дерево',
-        1: 'Директорское',
-      };
-      const treeName = treeNameTranslate[this.tree_type];
-      this.tags.push({ name: treeName, key: 'tree_type' });
-    } else {
-      backApi.get('/agent/profile').then((Response) => {
-        this.state = `${Response.data.id} - ${Response.data.name}`;
-        this.currentUserId = Response.data.id;
-        backApi.get('/agent/flat_genealogy', {
-          params: {
-            agent_id: Response.data.id,
-            tree_type: 2,
-            with_terminated: 1,
-          },
-        }).then((Response2) => {
-          // eslint-disable-next-line no-return-assign
-          Response2.data.entries.forEach((r) => {
-            r.transfer = r.lo;
-            if (r.is_can_transfer) {
-              this.entriesCache.set(r, r.transfer);
-            }
-          });
-          this.entries = Response2.data.entries;
-          this.setData(this.entries);
-          this.loading = false;
-        });
-        const treeNameTranslate = {
-          2: 'Своя группа',
-          0: 'Полное дерево',
-          1: 'Директорское',
-        };
-        const treeName = treeNameTranslate[this.tree_type];
-        this.tags.push({ name: treeName, key: 'tree_type' });
-      });
-    }
   },
   methods: {
     ...mapActions('transStore', ['setData', 'setAllDefault', 'setDefault', 'clearAll']),
@@ -1408,6 +1343,7 @@ export default {
           });
           this.entries = Response.data.entries;
           this.setData(this.entries);
+          this.infiniteId += 1;
           this.loading = false;
         });
     },
@@ -1418,6 +1354,90 @@ export default {
         .parent()
         .siblings()
         .addClass('active');
+    },
+    infiniteHandler($state) {
+      backApi.get('/agent/rank-list').then((Response) => {
+        this.rankList = Response.data.entries;
+      });
+      backApi.get('/agent/area-list').then((Response) => {
+        this.areaList = Response.data.entries;
+      });
+      if (this.$route.params.id) {
+        backApi.get('agent/share-transfert-list', { params: { show_root: 1 } }).then((Response) => {
+          // eslint-disable-next-line eqeqeq
+          const user = Response.data.entries.filter((u) => u.id == this.$route.params.id);
+          this.state = `${user[0].id} - ${user[0].agentname}`;
+          this.currentUserId = user[0].id;
+        });
+        backApi.get('/agent/flat_genealogy', {
+          params: {
+            agent_id: this.$route.params.id,
+            tree_type: 2,
+            with_terminated: 1,
+            offset: Number(this.entries.length),
+            count: Number(this.count),
+          },
+        }).then((Response) => {
+          console.log('1');
+          Response.data.entries.forEach((r) => {
+            r.transfer = r.lo;
+            if (r.is_can_transfer) {
+              this.entriesCache.set(r, r.transfer);
+            }
+          });
+          this.entries = Response.data.entries;
+          this.loading = false;
+          this.setData(this.entries);
+          $state.loaded();
+        });
+        const treeNameTranslate = {
+          2: 'Своя группа',
+          0: 'Полное дерево',
+          1: 'Директорское',
+        };
+        const treeName = treeNameTranslate[this.tree_type];
+        this.tags.push({ name: treeName, key: 'tree_type' });
+      } else {
+        backApi.get('/agent/profile').then((Response) => {
+          this.state = `${Response.data.id} - ${Response.data.name}`;
+          this.currentUserId = Response.data.id;
+          backApi.get('/agent/flat_genealogy', {
+            params: {
+              agent_id: Response.data.id,
+              tree_type: 2,
+              with_terminated: 1,
+              offset: Number(this.entries.length),
+              count: Number(this.count),
+            },
+          }).then((Response2) => {
+            if (Response2.data.entries.length) {
+              // eslint-disable-next-line no-return-assign
+              Response2.data.entries.forEach((r) => {
+                r.transfer = r.lo;
+                if (r.is_can_transfer) {
+                  this.entriesCache.set(r, r.transfer);
+                }
+              });
+              Response2.data.entries.forEach((r) => {
+                this.entries.push(r);
+              });
+              this.loading = false;
+              this.setData(this.entries);
+              $state.loaded();
+            } else {
+              this.loading = false;
+              $state.complete();
+            }
+          });
+          // const treeNameTranslate = {
+          //   2: 'Своя группа',
+          //   0: 'Полное дерево',
+          //   1: 'Директорское',
+          // };
+          // const treeName = treeNameTranslate[this.tree_type];
+          // this.tags.push({ name: treeName, key: 'tree_type' });
+        });
+      }
     },
   },
   computed: {
