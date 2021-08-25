@@ -1228,6 +1228,8 @@ export default {
           i_rank_end: rankEnd,
           i_status_end: statusEnd,
           i_lo: this.lo_type,
+          offset: Number(this.entries.length),
+          count: Number(this.count),
         },
       };
       const treeNameTranslate = {
@@ -1369,15 +1371,43 @@ export default {
           this.state = `${user[0].id} - ${user[0].agentname}`;
           this.currentUserId = user[0].id;
         });
-        backApi.get('/agent/flat_genealogy', {
+        const rankBeg = this.rankList.find((i) => i.rankname === this.filterData.rank_beg)
+          ? this.rankList.find((i) => i.rankname === this.filterData.rank_beg).i_rank : null;
+        const statusBeg = this.rankList.find((i) => i.rankname === this.filterData.rank_beg)
+          ? this.rankList.find((i) => i.rankname === this.filterData.rank_beg).i_status : null;
+
+        const rankCalc = this.rankList.find((i) => i.rankname === this.filterData.rank_calc)
+          ? this.rankList.find((i) => i.rankname === this.filterData.rank_calc).i_rank : null;
+        const statusCalc = this.rankList.find((i) => i.rankname === this.filterData.rank_calc)
+          ? this.rankList.find((i) => i.rankname === this.filterData.rank_calc).i_status : null;
+
+        const rankEnd = this.rankList.find((i) => i.rankname === this.filterData.rank_end)
+          ? this.rankList.find((i) => i.rankname === this.filterData.rank_end).i_rank : null;
+        const statusEnd = this.rankList.find((i) => i.rankname === this.filterData.rank_end)
+          ? this.rankList.find((i) => i.rankname === this.filterData.rank_end).i_status : null;
+
+        const data = {
           params: {
-            agent_id: this.$route.params.id,
-            tree_type: 2,
-            with_terminated: 1,
+            // eslint-disable-next-line radix
+            with_terminated: parseInt(this.filterData.status),
+            tree_type: this.tree_type,
+            agent_id: this.currentUserId,
+            num: this.filterData.agent_id,
+            fullname: this.filterData.fullname,
+            area_id: this.filterData.area_id,
+            city: this.filterData.store,
+            i_rank_beg: rankBeg,
+            i_status_beg: statusBeg,
+            i_rank_calc: rankCalc,
+            i_status_calc: statusCalc,
+            i_rank_end: rankEnd,
+            i_status_end: statusEnd,
+            i_lo: this.lo_type,
             offset: Number(this.entries.length),
             count: Number(this.count),
           },
-        }).then((Response) => {
+        };
+        backApi.get('/agent/flat_genealogy', data).then((Response) => {
           console.log('1');
           Response.data.entries.forEach((r) => {
             r.transfer = r.lo;
@@ -1401,15 +1431,43 @@ export default {
         backApi.get('/agent/profile').then((Response) => {
           this.state = `${Response.data.id} - ${Response.data.name}`;
           this.currentUserId = Response.data.id;
-          backApi.get('/agent/flat_genealogy', {
+          const rankBeg = this.rankList.find((i) => i.rankname === this.filterData.rank_beg)
+            ? this.rankList.find((i) => i.rankname === this.filterData.rank_beg).i_rank : null;
+          const statusBeg = this.rankList.find((i) => i.rankname === this.filterData.rank_beg)
+            ? this.rankList.find((i) => i.rankname === this.filterData.rank_beg).i_status : null;
+
+          const rankCalc = this.rankList.find((i) => i.rankname === this.filterData.rank_calc)
+            ? this.rankList.find((i) => i.rankname === this.filterData.rank_calc).i_rank : null;
+          const statusCalc = this.rankList.find((i) => i.rankname === this.filterData.rank_calc)
+            ? this.rankList.find((i) => i.rankname === this.filterData.rank_calc).i_status : null;
+
+          const rankEnd = this.rankList.find((i) => i.rankname === this.filterData.rank_end)
+            ? this.rankList.find((i) => i.rankname === this.filterData.rank_end).i_rank : null;
+          const statusEnd = this.rankList.find((i) => i.rankname === this.filterData.rank_end)
+            ? this.rankList.find((i) => i.rankname === this.filterData.rank_end).i_status : null;
+
+          const data = {
             params: {
-              agent_id: Response.data.id,
-              tree_type: 2,
-              with_terminated: 1,
+              // eslint-disable-next-line radix
+              with_terminated: parseInt(this.filterData.status),
+              tree_type: this.tree_type,
+              agent_id: this.currentUserId,
+              num: this.filterData.agent_id,
+              fullname: this.filterData.fullname,
+              area_id: this.filterData.area_id,
+              city: this.filterData.store,
+              i_rank_beg: rankBeg,
+              i_status_beg: statusBeg,
+              i_rank_calc: rankCalc,
+              i_status_calc: statusCalc,
+              i_rank_end: rankEnd,
+              i_status_end: statusEnd,
+              i_lo: this.lo_type,
               offset: Number(this.entries.length),
               count: Number(this.count),
             },
-          }).then((Response2) => {
+          };
+          backApi.get('/agent/flat_genealogy', data).then((Response2) => {
             if (Response2.data.entries.length) {
               // eslint-disable-next-line no-return-assign
               Response2.data.entries.forEach((r) => {
