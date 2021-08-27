@@ -892,6 +892,14 @@ th[aria-colindex='1']{
 }
 @media print {
   // ГЛОБАЛЬНЫЕ
+    html, body{
+      height: 297mm !important;
+      width: 210mm !important;
+      .col-md-6{
+        flex: 0 0 50%;
+        width: 50%;
+      }
+    }
   .noprint{
     display: none;
   }
@@ -900,6 +908,16 @@ th[aria-colindex='1']{
     div.col-md-6{
       width: 50% !important;
     }
+    .current_period br{
+      display: none !important;
+    }
   }
+  .date_show{
+    margin-left: -22px !important;
+  }
+  .arrow_left{
+    display: none !important;
+  }
+  // Данные спонсора
 }
 </style>

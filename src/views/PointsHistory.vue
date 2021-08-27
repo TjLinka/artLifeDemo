@@ -56,7 +56,7 @@
         <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
       </p>
       <b-table responsive :fields="fields" :items="entries" head-variant="light"
-      class="points_history_table" outlined>
+      class="points_history_table mt-4" outlined>
         <template #table-colgroup="scope">
           <col
             v-for="field in scope.fields"
@@ -74,7 +74,7 @@
           </template>
       </b-table>
       <h2 class="licevoischet__page__summ">
-        <span class="mr-4">НА СЧеТ = {{ summIncome | localInt }}        </span>
+        <span class="mr-4">НА СЧЕТ = {{ summIncome | localInt }}        </span>
         <span class="mr-4">СО СЧЕТА = {{ summOutcome | localInt }}        </span>
         <span class="mr-4">ИЗМЕНЕНИЯ  = {{ changes | localInt }}         </span>
         </h2>

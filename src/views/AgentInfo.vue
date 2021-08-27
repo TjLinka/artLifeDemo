@@ -3,7 +3,7 @@
     <div v-loading="loading">
     <div class="container-md" v-if="!success" v-show="!loading">
       <h2 class="page__title">
-        <p class="mobile_back" @click="back">
+        <p class="mobile_back noprint" @click="back">
           <svg
             width="18"
             height="12"
@@ -24,7 +24,7 @@
           </div>
         </div>
         <div class="container-md top__info">
-          <div class="row" v-if="!this.$route.params.id">
+          <div class="row noprint" v-if="!this.$route.params.id">
             <div class="col-md mt-1">
               <span class="modal_btn" @click="showTransfModal1" v-if="transfertAccess">
                 Перевести баллы между партнерами
@@ -173,12 +173,12 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6 mt-3">
+            <div class="col-md-6 mt-3 noprint">
               <p class="show__transfert p-0" v-on:click="toggleTransfertVisible">
                 {{ showTransfertInfo ? 'Свернуть' : 'Раскрыть' }}
               </p>
             </div>
-            <div class="col-md-6 mt-3">
+            <div class="col-md-6 mt-3 noprint">
               <button v-if="showTransfertInfo" class="transfert__btn" @click="showTransfModal">
                 ТРАНСФЕРТ
               </button>
