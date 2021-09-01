@@ -133,7 +133,7 @@
         </el-table-column>
       </el-table>
       </div>
-      <footer class="cust_modal">
+      <footer class="cust_modal noprint">
               <div class="row">
         <div class="col text-center search__btn desktop" @click="toggleSearch" v-if="!searchActive">
           Настройки дерева <span class="search_icons"></span>

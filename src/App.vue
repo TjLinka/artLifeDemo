@@ -900,6 +900,9 @@ th[aria-colindex='1']{
         width: 50%;
       }
     }
+  // .main{
+  //   padding-left: 0 !important;
+  // }
   .noprint{
     display: none;
   }

@@ -1425,8 +1425,15 @@ export default {
           0: 'Полное дерево',
           1: 'Директорское',
         };
-        const treeName = treeNameTranslate[this.tree_type];
-        this.tags.push({ name: treeName, key: 'tree_type' });
+        if (this.tree_type !== null) {
+          const treeName = treeNameTranslate[this.tree_type];
+          const tag = this.tags.find((t) => t.key === 'tree_type');
+          if (tag) {
+            tag.name = treeName;
+          } else if (this.tree_type !== 'full') {
+            this.tags.push({ name: treeName, key: 'tree_type' });
+          }
+        }
       } else {
         backApi.get('/agent/profile').then((Response) => {
           this.state = `${Response.data.id} - ${Response.data.name}`;
@@ -1487,6 +1494,20 @@ export default {
               $state.complete();
             }
           });
+          const treeNameTranslate = {
+            2: 'Своя группа',
+            0: 'Полное дерево',
+            1: 'Директорское',
+          };
+          if (this.tree_type !== null) {
+            const treeName = treeNameTranslate[this.tree_type];
+            const tag = this.tags.find((t) => t.key === 'tree_type');
+            if (tag) {
+              tag.name = treeName;
+            } else if (this.tree_type !== 'full') {
+              this.tags.push({ name: treeName, key: 'tree_type' });
+            }
+          }
           // const treeNameTranslate = {
           //   2: 'Своя группа',
           //   0: 'Полное дерево',
