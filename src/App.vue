@@ -209,7 +209,7 @@ input[type='radio']{
 }
 // СТИЛИЯ ЯЧЕЕК EL-TABLE
 .el-table td, .el-table th{
-  vertical-align: top;
+  vertical-align: middle;
 }
 // СТИЛИ ДЛЯ RADIO КНОПОК
 .custom-radio label{
@@ -582,39 +582,39 @@ input[type='number'] {
   color: white;
 }
 .depth-1 {
-  background-color: #AED9D8;
+  background-color: #AED9D8 !important;
   color: black;
 }
 .depth-2 {
-  background-color: #B5CCE2 ;
+  background-color: #B5CCE2 !important;
   color: black;
 }
 .depth-3 {
-  background-color: #C1D5E9 ;
+  background-color: #C1D5E9 !important;
   color: black;
 }
 .depth-4 {
-  background-color: #BEBEBE ;
+  background-color: #997a7a !important;
   color: black;
 }
 .depth-5 {
-  background-color: #C4C5C6 ;
+  background-color: #C4C5C6 !important;
   color: black;
 }
 .depth-6 {
-  background-color: #CECFD0 ;
+  background-color: #CECFD0 !important;
   color: black;
 }
 .depth-7 {
-  background-color: #D4D5D7 ;
+  background-color: #D4D5D7 !important;
   color: black;
 }
 .depth-8 {
-  background-color: #E3E3E4 ;
+  background-color: #E3E3E4 !important;
   color: black;
 }
 .depth-9 {
-  background-color: #EBEDF4 ;
+  background-color: #EBEDF4 !important;
   color: black;
 }
 .el-icon-arrow-left,

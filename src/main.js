@@ -10,12 +10,19 @@ import VueMask from 'v-mask';
 import VueTheMask from 'vue-the-mask';
 import VueMomentLib from 'vue-moment-lib';
 import VueCurrencyInput from 'vue-currency-input';
+import InfiniteLoading from 'vue-infinite-loading';
 
 import App from './App.vue';
 import router from './router';
 import store from './store';
 
 locale.use(lang);
+
+Vue.use(InfiniteLoading, {
+  slots: {
+    noMore: 'Всё данные загружены', // you can pass a string value
+  },
+});
 
 const pluginOptions = {
   /* see config reference */

@@ -21,18 +21,18 @@ export default {
   computed: {
     ...mapGetters('transStore', ['getTransfert']),
     transValue() {
-      return this.getTransfert(this.rowa.item.id).transData.transfert;
+      return this.getTransfert(this.rowa.id).transData.transfert;
     },
     userId() {
-      return this.getTransfert(this.rowa.item.id).id;
+      return this.getTransfert(this.rowa.id).id;
     },
     changed() {
       // eslint-disable-next-line max-len
-      return Number(this.getTransfert(this.rowa.item.id).transData.transfert) !== this.getTransfert(this.rowa.item.id).transData.lo;
+      return Number(this.getTransfert(this.rowa.id).transData.transfert) !== this.getTransfert(this.rowa.id).transData.lo;
     },
     isError() {
       // eslint-disable-next-line max-len
-      return Number(this.getTransfert(this.rowa.item.id).transData.transfert) > this.getTransfert(this.rowa.item.id).transData.lo + this.getTransfert(this.rowa.item.id).transData.reserve;
+      return Number(this.getTransfert(this.rowa.id).transData.transfert) > this.getTransfert(this.rowa.id).transData.lo + this.getTransfert(this.rowa.id).transData.reserve;
     },
   },
   mounted() {

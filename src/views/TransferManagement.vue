@@ -1,7 +1,8 @@
+/* eslint-disable max-len */
 <template>
   <div class="licevoischet__page">
     <div v-loading="loading">
-    <div class="container-fluid table_container"  v-show="!loading">
+    <div class="container-fluid table_container">
       <h2 class="page__title">
         <p class="mobile_back noprint" @click="back">
           <svg
@@ -82,8 +83,62 @@
           </p>
         </div>
       </div>
-      <div class="transmaneg_table mb-3">
-        <b-table
+      <div class="transmaneg_table mb-3 mt-3">
+        <el-table
+        :data="entries"
+        :row-class-name="tableRowClassName"
+        border
+        height="60vh"
+        >
+          <el-table-column
+          v-for="column in fields"
+          :key="column.key"
+          :prop="column.key"
+          :label="column.label"
+          :width="colWidth(column.key)"
+          >
+          <template slot-scope="scope">
+            <div v-if="column.key === 'id'">
+              <p style="margin: 0;">
+                <span class="mr-4">{{ scope.row.lvl }} УР</span>
+              <img :src="`../icons/${scope.row.rank_calc}${scope.row.lvl==='0'?'_white':''}.svg`"
+              :title="scope.row.rank_end" class="rank_icon" />
+                <span style="display: inline-block; float:right">{{ scope.row.id }}</span><br>
+                <router-link :to="`/agent/${scope.row.id}`">
+                </router-link>
+              </p>
+              <p style="text-align: right; margin: 0">{{ scope.row.fio }}</p>
+            </div>
+            <div v-else-if="column.key === 'isterminated'">
+              {{scope.row.isterminated === '0' ? 'Нет' : 'Да'}}
+            </div>
+            <div v-else-if="column.key === 'rank_end_npp'">
+              {{scope.row.rank_end}}
+            </div>
+            <div v-else-if="column.key === 'rank_beg_npp'">
+              {{scope.row.rank_beg}}
+            </div>
+            <div v-else-if="column.key === 'rank_calc_npp'">
+              {{scope.row.rank_calc}}
+            </div>
+            <div v-else-if="column.key === 'trans'">
+              <CustomInput :rowa="scope.row" v-show="scope.row.is_can_transfer"/>
+            </div>
+            <div v-else>
+              {{scope.row[column.key]}}
+            </div>
+          </template>
+          </el-table-column>
+          <infinite-loading
+          slot="append"
+          :identifier="infiniteId"
+          force-use-infinite-wrapper=".el-table__body-wrapper"
+          spinner="waveDots"
+          @infinite="infiniteHandler">
+            <div slot="no-more">Все данные загружены</div>
+          </infinite-loading>
+        </el-table>
+        <!-- <b-table
         outlined
         responsive
         selectable
@@ -102,8 +157,6 @@
               :title="row.item.rank_end" class="rank_icon" />
               <span style="display: inline-block; float:right">{{ row.item.id }}</span><br>
               <router-link :to="`/agent/${row.item.id}`">
-              <!-- <span :class="`user_name ${row.item.lvl === '0' ? 'depth-main' : ''}`">
-              {{row.item.name}}</span> -->
               </router-link>
             </p>
             <p style="text-align: right; margin: 0">{{ row.item.fio }}</p>
@@ -126,7 +179,7 @@
           <template v-slot:cell(trans)="row">
           <CustomInput :rowa="row" v-show="row.item.is_can_transfer"/>
           </template>
-        </b-table>
+        </b-table> -->
       </div>
     </div>
     </div>
@@ -339,11 +392,15 @@
     </template>
   </b-modal>
       <div :class="`mobile_modal_mask ${searchActive ? 'active' : ''}`"></div>
-      <infinite-loading :identifier="infiniteId" @infinite="infiniteHandler"></infinite-loading>
+      <!-- <infinite-loading
+      :identifier="infiniteId"
+      @infinite="infiniteHandler">
+      </infinite-loading> -->
   </div>
 </template>
 
 <script>
+/* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 import InfiniteLoading from 'vue-infinite-loading';
 import { mapActions, mapGetters } from 'vuex';
@@ -359,11 +416,24 @@ export default {
     CustomInput,
     InfiniteLoading,
   },
+  // mounted() {
+  //   const tr = document.querySelector('.thead-light');
+  //   // eslint-disable-next-line prefer-arrow-callback
+  //   window.addEventListener('scroll', function () {
+  //     const trCoord = tr.getBoundingClientRect();
+  //     console.log(window.pageYOffset);
+  //     // console.log(tr.getBoundingClientRect().top);
+  //     if (trCoord.top < 0) {
+  //       tr.style.position = 'relative';
+  //       tr.style.top = `${Math.abs(trCoord.top) + 10}px`;
+  //     }
+  //   });
+  // },
   data() {
     return {
       infiniteId: +new Date(),
       offset: 0,
-      count: 50,
+      count: 15,
       transMass: [],
       entriesCache: new Map(),
       massTranseftEdit: false,
@@ -513,6 +583,11 @@ export default {
     };
   },
   methods: {
+    // eslint-disable-next-line consistent-return
+    colWidth(key) {
+      if (key === 'id') return 160;
+      // eslint-disable-next-line consistent-return
+    },
     ...mapActions('transStore', ['setData', 'setAllDefault', 'setDefault', 'clearAll']),
     clearTranfer(evt, id) {
       this.setDefault(id);
@@ -523,7 +598,13 @@ export default {
       this.fields = [
         {
           key: 'id',
-          label: 'P/номер / Ранг / ФИО',
+          label: 'P/номер / Ранг',
+          formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
+          thClass: 'fsth',
+        },
+        {
+          key: 'name',
+          label: 'ФИО',
           formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
         },
         {
@@ -643,7 +724,13 @@ export default {
       this.fields = [
         {
           key: 'id',
-          label: 'P/номер / Ранг / ФИО',
+          label: 'P/номер / Ранг',
+          formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
+          thClass: 'fsth',
+        },
+        {
+          key: 'name',
+          label: 'ФИО',
           formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
         },
         {
@@ -767,12 +854,21 @@ export default {
             lo: val.transData.transfert,
           });
         }
+        this.offset = 0;
+        this.count = 10;
+        this.entries = [];
         this.clearAll();
         this.massTranseftEdit = false;
         this.fields = [
           {
             key: 'id',
-            label: 'P/номер / Ранг / ФИО',
+            label: 'P/номер / Ранг',
+            formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
+            thClass: 'fsth',
+          },
+          {
+            key: 'name',
+            label: 'ФИО',
             formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
           },
           {
@@ -1024,7 +1120,7 @@ export default {
       return `depth-${item.lvl}`;
     },
     tableRowClassName({ row }) {
-      return `depth-${row.depth}`;
+      return `depth-${row.lvl}`;
     },
     handleClose(event, tag) {
       if (tag.key === 'rank_beg') {
@@ -1755,6 +1851,12 @@ export default {
 }
 </style>
 <style>
+.infinite-status-prompt{
+  /* display: none; */
+}
+.el-table .cell{
+  overflow: visible;
+}
 .fsth{
   width: 170px !important;
 }
