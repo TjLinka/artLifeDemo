@@ -80,6 +80,7 @@
             <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
             <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
             <span class="mr-3" v-b-modal.modal-scrollable>Легенда</span>
+            <span class="mr-3" v-if="selectedRow" @click="setCurrent()">Снять выделение</span>
           </p>
         </div>
       </div>
@@ -88,6 +89,9 @@
         :data="entries"
         :row-class-name="tableRowClassName"
         border
+        ref="singleTable"
+        highlight-current-row
+        @current-change="handleCurrentChange"
         height="60vh"
         >
           <el-table-column
@@ -431,6 +435,7 @@ export default {
   // },
   data() {
     return {
+      selectedRow: null,
       infiniteId: +new Date(),
       offset: 0,
       count: 15,
@@ -583,6 +588,27 @@ export default {
     };
   },
   methods: {
+    setCurrent(row) {
+      this.$refs.singleTable.setCurrentRow(row);
+      this.selectedRow = null;
+    },
+    handleCurrentChange(val) {
+      this.selectedRow = val;
+      console.log(val);
+      this.showTrans = false;
+      if (val) {
+        backApi.get('/agent/transfer-info', { params: { another_agent_id: val.id } })
+          .then(() => {
+            this.id = val.id;
+            this.transAccess = false;
+          })
+          .catch(() => {
+            this.transAccess = true;
+          });
+      } else {
+        this.transAccess = true;
+      }
+    },
     // eslint-disable-next-line consistent-return
     colWidth(key) {
       if (key === 'id') return 160;
@@ -1884,5 +1910,8 @@ export default {
 .el-select .el-icon-circle-close:before{
   bottom: 20px;
   right: 10px;
+}
+.el-table__body tr.current-row.depth-0>td{
+  background-color: #bebebe !important;
 }
 </style>
