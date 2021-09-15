@@ -3,7 +3,7 @@
     <div v-loading="loading">
     <div class="container-md"  v-show="!loading">
       <h2 class="page__title">
-        <p class="mobile_back" @click="back">
+        <p class="mobile_back noprint" @click="back">
           <svg
             width="18"
             height="12"
@@ -24,7 +24,7 @@
           </p>
         </div>
       </div>
-      <div class="row mt-3">
+      <div class="row mt-3 noprint">
         <div class="col-xl-6 rights_btns">
           <button @click="takeRight"
           :disabled="ruleGiver !== null
@@ -36,7 +36,7 @@
         </div>
       </div>
       <h2 class="mt-4">Переданные мне права</h2>
-      <p class="exp_print mt-3">
+      <p class="exp_print mt-3 noprint">
         <!-- <span class="mr-3">Печать</span> -->
         <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
         <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
@@ -63,7 +63,7 @@
       </div>
     </div>
     </div>
-    <footer class="container-fluid cust_modal" v-if="showModal1">
+    <footer class="container-fluid cust_modal noprint" v-if="showModal1">
       <div>
         <RightsModalTake
         v-on:enlarge-text="showModal1 = false"
@@ -92,7 +92,7 @@
       Права переданы!
     </b-toast>
     <div :class="`mobile_modal_mask ${showModal1 ? 'active' : ''}`"></div>
-      <footer class="container-md-fluid cust_modal mmm">
+      <footer class="container-md-fluid cust_modal mmm noprint">
       <div class="row desk_trans">
         <div
         class="col text-center search__btn"
@@ -153,6 +153,7 @@ export default {
           label: 'ЛО',
           sortable: true,
           formatter: (v) => {
+            if (v === null) return '-';
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(parseFloat(v, 0));
           },
@@ -162,6 +163,7 @@ export default {
           label: 'ГО',
           sortable: true,
           formatter: (v) => {
+            if (v === null) return '-';
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(parseFloat(v, 0));
           },
@@ -171,6 +173,7 @@ export default {
           label: 'Резерв',
           sortable: true,
           formatter: (v) => {
+            if (v === null) return '-';
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(parseFloat(v, 0));
           },

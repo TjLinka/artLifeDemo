@@ -333,6 +333,9 @@ main {
     &:hover{
       border-bottom-color: #46474b;
     }
+    &.error:hover{
+      border-bottom-color: red;
+    }
     &:hover ~ label{
       color: #46474b;
     }
@@ -892,17 +895,17 @@ th[aria-colindex='1']{
 }
 @media print {
   // ГЛОБАЛЬНЫЕ
-    html, body{
-      height: 297mm !important;
-      width: 210mm !important;
+    body{
+      // height: 297mm !important;
+      // width: 210mm !important
       .col-md-6{
         flex: 0 0 50%;
         width: 50%;
       }
     }
-  // .main{
-  //   padding-left: 0 !important;
-  // }
+  .main{
+    padding-left: 0 !important;
+  }
   .noprint{
     display: none;
   }

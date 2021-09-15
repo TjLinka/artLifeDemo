@@ -99,7 +99,7 @@
           :key="column.key"
           :prop="column.key"
           :label="column.label"
-          :width="colWidth(column.key)"
+          :min-width="colWidth(column.key)"
           >
           <template slot-scope="scope">
             <div v-if="column.key === 'id'">
@@ -187,7 +187,7 @@
       </div>
     </div>
     </div>
-      <footer class="container-fluid cust_modal">
+      <footer class="container-fluid cust_modal noprint">
       <div class="row desk_trans">
         <div class="col text-center search__btn desktop"
         @click="searchActive = !searchActive" v-if="!searchActive">
@@ -357,7 +357,7 @@
       </footer>
       <footer class="container-fluid cust_modal" v-if="showTrans">
         <div>
-          <Transfert2 v-on:enlarge-text="showTrans = false" :id="id" />
+          <TransfertMass v-on:enlarge-text="showTrans = false" :id="id" />
         </div>
       </footer>
   <b-modal v-model="show"
@@ -410,13 +410,13 @@ import InfiniteLoading from 'vue-infinite-loading';
 import { mapActions, mapGetters } from 'vuex';
 import $ from 'jquery';
 import backApi from '../assets/backApi';
-import Transfert2 from '../components/Transfert2.vue';
+import TransfertMass from '../components/TransfertMass.vue';
 import CustomInput from '../components/CustomInput.vue';
 
 export default {
   name: 'TransferManagement',
   components: {
-    Transfert2,
+    TransfertMass,
     CustomInput,
     InfiniteLoading,
   },
@@ -588,6 +588,26 @@ export default {
     };
   },
   methods: {
+    print() {
+      const colGroup1 = document.getElementsByTagName('colgroup')[0];
+      const colGroup2 = document.getElementsByTagName('colgroup')[1];
+      colGroup1.style.display = 'none';
+      colGroup2.style.display = 'none';
+      const tableHead = document.querySelector('.el-table__header');
+      const tableBody = document.querySelector('.el-table__body');
+      const hashWH = tableHead.style.width;
+      const hashWB = tableBody.style.width;
+      console.log(hashWH, hashWB);
+      tableHead.style.width = '920px';
+      tableBody.style.width = '920px';
+      window.print();
+      setTimeout(() => {
+        colGroup1.style.display = 'block';
+        colGroup2.style.display = 'block';
+        tableHead.style.width = hashWH;
+        tableBody.style.width = hashWB;
+      });
+    },
     setCurrent(row) {
       this.$refs.singleTable.setCurrentRow(row);
       this.selectedRow = null;
@@ -1877,6 +1897,12 @@ export default {
 }
 </style>
 <style>
+/* .el-table--enable-row-hover .el-table__body tr:hover > td{
+  background-color: #F5F7FA;
+} */
+.el-table__body tr.current-row>td{
+  background-color: #F5F7FA !important;
+}
 .infinite-status-prompt{
   /* display: none; */
 }

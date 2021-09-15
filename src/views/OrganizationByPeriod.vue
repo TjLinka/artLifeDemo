@@ -56,6 +56,7 @@
         row-key="id"
         lazy
         :load="load"
+        header-row-class-name='wwwww'
         :tree-props="{ children: 'children', hasChildren: 'has_children' }"
         :row-class-name="tableRowClassName"
       >
@@ -63,6 +64,7 @@
           v-for="(column, index) in columns"
           :prop="column.property"
           :key="index"
+          resizable
           :label="column.title"
           :min-width="col_width(column)"
         >
@@ -422,6 +424,26 @@ export default {
     },
   },
   methods: {
+    print() {
+      const colGroup1 = document.getElementsByTagName('colgroup')[0];
+      const colGroup2 = document.getElementsByTagName('colgroup')[1];
+      colGroup1.style.display = 'none';
+      colGroup2.style.display = 'none';
+      const tableHead = document.querySelector('.el-table__header');
+      const tableBody = document.querySelector('.el-table__body');
+      const hashWH = tableHead.style.width;
+      const hashWB = tableBody.style.width;
+      console.log(hashWH, hashWB);
+      tableHead.style.width = '920px';
+      tableBody.style.width = '920px';
+      window.print();
+      setTimeout(() => {
+        colGroup1.style.display = 'block';
+        colGroup2.style.display = 'block';
+        tableHead.style.width = hashWH;
+        tableBody.style.width = hashWB;
+      });
+    },
     toogleColumn() {
       this.colHide = !this.colHide;
       if (this.$refs.hideBtn[0].classList.contains('hide')) {
@@ -634,7 +656,7 @@ export default {
       return 0;
     },
     tableRowClassName({ row }) {
-      return `depth-${row.depth}`;
+      return `depth-${row.depth} printa`;
     },
     handleClose(event, tag) {
       // this.tags.splice(this.dynamicTags.indexOf(tag), 1);

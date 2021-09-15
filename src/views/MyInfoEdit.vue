@@ -22,45 +22,60 @@
       <div class="top__info mt-3">
         <div class="row edit ">
           <div class="col-md-6 custom_input mt-3">
-            <input type="text" name="country" id="country" required v-model="country" />
+            <input
+            @blur="checkInput('country')"
+            ref="country"
+            type="text" name="country" id="country" required v-model="userTopInfo.country" />
             <label for="country">Страна</label>
-            <span class="clear_icon" @click="clearCountry('country')"></span>
+            <span class="clear_icon" @click="clearInput('country')"></span>
           </div>
           <div class="col-md-6 custom_input mt-3">
-            <input type="text" name="city" id="city" required v-model="userInfo.city" />
+            <input
+            @blur="checkInput('city')"
+            ref="city"
+            type="text" name="city" id="city" required v-model="userTopInfo.city" />
             <label for="city">Город</label>
             <span class="clear_icon" @click="clearInput('city')"></span>
           </div>
         </div>
         <div class="row edit ">
           <div class="col-md-6 custom_input mt-3">
-            <input type="text" name="address" id="address" required v-model="userInfo.address" />
+            <input
+            @blur="checkInput('address')"
+            ref="address"
+            type="text" name="address" id="address" required v-model="userTopInfo.address" />
             <label for="address">Адрес</label>
             <span class="clear_icon" @click="clearInput('address')"></span>
           </div>
           <div class="col-md-6 custom_input mt-3">
-            <input type="text" name="passport" id="passport" required v-model="userInfo.passport" />
+            <input
+            @blur="checkInput('passport')"
+            ref='passport'
+            type="text" name="passport" id="passport"
+            required v-model="userTopInfo.passport" />
             <label for="passport">Паспорт</label>
             <span class="clear_icon" @click="clearInput('passport')"></span>
           </div>
         </div>
         <div class="row edit ">
           <div class="col-md-6 mt-3">
-            <span v-if="userInfo.bthdte" class="custom_label">Дата рождения</span>
-            <date-picker
-              v-model="userInfo.bthdte"
-              value-type="YYYY-MM-DD"
-              format="DD.MM.YYYY"
-              type="date"
-              placeholder="Дата рождения"
-              style="width: 100%"
-              range-separator=" - "
-            ></date-picker>
+            <div ref="bthdte">
+              <span v-if="userTopInfo.bthdte" class="custom_label">Дата рождения</span>
+              <date-picker
+                v-model="userTopInfo.bthdte"
+                value-type="YYYY-MM-DD"
+                format="DD.MM.YYYY"
+                type="date"
+                placeholder="Дата рождения"
+                style="width: 100%"
+                range-separator=" - "
+              ></date-picker>
+            </div>
           </div>
           <div class="col-md-6 custom_input mt-3">
             <input type="text" name="skype" id="skype" required v-model="userInfo.skype" />
             <label for="skype">Доп. контакты</label>
-            <span class="clear_icon" @click="clearInput('skype')"></span>
+            <span class="clear_icon" @click="clearSkype('skype')"></span>
           </div>
         </div>
         <div class="row edit mt-3">
@@ -104,14 +119,6 @@
                 Потвердить
               </button>
             </div>
-            <!-- <div class="custom_input t" v-if="smsStatus">
-              <input type="text" name="smsCode" id="smsCode" required v-model="smsCode" />
-              <label for="smsCode">Код потверждения</label>
-              <span class="clear_icon" @click="clearInput('smsCode')"></span>
-              <button class="save__newinfo mt-3" v-on:click="checkSmsCode">
-                Потвердить
-              </button>
-            </div> -->
           </div>
         </div>
         <div class="row edit">
@@ -173,7 +180,6 @@
         <div class="d-flex flex-grow-1 align-items-baseline">
           <b-img blank blank-color="green" class="mr-2" width="12" height="12"></b-img>
           <strong class="mr-auto">Успех!</strong>
-          <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
         </div>
       </template>
       Ваш данные успешно изменены!
@@ -183,7 +189,6 @@
         <div class="d-flex flex-grow-1 align-items-baseline">
           <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
           <strong class="mr-auto">Ошибка!</strong>
-          <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
         </div>
       </template>
       При изменении данных произошла ошибка!
@@ -217,12 +222,20 @@ export default {
         currentPass: '',
       },
       userInfo: {},
+      userTopInfo: {},
       newPass: null,
       oldPass: null,
     };
   },
   mounted() {
     backApi.get('/agent/profile').then((Response) => {
+      this.userTopInfo = {
+        country: Response.data.country,
+        city: Response.data.city,
+        address: Response.data.address,
+        passport: Response.data.passport,
+        bthdte: Response.data.bthdte,
+      };
       this.userInfo = Response.data;
       this.country = Response.data.country;
       // if (this.country.toLowerCase() === 'россия') {
@@ -237,6 +250,9 @@ export default {
     });
   },
   methods: {
+    clearSkype() {
+      this.userInfo.skype = null;
+    },
     showToast(title, message, status) {
       // Use a shorter name for this.$createElement
       const h = this.$createElement;
@@ -261,7 +277,15 @@ export default {
       });
     },
     clearInput(name) {
-      this.userInfo[name] = null;
+      this.userTopInfo[name] = null;
+      this.$refs[name].focus();
+    },
+    checkInput(name) {
+      if (this.$refs[name].value === null || this.$refs[name].value === '') {
+        this.$refs[name].classList.add('error');
+      } else if (this.$refs[name].classList.contains('error') && (this.$refs[name].value !== null || this.$refs[name].value !== '')) {
+        this.$refs[name].classList.remove('error');
+      }
     },
     clearPass(name) {
       this.password[name] = null;
@@ -375,13 +399,34 @@ export default {
         appendToast: append,
       });
     },
-    async saveTopEdit() {
-      await backApi.post('agent/profile-edit', this.userInfo);
-      backApi.get('/agent/profile').then((Response) => {
-        this.userInfo = Response.data;
-      });
-      // this.$bvToast.show('my-toast-success');
-      this.createMessageBoxError('Данные успешно изменены!');
+    saveTopEdit() {
+      if (!Object.values(this.userTopInfo).some((val) => val === null || val === '')) {
+        backApi.post('agent/profile-edit',
+          {
+            country: this.userTopInfo.country,
+            city: this.userTopInfo.city,
+            address: this.userTopInfo.address,
+            passport: this.userTopInfo.passport,
+            bthdte: this.userTopInfo.bthdte,
+            skype: this.userInfo.skype,
+          }).then(() => {
+          backApi.get('/agent/profile').then((Response) => {
+            this.userInfo = Response.data;
+          }).then(() => {
+            // eslint-disable-next-line max-len
+            Object.keys(this.userTopInfo).forEach((key) => {
+              this.$refs[key].classList.remove('error');
+            });
+            this.createMessageBoxError('Данные успешно изменены!');
+          });
+        });
+      } else {
+        // eslint-disable-next-line max-len
+        Object.keys(this.userTopInfo).filter((key) => this.userTopInfo[key] === null).forEach((kkey) => {
+          this.$refs[kkey].classList.add('error');
+        });
+        this.showToast('Ошибка!', 'Заполните обязательные поля!', 'danger');
+      }
     },
     createMessageBoxError(messageText) {
       const h = this.$createElement;

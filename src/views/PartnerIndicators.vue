@@ -13,7 +13,7 @@
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
         </svg>
       </p>
-      История показателей партнера по периодам
+      История показателей партнера по периодам: {{userInfo.id}} - {{userInfo.name}}
     </h2>
         <!-- <div class="col mt-4 search__btn mobile"
         @click="showModal = !showModal" v-if="!showModal">
@@ -133,6 +133,7 @@ export default {
   },
   data() {
     return {
+      agentData: {},
       loading: true,
       iconDict: {
         'Клиент': {

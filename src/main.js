@@ -11,6 +11,7 @@ import VueTheMask from 'vue-the-mask';
 import VueMomentLib from 'vue-moment-lib';
 import VueCurrencyInput from 'vue-currency-input';
 import InfiniteLoading from 'vue-infinite-loading';
+import VueHtmlToPaper from 'vue-html-to-paper';
 
 import App from './App.vue';
 import router from './router';
@@ -39,6 +40,7 @@ Vue.use(VueMask, {
     Я: /[\wа-яА-Я]/, // cyrillic letter as a placeholder
   },
 });
+Vue.use(VueHtmlToPaper);
 Vue.use(VueTheMask);
 Vue.use(ElementUI);
 Vue.config.productionTip = false;

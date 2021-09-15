@@ -8,7 +8,7 @@
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
-        История баллов</h2>
+        История баллов: {{agentData.id}} - {{agentData.name}}</h2>
       <p>
         <span class="transInfo">Состояние лицевого счета:</span>
         <span class="lo">ЛО: {{transInfo.lo}}</span>
@@ -165,6 +165,7 @@ export default {
   components: { DatePicker },
   data() {
     return {
+      agentData: {},
       loading: true,
       tags: [],
       transInfo: {},
@@ -274,6 +275,7 @@ export default {
   },
   async mounted() {
     const response = await backApi.get('/agent/profile');
+    this.agentData = response.data;
     backApi.get('/agent/transfer-info', {
       params: {
         another_agent_id: response.data.id,

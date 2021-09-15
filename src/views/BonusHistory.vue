@@ -8,7 +8,7 @@
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
-        История начисления бонусов
+        История начисления бонусов: {{agentData.id}} - {{agentData.name}}
         </h2>
       <div class="row mt-3 mb-3">
         <div class="col-md-6 perioad__picker">
@@ -62,6 +62,7 @@ export default {
   },
   data() {
     return {
+      agentData: {},
       loading: true,
       currentPeriodTop: {},
       periods: [],
@@ -237,6 +238,9 @@ export default {
     };
   },
   mounted() {
+    backApi.get('/agent/profile').then((Response) => {
+      this.agentData = Response.data;
+    });
     backApi.get('/agent/get-current-period').then((Response2) => {
       this.currentPeriodTop = Response2.data;
     });
