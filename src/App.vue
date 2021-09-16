@@ -894,6 +894,9 @@ th[aria-colindex='1']{
 }
 }
 @media print {
+  @page {
+    size: unset !important;
+  }
   // ГЛОБАЛЬНЫЕ
     body{
       // height: 297mm !important;
