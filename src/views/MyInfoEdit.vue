@@ -59,7 +59,7 @@
         </div>
         <div class="row edit ">
           <div class="col-md-6 mt-3">
-            <div ref="bthdte">
+            <div ref="bthdte" :class="userTopInfo.bthdte ? '' : 'error'">
               <span v-if="userTopInfo.bthdte" class="custom_label">Дата рождения</span>
               <date-picker
                 v-model="userTopInfo.bthdte"
