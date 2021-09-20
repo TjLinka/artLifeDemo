@@ -27,7 +27,7 @@
             ref="country"
             type="text" name="country" id="country" required v-model="userTopInfo.country" />
             <label for="country">Страна</label>
-            <span class="clear_icon" @click="clearInput('country')"></span>
+            <span class="clear_icon" @click="clearInputTop('country')"></span>
           </div>
           <div class="col-md-6 custom_input mt-3">
             <input
@@ -35,7 +35,7 @@
             ref="city"
             type="text" name="city" id="city" required v-model="userTopInfo.city" />
             <label for="city">Город</label>
-            <span class="clear_icon" @click="clearInput('city')"></span>
+            <span class="clear_icon" @click="clearInputTop('city')"></span>
           </div>
         </div>
         <div class="row edit ">
@@ -45,7 +45,7 @@
             ref="address"
             type="text" name="address" id="address" required v-model="userTopInfo.address" />
             <label for="address">Адрес</label>
-            <span class="clear_icon" @click="clearInput('address')"></span>
+            <span class="clear_icon" @click="clearInputTop('address')"></span>
           </div>
           <div class="col-md-6 custom_input mt-3">
             <input
@@ -54,7 +54,7 @@
             type="text" name="passport" id="passport"
             required v-model="userTopInfo.passport" />
             <label for="passport">Паспорт</label>
-            <span class="clear_icon" @click="clearInput('passport')"></span>
+            <span class="clear_icon" @click="clearInputTop('passport')"></span>
           </div>
         </div>
         <div class="row edit ">
@@ -89,16 +89,26 @@
           <div class="col-md-6">
             <p class="page__caption">Смена адреса почтового ящика</p>
             <div class="custom_input t">
-              <input type="text" name="email" id="email" required v-model="userInfo.email" />
+              <input
+              @blur="checkInput('email')"
+              ref="email"
+              type="text"
+              name="email"
+              id="email"
+              required
+              v-model="userInfo.email" />
               <label for="email">E-mail</label>
               <span class="clear_icon" @click="clearInput('email')"></span>
-              <button class="save__newinfo mt-3" v-on:click="saveEmail">Сохранить изменения</button>
+              <button class="save__newinfo mt-3" @click="saveEmail">Сохранить изменения</button>
             </div>
           </div>
           <div class="col-md-6">
             <p class="page__caption">Смена телефона</p>
             <div class="custom_input t" v-show="!smsStatus">
-              <input type="text"
+              <input
+              @blur="checkInput('phone')"
+              ref="phone"
+              type="text"
               placeholder="+77777777777"
               v-mask="mask"
               name="phone" id="phone"
@@ -276,8 +286,12 @@ export default {
         variant: status,
       });
     },
-    clearInput(name) {
+    clearInputTop(name) {
       this.userTopInfo[name] = null;
+      this.$refs[name].focus();
+    },
+    clearInput(name) {
+      this.userInfo[name] = null;
       this.$refs[name].focus();
     },
     checkInput(name) {
@@ -295,35 +309,52 @@ export default {
     },
     clearPhone() {
       this.phone = '';
+      this.$refs.phone.focus();
     },
     saveEmail() {
+      const reMail = /^[\w-.]+@[\w-]+\.[a-z]{2,4}$/i;
       if (this.userInfo.email !== '' && this.userInfo.email !== null) {
-        backApi
-          .post('/agent/change-mail-start', { new_mail: this.userInfo.email })
-          .then(() => {
-            this.createMessageBoxError('На вашу почту пришло письмо для потверждения!');
-            // this.showToast('Смена почты',
-            //   'На вашу почту пришло письмо для потверждения!', 'success');
-          })
-          .catch((error) => {
-            this.showToast('Ошибка!', error.response.data.detail, 'danger');
-          });
+        if (reMail.test(this.userInfo.email)) {
+          this.$refs.email.classList.remove('error');
+          backApi
+            .post('/agent/change-mail-start', { new_mail: this.userInfo.email })
+            .then(() => {
+              this.createMessageBoxError('На вашу почту пришло письмо для потверждения!');
+              // this.showToast('Смена почты',
+              //   'На вашу почту пришло письмо для потверждения!', 'success');
+            })
+            .catch((error) => {
+              this.showToast('Ошибка!', error.response.data.detail, 'danger');
+            });
+        } else {
+          this.showToast('Ошибка!', 'Некорректный Email', 'danger');
+          this.$refs.email.classList.add('error');
+        }
+      } else {
+        this.showToast('Ошибка!', 'Заполните поле Email', 'danger');
       }
     },
     savePhone() {
       if (this.phone !== '' && this.phone !== null) {
-        backApi
-          .post('/agent/change-phone-start', { new_phone: this.phone.replace(/[-,(,),+]/g, '') })
-          .then((Response) => {
-            this.phoneHash = Response.data;
-            this.smsStatus = true;
-            this.createMessageBoxError('На ваш телефон придет сообщение с смс кодом!');
-            // this.showToast('Смена пароля',
-            //   'На ваш телефон придет сообщение с смс кодом!', 'success');
-          })
-          .catch((error) => {
-            this.createMessageBoxError(error.response.data.detail);
-          });
+        console.log(this.phone.replace(/[-,(,),+]/g, '').length, this.phone.replace(/[-,(,),+]/g, ''));
+        if (this.phone.replace(/[-,(,),+]/g, '').length >= 11) {
+          this.$refs.phone.classList.remove('error');
+          backApi
+            .post('/agent/change-phone-start', { new_phone: this.phone.replace(/[-,(,),+]/g, '') })
+            .then((Response) => {
+              this.phoneHash = Response.data;
+              this.smsStatus = true;
+              this.createMessageBoxError('На ваш телефон придет сообщение с смс кодом!');
+            })
+            .catch((error) => {
+              this.createMessageBoxError(error.response.data.detail);
+            });
+        } else {
+          this.showToast('Ошибка!', 'Некорректный номер телефона', 'danger');
+          this.$refs.phone.classList.add('error');
+        }
+      } else {
+        this.showToast('Ошибка!', 'Заполните поле Телефон', 'danger');
       }
     },
     checkSmsCode() {
@@ -447,7 +478,7 @@ export default {
   watch: {
     country() {
       if (this.country.toLowerCase() === 'россия') {
-        this.mask = '+7(###)###-##-##';
+        this.mask = '+###############';
         // this.phone = this.phone.substring(2);
       } else {
         this.mask = '+###############';
