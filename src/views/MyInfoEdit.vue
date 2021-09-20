@@ -287,6 +287,11 @@ export default {
       });
     },
     clearInputTop(name) {
+      if (name === 'country') {
+        this.userTopInfo[name] = '';
+        this.$refs[name].focus();
+        return;
+      }
       this.userTopInfo[name] = null;
       this.$refs[name].focus();
     },
@@ -308,7 +313,12 @@ export default {
       this.country = '';
     },
     clearPhone() {
-      this.phone = '';
+      if (this.userTopInfo.country.toLowerCase() === 'россия' || this.userTopInfo.country.toLowerCase() === 'рф') {
+        this.phone = '+7';
+        this.$refs.phone.focus();
+        return;
+      }
+      this.phone = '+';
       this.$refs.phone.focus();
     },
     saveEmail() {
@@ -476,13 +486,15 @@ export default {
     },
   },
   watch: {
-    country() {
-      if (this.country.toLowerCase() === 'россия') {
-        this.mask = '+###############';
-        // this.phone = this.phone.substring(2);
-      } else {
-        this.mask = '+###############';
-      }
+    'userTopInfo.country': {
+      handler() {
+        if (this.userTopInfo.country.toLowerCase() === 'россия' || this.userTopInfo.country.toLowerCase() === 'рф') {
+          this.mask = '+7(###)###-##-##';
+          // this.phone = this.phone.substring(2);
+        } else {
+          this.mask = '+###############';
+        }
+      },
     },
   },
 };
