@@ -87,8 +87,10 @@
       <div class="transmaneg_table mb-3 mt-3">
         <el-table
         :data="entries"
+        header-row-class-name='headerClass'
         :row-class-name="tableRowClassName"
         border
+        :resizable="false"
         ref="singleTable"
         highlight-current-row
         @current-change="handleCurrentChange"
@@ -99,6 +101,8 @@
           :key="column.key"
           :prop="column.key"
           :label="column.label"
+          sortable
+          :resizable="false"
           :min-width="colWidth(column.key)"
           >
           <template slot-scope="scope">
@@ -588,6 +592,13 @@ export default {
     };
   },
   methods: {
+    // colWidth(key) {
+    //   if (key === 'id') return 150;
+    //   if (key === 'fullname') return 200;
+    //   if (key === 'go' || key === 'ngo' || key === 'so' || key === 'ko') return 100;
+    //   if (key === 'discount_pc') return 80;
+    //   return '';
+    // },
     print() {
       const colGroup1 = document.getElementsByTagName('colgroup')[0];
       const colGroup2 = document.getElementsByTagName('colgroup')[1];
@@ -631,7 +642,10 @@ export default {
     },
     // eslint-disable-next-line consistent-return
     colWidth(key) {
-      if (key === 'id') return 160;
+      if (key === 'id') return 120;
+      if (key === 'name') return 200;
+      if (key === 'go' || key === 'ngo' || key === 'so' || key === 'ko' || key === 'lo') return 70;
+      if (key === 'discount_pc') return 80;
       // eslint-disable-next-line consistent-return
     },
     ...mapActions('transStore', ['setData', 'setAllDefault', 'setDefault', 'clearAll']),
@@ -1939,5 +1953,25 @@ export default {
 }
 .el-table__body tr.current-row.depth-0>td{
   background-color: #bebebe !important;
+}
+.el-table .caret-wrapper{
+  width: unset;
+}
+.el-table td, .el-table th.is-leaf{
+  border-bottom: 1px solid #bababa!important;
+  border-right: 1px solid #bababa!important;
+}
+.el-table--border, .el-table--group{
+  border: 1px solid #bababa!important;
+}
+.el-table__body tr td .cell{
+  font-weight: bold;
+  color: black;
+}
+.el-table th>.cell{
+  color: black;
+}
+.headerClass > th{
+  background-color: #dee2f3 !important;
 }
 </style>
