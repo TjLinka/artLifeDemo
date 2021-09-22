@@ -13,14 +13,14 @@
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
         </svg>
       </p>
-      История показателей партнера по периодам: {{userInfo.id}} - {{userInfo.name}}
+      {{$t("История показателей партнера по периодам")}}: {{userInfo.id}} - {{userInfo.name}}
     </h2>
         <!-- <div class="col mt-4 search__btn mobile"
         @click="showModal = !showModal" v-if="!showModal">
           Настройки партнера <i class="el-icon-search search_icon"></i>
         </div> -->
       <p class="p-0 m-0 history_title"
-      v-if="monthRange[0] !== null && monthRange.length > 0">Период от и до</p>
+      v-if="monthRange[0] !== null && monthRange.length > 0">{{$t("Период от и до")}}</p>
       <div class="row">
       <div class="col-md-6 month_range_indicators">
         <date-picker
@@ -69,8 +69,8 @@
     <div class="row mt-3 mb-4 noprint">
       <div class="col export_btns noprint">
         <!-- <span>Печать</span> -->
-        <span @click="downloadPdf">Экспорт в pdf</span>
-        <span @click="downloadXls">Экспорт в xlsx</span>
+        <span @click="downloadPdf">{{$t("Экспорт в pdf")}}</span>
+        <span @click="downloadXls">{{$t("Экспорт в xlsx")}}</span>
       </div>
     </div>
     <b-table responsive outlined head-variant="light"
@@ -201,7 +201,7 @@ export default {
       fields: [
         {
           key: 'comdte',
-          label: 'Период',
+          label: this.$t('Период'),
           sortable: true,
           formatter(v) {
             const mass = [
@@ -223,7 +223,7 @@ export default {
         },
         {
           key: 'lo',
-          label: 'ЛО',
+          label: this.$t('ЛО'),
           sortable: true,
           thStyle: {
             width: '100px',
@@ -232,7 +232,7 @@ export default {
         },
         {
           key: 'go',
-          label: 'ГО',
+          label: this.$t('ГО'),
           sortable: true,
           thStyle: {
             width: '100px',
@@ -241,7 +241,7 @@ export default {
         },
         {
           key: 'ngo',
-          label: 'НГО',
+          label: this.$t('НГО'),
           sortable: true,
           thStyle: {
             width: '100px',
@@ -250,7 +250,7 @@ export default {
         },
         {
           key: 'so',
-          label: 'ОО',
+          label: this.$t('ОО'),
           sortable: true,
           thStyle: {
             width: '100px',
@@ -259,7 +259,7 @@ export default {
         },
         {
           key: 'ko',
-          label: 'КО',
+          label: this.$t('КО'),
           sortable: true,
           thStyle: {
             width: '100px',
@@ -268,7 +268,7 @@ export default {
         },
         {
           key: 'noact',
-          label: 'Неактивность',
+          label: this.$t('Неактивность'),
           sortable: true,
           thStyle: {
             width: '150px',
@@ -277,21 +277,21 @@ export default {
         },
         {
           key: 'rank_beg',
-          label: 'Ранг на начало',
+          label: this.$t('Ранг на начало'),
           thStyle: {
             minWidth: '120px',
           },
         },
         {
           key: 'rank_calc',
-          label: 'Расчетный ранг',
+          label: this.$t('Расчетный ранг'),
           thStyle: {
             minWidth: '120px',
           },
         },
         {
           key: 'rank_end',
-          label: 'Ранг на конец',
+          label: this.$t('Ранг на конец'),
           thStyle: {
             minWidth: '120px',
           },
@@ -372,7 +372,7 @@ export default {
       };
       backApi.get('/agent/all-periods-indicators/excel', dataa)
         .then(({ data }) => {
-          const filename = 'История показателей партнера по периодам.xlsx';
+          const filename = `${this.$t('История показателей партнера по периодам')}.xlsx`;
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;
@@ -392,7 +392,7 @@ export default {
       };
       backApi.get('/agent/all-periods-indicators/pdf', dataa)
         .then(({ data }) => {
-          const filename = 'История показателей партнера по периодам.pdf';
+          const filename = `${this.$t('История показателей партнера по периодам')}.pdf`;
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;

@@ -14,7 +14,7 @@
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
           </svg>
         </p>
-        Редактирование личных данных
+        {{$t("Редактирование личных данных")}}
       </h2>
       <!-- <div class="myfoto">
         <img src="../assets/imgs/unnamed 1.png" alt="" />
@@ -26,7 +26,7 @@
             @blur="checkInput('country')"
             ref="country"
             type="text" name="country" id="country" required v-model="userTopInfo.country" />
-            <label for="country">Страна</label>
+            <label for="country">{{$t("Страна")}}</label>
             <span class="clear_icon" @click="clearInputTop('country')"></span>
           </div>
           <div class="col-md-6 custom_input mt-3">
@@ -34,7 +34,7 @@
             @blur="checkInput('city')"
             ref="city"
             type="text" name="city" id="city" required v-model="userTopInfo.city" />
-            <label for="city">Город</label>
+            <label for="city">{{$t("Город")}}</label>
             <span class="clear_icon" @click="clearInputTop('city')"></span>
           </div>
         </div>
@@ -44,7 +44,7 @@
             @blur="checkInput('address')"
             ref="address"
             type="text" name="address" id="address" required v-model="userTopInfo.address" />
-            <label for="address">Адрес</label>
+            <label for="address">{{$t("Адрес")}}</label>
             <span class="clear_icon" @click="clearInputTop('address')"></span>
           </div>
           <div class="col-md-6 custom_input mt-3">
@@ -53,14 +53,14 @@
             ref='passport'
             type="text" name="passport" id="passport"
             required v-model="userTopInfo.passport" />
-            <label for="passport">Паспорт</label>
+            <label for="passport">{{$t("Паспорт")}}</label>
             <span class="clear_icon" @click="clearInputTop('passport')"></span>
           </div>
         </div>
         <div class="row edit ">
           <div class="col-md-6 mt-3">
             <div ref="bthdte" :class="userTopInfo.bthdte ? '' : 'error'">
-              <span v-if="userTopInfo.bthdte" class="custom_label">Дата рождения</span>
+              <span v-if="userTopInfo.bthdte" class="custom_label">{{$t("Дата рождения")}}</span>
               <date-picker
                 v-model="userTopInfo.bthdte"
                 value-type="YYYY-MM-DD"
@@ -74,20 +74,21 @@
           </div>
           <div class="col-md-6 custom_input mt-3">
             <input type="text" name="skype" id="skype" required v-model="userInfo.skype" />
-            <label for="skype">Доп. контакты</label>
+            <label for="skype">{{$t("Доп. контакты")}}</label>
             <span class="clear_icon" @click="clearSkype('skype')"></span>
           </div>
         </div>
         <div class="row edit mt-3">
           <div class="col-md">
-            <button class="save__newinfo" v-on:click="saveTopEdit">Сохранить изменения</button>
+            <button class="save__newinfo"
+            v-on:click="saveTopEdit">{{$t("Сохранить изменения")}}</button>
           </div>
         </div>
       </div>
       <div class="bot__info custom_input mt-3">
         <div class="row edit">
           <div class="col-md-6">
-            <p class="page__caption">Смена адреса почтового ящика</p>
+            <p class="page__caption">{{$t("Смена адреса почтового ящика")}}</p>
             <div class="custom_input t">
               <input
               @blur="checkInput('email')"
@@ -97,43 +98,44 @@
               id="email"
               required
               v-model="userInfo.email" />
-              <label for="email">E-mail</label>
+              <label for="email">{{$t("E-mail")}}</label>
               <span class="clear_icon" @click="clearInput('email')"></span>
-              <button class="save__newinfo mt-3" @click="saveEmail">Сохранить изменения</button>
+              <button class="save__newinfo mt-3"
+              @click="saveEmail">{{$t("Сохранить изменения")}}</button>
             </div>
           </div>
           <div class="col-md-6">
-            <p class="page__caption">Смена телефона</p>
+            <p class="page__caption">{{$t("Смена телефона")}}</p>
             <div class="custom_input t" v-show="!smsStatus">
               <input
               @blur="checkInput('phone')"
               ref="phone"
               type="text"
-              placeholder="+77777777777"
+              :placeholder="`${$t('Телефон в международном формате')}`"
               v-mask="mask"
               name="phone" id="phone"
               required v-model="phone" />
-              <label for="phone" class="up">Телефон в международном формате</label>
+              <label for="phone" class="up">{{$t("Телефон в международном формате")}}</label>
               <span class="clear_icon" @click="clearPhone('phone')"></span>
               <button class="save__newinfo mt-3" v-on:click="savePhone">
-                Сохранить изменения
+                {{$t("Сохранить изменения")}}
               </button>
             </div>
             <div class="custom_input t" v-show="smsStatus">
               <input type="text"
               name="smsCode" id="smsCode"
               required v-model="smsCode" />
-              <label for="smsCode">Код подтверждения</label>
+              <label for="smsCode">{{$t("Код подтверждения")}}</label>
               <span class="clear_icon" @click="clearInput('phone')"></span>
               <button class="save__newinfo mt-3" v-on:click="checkSmsCode">
-                Потвердить
+                {{$t("Потвердить")}}
               </button>
             </div>
           </div>
         </div>
         <div class="row edit">
           <div class="col">
-            <p class="page__caption">Смена пароля</p>
+            <p class="page__caption">{{$t("Смена пароля")}}</p>
           </div>
         </div>
         <div class="row">
@@ -147,7 +149,7 @@
               required
               v-model="password.currentPass"
             />
-            <label for="currentPass">Текущий пароль</label>
+            <label for="currentPass">{{$t("Текущий пароль")}}</label>
             <span class="clear_icon" @click="clearPass('currentPass')"></span>
           </div>
           <div class="col-md custom_input mt-3">
@@ -160,7 +162,7 @@
               required
               v-model="password.newPass"
             />
-            <label for="newPass">Новый пароль</label>
+            <label for="newPass">{{$t("Новый пароль")}}</label>
             <span class="clear_icon" @click="clearPass('newPass')"></span>
           </div>
           <div class="col-md custom_input mt-3">
@@ -173,13 +175,14 @@
               required
               v-model="password.newPassRepeat"
             />
-            <label for="newPassRepeat">Повтор пароля</label>
+            <label for="newPassRepeat">{{$t("Повтор пароля")}}</label>
             <span class="clear_icon" @click="clearPass('newPassRepeat')"></span>
           </div>
         </div>
         <div class="row edit mt-3">
           <div class="col-md">
-            <button class="save__newinfo" @click="savePassword">Сохранить изменения</button>
+            <button class="save__newinfo"
+            @click="savePassword">{{$t("Сохранить изменения")}}</button>
           </div>
         </div>
       </div>
@@ -192,7 +195,7 @@
           <strong class="mr-auto">Успех!</strong>
         </div>
       </template>
-      Ваш данные успешно изменены!
+      {{$t("Ваш данные успешно изменены")}}!
     </b-toast>
     <b-toast id="my-toast-error" variant="warning" solid>
       <template #toast-title>
@@ -201,7 +204,7 @@
           <strong class="mr-auto">Ошибка!</strong>
         </div>
       </template>
-      При изменении данных произошла ошибка!
+      {{$t("При изменении данных произошла ошибка")}}!
     </b-toast>
   </div>
 </template>
@@ -260,6 +263,14 @@ export default {
     });
   },
   methods: {
+    checkValue(e) {
+      if (e.target.value === '') {
+        this.phone = '+';
+      }
+      if ((this.userTopInfo.country === 'рф' || this.userTopInfo.country === 'россия') && e.target.value === '+8') {
+        this.phone = e.target.value.replace(/\+8/, '+7');
+      }
+    },
     clearSkype() {
       this.userInfo.skype = null;
     },
@@ -314,7 +325,7 @@ export default {
     },
     clearPhone() {
       if (this.userTopInfo.country.toLowerCase() === 'россия' || this.userTopInfo.country.toLowerCase() === 'рф') {
-        this.phone = '+7';
+        this.phone = '+';
         this.$refs.phone.focus();
         return;
       }
@@ -329,7 +340,7 @@ export default {
           backApi
             .post('/agent/change-mail-start', { new_mail: this.userInfo.email })
             .then(() => {
-              this.createMessageBoxError('На вашу почту пришло письмо для потверждения!');
+              this.createMessageBoxError(this.$t('На вашу почту пришло письмо для потверждения'));
               // this.showToast('Смена почты',
               //   'На вашу почту пришло письмо для потверждения!', 'success');
             })
@@ -337,11 +348,11 @@ export default {
               this.showToast('Ошибка!', error.response.data.detail, 'danger');
             });
         } else {
-          this.showToast('Ошибка!', 'Некорректный Email', 'danger');
+          this.showToast('Ошибка!', this.$t('Некорректный Email'), 'danger');
           this.$refs.email.classList.add('error');
         }
       } else {
-        this.showToast('Ошибка!', 'Заполните поле Email', 'danger');
+        this.showToast('Ошибка!', this.$t('Заполните поле Email'), 'danger');
       }
     },
     savePhone() {
@@ -354,17 +365,17 @@ export default {
             .then((Response) => {
               this.phoneHash = Response.data;
               this.smsStatus = true;
-              this.createMessageBoxError('На ваш телефон придет сообщение с смс кодом!');
+              this.createMessageBoxError(this.$t('На ваш телефон придет сообщение с смс кодом'));
             })
             .catch((error) => {
               this.createMessageBoxError(error.response.data.detail);
             });
         } else {
-          this.showToast('Ошибка!', 'Некорректный номер телефона', 'danger');
+          this.showToast(this.$t('Ошибка'), this.$t('Некорректный номер телефона'), 'danger');
           this.$refs.phone.classList.add('error');
         }
       } else {
-        this.showToast('Ошибка!', 'Заполните поле Телефон', 'danger');
+        this.showToast(this.$t('Ошибка'), this.$t('Заполните поле Телефон'), 'danger');
       }
     },
     checkSmsCode() {
@@ -373,7 +384,7 @@ export default {
         sms_code: this.smsCode,
       })
         .then(() => {
-          this.createMessageBoxError('Ваш номер телефона изменен!');
+          this.createMessageBoxError(this.$t('Ваш номер телефона изменен!'));
           this.smsStatus = false;
         })
         .catch((error) => {
@@ -393,7 +404,7 @@ export default {
         backApi
           .post('/agent/password-change', data)
           .then(() => {
-            this.createMessageBoxError('Ваш пароль успешно изменен!');
+            this.createMessageBoxError(this.$t('Ваш пароль успешно изменен!'));
             this.password = {};
           })
           .catch((error) => {
@@ -405,17 +416,17 @@ export default {
         let errorMsg = '';
         if (this.password.currentPass === '') {
           $(this.$refs.currentPass).addClass('error');
-          errorMsg += 'Введите Текущий пароль<br/><br/>';
+          errorMsg += `${this.$t('Введите Текущий пароль')}<br/><br/>`;
           // this.showToast('Ошибка', 'Введите Текущий пароль!', 'danger');
         }
         if (this.password.newPass !== this.password.newPassRepeat) {
           $(this.$refs.newPass).addClass('error');
           $(this.$refs.newPassRepeat).addClass('error');
-          errorMsg += 'Пароли не совпадают<br/><br/>';
+          errorMsg += `${this.$t('Пароли не совпадают')}<br/><br/>`;
           // this.showToast('Ошибка', 'Пароли не совпадают!', 'danger');
         }
         if (this.password.newPass.length < 5) {
-          errorMsg += 'Длина пароля должна быть не меньше 5 символов<br/><br/>';
+          errorMsg += `${this.$t('Длина пароля должна быть не меньше 5 символов')}<br/><br/>`;
           // this.showToast('Ошибка', 'Длина пароля должна быть не меньше 5 символов!', 'danger');
         }
         if (errorMsg !== '') {
@@ -458,7 +469,7 @@ export default {
             Object.keys(this.userTopInfo).forEach((key) => {
               this.$refs[key].classList.remove('error');
             });
-            this.createMessageBoxError('Данные успешно изменены!');
+            this.createMessageBoxError(this.$t('Данные успешно изменены'));
           });
         });
       } else {
@@ -466,7 +477,7 @@ export default {
         Object.keys(this.userTopInfo).filter((key) => this.userTopInfo[key] === null).forEach((kkey) => {
           this.$refs[kkey].classList.add('error');
         });
-        this.showToast('Ошибка!', 'Заполните обязательные поля!', 'danger');
+        this.showToast(this.$t('Ошибка'), this.$t('Заполните обязательные поля'), 'danger');
       }
     },
     createMessageBoxError(messageText) {
@@ -490,7 +501,6 @@ export default {
       handler() {
         if (this.userTopInfo.country.toLowerCase() === 'россия' || this.userTopInfo.country.toLowerCase() === 'рф') {
           this.mask = '+7(###)###-##-##';
-          // this.phone = this.phone.substring(2);
         } else {
           this.mask = '+###############';
         }

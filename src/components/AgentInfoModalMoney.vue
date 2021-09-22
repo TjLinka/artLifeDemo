@@ -2,7 +2,7 @@
   <div class="licevoischet__page">
     <div class="container-md">
       <h4 class="mt-4 modal_title">
-        Перевести между лицевыми счетами
+        {{$t("Перевести между лицевыми счетами")}}
         <span class="close_btn" v-on:click="$emit('enlarge-text')"></span>
       </h4>
       <div class="row transfert">
@@ -11,14 +11,16 @@
           <p>{{ lo }} баллов</p>
         </div> -->
         <div class="col-md-6">
-          <p>Баланс:</p>
+          <p>{{$t("Баланс")}}:</p>
           <p>{{ balance | localInt }}</p>
         </div>
       </div>
-      <h3 class="perevod">Перевод средств</h3>
+      <h3 class="perevod">{{$t("Перевод средств")}}</h3>
       <div class="row edit end">
         <div class="col-md-6 mt-4">
-          <span v-if="state" class="custom_label">Партнер получатель</span>
+          <span v-if="state" class="custom_label">
+            {{$$("Партнер получатель")}}
+          </span>
           <el-autocomplete
             v-model="state"
             :fetch-suggestions="querySearchAsync"
@@ -39,14 +41,18 @@
               }"
               @keydown="checkInput($event)"
               />
-              <label for="sum">Сумма</label>
+              <label for="sum">
+                {{$t("Сумма")}}
+              </label>
               <span class="clear_icon" @click="clearSum()"></span>
         </div>
       </div>
       <div class="row edit mt-4">
         <div class="col-md-6 custom_input comment">
               <input type="text" name="comm" id="comm" required v-model="comm" />
-              <label for="comm">Комментарий</label>
+              <label for="comm">
+                {{$t("Комментарий")}}
+              </label>
               <span class="clear_icon" @click="clearComm()"></span>
         </div>
         <div class="col-md trans_btns">
@@ -54,7 +60,9 @@
           :disabled="!pointsGo"
           :class="pointsGo ? '' : 'disabled'"
           @click="send"
-          >Перевести</button>
+          >
+          {{$t("Перевести")}}
+          </button>
         </div>
       </div>
     </div>
@@ -167,13 +175,13 @@ export default {
               comm: this.comm,
             })
             .then(() => {
-              this.createMessageBoxError('Операция выполнена успешно');
+              this.createMessageBoxError(this.$t('Операция выполнена успешно'));
             })
             .catch(() => {
-              this.createMessageBoxError('Что-то пошло не так');
+              this.createMessageBoxError(this.$t('Что-то пошло не так'));
             });
         } else {
-          this.createMessageBoxError('Вы не можете перевести больше чем у Вас есть');
+          this.createMessageBoxError(this.$t('Вы не можете перевести больше чем у Вас есть'));
         }
       }
     },

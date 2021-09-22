@@ -14,10 +14,10 @@
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
           </svg>
         </p>
-        История покупок
+        {{$t("История покупок")}}
       </h2>
       <p class="p-0 m-0 history_title"
-      v-if="rangeDate[0] !== null && rangeDate.length > 0">Период от и до</p>
+      v-if="rangeDate[0] !== null && rangeDate.length > 0">{{$t("Период от и до")}}</p>
         <div class="row">
           <div class="col-md-6">
       <date-picker
@@ -37,7 +37,7 @@
         </div>
         <div class="row mobile_search">
           <div class="col search__btn noprint" @click="toggleSearch" v-if="!searchActive">
-            Поиск покупки <span class="search_icons mobi"></span>
+            {{$t("Поиск покупки")}} <span class="search_icons mobi"></span>
           </div>
         </div>
       <div class="tags">
@@ -54,8 +54,8 @@
       </div>
       <p class="exp_print noprint">
         <!-- <span class="mr-3">Печать</span> -->
-        <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
-        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
+        <span class="mr-3" @click="downloadPdf">{{$t("Экспорт в pdf")}}</span>
+        <span class="mr-3" @click="downloadXls">{{$t("Экспорт в xlsx")}}</span>
         <!-- <button
         :class="`mr-3 nak ${printNakAccess ? '' : 'disabled'}`"
         :disabled="!printNakAccess"
@@ -102,12 +102,12 @@
         <div class="container-md">
         <div class="row desktop_search">
           <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
-            Фильтр <span class="search_icons"></span>
+            {{$t("Фильтр")}} <span class="search_icons"></span>
           </div>
         </div>
         <div v-if="searchActive" class="organization__modal">
           <h3>
-            Фильтр
+            {{$t("Фильтр")}}
             <span class="close_btn" @click="searchActive = !searchActive"></span>
           </h3>
           <!-- <div class="mt-3">
@@ -116,7 +116,7 @@
           <div class="row edit mt-5">
             <div class="col-sm-6 custom_input">
               <input type="number" name="articul" id="articul" required v-model="articul" />
-              <label for="articul">Артикул</label>
+              <label for="articul">{{$t("Артикул")}}</label>
               <span class="clear_icon" @click="clearArticul()"></span>
             </div>
             <div class="col-sm-6">
@@ -124,7 +124,8 @@
             v-if="status"
             class="custom_label"
             >
-            Статус</span>
+            {{$t("Статус")}}
+            </span>
             <el-select
             v-model="status"
             clearable
@@ -141,7 +142,7 @@
           <div class="row edit">
             <div class="col-sm-6 custom_input">
               <input type="number" name="naknum" id="naknum" required v-model="naknum" />
-              <label for="naknum">Номер накладной</label>
+              <label for="naknum">{{$t("Номер накладной")}}</label>
               <span class="clear_icon" @click="clearNaknum()"></span>
             </div>
           <div class="col-md-6">
@@ -149,7 +150,8 @@
             v-if="delivery !== null && this.delivery !== ''"
             class="custom_label"
             >
-            Доставка</span>
+            {{$t("Доставка")}}
+            </span>
             <el-select
             v-model="delivery"
             clearable
@@ -166,12 +168,14 @@
           <div class="row edit justify-content-end">
             <div class="col-sm-6 custom_input">
               <input type="text" name="name" id="name" required v-model="name" />
-              <label for="name">Наименование товара</label>
+              <label for="name">
+                {{$t("Наименование товара")}}
+              </label>
               <span class="clear_icon" @click="clearName()"></span>
             </div>
             <div class="col-xl-6 update">
-              <button class="mr-2" @click="updateData">Показать</button
-              ><button @click="clearSelectedFilters">Сбросить</button>
+              <button class="mr-2" @click="updateData">{{$t("Показать")}}</button
+              ><button @click="clearSelectedFilters">{{$t("Сбросить")}}</button>
             </div>
           </div>
         </div>
@@ -240,7 +244,7 @@ export default {
       returnFields: [
         {
           key: 'articul',
-          label: 'Артикул',
+          label: this.$t('Артикул'),
           sortable: true,
           thStyle: {
             width: '150px',
@@ -248,12 +252,12 @@ export default {
         },
         {
           key: 'itemname',
-          label: 'Наименование товара',
+          label: this.$t('Наименование товара'),
           sortable: true,
         },
         {
           key: 'points',
-          label: 'Баллы',
+          label: this.$t('Баллы'),
           sortable: true,
           formatter(v) {
             if (v !== null) {
@@ -265,7 +269,7 @@ export default {
         },
         {
           key: 'price',
-          label: 'Цена',
+          label: this.$t('Цена'),
           sortable: true,
           formatter(v) {
             if (v !== null) {
@@ -277,7 +281,7 @@ export default {
         },
         {
           key: 'cnt',
-          label: 'Кол-во',
+          label: this.$t('Кол-во'),
           sortable: true,
           formatter(v) {
             if (v !== null) {
@@ -289,7 +293,7 @@ export default {
         },
         {
           key: 'points_all',
-          label: 'Сумма балов',
+          label: this.$t('Сумма балов'),
           sortable: true,
           formatter(v) {
             if (v !== null) {
@@ -301,7 +305,7 @@ export default {
         },
         {
           key: 'price_total',
-          label: 'Стоимость',
+          label: this.$t('Стоимость'),
           sortable: true,
           formatter(v) {
             if (v !== null) {
@@ -315,7 +319,7 @@ export default {
       fields: [
         {
           key: 'nomer',
-          label: 'Номер накладной',
+          label: this.$t('Номер накладной'),
           sortable: true,
           thStyle: {
             width: '150px',
@@ -329,7 +333,7 @@ export default {
         // },
         {
           key: 'amount',
-          label: 'Сумма',
+          label: this.$t('Сумма'),
           formatter(v) {
             if (v > 0) {
               const formatter = new Intl.NumberFormat('ru');
@@ -341,7 +345,7 @@ export default {
         },
         {
           key: 'dte',
-          label: 'Дата сервера',
+          label: this.$t('Дата сервера'),
           sortable: true,
           formatter(v) {
             return dateFormat(v);
@@ -349,27 +353,27 @@ export default {
         },
         {
           key: 'delivery',
-          label: 'Доставка',
+          label: this.$t('Доставка'),
           sortable: true,
         },
         {
           key: 'status',
-          label: 'Статус',
+          label: this.$t('Статус'),
           sortable: true,
         },
         {
           key: 'address',
-          label: 'Адрес',
+          label: this.$t('Адрес'),
           sortable: true,
         },
         {
           key: 'points',
-          label: 'Сумма баллов',
+          label: this.$t('Сумма баллов'),
           sortable: true,
         },
         {
           key: 'stock_name',
-          label: 'Склад покупки',
+          label: this.$t('Склад покупки'),
           sortable: true,
         },
       ],
@@ -467,7 +471,7 @@ export default {
       };
       backApi.get('/agent/sales/excel', dataa)
         .then(({ data }) => {
-          const filename = 'История покупок.xlsx';
+          const filename = `${this.$t('История покупок')}.xlsx`;
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;
@@ -494,7 +498,7 @@ export default {
       };
       backApi.get('/agent/sales/pdf', dataa)
         .then(({ data }) => {
-          const filename = 'История покупок.pdf';
+          const filename = `${this.$t('История покупок')}.pdf`;
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;

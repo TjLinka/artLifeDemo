@@ -8,7 +8,7 @@
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
-        Организация текущего периода
+        {{$t("Организация текущего периода")}}
         </h2>
       <el-tag
         v-for="tag in tags"
@@ -22,8 +22,12 @@
       </el-tag>
       <p class="exp_print mt-3">
         <!-- <span class="mr-3">Печать</span> -->
-        <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
-        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
+        <span class="mr-3" @click="downloadPdf">
+          {{$t("Экспорт в pdf")}}
+        </span>
+        <span class="mr-3" @click="downloadXls">
+          {{$t("Экспорт в xlsx")}}
+        </span>
       </p>
       <div class="orgper">
         <el-table
@@ -60,53 +64,6 @@
         </el-table-column>
       </el-table>
       </div>
-      <!-- <footer class="cust_modal">
-              <div class="row">
-        <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
-          Поиск партнера <i class="el-icon-search search_icon"></i>
-        </div>
-      </div>
-      <div v-if="searchActive" class="organization__modal">
-        <h3>Поиск партнера</h3>
-        <div class="row">
-          <div class="col-md-12">
-            <b-form-group label="Выбор дерева">
-              <b-form-radio
-                v-model="tree_type"
-                name="some-radios-1"
-                value="full"
-                class="radio mr-3"
-                >Полное дерево</b-form-radio
-              >
-              <b-form-radio
-                v-model="tree_type"
-                name="some-radios-1"
-                value="director"
-                class="radio mr-3"
-                >Директорское</b-form-radio
-              >
-              <b-form-radio
-                v-model="tree_type"
-                name="some-radios-1"
-                value="active"
-                class="radio"
-                >Своя группа</b-form-radio
-              >
-            </b-form-group>
-          </div>
-        </div>
-        <div class="row edit">
-          <div class="col-sm-6">
-            <el-input type="number" name="" id="" placeholder="Номер"
-            clearable v-model="agent_id" />
-          </div>
-          <div class="col-sm-6">
-            <button class="mr-2" @click="updateData">Показать</button
-            ><button @click="clearSelectedFilters">Сбросить</button>
-          </div>
-        </div>
-      </div>
-      </footer> -->
     </div>
     </div>
   </div>
@@ -129,37 +86,37 @@ export default {
       // },
       {
         property: 'depth',
-        title: 'Глубина',
+        title: this.$t('Глубина'),
         sortable: true,
         formater: (item) => item.depth,
       },
       {
         property: 'id',
-        title: 'Номер партнера',
+        title: this.$t('Номер партнера'),
         sortable: true,
         formater: (item) => item.id,
       },
       {
         property: 'name',
-        title: 'ФИО',
+        title: this.$t('ФИО'),
         sortable: true,
         formater: (item) => item.name,
       },
       {
         property: 'lo',
-        title: 'ЛО',
+        title: this.$t('ЛО'),
         sortable: true,
         formater: (item) => item.lo,
       },
       {
         property: 'ngo',
-        title: 'НГО',
+        title: this.$t('НГО'),
         sortable: true,
         formater: (item) => item.ngo,
       },
       {
         property: 'rank_end',
-        title: 'Ранг',
+        title: this.$t('Ранг'),
         formater: (item) => item.rank_end,
       },
     ];
@@ -203,7 +160,7 @@ export default {
           responseType: 'blob',
         })
         .then(({ data }) => {
-          const filename = 'Организация текущего периода.xlsx';
+          const filename = `${this.$t('Организация текущего периода')}.xlsx`;
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;
@@ -226,7 +183,7 @@ export default {
           responseType: 'blob',
         })
         .then(({ data }) => {
-          const filename = 'Организация текущего периода.pdf';
+          const filename = `${this.$t('Организация текущего периода')}.pdf`;
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;

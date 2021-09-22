@@ -14,12 +14,12 @@
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
           </svg>
         </p>
-        Передача прав
+        {{$t("Передача прав")}}
       </h2>
       <div class="row cur_p">
         <div class="col">
           <p class="current_period">
-            <strong>Права на управление баллами личной группой переданы -</strong>
+            <strong>{{$t("Права на управление баллами личной группой переданы")}} -</strong>
             {{ruleGiver ? ruleGiver : 'Никому'}}
           </p>
         </div>
@@ -31,15 +31,15 @@
           && ruleGiver !== '' ? false : true"
           :class="ruleGiver !== null
           && ruleGiver !== '' ? '' : 'disabled'"
-          >Забрать права</button>
-          <button @click="showModal1 = !showModal1">Передать права</button>
+          >{{$t("Забрать права")}}</button>
+          <button @click="showModal1 = !showModal1">{{$t("Передать права")}}</button>
         </div>
       </div>
-      <h2 class="mt-4">Переданные мне права</h2>
+      <h2 class="mt-4">{{$t("Переданные мне права")}}</h2>
       <p class="exp_print mt-3 noprint">
         <!-- <span class="mr-3">Печать</span> -->
-        <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
-        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
+        <span class="mr-3" @click="downloadPdf">{{$t("Экспорт в pdf")}}</span>
+        <span class="mr-3" @click="downloadXls">{{$t("Экспорт в xlsx")}}</span>
         <!-- <span class="mr-3" >Экспорт возвратной накладной в pdf</span> -->
         <!-- <span class="mr-3">Экспорт возвратной накладной в pdf</span> -->
       </p>
@@ -75,21 +75,21 @@
       <template #toast-title>
         <div class="d-flex flex-grow-1 align-items-baseline">
           <b-img blank blank-color="green" class="mr-2" width="12" height="12"></b-img>
-          <strong class="mr-auto">Успех!</strong>
+          <strong class="mr-auto">{{$t("Успех")}}!</strong>
           <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
         </div>
       </template>
-      Права забраны!
+      {{$t("Права забраны")}}!
     </b-toast>
       <b-toast id="my-toast-2" variant="success" solid>
       <template #toast-title>
         <div class="d-flex flex-grow-1 align-items-baseline">
           <b-img blank blank-color="green" class="mr-2" width="12" height="12"></b-img>
-          <strong class="mr-auto">Успех!</strong>
+          <strong class="mr-auto">{{$t("Успех")}}!</strong>
           <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
         </div>
       </template>
-      Права переданы!
+      {{$t("Права переданы")}}!
     </b-toast>
     <div :class="`mobile_modal_mask ${showModal1 ? 'active' : ''}`"></div>
       <footer class="container-md-fluid cust_modal mmm noprint">
@@ -98,7 +98,7 @@
         class="col text-center search__btn"
         @click="goToTransfert"
         >
-          Перейти в таблицу управления трансфертом
+          {{$t("Перейти в таблицу управления трансфертом")}}
         </div>
       </div>
       </footer>
@@ -123,34 +123,34 @@ export default {
       fields: [
         {
           key: 'id',
-          label: 'Номер партнера',
+          label: this.$t('Номер партнера'),
           sortable: true,
         },
         {
           key: 'agentname',
-          label: 'ФИО',
+          label: this.$t('ФИО'),
           sortable: true,
         },
         {
           key: 'stockname',
-          label: 'Склад обслуживания',
+          label: this.$t('Склад обслуживания'),
           sortable: true,
         },
         {
           key: 'rank_beg',
-          label: 'Ранг на начало',
+          label: this.$t('Ранг на начало'),
         },
         {
           key: 'rank_calc',
-          label: 'Расчетный ранг',
+          label: this.$t('Расчетный ранг'),
         },
         {
           key: 'rank_end',
-          label: 'Ранг на конец',
+          label: this.$t('Ранг на конец'),
         },
         {
           key: 'lo',
-          label: 'ЛО',
+          label: this.$t('ЛО'),
           sortable: true,
           formatter: (v) => {
             if (v === null) return '-';
@@ -160,7 +160,7 @@ export default {
         },
         {
           key: 'go',
-          label: 'ГО',
+          label: this.$t('ГО'),
           sortable: true,
           formatter: (v) => {
             if (v === null) return '-';
@@ -170,7 +170,7 @@ export default {
         },
         {
           key: 'reserve',
-          label: 'Резерв',
+          label: this.$t('Резерв'),
           sortable: true,
           formatter: (v) => {
             if (v === null) return '-';
@@ -195,7 +195,7 @@ export default {
     downloadXls() {
       backApi.get('/agent/share-transfert-list/excel', { responseType: 'blob' })
         .then(({ data }) => {
-          const filename = 'Переданные мне права.xlsx';
+          const filename = `${this.$t('Переданные мне права')}.xlsx`;
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;
@@ -208,7 +208,7 @@ export default {
     downloadPdf() {
       backApi.get('/agent/share-transfert-list/pdf', { responseType: 'blob' })
         .then(({ data }) => {
-          const filename = 'Переданные мне права.pdf';
+          const filename = `${this.$t('Переданные мне права')}.pdf`;
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;

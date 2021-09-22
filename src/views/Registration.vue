@@ -14,7 +14,7 @@
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
           </svg>
         </p>
-        Регистрация
+        {{$t("Регистрация")}}
       </h2>
       <div class="row mt-5">
         <div class="col-md-6">
@@ -24,13 +24,13 @@
               v-model="newUser.role"
               name="radio-sub-component-1"
             >
-              <b-form-radio :value="0" >Прив. Клиент</b-form-radio>
-              <b-form-radio :value="1" >Дистрибьютор</b-form-radio>
+              <b-form-radio :value="0" >{{$t("Прив. Клиент")}}</b-form-radio>
+              <b-form-radio :value="1" >{{$t("Дистрибьютор")}}</b-form-radio>
             </b-form-radio-group>
           </b-form-group>
           <div class="reg_input custom_input">
             <input type="text" name="fio" id="fio" required v-model="newUser.fio" />
-            <label for="fio">ФИО</label>
+            <label for="fio">{{$t("ФИО")}}</label>
             <span class="clear_icon" @click="clearInput('fio')"></span>
           </div>
         </div>
@@ -38,13 +38,13 @@
           <b-form-group>
             <b-form-radio-group id="radio-group-2"
             v-model="newUser.sex" name="radio-sub-component-2">
-              <b-form-radio :value="0">Мужской пол</b-form-radio>
-              <b-form-radio :value="1">Женский пол</b-form-radio>
+              <b-form-radio :value="0">{{$t("Мужской пол")}}</b-form-radio>
+              <b-form-radio :value="1">{{$t("Женский пол")}}</b-form-radio>
             </b-form-radio-group>
           </b-form-group>
           <div class="reg_input custom_input">
             <input type="text" name="country" id="country" required v-model="country" />
-            <label for="country">Страна</label>
+            <label for="country">{{$t("Страна")}}</label>
             <span class="clear_icon" @click="clearCountry('country')"></span>
           </div>
         </div>
@@ -52,11 +52,11 @@
       <div class="row mt-md-5">
         <div class="col-md-6 custom_input">
           <input type="text" name="city" id="city" required v-model="newUser.city" />
-          <label for="city">Город</label>
+          <label for="city">{{$t("Город")}}</label>
           <span class="clear_icon" @click="clearInput('city')"></span>
         </div>
         <div class="col-md-6">
-            <span v-if="newUser.bthdte" class="custom_label">Дата рождения</span>
+            <span v-if="newUser.bthdte" class="custom_label">{{$t("Дата рождения")}}</span>
             <date-picker
               v-model="newUser.bthdte"
               value-type="YYYY-MM-DD"
@@ -74,19 +74,19 @@
           v-mask="mask"
           placeholder="+77777777777"
           required v-model="phone" />
-          <label for="phone" class="up">Телефон в международном формате</label>
+          <label for="phone" class="up">{{$t("Телефон в международном формате")}}</label>
           <span class="clear_icon" @click="clearInput('phone')"></span>
         </div>
         <div class="col-md-6 custom_input">
           <input type="email" name="email" id="email" required v-model="newUser.email" />
-          <label for="email" :class="this.newUser.email ? 'up' : ''">Е-mail</label>
+          <label for="email" :class="this.newUser.email ? 'up' : ''">{{$t("Е-mail")}}</label>
           <span :class="`clear_icon ${this.newUser.email ? 'd-block' : ''}`"
           @click="clearInput('email')"></span>
         </div>
       </div>
       <div class="row mt-md-5">
         <div class="col">
-          <button @click="registr" class="reg_btn">Зарегистрировать</button>
+          <button @click="registr" class="reg_btn">{{$t("Зарегистрировать")}}</button>
         </div>
       </div>
     </div>
@@ -176,14 +176,14 @@ export default {
         };
         backApi.post('/agent/signup-start', data)
           .then(() => {
-            this.showToast('Регистрация', 'На вашу почту пришло письмо!', 'success');
+            this.showToast(this.$t('Регистрация'), this.$t('На вашу почту пришло письмо'), 'success');
           })
           .catch((error) => {
-            this.showToast('Регистрация', error.response.data.detail, 'danger');
+            this.showToast(this.$t('Регистрация'), error.response.data.detail, 'danger');
           });
       } else {
-        this.showToast('Регистрация',
-          'Заполните все поля для продолжения регистрации!',
+        this.showToast(this.$t('Регистрация'),
+          this.$t('Заполните все поля для продолжения регистрации'),
           'danger');
       }
     },

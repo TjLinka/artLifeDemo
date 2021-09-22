@@ -15,7 +15,7 @@
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
           </svg>
         </p>
-        Управление трансфертами структуры
+        {{$t("Управление трансфертами структуры")}}
       </h2>
       <div class="row mb-4">
         <div class="col-md-6 uptran">
@@ -32,7 +32,7 @@
       </div>
         <div class="col mb-3 search__btn mobile noprint"
         @click="searchActive = !searchActive">
-          <span class="noprint">Поиск</span> <span class="search_icons mobi"></span>
+          <span class="noprint">{{$t("Поиск")}}</span> <span class="search_icons mobi"></span>
         </div>
       <div class="row noprint">
         <div class="col">
@@ -54,33 +54,34 @@
           :class="`update ${transAccess ? 'disabled' : ''}`"
           @click="showTrans = !showTrans"
           :disabled="transAccess"
-          >Трансферт</button>
+          >{{$t("Трансферт")}}</button>
           <button
           v-show="!massTranseftEdit"
           :class="`update`"
           @click="massTranseftAction"
-          >Массовый трансферт</button>
+          >{{$t("Массовый трансферт")}}</button>
           <button
           v-show="massTranseftEdit"
           :class="`update ${!canMultiTrans ? 'disabled' : ''}`"
           @click="makeAllTransfer"
           :disabled="!canMultiTrans"
-          >Применить</button>
+          >{{$t("Применить")}}</button>
           <button
           v-show="massTranseftEdit"
           :class="`update`"
           @click="cancelTransfer"
-          >Отмена</button>
+          >{{$t("Отмена")}}</button>
           <!-- <br class="mobile_br"> -->
         </div>
       </div>
       <div class="row noprint">
         <div class="col noprint">
           <p class="exp_print noprint">
-            <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
-            <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
-            <span class="mr-3" v-b-modal.modal-scrollable>Легенда</span>
-            <span class="mr-3" v-if="selectedRow" @click="setCurrent()">Снять выделение</span>
+            <span class="mr-3" @click="downloadPdf">{{$t("Экспорт в pdf")}}</span>
+            <span class="mr-3" @click="downloadXls">{{$t("Экспорт в xlsx")}}</span>
+            <span class="mr-3" v-b-modal.modal-scrollable>{{$t("Легенда")}}</span>
+            <span class="mr-3" v-if="selectedRow"
+            @click="setCurrent()">{{$t("Снять выделение")}}</span>
           </p>
         </div>
       </div>
@@ -108,7 +109,7 @@
           <template slot-scope="scope">
             <div v-if="column.key === 'id'">
               <p style="margin: 0;">
-                <span class="mr-4">{{ scope.row.lvl }} УР</span>
+                <span class="mr-4">{{ scope.row.lvl }} {{$t("УР")}}</span>
               <img :src="`../icons/${scope.row.rank_calc}${scope.row.lvl==='0'?'_white':''}.svg`"
               :title="scope.row.rank_end" class="rank_icon" />
                 <span style="display: inline-block; float:right">{{ scope.row.id }}</span><br>
@@ -143,51 +144,9 @@
           force-use-infinite-wrapper=".el-table__body-wrapper"
           spinner="waveDots"
           @infinite="infiniteHandler">
-            <div slot="no-more">Все данные загружены</div>
+            <div slot="no-more">{{$t("Все данные загружены")}}</div>
           </infinite-loading>
         </el-table>
-        <!-- <b-table
-        outlined
-        responsive
-        selectable
-        select-mode="single"
-        head-variant="light"
-        @row-selected="onRowSelected"
-        :fields="fields"
-        :items="entries"
-        :tbody-tr-class="rowClass"
-        sortByFormatted
-        class="mt-4">
-          <template v-slot:cell(id)="row">
-            <p style="margin: 0;">
-              <span class="mr-4">{{ row.item.lvl }} УР</span>
-            <img :src="`../icons/${row.item.rank_calc}${row.item.lvl === '0' ? '_white' : ''}.svg`"
-              :title="row.item.rank_end" class="rank_icon" />
-              <span style="display: inline-block; float:right">{{ row.item.id }}</span><br>
-              <router-link :to="`/agent/${row.item.id}`">
-              </router-link>
-            </p>
-            <p style="text-align: right; margin: 0">{{ row.item.fio }}</p>
-          </template>
-          <template v-slot:cell(isterminated)="row">
-              {{row.item.isterminated === '0' ? 'Нет' : 'Да'}}
-          </template>
-          <template #cell()="data">
-            {{data.value}}
-          </template>
-          <template v-slot:cell(rank_end_npp)="row">
-            {{row.item.rank_end}}
-          </template>
-          <template v-slot:cell(rank_beg_npp)="row">
-            {{row.item.rank_beg}}
-          </template>
-          <template v-slot:cell(rank_calc_npp)="row">
-            {{row.item.rank_calc}}
-          </template>
-          <template v-slot:cell(trans)="row">
-          <CustomInput :rowa="row" v-show="row.item.is_can_transfer"/>
-          </template>
-        </b-table> -->
       </div>
     </div>
     </div>
@@ -195,12 +154,12 @@
       <div class="row desk_trans">
         <div class="col text-center search__btn desktop"
         @click="searchActive = !searchActive" v-if="!searchActive">
-          Поиск <span class="search_icons"></span>
+          {{$t("Поиск")}} <span class="search_icons"></span>
         </div>
       </div>
       <div v-if="searchActive" class="organization__modal container">
         <span @click="searchActive = !searchActive" class="close_btn"></span>
-        <h3 class="mt-4">Поиск партнера</h3>
+        <h3 class="mt-4">{{$t("Поиск партнера")}}</h3>
         <div class="row mt-md-5">
           <div class="col-xl-6">
             <b-form-group label="Выбор дерева">
@@ -209,17 +168,17 @@
                 name="some-radios-1"
                 value="0"
                 class="radio mr-3"
-                >Полное дерево</b-form-radio
+                >{{$t("Полное дерево")}}</b-form-radio
               >
               <b-form-radio
                 v-model="tree_type"
                 name="some-radios-1"
                 value="1"
                 class="radio mr-3"
-                >Директорское</b-form-radio
+                >{{$t("Директорское")}}</b-form-radio
               >
               <b-form-radio v-model="tree_type" name="some-radios-1" value="2" class="radio"
-                >Своя группа</b-form-radio
+                >{{$t("Своя группа")}}</b-form-radio
               >
             </b-form-group>
           </div>
@@ -232,7 +191,7 @@
               checked
               :unchecked-value="0"
             >
-              Показывать терминированных
+              {{$t("Показывать терминированных")}}
             </b-form-checkbox>
           </div>
         </div>
@@ -262,12 +221,12 @@
         <div class="row mt-md-5">
           <div class="col-md-6 custom_input">
             <input type="text" name="userId" id="userId" required v-model="filterData.agent_id"/>
-            <label for="userId">Номер</label>
+            <label for="userId">{{$t("Номер")}}</label>
             <span class="clear_icon" @click="clearInput('agent_id')"></span>
           </div>
           <div class="col-md-6 custom_input">
             <input type="text" name="userFio" id="userFio" required v-model="filterData.fullname"/>
-            <label for="userFio">ФИО</label>
+            <label for="userFio">{{$t("ФИО")}}</label>
             <span class="clear_icon" @click="clearInput('fullname')"></span>
           </div>
         </div>
@@ -277,7 +236,7 @@
             v-if="filterData.area_id"
             class="custom_label"
             >
-            Регион</span>
+            {{$t("Регион")}}</span>
             <el-select
             v-model="filterData.area_id"
             clearable
@@ -292,7 +251,7 @@
           </div>
           <div class="col-md-6 custom_input">
             <input type="text" name="userStore" id="userStore" required v-model="filterData.store"/>
-            <label for="userStore">Город склада обслуживания</label>
+            <label for="userStore">{{$t("Город склада обслуживания")}}</label>
             <span class="clear_icon" @click="clearInput('store')"></span>
           </div>
         </div>
@@ -302,7 +261,7 @@
             v-if="filterData.rank_beg"
             class="custom_label"
             >
-            Ранг на начало</span>
+            {{$t("Ранг на начало")}}</span>
             <el-select
             v-model="filterData.rank_beg"
             clearable
@@ -320,7 +279,7 @@
             v-if="filterData.rank_end"
             class="custom_label"
             >
-            Ранг на конец</span>
+            {{$t("Ранг на конец")}}</span>
             <el-select
             v-model="filterData.rank_end"
             clearable
@@ -340,7 +299,7 @@
             v-if="filterData.rank_calc"
             class="custom_label"
             >
-            Расчетный ранг</span>
+            {{$t("Расчетный ранг")}}</span>
             <el-select
             v-model="filterData.rank_calc"
             clearable
@@ -354,7 +313,7 @@
             </el-select>
           </div>
           <div class="col-md-6 custom_input">
-            <button class="mr-2 update w-100" @click="updateData">Применить</button>
+            <button class="mr-2 update w-100" @click="updateData">{{$t("Применить")}}</button>
           </div>
         </div>
       </div>
@@ -368,26 +327,33 @@
   id="modal-scrollable" centered scrollable title="Легенда">
     <div class="modal_icons">
       <img :src="`../icons/Клиент.svg`"
-      class="rank_icon"> <span>Привилегированный клиент</span></div> <br>
+      class="rank_icon_legend"> <span>{{$t("Привилегированный клиент")}}</span></div> <br>
     <div class="modal_icons">
-      <img :src="`../icons/Консультант.svg`" class="rank_icon"> <span>Консультант</span></div><br>
+      <img :src="`../icons/Консультант.svg`"
+      class="rank_icon_legend"> <span>{{$t("Консультант")}}</span></div><br>
     <div class="modal_icons">
-      <img :src="`../icons/Мастер.svg`" class="rank_icon"><span>Мастер</span></div><br>
+      <img :src="`../icons/Мастер.svg`"
+      class="rank_icon_legend"><span>{{$t("Мастер")}}</span></div><br>
     <div class="modal_icons">
       <img :src="`../icons/Управляющий.svg`"
-      class="rank_icon"><span>Управляющий</span></div><br><br>
+      class="rank_icon_legend"><span>{{$t("Управляющий")}}</span></div><br><br>
     <div class="modal_icons">
-      <img :src="`../icons/Директор.svg`" class="rank_icon"><span>Директор</span></div><br>
-    <div class="modal_icons"><img :src="`../icons/Серебряный Директор.svg`" class="rank_icon">
-    <span>Серебряный Директор</span></div><br>
-    <div class="modal_icons"><img :src="`../icons/Золотой Директор.svg`" class="rank_icon">
-    <span>Золотой Директор</span></div><br><br>
-    <div class="modal_icons"><img :src="`../icons/Рубиновый Директор.svg`" class="rank_icon">
-    <span>Рубиновый Директор</span></div><br>
-    <div class="modal_icons"><img :src="`../icons/Бриллиантовый Директор.svg`" class="rank_icon">
-    <span>Бриллиантовый Директор</span></div><br>
+      <img :src="`../icons/Директор.svg`"
+      class="rank_icon_legend"><span>{{$t("Директор")}}</span></div><br>
+    <div class="modal_icons"><img :src="`../icons/Серебряный Директор.svg`"
+    class="rank_icon_legend">
+    <span>{{$t("Серебряный Директор")}}</span></div><br>
+    <div class="modal_icons"><img :src="`../icons/Золотой Директор.svg`"
+    class="rank_icon_legend">
+    <span>{{$t("Золотой Директор")}}</span></div><br><br>
+    <div class="modal_icons"><img :src="`../icons/Рубиновый Директор.svg`" class="rank_icon_legend">
+    <span>{{$t("Рубиновый Директор")}}</span></div><br>
+    <div class="modal_icons"><img :src="`../icons/Бриллиантовый Директор.svg`"
+    class="rank_icon_legend">
+    <span>{{$t("Бриллиантовый Директор")}}</span></div><br>
     <div class="modal_icons">
-      <img :src="`../icons/Президент_1.svg`" class="rank_icon"><span>Президент</span></div><br>
+      <img :src="`../icons/Президент_1.svg`"
+      class="rank_icon_legend"><span>{{$t("Президент")}}</span></div><br>
     <template #modal-footer>
           <b-button
             variant="primary"
@@ -395,7 +361,7 @@
             class="float-right cls_btn"
             @click="show=false"
           >
-            Закрыть
+            {{$t("Закрыть")}}
           </b-button>
     </template>
   </b-modal>
@@ -469,18 +435,18 @@ export default {
       fields: [
         {
           key: 'id',
-          label: 'P/номер / Ранг',
+          label: this.$t('P/номер / Ранг'),
           formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
           thClass: 'fsth',
         },
         {
           key: 'name',
-          label: 'ФИО',
+          label: this.$t('ФИО'),
           formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
         },
         {
           key: 'reserve',
-          label: 'Текущий резерв',
+          label: this.$t('Текущий резерв'),
           formatter: (v) => {
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(v);
@@ -493,7 +459,7 @@ export default {
         // },
         {
           key: 'lo',
-          label: 'ЛО',
+          label: this.$t('ЛО'),
           formatter: (v) => {
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(v);
@@ -502,7 +468,7 @@ export default {
         },
         {
           key: 'go',
-          label: 'ГО',
+          label: this.$t('ГО'),
           formatter: (v) => {
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(v);
@@ -511,7 +477,7 @@ export default {
         },
         {
           key: 'ngo',
-          label: 'НГО',
+          label: this.$t('НГО'),
           formatter: (v) => {
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(v);
@@ -520,7 +486,7 @@ export default {
         },
         {
           key: 'oo',
-          label: 'ОО',
+          label: this.$t('ОО'),
           formatter: (v) => {
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(v);
@@ -529,7 +495,7 @@ export default {
         },
         {
           key: 'ko',
-          label: 'КО',
+          label: this.$t('КО'),
           formatter: (v) => {
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(v);
@@ -538,48 +504,48 @@ export default {
         },
         {
           key: 'noact',
-          label: 'Не активн.',
+          label: this.$t('Не активн.'),
           formater: (item) => item.noact,
           sortable: true,
         },
         {
           key: 'proportional',
-          label: 'Выполнение Пропорц. %',
+          label: this.$t('Выполнение Пропорц. %'),
           formater: (item) => item.noact,
           sortable: true,
         },
         {
           key: 'rank_beg_npp',
-          label: 'Ранг на начало',
+          label: this.$t('Ранг на начало'),
           formater: (item) => item.rank_beg,
           sortable: true,
         },
         {
           key: 'rank_calc_npp',
-          label: 'Расчетный ранг',
+          label: this.$t('Расчетный ранг'),
           formater: (item) => item.rank_calc,
           sortable: true,
         },
         {
           key: 'rank_end_npp',
-          label: 'Ранг на конец',
+          label: this.$t('Ранг на конец'),
           sortable: true,
         },
         {
           key: 'cityname',
-          label: 'Город склада обслуживания',
+          label: this.$t('Город склада обслуживания'),
           formater: (item) => item.cityname,
           sortable: true,
         },
         {
           key: 'areaname',
-          label: 'Регион',
+          label: this.$t('Регион'),
           formater: (item) => item.areaname,
           sortable: true,
         },
         {
           key: 'isterminated',
-          label: 'Терминирован',
+          label: this.$t('Терминирован'),
           // formatter: (item) => {
           //   if (item.isterminated === 0) {
           //     return 'Нет';
@@ -658,18 +624,18 @@ export default {
       this.fields = [
         {
           key: 'id',
-          label: 'P/номер / Ранг',
+          label: this.$t('P/номер / Ранг'),
           formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
           thClass: 'fsth',
         },
         {
           key: 'name',
-          label: 'ФИО',
+          label: this.$t('ФИО'),
           formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
         },
         {
           key: 'reserve',
-          label: 'Резерв',
+          label: this.$t('Резерв'),
           formatter: (v) => {
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(v);
@@ -678,11 +644,11 @@ export default {
         },
         {
           key: 'trans',
-          label: 'Трансферт',
+          label: this.$t('Трансферт'),
         },
         {
           key: 'lo',
-          label: 'ЛО',
+          label: this.$t('ЛО'),
           formatter: (v) => {
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(v);
@@ -691,7 +657,7 @@ export default {
         },
         {
           key: 'go',
-          label: 'ГО',
+          label: this.$t('ГО'),
           formatter: (v) => {
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(v);
@@ -700,7 +666,7 @@ export default {
         },
         {
           key: 'ngo',
-          label: 'НГО',
+          label: this.$t('НГО'),
           formatter: (v) => {
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(v);
@@ -709,7 +675,7 @@ export default {
         },
         {
           key: 'oo',
-          label: 'ОО',
+          label: this.$t('ОО'),
           formatter: (v) => {
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(v);
@@ -718,7 +684,7 @@ export default {
         },
         {
           key: 'ko',
-          label: 'КО',
+          label: this.$t('КО'),
           formatter: (v) => {
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(v);
@@ -727,48 +693,48 @@ export default {
         },
         {
           key: 'noact',
-          label: 'Не активн.',
+          label: this.$t('Не активн.'),
           formater: (item) => item.noact,
           sortable: true,
         },
         {
           key: 'proportional',
-          label: 'Выполнение Пропорц. %',
+          label: this.$t('Выполнение Пропорц. %'),
           formater: (item) => item.noact,
           sortable: true,
         },
         {
           key: 'rank_beg_npp',
-          label: 'Ранг на начало',
+          label: this.$t('Ранг на начало'),
           formater: (item) => item.rank_beg,
           sortable: true,
         },
         {
           key: 'rank_calc_npp',
-          label: 'Расчетный ранг',
+          label: this.$t('Расчетный ранг'),
           formater: (item) => item.rank_calc,
           sortable: true,
         },
         {
           key: 'rank_end_npp',
-          label: 'Ранг на конец',
+          label: this.$t('Ранг на конец'),
           sortable: true,
         },
         {
           key: 'cityname',
-          label: 'Город склада обслуживания',
+          label: this.$t('Город склада обслуживания'),
           formater: (item) => item.cityname,
           sortable: true,
         },
         {
           key: 'areaname',
-          label: 'Регион',
+          label: this.$t('Регион'),
           formater: (item) => item.areaname,
           sortable: true,
         },
         {
           key: 'isterminated',
-          label: 'Терминирован',
+          label: this.$t('Терминирован'),
           // formatter: (item) => {
           //   if (item.isterminated === 0) {
           //     return 'Нет';
@@ -784,27 +750,31 @@ export default {
       this.fields = [
         {
           key: 'id',
-          label: 'P/номер / Ранг',
+          label: this.$t('P/номер / Ранг'),
           formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
           thClass: 'fsth',
         },
         {
           key: 'name',
-          label: 'ФИО',
+          label: this.$t('ФИО'),
           formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
         },
         {
           key: 'reserve',
-          label: 'Резерв',
+          label: this.$t('Текущий резерв'),
           formatter: (v) => {
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(v);
           },
           sortable: true,
         },
+        // {
+        //   key: 'trans',
+        //   label: 'Трансферт',
+        // },
         {
           key: 'lo',
-          label: 'ЛО',
+          label: this.$t('ЛО'),
           formatter: (v) => {
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(v);
@@ -813,7 +783,7 @@ export default {
         },
         {
           key: 'go',
-          label: 'ГО',
+          label: this.$t('ГО'),
           formatter: (v) => {
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(v);
@@ -822,7 +792,7 @@ export default {
         },
         {
           key: 'ngo',
-          label: 'НГО',
+          label: this.$t('НГО'),
           formatter: (v) => {
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(v);
@@ -831,7 +801,7 @@ export default {
         },
         {
           key: 'oo',
-          label: 'ОО',
+          label: this.$t('ОО'),
           formatter: (v) => {
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(v);
@@ -840,7 +810,7 @@ export default {
         },
         {
           key: 'ko',
-          label: 'КО',
+          label: this.$t('КО'),
           formatter: (v) => {
             const formatter = new Intl.NumberFormat('ru');
             return formatter.format(v);
@@ -849,48 +819,48 @@ export default {
         },
         {
           key: 'noact',
-          label: 'Не активн.',
+          label: this.$t('Не активн.'),
           formater: (item) => item.noact,
           sortable: true,
         },
         {
           key: 'proportional',
-          label: 'Выполнение Пропорц. %',
+          label: this.$t('Выполнение Пропорц. %'),
           formater: (item) => item.noact,
           sortable: true,
         },
         {
           key: 'rank_beg_npp',
-          label: 'Ранг на начало',
+          label: this.$t('Ранг на начало'),
           formater: (item) => item.rank_beg,
           sortable: true,
         },
         {
           key: 'rank_calc_npp',
-          label: 'Расчетный ранг',
+          label: this.$t('Расчетный ранг'),
           formater: (item) => item.rank_calc,
           sortable: true,
         },
         {
           key: 'rank_end_npp',
-          label: 'Ранг на конец',
+          label: this.$t('Ранг на конец'),
           sortable: true,
         },
         {
           key: 'cityname',
-          label: 'Город склада обслуживания',
+          label: this.$t('Город склада обслуживания'),
           formater: (item) => item.cityname,
           sortable: true,
         },
         {
           key: 'areaname',
-          label: 'Регион',
+          label: this.$t('Регион'),
           formater: (item) => item.areaname,
           sortable: true,
         },
         {
           key: 'isterminated',
-          label: 'Терминирован',
+          label: this.$t('Терминирован'),
           // formatter: (item) => {
           //   if (item.isterminated === 0) {
           //     return 'Нет';
@@ -922,27 +892,31 @@ export default {
         this.fields = [
           {
             key: 'id',
-            label: 'P/номер / Ранг',
+            label: this.$t('P/номер / Ранг'),
             formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
             thClass: 'fsth',
           },
           {
             key: 'name',
-            label: 'ФИО',
+            label: this.$t('ФИО'),
             formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
           },
           {
             key: 'reserve',
-            label: 'Резерв',
+            label: this.$t('Текущий резерв'),
             formatter: (v) => {
               const formatter = new Intl.NumberFormat('ru');
               return formatter.format(v);
             },
             sortable: true,
           },
+          // {
+          //   key: 'trans',
+          //   label: 'Трансферт',
+          // },
           {
             key: 'lo',
-            label: 'ЛО',
+            label: this.$t('ЛО'),
             formatter: (v) => {
               const formatter = new Intl.NumberFormat('ru');
               return formatter.format(v);
@@ -951,7 +925,7 @@ export default {
           },
           {
             key: 'go',
-            label: 'ГО',
+            label: this.$t('ГО'),
             formatter: (v) => {
               const formatter = new Intl.NumberFormat('ru');
               return formatter.format(v);
@@ -960,7 +934,7 @@ export default {
           },
           {
             key: 'ngo',
-            label: 'НГО',
+            label: this.$t('НГО'),
             formatter: (v) => {
               const formatter = new Intl.NumberFormat('ru');
               return formatter.format(v);
@@ -969,7 +943,7 @@ export default {
           },
           {
             key: 'oo',
-            label: 'ОО',
+            label: this.$t('ОО'),
             formatter: (v) => {
               const formatter = new Intl.NumberFormat('ru');
               return formatter.format(v);
@@ -978,7 +952,7 @@ export default {
           },
           {
             key: 'ko',
-            label: 'КО',
+            label: this.$t('КО'),
             formatter: (v) => {
               const formatter = new Intl.NumberFormat('ru');
               return formatter.format(v);
@@ -987,48 +961,48 @@ export default {
           },
           {
             key: 'noact',
-            label: 'Не активн.',
+            label: this.$t('Не активн.'),
             formater: (item) => item.noact,
             sortable: true,
           },
           {
             key: 'proportional',
-            label: 'Выполнение Пропорц. %',
+            label: this.$t('Выполнение Пропорц. %'),
             formater: (item) => item.noact,
             sortable: true,
           },
           {
             key: 'rank_beg_npp',
-            label: 'Ранг на начало',
+            label: this.$t('Ранг на начало'),
             formater: (item) => item.rank_beg,
             sortable: true,
           },
           {
             key: 'rank_calc_npp',
-            label: 'Расчетный ранг',
+            label: this.$t('Расчетный ранг'),
             formater: (item) => item.rank_calc,
             sortable: true,
           },
           {
             key: 'rank_end_npp',
-            label: 'Ранг на конец',
+            label: this.$t('Ранг на конец'),
             sortable: true,
           },
           {
             key: 'cityname',
-            label: 'Город склада обслуживания',
+            label: this.$t('Город склада обслуживания'),
             formater: (item) => item.cityname,
             sortable: true,
           },
           {
             key: 'areaname',
-            label: 'Регион',
+            label: this.$t('Регион'),
             formater: (item) => item.areaname,
             sortable: true,
           },
           {
             key: 'isterminated',
-            label: 'Терминирован',
+            label: this.$t('Терминирован'),
             // formatter: (item) => {
             //   if (item.isterminated === 0) {
             //     return 'Нет';
@@ -1042,25 +1016,6 @@ export default {
         this.updateData();
       }
     },
-    // transferEdit(id) {
-    //   const user = this.entries.find((u) => u.id === id);
-    //   user.transfer = this.$refs[`user${id}`].value;
-    //   if (Number(user.transfer) !== this.entriesCache.get(user)) {
-    //     this.$refs[`user${id}`].classList.add('changed');
-    //     if (!this.transMass.find((u) => u.id === id)) {
-    //       this.transMass.push(user);
-    //     }
-    //     if (Number(user.transfer) > (user.lo + user.reserve)) {
-    //       this.$refs[`user${id}`].classList.remove('changed');
-    //       this.$refs[`user${id}`].classList.add('error');
-    //     } else {
-    //       this.$refs[`user${id}`].classList.remove('error');
-    //     }
-    //   } else {
-    //     this.$refs[`user${id}`].classList.remove('changed');
-    //     this.transMass = this.transMass.filter((u) => u.id !== id);
-    //   }
-    // },
     dd() {
       this.loading = true;
       backApi.get('/agent/profile').then((Response) => {
@@ -1130,8 +1085,8 @@ export default {
           h('h3', { class: ['text-center'] },
             [
               messageText,
-              arr.length > 0 ? arr.map((e) => h('p', { class: ['modal_p', 'error'] }, [`Превышен лимит у ${e.id}`])) : '',
-              arr.length > 0 ? h('p', { class: ['modal_p'] }, ['Всё равно продолжить?']) : '',
+              arr.length > 0 ? arr.map((e) => h('p', { class: ['modal_p', 'error'] }, [`${this.$t('Превышен лимит у')} ${e.id}`])) : '',
+              arr.length > 0 ? h('p', { class: ['modal_p'] }, [`${this.$t('Всё равно продолжить?')}`]) : '',
             ]),
         ]);
       // We must pass the generated VNodes as arrays
@@ -1272,7 +1227,7 @@ export default {
       };
       backApi.get('/agent/flat_genealogy/excel', dataa)
         .then(({ data }) => {
-          const filename = 'Управление трансфертами структуры.xlsx';
+          const filename = `${this.$t('Управление трансфертами структуры')}.xlsx`;
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;
@@ -1301,20 +1256,6 @@ export default {
       const areaName = this.areaList.find((a) => a.area_id === this.filterData.area_id)
         ? this.areaList.find((a) => a.area_id === this.filterData.area_id).area_name : null;
 
-      // const dataXlsx = {
-      //   with_terminated: this.filterData.status,
-      //   tree_type: this.tree_type,
-      //   num: this.filterData.agent_id,
-      //   fullname: this.filterData.fullname,
-      //   area_id: this.filterData.area_id,
-      //   city: this.filterData.store,
-      //   i_rank_beg: rankBeg,
-      //   i_status_beg: statusBeg,
-      //   i_rank_calc: rankCalc,
-      //   i_status_calc: statusCalc,
-      //   i_rank_end: rankEnd,
-      //   i_status_end: statusEnd,
-      // }
       const dataa = {
         params: {
           context: this.currentUserId,
@@ -1340,7 +1281,7 @@ export default {
       };
       backApi.get('/agent/flat_genealogy/pdf', dataa)
         .then(({ data }) => {
-          const filename = 'Управление трансфертами структуры.pdf';
+          const filename = `${this.$t('Управление трансфертами структуры')}.pdf`;
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;

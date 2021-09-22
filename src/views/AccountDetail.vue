@@ -8,14 +8,14 @@
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
-        Детализация лицевого счета: {{agentData.id}} - {{agentData.name}}
+        {{$t("Детализация лицевого счета")}}: {{agentData.id}} - {{agentData.name}}
         </h2>
       <p>
-        <span class="licshet">Состояние лицевого счета:
+        <span class="licshet">{{$t("Состояние лицевого счета")}}:
         <span :class="balance < 0 ? 'red' : ''">{{balance === null ? 0 : balance}} Р.</span></span>
       </p>
       <p class="p-0 m-0 history_title"
-      v-if="rangeDate[0] !== null && rangeDate.length > 0">Период от и до</p>
+      v-if="rangeDate[0] !== null && rangeDate.length > 0">{{$t("Период от и до")}}</p>
       <div class="row">
         <div class="col-md-6">
       <date-picker
@@ -48,13 +48,13 @@
       </div>
         <div class="row mobile_search noprint">
           <div class="col search__btn noprint" @click="toggleSearch">
-            Фильтр <span class="search_icons mobi"></span>
+            {{$t("Фильтр")}} <span class="search_icons mobi"></span>
           </div>
         </div>
       <p class="exp_print noprint">
         <!-- <span class="mr-3">Печать</span> -->
-        <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
-        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
+        <span class="mr-3" @click="downloadPdf">{{$t("Экспорт в pdf")}}</span>
+        <span class="mr-3" @click="downloadXls">{{$t("Экспорт в xlsx")}}</span>
       </p>
       <b-table
       :fields="fields"
@@ -68,9 +68,9 @@
       </template>
       </b-table>
       <h2 class="licevoischet__page__summ">
-        <span class="mr-4">НАЧИСЛЕНИЕ = {{ incomes | localInt }}        </span>
-        <span class="mr-4">СПИСАНИЕ = {{ outcomes | localInt }}        </span>
-        <span class="mr-4">ИЗМЕНЕНИЕ  = {{ changes | localInt }}         </span>
+        <span class="mr-4">{{$t("НАЧИСЛЕНИЕ")}} = {{ incomes | localInt }}        </span>
+        <span class="mr-4">{{$t("СПИСАНИЕ")}} = {{ outcomes | localInt }}        </span>
+        <span class="mr-4">{{$t("ИЗМЕНЕНИЕ")}}  = {{ changes | localInt }}         </span>
         </h2>
     </div>
     </div>
@@ -78,23 +78,23 @@
         <div class="container-md">
           <div class="row desktop_search">
           <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
-            Фильтр <span class="search_icons"></span>
+            {{$t("Фильтр")}} <span class="search_icons"></span>
           </div>
         </div>
         <div v-if="searchActive" class="organization__modal">
           <h3>
-            Фильтр
+            {{$t("Фильтр")}}
             <span class="close_btn" @click="searchActive = !searchActive"></span>
           </h3>
           <div class="row edit mt-4">
             <div class="col-sm-6 custom_input">
               <input type="text" name="operType" id="operType" required v-model="filter.operType" />
-              <label for="operType">Тип операции</label>
+              <label for="operType">{{$t("Тип операции")}}</label>
               <span class="clear_icon" @click="clearInput('operType')"></span>
             </div>
             <div class="col-sm-6 custom_input">
               <input type="text" name="comment" id="comment" required v-model="filter.comment" />
-              <label for="comment">Комментарий</label>
+              <label for="comment">{{$t("Комментарий")}}</label>
               <span class="clear_icon" @click="clearInput('comment')"></span>
             </div>
           </div>
@@ -106,7 +106,7 @@
               :disabled="isDisabled"
               :class="`mr-2 update ${isDisabled ? 'disabled' : ''}`"
               @click="updateData"
-              >Показать</button>
+              >{{$t("Показать")}}</button>
             </div>
           </div>
         </div>
@@ -264,33 +264,6 @@ export default {
   },
   methods: {
     clearDP() {
-      // this.rangeDate = [
-      //   this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
-      //   this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
-      // ];
-      // backApi.get('agent/account-detail', {
-      //   params: {
-      //     beg_dte: this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
-      //     end_dte: this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
-      //   },
-      // }).then((Response) => {
-      //   this.entries = Response.data.entries;
-      //   this.income = this.entries.filter((i) => i.amount > 0);
-      //   this.outcome = this.entries.filter((i) => i.amount < 0);
-      //   this.entries.forEach((i) => {
-      //     // eslint-disable-next-line no-param-reassign
-      //     i.income = i.amount;
-      //     // eslint-disable-next-line no-param-reassign
-      //     i.outcome = i.amount;
-      //   });
-      // }).then(() => {
-      //   setTimeout(() => {
-      //     this.loading = false;
-      //   });
-      // });
-      // backApi.get('/agent/profile').then((Response) => {
-      //   this.balance = Response.data.balance;
-      // });
     },
     downloadXls() {
       backApi.get('/agent/account-detail/excel',
@@ -305,7 +278,7 @@ export default {
           responseType: 'blob',
         })
         .then(({ data }) => {
-          const filename = 'Движение по лицевому счету.xlsx';
+          const filename = `${this.$t('Движение по лицевому счету')}.xlsx`;
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;
@@ -328,7 +301,7 @@ export default {
           responseType: 'blob',
         })
         .then(({ data }) => {
-          const filename = 'Движение по лицевому счету.pdf';
+          const filename = `${this.$t('Движение по лицевому счету')}.pdf`;
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;

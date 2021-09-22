@@ -8,7 +8,7 @@
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
-        История начисления бонусов: {{agentData.id}} - {{agentData.name}}
+        {{$t("История начисления бонусов")}}: {{agentData.id}} - {{agentData.name}}
         </h2>
       <div class="row mt-3 mb-3">
         <div class="col-md-6 perioad__picker">
@@ -18,8 +18,8 @@
       </div>
       <p class="exp_print mt-3 noprint">
         <!-- <span class="mr-3">Печать</span> -->
-        <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
-        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
+        <span class="mr-3" @click="downloadPdf">{{$t("Экспорт в pdf")}}</span>
+        <span class="mr-3" @click="downloadXls">{{$t("Экспорт в xlsx")}}</span>
       </p>
       <div class="bonus_hist_table">
       <div class="mb-5">
@@ -74,7 +74,7 @@ export default {
       topFields: [
         {
           key: 'bonus',
-          label: 'Бонусов всего',
+          label: this.$t('Бонусов всего'),
           formatter(v) {
             if (v !== null) {
               const formatter = new Intl.NumberFormat('ru');
@@ -85,7 +85,7 @@ export default {
         },
         {
           key: 'monthly_bonus',
-          label: 'Ежемесячные бонусы',
+          label: this.$t('Ежемесячные бонусы'),
           formatter(v) {
             if (v !== null) {
               const formatter = new Intl.NumberFormat('ru');
@@ -96,15 +96,15 @@ export default {
         },
         {
           key: 'autodom',
-          label: 'Автодом',
+          label: this.$t('Автодом'),
         },
         {
           key: 'otpusk',
-          label: 'Отпускной фонд',
+          label: this.$t('Отпускной фонд'),
         },
         {
           key: 'lo',
-          label: 'ЛО',
+          label: this.$t('ЛО'),
           formatter(v) {
             if (v !== null) {
               const formatter = new Intl.NumberFormat('ru');
@@ -115,7 +115,7 @@ export default {
         },
         {
           key: 'go',
-          label: 'ГО',
+          label: this.$t('ГО'),
           formatter(v) {
             if (v !== null) {
               const formatter = new Intl.NumberFormat('ru');
@@ -126,7 +126,7 @@ export default {
         },
         {
           key: 'ngo',
-          label: 'НГО',
+          label: this.$t('НГО'),
           formatter(v) {
             if (v !== null) {
               const formatter = new Intl.NumberFormat('ru');
@@ -137,7 +137,7 @@ export default {
         },
         {
           key: 'oo',
-          label: 'ОО',
+          label: this.$t('ОО'),
           formatter(v) {
             if (v !== null) {
               const formatter = new Intl.NumberFormat('ru');
@@ -148,7 +148,7 @@ export default {
         },
         {
           key: 'ko',
-          label: 'КО',
+          label: this.$t('КО'),
           formatter(v) {
             if (v !== null) {
               const formatter = new Intl.NumberFormat('ru');
@@ -159,14 +159,14 @@ export default {
         },
         {
           key: 'rank_calc',
-          label: 'Расчетный ранг',
+          label: this.$t('Расчетный ранг'),
         },
       ],
       mainFields: [
         'Наименование',
         {
           key: 'bonus',
-          label: 'Бонус',
+          label: this.$t('Бонус'),
           formatter(v) {
             if (v !== null) {
               const formatter = new Intl.NumberFormat('ru');
@@ -177,31 +177,31 @@ export default {
         },
         {
           key: 'accumulated',
-          label: 'Итого накоплено бонусов',
+          label: this.$t('Итого накоплено бонусов'),
         },
         {
           key: 'acc_month',
-          label: 'Месяцев накопления',
+          label: this.$t('Месяцев накопления'),
         },
       ],
       returnFields: [
         {
           key: 'agent_from_name',
-          label: 'ФИО',
+          label: this.$t('ФИО'),
           sortable: true,
         },
         {
           key: 'agent_from',
-          label: 'Номер партнера',
+          label: this.$t('Номер партнера'),
           sortable: true,
         },
         {
           key: 'rankname',
-          label: 'Ранг',
+          label: this.$t('Ранг'),
         },
         {
           key: 'volume',
-          label: 'Объем',
+          label: this.$t('Объем'),
           formatter(v) {
             if (v !== null) {
               const formatter = new Intl.NumberFormat('ru');
@@ -213,7 +213,7 @@ export default {
         },
         {
           key: 'percent',
-          label: 'Процент',
+          label: this.$t('Процент'),
           formatter(v) {
             if (v !== null) {
               return v;
@@ -224,7 +224,7 @@ export default {
         },
         {
           key: 'bonus_value',
-          label: 'Бонус',
+          label: this.$t('Бонус'),
           formatter(v) {
             if (v !== null) {
               const formatter = new Intl.NumberFormat('ru');
@@ -297,7 +297,7 @@ export default {
           responseType: 'blob',
         })
         .then(({ data }) => {
-          const filename = 'История бонусов.xlsx';
+          const filename = `${this.$t('История бонусов')}.xlsx`;
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;
@@ -317,7 +317,7 @@ export default {
           responseType: 'blob',
         })
         .then(({ data }) => {
-          const filename = 'История бонусов.pdf';
+          const filename = `${this.$t('История бонусов')}.pdf`;
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;

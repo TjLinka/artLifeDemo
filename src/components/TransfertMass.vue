@@ -1,20 +1,22 @@
 <template>
   <div class="licevoischet__page">
     <div class="container-md">
-      <h4 class="mt-4 modal_title">Текущее состояние
+      <h4 class="mt-4 modal_title">{{$t("Текущее состояние")}}
         <span class="close_btn" v-on:click="$emit('enlarge-text')"></span>
       </h4>
       <div class="row transfert">
         <div class="col-md-6">
-          <p>ЛО:</p>
-          <p>{{ transfertInfo.lo | localInt }} баллов</p>
+          <p>{{$t("ЛО")}}:</p>
+          <p>{{ transfertInfo.lo | localInt }} {{$t("баллов")}}</p>
         </div>
         <div class="col-md-6">
-          <p>Резерв:</p>
-          <p>{{ transfertInfo.reserve | localInt }} баллов</p>
+          <p>{{$t("Резерв")}}:</p>
+          <p>{{ transfertInfo.reserve | localInt }} {{$t("баллов")}} </p>
         </div>
       </div>
-      <h3 class="perevod">Перевод количества баллов</h3>
+      <h3 class="perevod">
+        {{$t("Перевод количества баллов")}}
+      </h3>
       <div class="row mt-3">
         <div class="col-md-6 perioad__picker">
         <BasePeriodPicker :currentPeriod="currentPeriod"
@@ -35,23 +37,30 @@
               }"
               @keydown="checkInput($event)"
                />
-              <label for="sum">Сумма</label>
+              <label for="sum">
+                {{$t("Сумма")}}
+              </label>
               <span class="clear_icon" @click="clearSum()"></span>
         </div>
         <div class="col custom_input">
           <input type="text" name="comm" id="comm" v-model="comm" required/>
-          <label for="comm">Комментарий</label>
+          <label for="comm">
+            {{$t("Комментарий")}}
+          </label>
           <span class="clear_icon" @click="clearComm()"></span>
         </div>
         <div class="col-xl trans_btns">
           <button @click="lo2reserve"
           :disabled="isDisabled"
           :class="isDisabled ? 'disabled' : ''">
-          Перевести в резерв</button>
+          {{$t("Перевести в резерв")}}
+          </button>
           <button @click="reserve2lo"
           :disabled="isDisabled"
           :class="isDisabled ? 'disabled' : ''"
-          >Перевести в трансферт</button>
+          >
+          {{$t("Перевести в трансферт")}}
+          </button>
         </div>
       </b-row>
     </div>
@@ -150,10 +159,10 @@ export default {
             comdte: this.currentPeriod,
           })
           .then(() => {
-            this.createMessageBoxError('Операция выполнена успешно');
+            this.createMessageBoxError(this.$t('Операция выполнена успешно'));
           })
           .catch(() => {
-            this.createMessageBoxError('Что-то пошло не так');
+            this.createMessageBoxError(this.$t('Что-то пошло не так'));
           });
         backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then((Response) => {
           this.transfertInfo = Response.data;
@@ -170,10 +179,10 @@ export default {
             comdte: this.currentPeriod,
           })
           .then(() => {
-            this.createMessageBoxError('Операция выполнена успешно');
+            this.createMessageBoxError(this.$t('Операция выполнена успешно'));
           })
           .catch(() => {
-            this.createMessageBoxError('Что-то пошло не так');
+            this.createMessageBoxError(this.$t('Что-то пошло не так'));
           });
         backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then((Response) => {
           this.transfertInfo = Response.data;

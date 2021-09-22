@@ -7,7 +7,9 @@
       :class="[changed? 'changed' : '', isError? 'error' : '']"
       required
     />
-    <label :for="`trans${userId}`">Трансферт</label>
+    <label :for="`trans${userId}`">
+      {{$t("Трансферт")}}
+    </label>
     <span class="clear_icon" @click="clearTranfer($event, userId)"></span>
   </div>
 </template>

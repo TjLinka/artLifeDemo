@@ -8,13 +8,13 @@
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
-        История баллов: {{agentData.id}} - {{agentData.name}}</h2>
+        {{$t("История баллов")}}: {{agentData.id}} - {{agentData.name}}</h2>
       <p>
-        <span class="transInfo">Состояние лицевого счета:</span>
-        <span class="lo">ЛО: {{transInfo.lo}}</span>
-        <span class="res">Резерв: {{transInfo.reserve}}</span>
+        <span class="transInfo">{{$t("Состояние лицевого счета")}}:</span>
+        <span class="lo">{{$t("ЛО")}}: {{transInfo.lo}}</span>
+        <span class="res">{{$t("Резерв")}}: {{transInfo.reserve}}</span>
       </p>
-      <p class="p-0 m-0 history_title">Период от и до</p>
+      <p class="p-0 m-0 history_title">{{$t("Период от и до")}}</p>
       <div class="row">
         <div class="col-md-6">
       <date-picker
@@ -47,13 +47,13 @@
       </div>
       <div class="row mobile_search noprint">
         <div class="col search__btn noprint" @click="toggleSearch">
-          Фильтры <span class="search_icons mobi"></span>
+          {{$t("Фильтры")}} <span class="search_icons mobi"></span>
         </div>
       </div>
       <p class="exp_print mt-3 noprint">
         <!-- <span class="mr-3">Печать</span> -->
-        <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
-        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
+        <span class="mr-3" @click="downloadPdf">{{$t("Экспорт в pdf")}}</span>
+        <span class="mr-3" @click="downloadXls">{{$t("Экспорт в xlsx")}}</span>
       </p>
       <b-table responsive :fields="fields" :items="entries" head-variant="light"
       class="points_history_table mt-4" outlined>
@@ -74,22 +74,22 @@
           </template>
       </b-table>
       <h2 class="licevoischet__page__summ">
-        <span class="mr-4">НА СЧЕТ = {{ summIncome | localInt }}        </span>
-        <span class="mr-4">СО СЧЕТА = {{ summOutcome | localInt }}        </span>
-        <span class="mr-4">ИЗМЕНЕНИЯ  = {{ changes | localInt }}         </span>
+        <span class="mr-4">{{$t("НА СЧЕТ")}} = {{ summIncome | localInt }}        </span>
+        <span class="mr-4">{{$t("СО СЧЕТА")}} = {{ summOutcome | localInt }}        </span>
+        <span class="mr-4">{{$t("ИЗМЕНЕНИЯ")}}  = {{ changes | localInt }}         </span>
         </h2>
     </div>
     </div>
       <footer class="container-fluid cust_modal pb-4">
       <div class="row desk_trans">
         <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
-          Фильтры <span class="search_icons"></span>
+          {{$t("Фильтры")}} <span class="search_icons"></span>
         </div>
       </div>
       <div v-if="searchActive" class="organization__modal">
         <div class="container-md">
         <h3 class="mt-4">
-          Фильтры
+          {{$t("Фильтры")}}
           <span @click="closeModal" class="close_btn"></span>
         </h3>
         <div class="row">
@@ -100,21 +100,21 @@
                 name="some-radios-1"
                 value="0"
                 class="radio mr-3"
-                >Резерв</b-form-radio
+                >{{$t("Резерв")}}</b-form-radio
               >
               <b-form-radio
                 v-model="points_type"
                 name="some-radios-1"
                 value="1"
                 class="radio mr-3"
-                >ЛО</b-form-radio
+                >{{$t("ЛО")}}</b-form-radio
               >
               <b-form-radio
                 v-model="points_type"
                 name="some-radios-1"
                 :value="null"
                 class="radio"
-                >Все</b-form-radio
+                >{{$t("Все")}}</b-form-radio
               >
             </b-form-group>
           </div>
@@ -123,13 +123,13 @@
           <div class="col-md-6 custom_input">
            <input type="text" name="comment"
             id="comment" required v-model="comment" />
-            <label for="comment">Комментарий</label>
+            <label for="comment">{{$t("Комментарий")}}</label>
             <span class="clear_icon" @click="clearComment('comment')"></span>
           </div>
           <div class="col-md-6 custom_input">
            <input type="text" name="operType"
             id="operType" required v-model="operType" />
-            <label for="operType">Тип операции</label>
+            <label for="operType">{{$t("Тип операции")}}</label>
             <span class="clear_icon" @click="clearOperType('operType')"></span>
           </div>
           <!-- <div class="col-md-6">
@@ -140,7 +140,7 @@
           <div class="col-md-6">
           </div>
           <div class="col-md-6">
-            <button class="mr-2 update" @click="updateData">Показать</button>
+            <button class="mr-2 update" @click="updateData">{{$t("Показать")}}</button>
           </div>
         </div>
         </div>
@@ -196,7 +196,7 @@ export default {
       fields: [
         {
           key: 'dte',
-          label: 'Дата операции',
+          label: this.$t('Дата операции'),
           sortable: true,
           thStyle: {
             width: '150px',
@@ -208,7 +208,7 @@ export default {
         },
         {
           key: 'comdte',
-          label: 'Период',
+          label: this.$t('Период'),
           thStyle: {
             width: '140px',
             minWidth: '100px',
@@ -234,7 +234,7 @@ export default {
         },
         {
           key: 'income',
-          label: 'На счет',
+          label: this.$t('На счет'),
           sortable: true,
           thStyle: {
             minWidth: '100px',
@@ -242,7 +242,7 @@ export default {
         },
         {
           key: 'outcome',
-          label: 'Со счета',
+          label: this.$t('Со счета'),
           sortable: true,
           thStyle: {
             minWidth: '100px',
@@ -250,7 +250,7 @@ export default {
         },
         {
           key: 'opertype',
-          label: 'Тип операции',
+          label: this.$t('Тип операции'),
           sortable: true,
           thStyle: {
             minWidth: '150px',
@@ -258,7 +258,7 @@ export default {
         },
         {
           key: 'pointstype',
-          label: 'Тип баллов',
+          label: this.$t('Тип баллов'),
           sortable: true,
           thStyle: {
             minWidth: '130px',
@@ -266,7 +266,7 @@ export default {
         },
         {
           key: 'comm',
-          label: 'Комментарий',
+          label: this.$t('Комментарий'),
           // width: '300px',
           sortable: true,
         },
@@ -336,7 +336,7 @@ export default {
           responseType: 'blob',
         })
         .then(({ data }) => {
-          const filename = 'История баллов.xlsx';
+          const filename = `${this.$t('История баллов')}.xlsx`;
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;
@@ -360,7 +360,7 @@ export default {
           responseType: 'blob',
         })
         .then(({ data }) => {
-          const filename = 'История баллов.pdf';
+          const filename = `${this.$t('История баллов')}.pdf`;
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;

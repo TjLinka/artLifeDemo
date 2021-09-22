@@ -8,7 +8,7 @@
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
-        Данные спонсора
+        {{$t("Данные спонсора")}}
         </h2>
       <div class="sponsor__page__description">
         <div class="myfoto">
@@ -21,17 +21,17 @@
         <div class="container-md top__info">
           <div class="row">
             <div class="col-md-6 mt-4">
-              <p>Номер соглашения:</p>
+              <p>{{$t(("Номер соглашения"))}}:</p>
               <p>{{userInfo.id}}</p>
             </div>
             <div class="col-md-6 mt-4">
-              <p>Электронная почта:</p>
+              <p>{{$t("E-mail")}}:</p>
               <p>{{userInfo.email}}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6 mt-4">
-              <p>ФИО:</p>
+              <p>{{$t("ФИО")}}:</p>
               <p>{{userInfo.name}}</p>
             </div>
             <div class="col-md-6 mt-4">
@@ -41,7 +41,7 @@
           </div>
           <div class="row">
             <div class="col-md-6 mt-4">
-              <p>Телефон:</p>
+              <p>{{$t("Телефон")}}:</p>
               <p>{{userInfo.phone}}</p>
             </div>
           </div>

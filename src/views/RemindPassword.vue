@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h2 class="page__title">
-      Восстановить пароль
+      {{$t("Восстановить пароль")}}
     </h2>
       <div class="row">
         <div class="col mt-3 switch">
@@ -18,40 +18,48 @@
     <div class="row mt-4" v-show='!smsCodeCome'>
       <div class="col-md-3 custom_input" v-show="!value2">
         <input type="text" name="email" id="email" required v-model="email" />
-        <label for="email">Email</label>
+        <label for="email">{{$t("E-mail")}}</label>
         <span class="clear_icon" @click="clearEmail()"></span>
       </div>
       <div class="col-md-3 custom_input" v-show="value2">
         <input type="text" name="phone" id="phone"
         v-mask="'+###############'"
         required v-model="phone" />
-        <label for="phone">Телефон в международном формате</label>
+        <label for="phone">{{$t("Телефон в международном формате")}}</label>
         <span class="clear_icon" @click="clearPhone()"></span>
       </div>
     </div>
     <div class="row mt-4" v-show='smsCodeCome'>
       <div class="col-md-3 custom_input">
         <input type="text" name="smsCode" id="smsCode" required v-model="smsCode" />
-        <label for="smsCode">Код</label>
+        <label for="smsCode">
+          {{$t("Код")}}
+        </label>
         <span class="clear_icon" @click="clearSmsCode()"></span>
       </div>
       <div class="col-md-3 custom_input">
         <input type="text" name="newPass" id="newPass" required v-model="newPass" />
-        <label for="newPass">Новый пароль</label>
+        <label for="newPass">
+          {{$t("Новый пароль")}}
+        </label>
         <span class="clear_icon" @click="clearNewPass()"></span>
       </div>
     </div>
     <div class="row mt-4" v-show='!smsCodeCome'>
       <div class="col-md-6 ">
           <button class="rempass" @click="remindPassEmail"
-          v-show="!value2">Восстановить пароль</button>
+          v-show="!value2">
+          {{$t("Восстановить пароль")}}
+          </button>
           <button class="rempass" @click="remindPassPhone" v-show="value2">
-            Восстановить пароль</button>
+            {{$t("Восстановить пароль")}} </button>
       </div>
     </div>
     <div class="row mt-4" v-show='smsCodeCome'>
       <div class="col-md-6 ">
-          <button class="rempass" @click="saveNewPass">Изменить пароль</button>
+          <button class="rempass" @click="saveNewPass">
+            {{$t("Изменить пароль")}}
+          </button>
       </div>
     </div>
   </div>
@@ -107,10 +115,10 @@ export default {
           },
         };
         backApi.get('/remind-password', data).then(() => {
-          this.showToast('Восстановление пароля', 'На вашу почту пришло письмо!', 'success');
+          this.showToast(this.$t('Восстановление пароля'), this.$t('На вашу почту пришло письмо'), 'success');
           setTimeout(() => { this.$router.push('/login'); }, 1500);
         }).catch(() => {
-          this.showToast('Восстановление пароля', 'Почта указана не верно', 'danger');
+          this.showToast(this.$t('Восстановление пароля'), this.$t('Почта указана не верно'), 'danger');
         });
       }
     },
@@ -120,11 +128,11 @@ export default {
           phone: Number(this.phone),
         };
         backApi.post('/agent/restore-request', data).then((Response) => {
-          this.showToast('Восстановление пароля', 'На ваш телефон придет смс с кодом!', 'success');
+          this.showToast(this.$t('Восстановление пароля'), this.$t('На ваш телефон придет смс с кодом'), 'success');
           this.smsCodeCome = true;
           this.id_hash = Response.data.id;
         }).catch(() => {
-          this.showToast('Восстановление пароля', 'Телефон указан не верно', 'danger');
+          this.showToast(this.$t('Восстановление пароля'), this.$t('Телефон указан не верно'), 'danger');
         });
       }
     },

@@ -2,13 +2,15 @@
   <div class="licevoischet__page">
     <div class="container">
       <h4 class="mt-4 modal_title">
-        Настройки партнера
+        {{$t("Настройки партнера")}}
         <span
           v-on:click="$emit('enlarge-text')" class="close_btn"></span>
       </h4>
       <div class="row edit">
         <div class="col-md-6 mt-4">
-          <span v-if="state" class="custom_label">Партнер получатель</span>
+          <span v-if="state" class="custom_label">
+            {{$t("Партнер получатель")}}
+          </span>
           <el-autocomplete
             v-model="state"
             :fetch-suggestions="querySearchAsync"
@@ -25,7 +27,9 @@
             v-on:click="$emit('update-data', selectedUser)"
             :disabled="isDisabled"
             :class="isDisabled ? 'disabled' : ''"
-            >Показать</button>
+            >
+            {{$t("Партнер получатель")}}
+            </button>
           </div>
         </div>
       </div>
@@ -34,11 +38,11 @@
       <template #toast-title>
         <div class="d-flex flex-grow-1 align-items-baseline">
           <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
-          <strong class="mr-auto">Ошибка!</strong>
+          <strong class="mr-auto">{{$t("Ошибка")}}!</strong>
           <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
         </div>
       </template>
-      Данные указаны не верно
+      {{$t("Данные указаны не верно")}}
     </b-toast>
   </div>
 </template>

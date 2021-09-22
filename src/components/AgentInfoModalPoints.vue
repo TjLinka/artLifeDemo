@@ -2,7 +2,7 @@
   <div class="licevoischet__page">
     <div class="container-md">
       <h4 class="mt-4 modal_title">
-        Перевести баллы между партнерами
+        {{$t("Перевести баллы между партнерами")}}
         <span class="close_btn" v-on:click="$emit('enlarge-text')"></span>
       </h4>
       <div class="row transfert">
@@ -11,14 +11,18 @@
           <p>{{ lo }} баллов</p>
         </div> -->
         <div class="col-md-6">
-          <p>Резерв:</p>
-          <p>{{ reserve | localInt }} баллов</p>
+          <p>{{$t("Резерв")}}:</p>
+          <p>{{ reserve | localInt }} {{$t("баллов")}}</p>
         </div>
       </div>
-      <h3 class="perevod">Перевод количества баллов</h3>
+      <h3 class="perevod">
+        {{$t("Перевод количества баллов")}}
+      </h3>
       <div class="row edit end">
         <div class="col-md-6 mt-4">
-          <span v-if="state" class="custom_label">Партнер получатель</span>
+          <span v-if="state" class="custom_label">
+            {{$t("Партнер получатель")}}
+          </span>
           <el-autocomplete
             v-model="state"
             :fetch-suggestions="querySearchAsync"
@@ -40,19 +44,23 @@
           }"
           @keydown="checkInput($event)"
           />
-          <label for="sum">Сумма</label>
+          <label for="sum">
+            {{$t("Сумма")}}
+          </label>
           <span class="clear_icon" @click="clearSum()"></span>
         </div>
       </div>
       <div class="row edit mt-4">
         <div class="col-md-6 custom_input comment">
           <input type="text" name="comm" id="comm" required v-model="comm" />
-          <label for="comm">Комментарий</label>
+          <label for="comm">
+            {{$t("Комментарий")}}
+          </label>
           <span class="clear_icon" @click="clearComm()"></span>
         </div>
         <div class="col-md trans_btns">
           <button :disabled="!pointsGo" @click="send" :class="pointsGo ? '' : 'disabled'">
-            Перевести
+            {{$t("Перевести")}}
           </button>
         </div>
       </div>
@@ -173,17 +181,17 @@ export default {
               comm: this.comm,
             })
             .then(() => {
-              this.createMessageBoxError('Операция выполнена успешно');
+              this.createMessageBoxError(this.$t('Операция выполнена успешно'));
             })
             .catch(() => {
-              this.createMessageBoxError('Что-то пошло не так');
+              this.createMessageBoxError(this.$t('Что-то пошло не так'));
             });
           backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then((Response) => {
             this.transfertInfo = Response.data;
           });
         } else {
           // console.log(Number(this.sum.replace(/,/, '.').replace(/\s/g, '')), this.reserve);
-          this.createMessageBoxError('Вы не можете перевести больше чем у Вас есть');
+          this.createMessageBoxError(this.$t('Вы не можете перевести больше чем у Вас есть'));
         }
       }
     },

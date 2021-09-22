@@ -1,7 +1,7 @@
 <template>
   <div class="container" v-if="errorStatus">
     <h2 class="page__title">
-      Верификация
+      {{$t('Верификация')}}
     </h2>
     <div class="row mt-4">
       <div class="col-md-6">
@@ -10,17 +10,17 @@
           v-mask="'+7(###)-###-##-##'"
           name="mobile_phone" id="mobile_phone"
           required v-model="newUser.mobile_phone" />
-          <label for="mobile_phone">Номер телефона:</label>
+          <label for="mobile_phone">{{$t('Номер телефона')}}:</label>
           <span class="clear_icon" @click="clearPhone()"></span>
         </div>
         <div class="custom_input" v-show="codeCome">
           <input type="text" name="mobile_phone_code"
           id="mobile_phone_code" required v-model="mobile_phone_code" />
-          <label for="mobile_phone_code">Смс код:</label>
+          <label for="mobile_phone_code">{{$t('Смс код')}}:</label>
           <span class="clear_icon" @click="clearPhoneCode()"></span>
         </div>
         <button @click="phoneCodeCome" v-if="!codeCome">
-            Отправить код потверждения
+            {{$t("Отправить код потверждения")}}
         </button>
         <b-form-checkbox
           class="mt-3"
@@ -31,30 +31,32 @@
           v-if="codeCome"
           :unchecked-value="false"
         >
-          Согласен на обработку данных
+          {{$t("Согласен на обработку данных")}}
         </b-form-checkbox>
         <button
         v-if="codeCome"
         @click="getAccess"
         :disabled="!status"
         :class="`${status ? '' : 'disabled'}`">
-            Потвердить код
+            {{$t("Потвердить код")}}
         </button>
         <br>
         <button
         v-if="registeration"
         :disabled="!registeration"
-        @click="$router.push('/');">Перейти в профиль</button>
+        @click="$router.push('/');">
+        {{$t("Перейти в профиль")}}
+        </button>
       </div>
       <div class="col-md-6">
-        <h4>Ваша почта подтверждена</h4>
+        <h4>{{$t("Ваша почта подтверждена")}}</h4>
         <p class="posr">{{ newUser.email }}<span class="chval"></span></p>
       </div>
     </div>
   </div>
     <div v-else>
     <h2 class="page__title">
-      Страница не найдена.
+      {{$t("Страница не найдена")}}
     </h2>
     </div>
 </template>
@@ -117,7 +119,7 @@ export default {
       };
       backApi.post('/agent/new-agent/send-code', data)
         .then(() => {
-          this.showToast('СМС потверждение', 'На ваш телефон придет смс с кодом для потверждения', 'success');
+          this.showToast(this.$t('СМС потверждение'), this.$t('На ваш телефон придет смс с кодом для потверждения'), 'success');
           this.codeCome = true;
         });
     },
@@ -130,10 +132,10 @@ export default {
       backApi.post('/agent/signup-end', data)
         .then(() => {
           this.phoneCheck = false;
-          this.showToast('СМС потверждение', 'Ваш код потвержден', 'success');
+          this.showToast(this.$t('СМС потверждение'), this.$t('Ваш код потвержден'), 'success');
         })
         .catch((error) => {
-          this.showToast('СМС потверждение', error.response.data.detail, 'danger');
+          this.showToast(this.$t('СМС потверждение'), error.response.data.detail, 'danger');
         });
     },
     getAccess() {
@@ -144,7 +146,7 @@ export default {
       this.register(data).then(() => {
         // this.$router.push('/');
         this.registeration = true;
-        this.showToast('Регистриция', 'Вы успешно прошли регистрацию', 'success');
+        this.showToast(this.$t('Регистриция'), this.$t('Вы успешно прошли регистрацию'), 'success');
       });
     },
     clearPhone() {

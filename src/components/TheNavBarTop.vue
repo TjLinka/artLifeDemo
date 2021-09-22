@@ -12,7 +12,9 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse v-if="is_authorized" id="nav-collapse" is-nav>
-        <a href="https://www.artlife.ru/" class="siteBtn">Перейти на сайт</a>
+        <a href="https://www.artlife.ru/" class="siteBtn">
+        {{$t("Перейти на сайт")}}
+        </a>
         <b-navbar-nav class="ml-auto">
           <div class="d-lg-flex"></div>
           <b-nav-item-dropdown right>
@@ -22,11 +24,15 @@
             </template>
             <b-dropdown-item to="/">{{ agentname }}</b-dropdown-item>
             <b-dropdown-item disabled>
-              <span><small style="color: grey; font-size: 12px;">Тип соглашения</small></span
+              <span><small style="color: grey; font-size: 12px;">
+                {{$t("Тип соглашения")}}
+                </small></span
               ><br />
               {{role}}
             </b-dropdown-item>
-            <b-dropdown-item class="logout" v-on:click="out">Выйти</b-dropdown-item>
+            <b-dropdown-item class="logout" v-on:click="out">
+              {{$t("Выйти")}}
+            </b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>

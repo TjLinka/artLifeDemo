@@ -2,14 +2,20 @@
   <div class="container">
     <div class="row" v-if="!errorStatus">
       <div class="col">
-        <h2 class="page__title">Смена адреса почтового ящика</h2>
-        <p class="p-0 m-0 mt-4">Ваша почта подтверждена</p>
+        <h2 class="page__title">
+          {{$t("Смена адреса почтового ящика")}}
+        </h2>
+        <p class="p-0 m-0 mt-4">
+          {{$t("Ваша почта подтверждена")}}
+        </p>
         <p> {{email}} <span class="chval"></span></p>
       </div>
     </div>
     <div class="row" v-else>
       <div class="col">
-        <h2 class="page__title">Такой старницы не существует</h2>
+        <h2 class="page__title">
+          {{$t("Такой старницы не существует")}}
+        </h2>
       </div>
     </div>
   </div>

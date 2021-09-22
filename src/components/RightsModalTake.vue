@@ -1,12 +1,14 @@
 <template>
   <div class="licevoischet__page">
     <div class="container-md">
-      <h4 class="mt-4 modal_title">Передача прав
+      <h4 class="mt-4 modal_title">{{$t("Передача прав")}}
         <span v-on:click="$emit('enlarge-text')" class="close_btn"></span>
       </h4>
       <div class="row transfert mt-5 edit">
         <div class="col-xl-6">
-          <span v-if="state" class="custom_label">Партнер получатель</span>
+          <span v-if="state" class="custom_label">
+            {{$t("Партнер получатель")}}
+          </span>
           <el-autocomplete
             v-model="state"
             :fetch-suggestions="querySearchAsync"
@@ -22,10 +24,10 @@
           @click="takeRights"
           :disabled="isDisabled"
           :class="isDisabled ? 'disabled' : ''"
-          >Передать права</button>
+          >{{$t("Передать права")}}</button>
           <button
           @click="resetData"
-          >Сбросить</button>
+          >{{$t("Сбросить")}}</button>
         </div>
       </div>
     </div>
@@ -33,11 +35,11 @@
       <template #toast-title>
         <div class="d-flex flex-grow-1 align-items-baseline">
           <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
-          <strong class="mr-auto">Не был выбран партнер!</strong>
+          <strong class="mr-auto">{{$t("Не был выбран партнер")}}!</strong>
           <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
         </div>
       </template>
-        Выберете партнера, которому хотите передать права
+        {{$t("Выберете партнера, которому хотите передать права")}}
     </b-toast>
   </div>
 </template>

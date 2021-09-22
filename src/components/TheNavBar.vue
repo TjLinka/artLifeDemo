@@ -13,43 +13,65 @@
         <li>
           <a class="nav_parent" href="#">
             <span class="ico"><img src="../assets/imgs/i1.png" alt=""/></span>
-            <span class="ico_t">Профиль</span>
+            <span class="ico_t">
+              {{$t("Профиль")}}
+            </span>
           </a>
           <ul class="sub_menu">
             <li class="mobilis">
-              <span class="i_m">Профиль</span>
+              <span class="i_m">
+                {{$t("Профиль")}}
+              </span>
               <div class="mobile_logout" v-on:click="out">
                 <img src="../assets/imgs/logoutmobile.svg" alt="">
               </div>
               </li>
-            <li><router-link to="/">Карточка партнера</router-link></li>
-            <li><router-link to="/myinfoedit">Редактирование личных данных</router-link></li>
-            <li><router-link to="/sponsorcard">Данные спонсора</router-link></li>
-            <li v-if="role !== 'Клиент'"><router-link to="/rights">Передача прав</router-link></li>
-            <li><a href="https://www.artlife.ru/">Мои реферальные ссылки</a></li>
-            <li><router-link to="/registration">Регистрация партнера</router-link></li>
+            <li><router-link to="/">
+            {{$t("Карточка партнера")}}
+            </router-link></li>
+            <li><router-link to="/myinfoedit">
+            {{$t("Редактирование личных данных")}}
+            </router-link></li>
+            <li><router-link to="/sponsorcard">
+            {{$t("Данные спонсора")}}
+            </router-link></li>
+            <li v-if="role !== 'Клиент'"><router-link to="/rights">
+            {{$t("Передача прав")}}
+            </router-link></li>
+            <li><a href="https://www.artlife.ru/">
+            {{$t("Мои реферальные ссылки")}}
+            </a></li>
+            <li><router-link to="/registration">
+            {{$t("Регистрация партнера")}}
+            </router-link></li>
           </ul>
         </li>
         <li>
           <a class="nav_parent" href="#">
             <span class="ico"><img src="../assets/imgs/i2.png" alt=""/></span>
-            <span class="ico_t">Структура</span>
+            <span class="ico_t">
+              {{$t("Структура")}}
+            </span>
           </a>
           <ul class="sub_menu">
-            <li class="mobilis"><span class="i_m">Структура</span></li>
+            <li class="mobilis"><span class="i_m">
+              {{$t("Структура")}}
+              </span></li>
             <li v-if="role === 'Клиент'">
               <router-link to="/organization-period"
-              >Организация текущего периода</router-link>
+              >
+              {{$t("Организация текущего периода")}}
+              </router-link>
             </li>
             <li v-if="role !=='Клиент'">
               <router-link to="/organization-by-period"
               >
-                История организации по периодам
+                {{$t("История организации по периодам")}}
               </router-link>
             </li>
             <li v-if="role !== 'Клиент'">
               <router-link to="/transfermanagement">
-              Управление трансфертами структуры(плоское дерево)
+              {{$t("Управление трансфертами структуры(плоское дерево)")}}
               </router-link>
             </li>
           </ul>
@@ -57,25 +79,37 @@
         <li>
           <a class="nav_parent" href="#">
             <span class="ico"><img src="../assets/imgs/i3.png" alt=""/></span>
-            <span class="ico_t">Отчеты</span>
+            <span class="ico_t">
+              {{$t("Отчеты")}}
+            </span>
           </a>
           <ul class="sub_menu">
-            <li class="mobilis"><span class="i_m">Отчеты</span></li>
+            <li class="mobilis"><span class="i_m">
+              {{$t("Отчеты")}}
+              </span></li>
             <li v-if="role !== 'Клиент'">
             <router-link to="/indicators">
-            Показатели
+            {{$t("Показатели")}}
             </router-link></li>
             <li
             v-show="role !== 'Клиент'">
-            <router-link to="/bonus-history">История начисления бонусов</router-link></li>
+            <router-link to="/bonus-history">
+            {{$t("История начисления бонусов")}}
+            </router-link></li>
             <li v-show="role !== 'Клиент'"><router-link to="/points-history"
-            >История баллов </router-link></li>
-            <li><router-link to="/account-detail">Детализация лицевого счета</router-link></li>
+            >
+            {{$t("История баллов")}}
+            </router-link></li>
+            <li><router-link to="/account-detail">
+            {{$t("Детализация лицевого счета")}}
+            </router-link></li>
             <li  v-show="role !== 'Клиент'"><router-link to="/partnerindicators">
-            История показателей партнера по периодам
+            {{$t("История показателей партнера по периодам")}}
             </router-link></li>
             <li v-if="role === 'Клиент'"><router-link to="/client-bonus"
-            >Количество бонусных баллов</router-link></li>
+            >
+            {{$t("Количество бонусных баллов")}}
+            </router-link></li>
           </ul>
         </li>
         <!-- <li>
@@ -91,12 +125,20 @@
         <li class="hover">
           <a class="nav_parent" href="#">
             <span class="ico"><img src="../assets/imgs/i5.png" alt=""/></span>
-            <span class="ico_t">Покупки</span>
+            <span class="ico_t">
+              {{$t("Покупки")}}
+            </span>
           </a>
           <ul class="sub_menu">
-            <li class="mobilis"><span class="i_m">Покупки</span></li>
-            <li><router-link to="/purchases-history">История покупок</router-link></li>
-            <li><router-link to="/returns-history">История возвратов</router-link></li>
+            <li class="mobilis"><span class="i_m">
+              {{$t("Покупки")}}
+              </span></li>
+            <li><router-link to="/purchases-history">
+            {{$t("История покупок")}}
+            </router-link></li>
+            <li><router-link to="/returns-history">
+            {{$t("История возвратов")}}
+            </router-link></li>
           </ul>
         </li>
       </ul>

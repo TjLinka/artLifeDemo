@@ -8,10 +8,12 @@
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
-        Количество бонусных баллов
+        {{$t("Количество бонусных баллов")}}
         </h2>
       <br>
-      <h5>Накопленный объем</h5>
+      <h5>
+        {{$t("Накопленный объем")}}
+      </h5>
       <div class="sponsor__page__description">
         <div class="container top__info">
           <div class="row">
@@ -30,11 +32,11 @@
           </div>
           <div class="row">
             <div class="col-md-6 mt-3">
-              <p>Объем покупок:</p>
+              <p>{{$t("Объем покупок")}}:</p>
               <p>{{bonusInfo.ngo}}</p>
             </div>
             <div class="col-md-6 mt-3">
-              <p>Скидка:</p>
+              <p>{{$t("Скидка")}}:</p>
               <p>{{bonusInfo.discount_pc ? bonusInfo.discount_pc : '-'}}</p>
             </div>
           </div>

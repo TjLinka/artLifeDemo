@@ -1,20 +1,22 @@
 <template>
   <div class="licevoischet__page">
     <div class="container-md">
-      <h4 class="mt-4 modal_title">Текущее состояние
+      <h4 class="mt-4 modal_title">{{$t("Текущее состояние")}}
         <span class="close_btn" v-on:click="$emit('enlarge-text')"></span>
       </h4>
       <div class="row transfert">
         <div class="col-md-6">
-          <p>ЛО:</p>
-          <p>{{ transfertInfo.lo | localInt }} баллов</p>
+          <p>{{$t("ЛО")}}:</p>
+          <p>{{ transfertInfo.lo | localInt }} {{$t("баллов")}}</p>
         </div>
         <div class="col-md-6">
-          <p>Резерв:</p>
-          <p>{{ transfertInfo.reserve | localInt }} баллов</p>
+          <p>{{$t("Резерв")}}:</p>
+          <p>{{ transfertInfo.reserve | localInt }} {{$t("баллов")}}</p>
         </div>
       </div>
-      <h3 class="perevod">Перевод количества баллов</h3>
+      <h3 class="perevod">
+        {{$t("Перевод количества баллов")}}
+      </h3>
       <div class="row edit">
         <div class="col-xl-6 mt-4 custom_input">
               <input type="number" name="sum" id="sum"
@@ -29,11 +31,11 @@
             <button @click="lo2reserve"
             :disabled="isDisabled"
             :class="isDisabled ? 'disabled' : ''">
-            Перевести в резерв</button>
+            {{$t("Перевести в резерв")}}</button>
             <button @click="reserve2lo"
             :disabled="isDisabled"
             :class="isDisabled ? 'disabled' : ''"
-            >Перевести в трансферт</button>
+            >{{$t("Перевести в трансферт")}}</button>
           </div>
       </div>
       <!-- <div class="row edit mt-4">
@@ -53,11 +55,11 @@
       <template #toast-title>
         <div class="d-flex flex-grow-1 align-items-baseline">
           <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
-          <strong class="mr-auto">Ошибка!</strong>
+          <strong class="mr-auto">{{$t("Ошибка")}}!</strong>
           <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
         </div>
       </template>
-      Данные указаны не верно
+      {{$t("Данные указаны не верно")}}
     </b-toast>
     <b-toast id="my-toast-good" variant="success" solid>
       <template #toast-title>
@@ -67,7 +69,7 @@
           <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
         </div>
       </template>
-      Операция выполнена успешно
+      {{$t("Операция выполнена успешно")}}
     </b-toast>
   </div>
 </template>
@@ -139,11 +141,11 @@ export default {
           })
           .then(() => {
             this.$bvToast.show('my-toast-good');
-            this.createMessageBoxError('Операция выполнена успешно');
+            this.createMessageBoxError(this.$t('Операция выполнена успешно'));
           })
           .catch(() => {
             this.$bvToast.show('my-toast');
-            this.createMessageBoxError('Что-то пошло не так');
+            this.createMessageBoxError(this.$t('Что-то пошло не так'));
           });
         backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then((Response) => {
           this.transfertInfo = Response.data;
@@ -160,11 +162,11 @@ export default {
           })
           .then(() => {
             this.$bvToast.show('my-toast-good');
-            this.createMessageBoxError('Операция выполнена успешно');
+            this.createMessageBoxError(this.$t('Операция выполнена успешно'));
           })
           .catch(() => {
             this.$bvToast.show('my-toast');
-            this.createMessageBoxError('Что-то пошло не так');
+            this.createMessageBoxError(this.$t('Что-то пошло не так'));
           });
         backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then((Response) => {
           this.transfertInfo = Response.data;

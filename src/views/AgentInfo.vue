@@ -14,7 +14,7 @@
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
           </svg>
         </p>
-        Карточка партнера: {{userinfo.id}} - {{userinfo.name}}
+        {{$t("Карточка партнера")}}: {{userinfo.id}} - {{userinfo.name}}
       </h2>
       <div class="myinfo__page__description">
         <div class="myfoto">
@@ -27,13 +27,13 @@
           <div class="row noprint" v-if="!this.$route.params.id">
             <div class="col-md mt-1">
               <span class="modal_btn" @click="showTransfModal1" v-if="transfertAccess">
-                Перевести баллы между партнерами
+                {{$t("Перевести баллы между партнерами")}}
               </span>
               <span class="modal_btn" @click="showTransfModal2">
-                Перевести между лицевыми счетами
+                {{$t("Перевести между лицевыми счетами")}}
               </span>
               <span class="modal_btn" @click="becomePartner" v-if="!transfertAccess">
-                Стать партнером
+                {{$t("Стать партнером")}}
               </span>
             </div>
           </div>
@@ -46,31 +46,31 @@
           </div> -->
           <div class="row">
             <div class="col-md-6 mt-3">
-              <p>Номер соглашения:</p>
+              <p>{{$t("Номер соглашения")}}:</p>
               <p>{{ userinfo.id }}</p>
             </div>
             <div class="col-md-6 mt-3">
-              <p>ФИО:</p>
+              <p>{{$t("ФИО")}}:</p>
               <p>{{ userinfo.name }}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6 mt-3">
-              <p>E-mail:</p>
+              <p>{{$t("E-mail")}}:</p>
               <p>{{ userinfo.email }}</p>
             </div>
             <div class="col-md-6 mt-3">
-              <p>Телефон:</p>
+              <p>{{$t("Телефон")}}:</p>
               <p>+{{ userinfo.phone }}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6 mt-3">
-              <p>Страна:</p>
+              <p>{{$t("Страна")}}:</p>
               <p>{{ userinfo.country }}</p>
             </div>
             <div class="col-md-6 mt-3">
-              <p>Адрес:</p>
+              <p>{{$t("Адрес")}}:</p>
               <p>{{ userinfo.address }}</p>
             </div>
           </div>
@@ -80,94 +80,94 @@
               <p>{{ userinfo.passport }}</p>
             </div> -->
             <div class="col-md-6 mt-3">
-              <p>Дата рождения:</p>
+              <p>{{$t("Дата рождения")}}:</p>
               <!-- <p>{{ new Date(userinfo.bthdte).toLocaleDateString() }}</p> -->
               <p>{{ userinfo.bthdte | localDate }}</p>
             </div>
             <div class="col-md-6 mt-3">
-              <p>Доп. контакты:</p>
+              <p>{{$t("Доп. контакты")}}:</p>
               <p>{{ userinfo.skype }}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6 mt-3">
-              <p>Склад обслуживания:</p>
+              <p>{{$t('Склад обслуживания')}}:</p>
               <p>{{ userinfo.stock_id }} - {{userinfo.stock_name}}</p>
             </div>
           </div>
         </div>
         <div class="transfert" v-if="transLoaded">
-          <h2 class="page__caption mt-5">Дополнительная информация для трансферта</h2>
+          <h2 class="page__caption mt-5">{{$t("Дополнительная информация для трансферта")}}</h2>
           <div class="container-md transfert__info" v-if="showTransfertInfo">
             <div class="row">
               <div class="col-md-6 mt-3">
-                <p>Неактивность:</p>
+                <p>{{$t("Неактивность")}}:</p>
                 <p>{{ transfertInfo.noact }}</p>
               </div>
               <div class="col-md-6 mt-3">
-                <p>Личный объем (ЛО):</p>
+                <p>{{$t("Личный объем (ЛО)")}}:</p>
                 <p>{{ transfertInfo.lo | localInt }}</p>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 mt-3">
-                <p>Групповой объем (ГО):</p>
+                <p>{{$t("Групповой объем (ГО)")}}:</p>
                 <p>{{ transfertInfo.go | localInt }}</p>
               </div>
               <div class="col-md-6 mt-3">
-                <p>Накопленный групповой объем (НГО):</p>
+                <p>{{$t("Накопленный групповой объем (НГО)")}}:</p>
                 <p>{{ transfertInfo.ngo | localInt }}</p>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 mt-3">
-                <p>Организационный объем (ОО):</p>
+                <p>{{$t("Организационный объем (ОО)")}}:</p>
                 <p>{{ transfertInfo.so | localInt }}</p>
               </div>
               <div class="col-md-6 mt-3">
-                <p>Квалификационный объем (КО):</p>
+                <p>{{$t("Квалификационный объем (КО)")}}:</p>
                 <p>{{ transfertInfo.ko | localInt }}</p>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 mt-3">
-                <p>Баллы в резерве:</p>
+                <p>{{$t("Баллы в резерве")}}:</p>
                 <p>{{ transfertInfo.reserve | localInt }}</p>
               </div>
               <div class="col-md-6 mt-3">
-                <p>Ранг на начало:</p>
+                <p>{{$t("Ранг на начало")}}:</p>
                 <p>{{ transfertInfo.rank_beg }}</p>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 mt-3">
-                <p>Расчетный ранг:</p>
+                <p>{{$t("Расчетный ранг")}}:</p>
                 <p>{{ transfertInfo.rank_calc }}</p>
               </div>
               <div class="col-md-6 mt-3">
-                <p>Ранг на конец месяца:</p>
+                <p>{{$t("Ранг на конец месяца")}}:</p>
                 <p>{{ transfertInfo.rank_end }}</p>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 mt-3">
-                <p>Максимально достигнутый ранг:</p>
+                <p>{{$t("Максимально достигнутый ранг")}}:</p>
                 <p>{{ transfertInfo.rank_max }}</p>
               </div>
               <div class="col-md-6 mt-3">
-                <p>Дата достижения максимального ранга:</p>
+                <p>{{$t("Дата достижения максимального ранга")}}:</p>
                 <!-- <p>{{ new Date(userinfo.rank_max_date).toLocaleDateString() }}</p> -->
                 <p>{{ transfertInfo.rank_max_date | localDate }}</p>
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 mt-3">
-                <p>Дата регистрации:</p>
+                <p>{{$t("Дата регистрации")}}:</p>
                 <!-- <p>{{ new Date(userinfo.credte).toLocaleDateString() }}</p> -->
                 <p>{{ transfertInfo.credte | localDate }}</p>
               </div>
               <div class="col-md-6 mt-3">
-                <p>Дата окончания лидерской программы:</p>
+                <p>{{$t("Дата окончания лидерской программы")}}:</p>
                 <p>{{ transfertInfo.leader_date | localDate }}</p>
               </div>
             </div>
@@ -180,7 +180,7 @@
             </div>
             <div class="col-md-6 mt-3 noprint">
               <button v-if="showTransfertInfo" class="transfert__btn" @click="showTransfModal">
-                ТРАНСФЕРТ
+                {{$t("ТРАНСФЕРТ")}}
               </button>
             </div>
           </div>
@@ -207,9 +207,9 @@
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
           </svg>
         </p>
-        Карточка партнера
+        {{$t('Карточка партнёра')}}
       </h2>
-      <h2>У вас нет прав доступа</h2>
+      <h2>{{$t("У вас нет прав доступа")}}</h2>
     </div>
     </div>
     <footer class="container-fluid cust_modal" v-if="showModal">
@@ -255,7 +255,7 @@
           <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
         </div>
       </template>
-      Вы стали парнером!
+      {{$t("Вы стали парнером")}}
     </b-toast>
     <b-toast id="my-toast-money" variant="warning" solid>
       <template #toast-title>
@@ -265,7 +265,7 @@
           <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
         </div>
       </template>
-      Операция выполнена успешно!
+      {{$t("Операция выполнена успешно")}}
     </b-toast>
     <b-toast id="my-toast-points" variant="warning" solid>
       <template #toast-title>
@@ -275,7 +275,7 @@
           <!-- <small class="text-muted mr-2">42 seconds ago</small> -->
         </div>
       </template>
-      Операция выполнена успешно!
+      {{$t("Операция выполнена успешно")}}
     </b-toast>
   </div>
 </template>
@@ -375,7 +375,7 @@ export default {
     },
     becomePartner() {
       backApi.post('/agent/become_partner', { comm: '' }).then(() => {
-        this.showToast('Стать партнером', 'Заявка на становление дистрибьютором отправлена!', 'success');
+        this.showToast(`${this.$t('Стать партнером')}`, `${this.$t('Заявка на становление дистрибьютором отправлена')}!`, 'success');
       });
     },
     showTransfModal() {

@@ -8,11 +8,11 @@
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
-        Показатели
+        {{$t("Показатели")}}
         </h2>
       <div class="row cur_p">
         <div class="col-sm current_period">
-            <p>Текущий период:
+            <p>{{$t("Текущий период")}}:
             <span v-if="months[new Date(currentPeriodTop.comdte).getMonth()]">
               {{ months[new Date(currentPeriodTop.comdte).getMonth()] }}
               {{ new Date(currentPeriodTop.comdte).getFullYear()}}.
@@ -20,7 +20,7 @@
             <span v-else>
             </span>
             <br>
-            Статус <strong>предыдущего</strong> периода:
+            {{$t("Статус")}} <strong>{{$t("предыдущего")}}</strong> {{$t("периода")}}:
             <span :style="`color: ${periodStatus}`">
               {{ currentPeriodTop.prev_status }}
             </span>
@@ -30,60 +30,60 @@
       <div class="sponsor__page__description">
         <div class="row mobile_trans noprint">
           <div class="col search__btn noprint" @click="toggleSearch">
-            Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
+            {{$t("Настройки трансфера")}} <i class="el-icon-s-tools search_icon"></i>
           </div>
         </div>
-        <h2 class="mt-4 mb-4 page__caption">Мои текущие показатели</h2>
+        <h2 class="mt-4 mb-4 page__caption">{{$t("Мои текущие показатели")}}</h2>
         <BasePeriodPicker :currentPeriod="currentPeriod"
         v-on:next-period="nextPeriod" class="period_picker"/>
         <div class="container-md top__info">
           <div class="row">
             <div class="col-md-6 mt-4">
-              <p>Ранг на начало:</p>
+              <p>{{$t("Ранг на начало")}}:</p>
               <p>{{ userInfo.rank_beg }}</p>
             </div>
             <div class="col-md-6 mt-4">
-              <p>Расчетный ранг:</p>
+              <p>{{$t("Расчетный ранг")}}:</p>
               <p>{{ userInfo.rank_calc }}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6 mt-4">
-              <p>Ранг на конец:</p>
+              <p>{{$t("Ранг на конец")}}:</p>
               <p>{{ userInfo.rank_end }}</p>
             </div>
             <div class="col-md-6 mt-4">
-              <p>ЛО:</p>
+              <p>{{$t("ЛО")}}:</p>
               <p>{{ userInfo.lo | localInt }}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6 mt-4">
-              <p>ГО:</p>
+              <p>{{$t("ГО")}}:</p>
               <p>{{ userInfo.go | localInt }}</p>
             </div>
             <div class="col-md-6 mt-4">
-              <p>НГО:</p>
+              <p>{{$t("НГО")}}:</p>
               <p>{{ userInfo.ngo | localInt }}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6 mt-4">
-              <p>ОО:</p>
+              <p>{{$t("ОО")}}:</p>
               <p>{{ userInfo.oo | localInt }}</p>
             </div>
             <div class="col-md-6 mt-4">
-              <p>КО:</p>
+              <p>{{$t("КО")}}:</p>
               <p>{{ userInfo.ko | localInt }}</p>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6 mt-4">
-              <p>Резерв:</p>
+              <p>{{$t("Резерв")}}:</p>
               <p>{{ userInfo.reserve | localInt }}</p>
             </div>
             <div class="col-md-6 mt-4">
-              <p>Неакт.:</p>
+              <p>{{$t("Неакт.")}}:</p>
               <p>{{ userInfo.noact }}</p>
             </div>
           </div>
@@ -92,12 +92,12 @@
       <footer class="container-md-fluid cust_modal">
       <div class="row desk_trans">
         <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
-          Настройки трансфера <i class="el-icon-s-tools search_icon"></i>
+          {{$t("Настройки трансфера")}} <i class="el-icon-s-tools search_icon"></i>
         </div>
       </div>
       <div v-if="searchActive" class="organization__modal">
         <div class="container-md">
-          <h3 class="mt-4 modal_title">Настройка автоматической подачи баллов в трансферт
+          <h3 class="mt-4 modal_title">{{$t("Настройка автоматической подачи баллов в трансферт")}}
             <span @click="closeModal" class="close_btn"></span></h3>
           <div class="row mt-4">
             <div class="col-md">
@@ -107,21 +107,21 @@
                   name="some-radios-1"
                   :value="1"
                   class="radio mr-3"
-                  >Все баллы в трансферт</b-form-radio
+                  >{{$t("Все баллы в трансферт")}}</b-form-radio
                 >
                 <b-form-radio
                   v-model="points_rule"
                   name="some-radios-1"
                   :value="0"
                   class="radio mr-3"
-                  >Баллы в резерв после обязательного трансферта</b-form-radio
+                  >{{$t("Баллы в резерв после обязательного трансферта")}}</b-form-radio
                 >
                 <b-form-radio
                   v-model="points_rule"
                   name="some-radios-1"
                   :value="null"
                   class="radio"
-                  >Правило по умолчанию по выбору склада</b-form-radio
+                  >{{$t("Правило по умолчанию по выбору склада")}}</b-form-radio
                 >
               </b-form-group>
             </div>
@@ -137,7 +137,7 @@
                 allowNegative: false
               }"
               />
-              <label for="autoship">Количество баллов</label>
+              <label for="autoship">{{$t("Количество баллов")}}</label>
               <span class="clear_icon" @click="clearInput('autoship')"></span>
               </div>
             </div>
@@ -146,7 +146,7 @@
               :class="`mr-2 update ${isDisabled ? 'disabled' : ''}`"
               :disabled="isDisabled"
               @click="updateData"
-              >Сохранить</button>
+              >{{$t("Сохранить")}}</button>
             </div>
           </div>
           <!-- <div class="row edit mt-4">
@@ -277,9 +277,9 @@ export default {
         points_rule: this.points_rule,
         autoship: this.autoship === '' ? null : this.autoship.replace(/,/, '.'),
       }).then(() => {
-        this.createMessageBoxError('Операция выполнена успешно');
+        this.createMessageBoxError(this.$t('Операция выполнена успешно'));
       }).catch(() => {
-        this.createMessageBoxError('Что-то пошло не так');
+        this.createMessageBoxError(this.$t('Что-то пошло не так'));
       });
     },
     closeModal() {

@@ -5,10 +5,10 @@
         <img src="../assets/imgs/logo_1.png" alt="Артлайф" />
       </div>
       <h1 class="text-center mb-5">
-        Авторизация
+        {{$t("Авторизация")}}
       </h1>
       <h4 class="text-center mb-5 error_log" v-if="badLogin">
-        Введен неправильно логин или пароль!
+        {{$t("Введен неправильно логин или пароль")}} !
       </h4>
       <div class="auth__page__form">
         <div class="row">
@@ -45,12 +45,16 @@
               required
               v-model="log.login_phone"
             />
-            <label for="phone">Телефон в международном формате</label>
+            <label for="phone">
+              {{$t("Телефон в международном формате")}}
+            </label>
             <span class="clear_icon" @click="clearInput('login_phone')"></span>
           </div>
           <div class="custom_input password_input">
             <input type="password" name="password" id="password" required v-model="log.password" />
-            <label for="password">Пароль</label>
+            <label for="password">
+              {{$t("Пароль")}}
+            </label>
             <span class="clear_icon" @click="clearInput('password')"></span>
           </div>
           <vue-recaptcha
@@ -60,13 +64,17 @@
             @verify="sf"
             @expired="onCaptchaExpired"
           />
-          <button class="btn__login" type="submit" @click.prevent="sf">Войти</button>
+          <button class="btn__login" type="submit" @click.prevent="sf">
+            {{$t("Войти")}}
+          </button>
         </form>
       </div>
       <div class="auth__page__help">
         <p>
-          Забыли пароль?
-          <router-link to="/remind-password" class="remind_link">Напомнить</router-link>
+          {{$t("Забыли пароль?")}}
+          <router-link to="/remind-password" class="remind_link">
+          {{$t("Напомнить")}}
+          </router-link>
         </p>
       </div>
     </div>
@@ -172,11 +180,11 @@ export default {
       $('.login_input, .password_input').removeClass('error');
       if (this.log.login_ID === '') {
         $('.login_input').addClass('error');
-        this.showToast('Ошибка!', 'Заполните поле Логин', 'danger');
+        this.showToast('Ошибка!', `${this.$t('Заполните поле Логин')}`, 'danger');
       }
       if (this.log.password === '') {
         $('.password_input').addClass('error');
-        this.showToast('Ошибка!', 'Заполните поле Пароль', 'danger');
+        this.showToast('Ошибка!', `${this.$t('Заполните поле Пароль')}`, 'danger');
       }
     },
   },

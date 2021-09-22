@@ -8,7 +8,7 @@
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
-        История организации по периодам
+        {{$t("История организации по периодам")}}
         </h2>
         <div class="row mb-1">
           <div class="col-md-6">
@@ -25,7 +25,7 @@
           </div>
         </div>
         <div class="col search__btn mobile noprint" @click="toggleSearch">
-          Настройки дерева <span class="search_icons mobi"></span>
+          {{$t("Настройки дерева")}} <span class="search_icons mobi"></span>
         </div>
         <div class="perioad__picker mb-3 mt-3">
         <BasePeriodPicker :currentPeriod="currentPeriod"
@@ -44,9 +44,9 @@
       </el-tag>
       </div>
       <p class="exp_print mt-3 noprint">
-        <span class="mr-3" @click="downloadPdf">Экспорт в pdf</span>
-        <span class="mr-3" @click="downloadXls">Экспорт в xlsx</span>
-        <span class="mr-3" v-b-modal.modal-scrollable>Легенда</span>
+        <span class="mr-3" @click="downloadPdf">{{$t("Экспорт в pdf")}}</span>
+        <span class="mr-3" @click="downloadXls">{{$t("Экспорт в xlsx")}}</span>
+        <span class="mr-3" v-b-modal.modal-scrollable>{{$t("Легенда")}}</span>
       </p>
       <div class="orgbyhist">
         <el-table
@@ -138,13 +138,13 @@
       <footer class="cust_modal noprint">
               <div class="row">
         <div class="col text-center search__btn desktop" @click="toggleSearch" v-if="!searchActive">
-          Настройки дерева <span class="search_icons"></span>
+          {{$t("Настройки дерева")}} <span class="search_icons"></span>
         </div>
       </div>
       <div v-if="searchActive" class="organization__modal">
         <div class="container">
           <h3 class="mb-3">
-            Настройки дерева
+            {{$t("Настройки дерева")}}
             <span class="close_btn" @click="searchActive = !searchActive"></span>
             </h3>
         <div class="row">
@@ -155,24 +155,24 @@
                 name="some-radios-1"
                 value="full"
                 class="radio mr-3"
-                >Полное дерево</b-form-radio
+                >{{$t("Полное дерево")}}</b-form-radio
               >
               <b-form-radio
                 v-model="tree_type"
                 name="some-radios-1"
                 value="director"
                 class="radio mr-3"
-                >Директорское</b-form-radio
+                >{{$t("Директорское")}}</b-form-radio
               >
               <b-form-radio v-model="tree_type" name="some-radios-1" value="active" class="radio"
-                >Своя группа</b-form-radio
+                >{{$t("Своя группа")}}</b-form-radio
               >
             </b-form-group>
           </div>
         </div>
         <div class="row mt-3 edit">
           <div class="col-sm-6 mb-4">
-            <span v-if="state2" class="custom_label">Построить дерево для партнера</span>
+            <span v-if="state2" class="custom_label">{{$t("Построить дерево для партнера")}}</span>
           <el-autocomplete
             v-model="state2"
             :fetch-suggestions="querySearchAsync2"
@@ -187,8 +187,8 @@
           <div class="col-sm-6">
             <button
             class="mr-2"
-            @click="updateData">Показать</button
-            ><button @click="clearSelectedFilters">Сбросить</button>
+            @click="updateData">{{$t("Показать")}}</button
+            ><button @click="clearSelectedFilters">{{$t("Сбросить")}}</button>
           </div>
         </div>
         </div>
@@ -200,32 +200,33 @@
   id="modal-scrollable" centered scrollable title="Легенда">
     <div class="modal_icons">
       <img :src="`../icons/Клиент.svg`"
-      class="rank_icon_legend"> <span>Привилегированный клиент</span></div> <br>
+      class="rank_icon_legend"> <span>{{$t("Привилегированный клиент")}}</span></div> <br>
     <div class="modal_icons">
       <img :src="`../icons/Консультант.svg`"
-      class="rank_icon_legend"> <span>Консультант</span></div><br>
+      class="rank_icon_legend"> <span>{{$t("Консультант")}}</span></div><br>
     <div class="modal_icons">
       <img :src="`../icons/Мастер.svg`"
-      class="rank_icon_legend"><span>Мастер</span></div><br>
+      class="rank_icon_legend"><span>{{$t("Мастер")}}</span></div><br>
     <div class="modal_icons">
       <img :src="`../icons/Управляющий.svg`"
-      class="rank_icon_legend"><span>Управляющий</span></div><br><br>
+      class="rank_icon_legend"><span>{{$t("Управляющий")}}</span></div><br><br>
     <div class="modal_icons">
-      <img :src="`../icons/Директор.svg`" class="rank_icon_legend"><span>Директор</span></div><br>
+      <img :src="`../icons/Директор.svg`"
+      class="rank_icon_legend"><span>{{$t("Директор")}}</span></div><br>
     <div class="modal_icons"><img :src="`../icons/Серебряный Директор.svg`"
     class="rank_icon_legend">
-    <span>Серебряный Директор</span></div><br>
+    <span>{{$t("Серебряный Директор")}}</span></div><br>
     <div class="modal_icons"><img :src="`../icons/Золотой Директор.svg`"
     class="rank_icon_legend">
-    <span>Золотой Директор</span></div><br><br>
+    <span>{{$t("Золотой Директор")}}</span></div><br><br>
     <div class="modal_icons"><img :src="`../icons/Рубиновый Директор.svg`" class="rank_icon_legend">
-    <span>Рубиновый Директор</span></div><br>
+    <span>{{$t("Рубиновый Директор")}}</span></div><br>
     <div class="modal_icons"><img :src="`../icons/Бриллиантовый Директор.svg`"
     class="rank_icon_legend">
-    <span>Бриллиантовый Директор</span></div><br>
+    <span>{{$t("Бриллиантовый Директор")}}</span></div><br>
     <div class="modal_icons">
-      <img :src="`../icons/Президент_1.svg`"
-      class="rank_icon_legend"><span>Президент</span></div><br>
+      <img :src="`../icons/Президент.svg`"
+      class="rank_icon_legend"><span>{{$t("Президент")}}</span></div><br>
     <template #modal-footer>
           <b-button
             variant="primary"
@@ -233,7 +234,7 @@
             class="float-right cls_btn"
             @click="show=false"
           >
-            Закрыть
+            {{$t("Закрыть")}}
           </b-button>
     </template>
   </b-modal>
@@ -256,16 +257,16 @@ export default {
     const columns = [
       {
         property: 'id',
-        label: 'P/номер / Ранг',
+        label: this.$t('P/номер / Ранг'),
         formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
       },
       {
         property: 'name',
-        label: 'ФИО',
+        label: this.$t('ФИО'),
       },
       {
         property: 'lo',
-        label: 'ЛО',
+        label: this.$t('ЛО'),
         formater: (item) => {
           const formatter = new Intl.NumberFormat('ru');
           return formatter.format(item.lo);
@@ -273,7 +274,7 @@ export default {
       },
       {
         property: 'go',
-        label: 'ГО',
+        label: this.$t('ГО'),
         formater: (item) => {
           const formatter = new Intl.NumberFormat('ru');
           return formatter.format(item.go);
@@ -281,7 +282,7 @@ export default {
       },
       {
         property: 'ngo',
-        label: 'НГО',
+        label: this.$t('НГО'),
         formater: (item) => {
           const formatter = new Intl.NumberFormat('ru');
           return formatter.format(item.ngo);
@@ -289,7 +290,7 @@ export default {
       },
       {
         property: 'oo',
-        label: 'ОО',
+        label: this.$t('ОО'),
         formater: (item) => {
           const formatter = new Intl.NumberFormat('ru');
           return formatter.format(item.oo);
@@ -297,7 +298,7 @@ export default {
       },
       {
         property: 'ko',
-        label: 'КО',
+        label: this.$t('КО'),
         formater: (item) => {
           const formatter = new Intl.NumberFormat('ru');
           return formatter.format(item.ko);
@@ -305,27 +306,22 @@ export default {
       },
       {
         property: 'noact',
-        label: 'Неактивность',
+        label: this.$t('Неактивность'),
         formater: (item) => item.noact,
       },
       {
         property: 'rank_beg',
-        label: 'Ранг на начало',
+        label: this.$t('Ранг на начало'),
         formater: (item) => item.rank_beg,
       },
       {
         property: 'rank_calc',
-        label: 'Расчетный ранг',
+        label: this.$t('Расчетный ранг'),
         formater: (item) => item.rank_calc,
       },
-      // {
-      //   property: 'rank_end',
-      //   title: 'Расчетный ранг',
-      //   formater: (item) => item.rank_end,
-      // },
       {
         property: 'rank_end',
-        label: 'Ранг на конец',
+        label: this.$t('Ранг на конец'),
         formater: (item) => item.rank_end,
       },
     ];
@@ -598,7 +594,7 @@ export default {
           responseType: 'blob',
         })
         .then(({ data }) => {
-          const filename = 'История организации по периодам.xlsx';
+          const filename = `${this.$t('История организации по периодам')}.xlsx`;
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;
@@ -622,7 +618,7 @@ export default {
           responseType: 'blob',
         })
         .then(({ data }) => {
-          const filename = 'История организации по периодам.pdf';
+          const filename = `${this.$t('История организации по периодам')}.pdf`;
           const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
           const link = document.createElement('a');
           link.href = url;
