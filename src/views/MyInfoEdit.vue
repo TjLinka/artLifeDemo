@@ -111,9 +111,9 @@
               @blur="checkInput('phone')"
               ref="phone"
               type="text"
-              :placeholder="`${$t('Телефон в международном формате')}`"
               v-mask="mask"
               name="phone" id="phone"
+              @input="checkValue"
               required v-model="phone" />
               <label for="phone" class="up">{{$t("Телефон в международном формате")}}</label>
               <span class="clear_icon" @click="clearPhone('phone')"></span>
@@ -238,6 +238,7 @@ export default {
       userTopInfo: {},
       newPass: null,
       oldPass: null,
+      rusAreaName: ['Россия', 'РФ', 'Россия Дальний Восток'],
     };
   },
   mounted() {
@@ -251,11 +252,6 @@ export default {
       };
       this.userInfo = Response.data;
       this.country = Response.data.country;
-      // if (this.country.toLowerCase() === 'россия') {
-      //   this.mask = '+7(###)###-##-##';
-      // } else {
-      //   this.mask = '+###############';
-      // }
       console.log(Response.data.phone);
       this.phone = Response.data.phone;
     }).then(() => {
@@ -267,7 +263,7 @@ export default {
       if (e.target.value === '') {
         this.phone = '+';
       }
-      if ((this.userTopInfo.country === 'рф' || this.userTopInfo.country === 'россия') && e.target.value === '+8') {
+      if (this.rusAreaName.some((key) => key.toLowerCase() === this.userTopInfo.country.toLowerCase()) && e.target.value === '+8') {
         this.phone = e.target.value.replace(/\+8/, '+7');
       }
     },
@@ -499,7 +495,8 @@ export default {
   watch: {
     'userTopInfo.country': {
       handler() {
-        if (this.userTopInfo.country.toLowerCase() === 'россия' || this.userTopInfo.country.toLowerCase() === 'рф') {
+        // eslint-disable-next-line max-len
+        if (this.rusAreaName.some((key) => key.toLowerCase() === this.userTopInfo.country.toLowerCase())) {
           this.mask = '+7(###)###-##-##';
         } else {
           this.mask = '+###############';

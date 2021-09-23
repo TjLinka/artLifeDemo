@@ -352,7 +352,7 @@
     class="rank_icon_legend">
     <span>{{$t("Бриллиантовый Директор")}}</span></div><br>
     <div class="modal_icons">
-      <img :src="`../icons/Президент_1.svg`"
+      <img :src="`../icons/Президент.svg`"
       class="rank_icon_legend"><span>{{$t("Президент")}}</span></div><br>
     <template #modal-footer>
           <b-button
