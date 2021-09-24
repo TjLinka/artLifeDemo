@@ -112,6 +112,7 @@
               ref="phone"
               type="text"
               v-mask="mask"
+              autocomplete="new-password"
               name="phone" id="phone"
               @input="checkValue"
               required v-model="phone" />
