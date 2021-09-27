@@ -70,12 +70,18 @@
       </div>
       <div class="row mt-md-5">
         <div class="col-md-6 custom_input">
-          <input type="text" name="phone" id="phone"
+          <input
+          ref="phone"
+          type="text"
+          name="phone"
+          id="phone"
+          autocomplete="new-password"
           v-mask="mask"
-          placeholder="+77777777777"
-          required v-model="phone" />
+          @input="checkValue"
+          required
+          v-model="phone" />
           <label for="phone" class="up">{{$t("Телефон в международном формате")}}</label>
-          <span class="clear_icon" @click="clearInput('phone')"></span>
+          <span class="clear_icon" @click="clearPhone"></span>
         </div>
         <div class="col-md-6 custom_input">
           <input type="email" name="email" id="email" required v-model="newUser.email" />
@@ -106,26 +112,34 @@ export default {
   components: { DatePicker },
   data() {
     return {
-      mask: '+#(###)###########',
+      // mask: '',
       loading: true,
-      phone: '',
+      phone: '+',
       country: '',
       newUser: {
         role: 0,
         sex: 0,
         fio: '',
-        // country: '',
         city: '',
         bthdte: '',
-        // phone: '',
         email: '',
       },
+      rusAreaName: ['Россия', 'РФ', 'Россия Дальний Восток'],
     };
   },
   mounted() {
     this.loading = false;
   },
   methods: {
+    checkValue(e) {
+      console.log(e);
+      if (e.target.value === '') {
+        this.phone = '+';
+      }
+      if (this.rusAreaName.some((key) => key.toLowerCase() === this.country.toLowerCase()) && e.target.value === '+8') {
+        this.phone = e.target.value.replace(/\+8/, '+7');
+      }
+    },
     showToast(title, message, status) {
       // Use a shorter name for this.$createElement
       const h = this.$createElement;
@@ -194,14 +208,30 @@ export default {
       this.country = '';
     },
     clearPhone() {
-      this.phone = '';
+      if (this.rusAreaName.some((key) => key.toLowerCase() === this.country.toLowerCase())) {
+        this.phone = '+';
+        return;
+      }
+      this.phone = '+';
+    },
+  },
+  computed: {
+    mask() {
+      if (this.rusAreaName.some((key) => key.toLowerCase() === this.country.toLowerCase())) {
+        return '+7(###)###-##-##';
+      }
+      return '+###############';
     },
   },
   watch: {
     country() {
-      if (this.country.toLowerCase() === 'россия') {
+      console.log('lang');
+      // eslint-disable-next-line max-len
+      if (this.rusAreaName.some((key) => key.toLowerCase() === this.country.toLowerCase())) {
         this.mask = '+7(###)###-##-##';
-        this.phone = this.phone.substring(2);
+        if (this.phone !== '') {
+          this.phone = this.phone.replace(/^\+\d/, '+7');
+        }
       } else {
         this.mask = '+###############';
       }

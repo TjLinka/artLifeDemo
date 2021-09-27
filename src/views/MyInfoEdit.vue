@@ -498,7 +498,10 @@ export default {
       handler() {
         // eslint-disable-next-line max-len
         if (this.rusAreaName.some((key) => key.toLowerCase() === this.userTopInfo.country.toLowerCase())) {
-          this.mask = '+7(###)###-##-##';
+          this.mask = '+#(###)###-##-##';
+          if (this.phone !== '') {
+            this.phone = this.phone.replace(/^\+\d/, '+7');
+          }
         } else {
           this.mask = '+###############';
         }
