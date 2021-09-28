@@ -2,7 +2,7 @@
   <div class="licevoischet__page">
     <div class="container-md">
       <h4 class="mt-4 modal_title">
-        {{$t("Перевести баллы между партнерами")}}
+        {{$t("Перевести баллы другому партнёру")}}
         <span class="close_btn" v-on:click="$emit('enlarge-text')"></span>
       </h4>
       <div class="row transfert">
@@ -137,7 +137,7 @@ export default {
         .addClass('active');
     },
     querySearchAsync(queryString, cb) {
-      const qr = queryString === '' ? 'а' : queryString;
+      const qr = queryString === '' ? '' : queryString;
       backApi.get('/agent/distr-agents-list', { params: { q: qr } }).then((Response) => {
         Response.data.entries.forEach((u) => {
           // eslint-disable-next-line no-param-reassign

@@ -27,7 +27,7 @@
           <div class="row noprint" v-if="!this.$route.params.id">
             <div class="col-md mt-1">
               <span class="modal_btn" @click="showTransfModal1" v-if="transfertAccess">
-                {{$t("Перевести баллы между партнерами")}}
+                {{$t("Перевести баллы другому партнёру")}}
               </span>
               <span class="modal_btn" @click="showTransfModal2">
                 {{$t("Перевести деньги другому партнёру")}}

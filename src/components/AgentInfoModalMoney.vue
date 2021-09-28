@@ -121,7 +121,7 @@ export default {
       this.comm = null;
     },
     querySearchAsync(queryString, cb) {
-      const qr = queryString === '' ? 'а' : queryString;
+      const qr = queryString === '' ? '' : queryString;
       backApi.get('/agent/agent-list', { params: { q: qr } }).then((Response) => {
         Response.data.entries.forEach((u) => {
           // eslint-disable-next-line no-param-reassign
