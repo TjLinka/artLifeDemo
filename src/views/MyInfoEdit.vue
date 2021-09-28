@@ -22,44 +22,58 @@
       <div class="top__info mt-3">
         <div class="row edit ">
           <div class="col-md-6 custom_input mt-3">
-            <input
+            <p class="lbl">Страна:</p>
+            <p>{{userTopInfo.country}}</p>
+            <!-- <input
             @blur="checkInput('country')"
             ref="country"
             type="text" name="country" id="country" required v-model="userTopInfo.country" />
             <label for="country">{{$t("Страна")}}</label>
-            <span class="clear_icon" @click="clearInputTop('country')"></span>
+            <span class="clear_icon" @click="clearInputTop('country')"></span> -->
           </div>
           <div class="col-md-6 custom_input mt-3">
-            <input
+            <p class="lbl">Город:</p>
+            <p>{{userTopInfo.city}} </p>
+            <!-- <input
             @blur="checkInput('city')"
             ref="city"
             type="text" name="city" id="city" required v-model="userTopInfo.city" />
             <label for="city">{{$t("Город")}}</label>
-            <span class="clear_icon" @click="clearInputTop('city')"></span>
+            <span class="clear_icon" @click="clearInputTop('city')"></span> -->
           </div>
         </div>
         <div class="row edit ">
           <div class="col-md-6 custom_input mt-3">
-            <input
+            <p class="lbl">Адрес:</p>
+            <p>{{userTopInfo.address}} </p>
+            <!-- <input
             @blur="checkInput('address')"
             ref="address"
             type="text" name="address" id="address" required v-model="userTopInfo.address" />
             <label for="address">{{$t("Адрес")}}</label>
-            <span class="clear_icon" @click="clearInputTop('address')"></span>
+            <span class="clear_icon" @click="clearInputTop('address')"></span> -->
           </div>
           <div class="col-md-6 custom_input mt-3">
-            <input
+            <p class="lbl">Паспорт:</p>
+            <p>{{userTopInfo.passport}}</p>
+            <!-- <input
             @blur="checkInput('passport')"
             ref='passport'
             type="text" name="passport" id="passport"
             required v-model="userTopInfo.passport" />
             <label for="passport">{{$t("Паспорт")}}</label>
-            <span class="clear_icon" @click="clearInputTop('passport')"></span>
+            <span class="clear_icon" @click="clearInputTop('passport')"></span> -->
           </div>
         </div>
         <div class="row edit ">
           <div class="col-md-6 mt-3">
-            <div ref="bthdte" :class="userTopInfo.bthdte ? '' : 'error'">
+            <p class="lbl">
+              Дата рождения:
+            </p>
+            <p>
+              {{new Date(userTopInfo.bthdte).toLocaleDateString()}}
+            </p>
+            <!-- <div ref="bthdte" :class="userTopInfo.bthdte ? '' : 'error'">
               <span v-if="userTopInfo.bthdte" class="custom_label">{{$t("Дата рождения")}}</span>
               <date-picker
                 v-model="userTopInfo.bthdte"
@@ -70,20 +84,26 @@
                 style="width: 100%"
                 range-separator=" - "
               ></date-picker>
-            </div>
+            </div> -->
           </div>
           <div class="col-md-6 custom_input mt-3">
-            <input type="text" name="skype" id="skype" required v-model="userInfo.skype" />
+            <p class="lbl">
+              Доп. контакты:
+            </p>
+            <p>
+              {{userTopInfo.skype}}
+            </p>
+            <!-- <input type="text" name="skype" id="skype" required v-model="userInfo.skype" />
             <label for="skype">{{$t("Доп. контакты")}}</label>
-            <span class="clear_icon" @click="clearSkype('skype')"></span>
+            <span class="clear_icon" @click="clearSkype('skype')"></span> -->
           </div>
         </div>
-        <div class="row edit mt-3">
+        <!-- <div class="row edit mt-3">
           <div class="col-md">
             <button class="save__newinfo"
             v-on:click="saveTopEdit">{{$t("Сохранить изменения")}}</button>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="bot__info custom_input mt-3">
         <div class="row edit">
@@ -212,7 +232,7 @@
 
 <script>
 import md5 from 'md5';
-import DatePicker from 'vue2-datepicker';
+// import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/ru';
 import $ from 'jquery';
@@ -220,7 +240,7 @@ import backApi from '../assets/backApi';
 
 export default {
   name: 'MyInfoEdit',
-  components: { DatePicker },
+  // components: { DatePicker },
   data() {
     return {
       mask: '',
@@ -512,6 +532,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.lbl{
+  padding: 0;
+  margin: 0;
+  color: #383a41;
+  font-size: 14px;
+  & + p{
+    color: black;
+    font-weight: 500;
+  }
+}
 .up{
   top: -13px;
   font-size: 13px;
