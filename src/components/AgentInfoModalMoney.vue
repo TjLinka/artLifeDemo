@@ -2,7 +2,7 @@
   <div class="licevoischet__page">
     <div class="container-md">
       <h4 class="mt-4 modal_title">
-        {{$t("Перевести между лицевыми счетами")}}
+        {{$t("Перевести деньги другому партнёру")}}
         <span class="close_btn" v-on:click="$emit('enlarge-text')"></span>
       </h4>
       <div class="row transfert">
@@ -19,7 +19,7 @@
       <div class="row edit end">
         <div class="col-md-6 mt-4">
           <span v-if="state" class="custom_label">
-            {{$$("Партнер получатель")}}
+            {{$t("Партнер получатель")}}
           </span>
           <el-autocomplete
             v-model="state"
@@ -143,10 +143,15 @@ export default {
         .addClass('active');
     },
     handleSelect(item) {
+      console.log(item);
       this.selectedUser = item.agent_id;
     },
     gg() {
-      this.state = `${this.selectedUser.agent_id}-${this.selectedUser.name}`;
+      if (this.selectedUser) {
+        this.state = `${this.selectedUser.agent_id}-${this.selectedUser.name}`;
+      } else {
+        this.state = '';
+      }
       console.log('gg');
     },
     dd() {

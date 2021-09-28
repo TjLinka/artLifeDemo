@@ -30,7 +30,7 @@
                 {{$t("Перевести баллы между партнерами")}}
               </span>
               <span class="modal_btn" @click="showTransfModal2">
-                {{$t("Перевести между лицевыми счетами")}}
+                {{$t("Перевести деньги другому партнёру")}}
               </span>
               <span class="modal_btn" @click="becomePartner" v-if="!transfertAccess">
                 {{$t("Стать партнером")}}
