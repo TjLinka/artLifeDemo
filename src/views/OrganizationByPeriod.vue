@@ -1,7 +1,37 @@
 <template>
   <div class="licevoischet__page">
-    <div class="container">
-      <h2 class="page__title">История оргназации по периодам</h2>
+    <div  v-loading="loading">
+    <div class="container-fluid table_container" v-show="!loading">
+      <h2 class="page__title">
+                              <p class="mobile_back noprint" @click="back">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
+        </svg>
+      </p>
+        {{$t("История организации по периодам")}}
+        </h2>
+        <div class="row mb-1">
+          <div class="col-md-6">
+          <el-autocomplete
+            v-model="state"
+            :fetch-suggestions="querySearchAsync"
+            placeholder="Партнер получатель"
+            clearable
+            @clear="dd"
+            @change="gg"
+            @select="handleSelect"
+            style="width: 100%"
+          ></el-autocomplete>
+          </div>
+        </div>
+        <div class="col search__btn mobile noprint" @click="toggleSearch">
+          {{$t("Настройки дерева")}} <span class="search_icons mobi"></span>
+        </div>
+        <div class="perioad__picker mb-3 mt-3">
+        <BasePeriodPicker :currentPeriod="currentPeriod"
+        v-on:next-period="nextPeriod" class="period_picker"/>
+        </div>
+      <div class="noprint">
       <el-tag
         v-for="tag in tags"
         :key="tag.name"
@@ -12,19 +42,21 @@
       >
         {{ tag.name }}
       </el-tag>
-      <p class="exp_print">
-        <span class="mr-3">Печать</span>
-        <span class="mr-3">Экспорт в xls</span>
-        <span class="mr-3">Экспорт в pdf</span>
+      </div>
+      <p class="exp_print mt-3 noprint">
+        <span class="mr-3" @click="downloadPdf">{{$t("Экспорт в pdf")}}</span>
+        <span class="mr-3" @click="downloadXls">{{$t("Экспорт в xlsx")}}</span>
+        <span class="mr-3" v-b-modal.modal-scrollable>{{$t("Легенда")}}</span>
       </p>
-      <el-table
+      <div class="orgbyhist">
+        <el-table
         :key="tree_key"
         :data="rows"
         style="width: 100%"
         row-key="id"
-        border
         lazy
         :load="load"
+        header-row-class-name='wwwww'
         :tree-props="{ children: 'children', hasChildren: 'has_children' }"
         :row-class-name="tableRowClassName"
       >
@@ -32,143 +64,282 @@
           v-for="(column, index) in columns"
           :prop="column.property"
           :key="index"
+          resizable
           :label="column.title"
-          :fixed="column.property == 'id' ? true : false"
-          :width="col_width(column)"
+          :min-width="col_width(column)"
         >
           <!--  -->
-
+          <template slot="header" v-if="column.property === 'id' && !colHide">
+             <div class="idBlock" ref="idBlock">
+               {{column.label}}
+             </div>
+             <span class="hide_arrow" @click="toogleColumn()" ref="hideBtn"></span>
+          </template>
+          <template v-else slot="header">
+            {{column.label}}
+          </template>
           <template slot-scope="scope">
-            <!-- {{column.property}} -->
-            <span v-if="column.property != 'id'">{{ column.formater(scope.row) }}</span>
-            <span v-else>
-              УР {{ scope.row.depth }}<br />
-              {{ scope.row.rank_beg }}<br />
-              {{ scope.row.id }}<br />
-              <router-link :to="`/agent/${scope.row.id}`">{{scope.row.name}}</router-link>
+            <span v-if="column.property === 'id'">
+              <div v-if="!colHide" style="display: inline">
+              <span>{{scope.row.depth}} УР</span>
+              <span class="user_id">{{ scope.row.id }}</span><br />
+              </div>
+              <div v-else style="text-align: center; margin-top: -25px;">
+              <img
+              style="margin-left: 10px;"
+              :src="`../icons/${scope.row.rank_calc}${scope.row.depth === 0 ? '_white' : ''}.svg`"
+              :title="scope.row.rank_end" class="rank_icon">
+              <span style="display: block; margin-left: 10px;">{{scope.row.depth}} УР</span>
+              </div>
+            </span>
+            <span v-if="column.property === 'name'">
+              {{scope.row.name}}
+            </span>
+            <span v-if="column.property === 'lo'">
+              {{column.formater(scope.row)}}
+            </span>
+            <span v-if="column.property === 'go'">
+              {{column.formater(scope.row)}}
+            </span>
+            <span v-if="column.property === 'ngo'">
+              {{column.formater(scope.row)}}
+            </span>
+            <span v-if="column.property === 'oo'">
+              {{column.formater(scope.row)}}
+            </span>
+            <span v-if="column.property === 'ko'">
+              {{column.formater(scope.row)}}
+            </span>
+            <span v-if="column.property === 'noact'">
+              {{scope.row.noact}}
+            </span>
+            <span v-if="column.property === 'rank_beg'">
+              <img
+              :src="`../icons/${scope.row.rank_beg}${scope.row.depth === 0 ? '_white' : ''}.svg`"
+              :title="scope.row.rank_beg" class="rank_icon_rank">
+              {{scope.row.rank_beg}}
+            </span>
+            <span v-if="column.property === 'rank_calc'">
+              <img
+              :src="`../icons/${scope.row.rank_calc}${scope.row.depth === 0 ? '_white' : ''}.svg`"
+              :title="scope.row.rank_calc" class="rank_icon_rank">
+              {{scope.row.rank_calc}}
+            </span>
+            <span v-if="column.property === 'rank_end'">
+              <img
+              :src="`../icons/${scope.row.rank_end}${scope.row.depth === 0 ? '_white' : ''}.svg`"
+              :title="scope.row.rank_end" class="rank_icon_rank">
+              {{scope.row.rank_end}}
             </span>
           </template>
         </el-table-column>
       </el-table>
-      <div class="row">
-        <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
-          Фильтр <i class="el-icon-search search_icon"></i>
+      </div>
+      <footer class="cust_modal noprint">
+              <div class="row">
+        <div class="col text-center search__btn desktop" @click="toggleSearch" v-if="!searchActive">
+          {{$t("Настройки дерева")}} <span class="search_icons"></span>
         </div>
       </div>
       <div v-if="searchActive" class="organization__modal">
-        <h3>Поиск партнера</h3>
-        <i
-          class="mr-1 el-icon-arrow-left"
-          @click="periodIndex = periodIndex - 1 >= 0 ? periodIndex - 1 : periods.length - 1"
-        >
-        </i>
-        <span>{{ months[new Date(currentPeriod).getMonth()] }} </span>
-        <span>{{ new Date(currentPeriod).getFullYear() }}</span>
-          <i class="ml-1 el-icon-arrow-right"
-          @click="periodIndex = (periodIndex + 1) % periods.length"></i>
+        <div class="container">
+          <h3 class="mb-3">
+            {{$t("Настройки дерева")}}
+            <span class="close_btn" @click="searchActive = !searchActive"></span>
+            </h3>
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-12 mt-3">
             <b-form-group label="Выбор дерева">
               <b-form-radio
                 v-model="tree_type"
                 name="some-radios-1"
                 value="full"
                 class="radio mr-3"
-                >Полное дерево</b-form-radio
+                >{{$t("Полное дерево")}}</b-form-radio
               >
               <b-form-radio
                 v-model="tree_type"
                 name="some-radios-1"
                 value="director"
                 class="radio mr-3"
-                >Директорское</b-form-radio
+                >{{$t("Директорское")}}</b-form-radio
               >
               <b-form-radio v-model="tree_type" name="some-radios-1" value="active" class="radio"
-                >Своя группа</b-form-radio
+                >{{$t("Своя группа")}}</b-form-radio
               >
             </b-form-group>
           </div>
         </div>
-        <div class="row edit">
+        <div class="row mt-3 edit">
           <div class="col-sm-6 mb-4">
-            <el-input type="number" name="" id="" placeholder="Номер"
-            clearable v-model="agent_id" min="1" />
+            <span v-if="state2" class="custom_label">{{$t("Построить дерево для партнера")}}</span>
+          <el-autocomplete
+            v-model="state2"
+            :fetch-suggestions="querySearchAsync2"
+            placeholder="Построить дерево для партнера"
+            clearable
+            @clear="dd2"
+            @change="gg2"
+            @select="handleSelect2"
+            style='width: 100%'
+          ></el-autocomplete>
           </div>
           <div class="col-sm-6">
-            <button class="mr-2" @click="updateData">Показать</button
-            ><button @click="clearSelectedFilters">Сбросить</button>
+            <button
+            class="mr-2"
+            @click="updateData">{{$t("Показать")}}</button
+            ><button @click="clearSelectedFilters">{{$t("Сбросить")}}</button>
           </div>
         </div>
+        </div>
       </div>
+      </footer>
     </div>
+    </div>
+  <b-modal v-model="show"
+  id="modal-scrollable" centered scrollable title="Легенда">
+    <div class="modal_icons">
+      <img :src="`../icons/Клиент.svg`"
+      class="rank_icon_legend"> <span>{{$t("Привилегированный клиент")}}</span></div> <br>
+    <div class="modal_icons">
+      <img :src="`../icons/Консультант.svg`"
+      class="rank_icon_legend"> <span>{{$t("Консультант")}}</span></div><br>
+    <div class="modal_icons">
+      <img :src="`../icons/Мастер.svg`"
+      class="rank_icon_legend"><span>{{$t("Мастер")}}</span></div><br>
+    <div class="modal_icons">
+      <img :src="`../icons/Управляющий.svg`"
+      class="rank_icon_legend"><span>{{$t("Управляющий")}}</span></div><br><br>
+    <div class="modal_icons">
+      <img :src="`../icons/Директор.svg`"
+      class="rank_icon_legend"><span>{{$t("Директор")}}</span></div><br>
+    <div class="modal_icons"><img :src="`../icons/Серебряный Директор.svg`"
+    class="rank_icon_legend">
+    <span>{{$t("Серебряный Директор")}}</span></div><br>
+    <div class="modal_icons"><img :src="`../icons/Золотой Директор.svg`"
+    class="rank_icon_legend">
+    <span>{{$t("Золотой Директор")}}</span></div><br><br>
+    <div class="modal_icons"><img :src="`../icons/Рубиновый Директор.svg`" class="rank_icon_legend">
+    <span>{{$t("Рубиновый Директор")}}</span></div><br>
+    <div class="modal_icons"><img :src="`../icons/Бриллиантовый Директор.svg`"
+    class="rank_icon_legend">
+    <span>{{$t("Бриллиантовый Директор")}}</span></div><br>
+    <div class="modal_icons">
+      <img :src="`../icons/Президент.svg`"
+      class="rank_icon_legend"><span>{{$t("Президент")}}</span></div><br>
+    <template #modal-footer>
+          <b-button
+            variant="primary"
+            size="sm"
+            class="float-right cls_btn"
+            @click="show=false"
+          >
+            {{$t("Закрыть")}}
+          </b-button>
+    </template>
+  </b-modal>
   </div>
 </template>
 
 <script>
+/* eslint-disable quote-props */
+import $ from 'jquery';
 import backApi from '../assets/backApi';
+import BasePeriodPicker from '../components/BasePeriodPicker.vue';
 
 export default {
   name: 'OrganizationByPeriod',
-  components: {},
+  components: {
+    BasePeriodPicker,
+  },
   data() {
     const rows = [];
     const columns = [
       {
         property: 'id',
-        title: 'P/номер / Ранг / ФИО',
+        label: this.$t('P/номер / Ранг'),
         formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
       },
       {
-        property: 'noact',
-        title: 'не активность',
-        formater: (item) => item.noact,
+        property: 'name',
+        label: this.$t('ФИО'),
       },
       {
         property: 'lo',
-        title: 'ЛО',
-        formater: (item) => item.lo,
+        label: this.$t('ЛО'),
+        formater: (item) => {
+          const formatter = new Intl.NumberFormat('ru');
+          return formatter.format(item.lo);
+        },
       },
       {
         property: 'go',
-        title: 'ГО',
-        formater: (item) => item.go,
+        label: this.$t('ГО'),
+        formater: (item) => {
+          const formatter = new Intl.NumberFormat('ru');
+          return formatter.format(item.go);
+        },
       },
       {
         property: 'ngo',
-        title: 'НГО',
-        formater: (item) => item.ngo,
+        label: this.$t('НГО'),
+        formater: (item) => {
+          const formatter = new Intl.NumberFormat('ru');
+          return formatter.format(item.ngo);
+        },
       },
       {
         property: 'oo',
-        title: 'ОО',
-        formater: (item) => item.oo,
+        label: this.$t('ОО'),
+        formater: (item) => {
+          const formatter = new Intl.NumberFormat('ru');
+          return formatter.format(item.oo);
+        },
       },
       {
         property: 'ko',
-        title: 'КО',
-        formater: (item) => item.ko,
+        label: this.$t('КО'),
+        formater: (item) => {
+          const formatter = new Intl.NumberFormat('ru');
+          return formatter.format(item.ko);
+        },
+      },
+      {
+        property: 'noact',
+        label: this.$t('Неактивность'),
+        formater: (item) => item.noact,
       },
       {
         property: 'rank_beg',
-        title: 'ранг на начало',
+        label: this.$t('Ранг на начало'),
         formater: (item) => item.rank_beg,
       },
       {
         property: 'rank_calc',
-        title: 'расчетный ранг',
+        label: this.$t('Расчетный ранг'),
         formater: (item) => item.rank_calc,
       },
       {
-        property: 'reserve',
-        title: 'балы в резерве',
-        formater: (item) => item.reserve,
+        property: 'rank_end',
+        label: this.$t('Ранг на конец'),
+        formater: (item) => item.rank_end,
       },
     ];
     return {
+      show: false,
+      colHide: false,
+      loading: true,
+      loading2: true,
+      state: '',
+      state2: '',
       searchActive: false,
       months: ['Январь', 'Ферваль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
       tree_type: 'full',
-      agent_id: null,
+      currentUserID: null,
+      modal_agent: {
+        agent_id: '',
+        name: '',
+      },
       get_root: true,
       tags: [],
       children: [],
@@ -199,10 +370,26 @@ export default {
           e.depth = 0;
           e.children = [];
         });
+      }).then(() => {
+        setTimeout(() => {
+          this.loading = false;
+        });
       });
     });
+    backApi.get('/agent/profile').then((Response) => {
+      this.state = `${Response.data.id} - ${Response.data.name}`;
+      this.currentUserID = Response.data.id;
+      this.currentUserIDName = { id: Response.data.id, agentname: Response.data.name };
+    });
+    this.tags.push({ name: 'Полное дерево', key: 'tree_type' });
   },
   computed: {
+    disabled() {
+      if (this.agent_id !== null && this.agent_id !== '') {
+        return false;
+      }
+      return true;
+    },
     currentPeriod() {
       try {
         return this.periods[this.periodIndex].comdte;
@@ -211,25 +398,271 @@ export default {
       }
     },
   },
+  watch: {
+    currentPeriod(v) {
+      const data = {
+        params: {
+          filter: this.tree_type,
+          get_root: true,
+          period: v,
+          // agent_id: this.currentUserID,
+          agent_id: this.modal_agent.agent_id !== '' ? this.modal_agent.agent_id : this.currentUserID,
+        },
+      };
+      backApi.get('/agents-tree-hist/period', data).then((response) => {
+        this.rows = response.data.entries;
+        this.rows.forEach((e) => {
+          e.depth = 0;
+          e.children = [];
+        });
+      });
+      this.tree_key += 1;
+    },
+  },
   methods: {
+    print() {
+      const colGroup1 = document.getElementsByTagName('colgroup')[0];
+      const colGroup2 = document.getElementsByTagName('colgroup')[1];
+      colGroup1.style.display = 'none';
+      colGroup2.style.display = 'none';
+      const tableHead = document.querySelector('.el-table__header');
+      const tableBody = document.querySelector('.el-table__body');
+      const hashWH = tableHead.style.width;
+      const hashWB = tableBody.style.width;
+      console.log(hashWH, hashWB);
+      tableHead.style.width = '920px';
+      tableBody.style.width = '920px';
+      window.print();
+      setTimeout(() => {
+        colGroup1.style.display = 'block';
+        colGroup2.style.display = 'block';
+        tableHead.style.width = hashWH;
+        tableBody.style.width = hashWB;
+      });
+    },
+    toogleColumn() {
+      this.colHide = !this.colHide;
+      if (this.$refs.hideBtn[0].classList.contains('hide')) {
+        this.$refs.hideBtn[0].classList.remove('hide');
+        this.$refs.idBlock[0].classList.remove('hide');
+      } else {
+        this.$refs.hideBtn[0].classList.add('hide');
+        this.$refs.idBlock[0].classList.add('hide');
+        this.columns[0].label = '';
+      }
+    },
+    gg() {
+      this.state = `${this.currentUserIDName.id}-${this.currentUserIDName.agentname}`;
+    },
+    gg2() {
+      this.state2 = `${this.modal_agent.agent_id}-${this.modal_agent.name}`;
+    },
+    dd() {
+      // this.loading = true;
+      const data = {
+        params: {
+          filter: this.tree_type,
+          get_root: true,
+          period: this.currentPeriod,
+        },
+      };
+      backApi.get('/agents-tree-hist/period', data).then((response) => {
+        this.rows = response.data.entries;
+        this.rows.forEach((e) => {
+          e.depth = 0;
+          e.children = [];
+        });
+      });
+      backApi.get('/agent/profile').then((Response) => {
+        this.state = `${Response.data.id} - ${Response.data.name}`;
+        this.currentUserID = Response.data.id;
+        this.currentUserIDName = { id: Response.data.id, agentname: Response.data.name };
+      });
+    },
+    dd2() {
+      // this.loading = true;
+      const data = {
+        params: {
+          filter: this.tree_type,
+          get_root: true,
+          period: this.currentPeriod,
+          agent_id: this.currentUserID,
+        },
+      };
+      backApi.get('/agents-tree-hist/period', data).then((response) => {
+        this.rows = response.data.entries;
+        this.rows.forEach((e) => {
+          e.depth = 0;
+          e.children = [];
+        });
+      });
+      this.modal_agent_id = null;
+      this.state2 = '';
+    },
+    querySearchAsync(queryString, cb) {
+      // const qr = queryString === '' ? 'а' : queryString;
+      backApi.get('/agent/share-transfert-list', { params: { show_root: 1 } }).then((Response2) => {
+        // eslint-disable-next-line no-param-reassign
+        // Response.data.agentname = Response.data.name;
+        // // Response2.data.entries.push
+        // Response2.data.entries.push(Response.data);
+        Response2.data.entries.forEach((u) => {
+          // eslint-disable-next-line no-param-reassign
+          u.value = `${u.id}-${u.agentname}`;
+        });
+        cb(Response2.data.entries.slice(0, 10));
+      });
+    },
+    handleSelect(item) {
+      // this.selectedUser = item.agent_id;
+      const data = {
+        params: {
+          filter: this.tree_type,
+          get_root: true,
+          period: this.currentPeriod,
+          agent_id: item.id,
+        },
+      };
+      backApi.get('/agents-tree-hist/period', data).then((response) => {
+        this.rows = response.data.entries;
+        this.rows.forEach((e) => {
+          e.depth = 0;
+          e.children = [];
+        });
+      });
+      this.currentUserID = item.id;
+      this.currentUserIDName = item;
+      console.log(this.currentUserIDName);
+    },
+    querySearchAsync2(queryString, cb) {
+      const qr = queryString === '' ? 'а' : queryString;
+      const valueDict = {
+        active: 2,
+        full: 0,
+        director: 1,
+      };
+      const data = {
+        params: {
+          agent_root: this.currentUserID,
+          find_str: qr,
+          tree_type: valueDict[this.tree_type],
+          comdte: this.currentPeriod,
+        },
+      };
+      backApi.get('/agent/tree-agents-list', data).then((Response2) => {
+        Response2.data.entries.forEach((u) => {
+          // eslint-disable-next-line no-param-reassign
+          u.value = `${u.agent_id}-${u.name}`;
+        });
+        cb(Response2.data.entries.slice(0, 10));
+      });
+    },
+    handleSelect2(item) {
+      // this.selectedUser = item.agent_id;
+      const data = {
+        params: {
+          filter: this.tree_type,
+          get_root: true,
+          period: this.currentPeriod,
+          agent_id: item.id,
+        },
+      };
+      backApi.get('/agents-tree-hist/period', data).then((response) => {
+        this.rows = response.data.entries;
+        this.rows.forEach((e) => {
+          e.depth = 0;
+          e.children = [];
+        });
+      });
+      this.modal_agent = item;
+      console.log(this.modal_agent);
+    },
+    clearAgentId() {
+      this.agent_id = null;
+    },
+    downloadXls() {
+      backApi.get('/agents-tree-hist/period/excel',
+        {
+          params:
+          {
+            agent_id: this.modal_agent.agent_id !== '' ? this.modal_agent.agent_id : null,
+            period: this.currentPeriod,
+            filter: this.tree_type,
+            get_root: true,
+            context: this.currentUserID,
+          },
+          responseType: 'blob',
+        })
+        .then(({ data }) => {
+          const filename = `${this.$t('История организации по периодам')}.xlsx`;
+          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        });
+    },
+    downloadPdf() {
+      backApi.get('/agents-tree-hist/period/pdf',
+        {
+          params:
+          {
+            agent_id: this.modal_agent.agent_id !== '' ? this.modal_agent.agent_id : null,
+            period: this.currentPeriod,
+            filter: this.tree_type,
+            get_root: true,
+            context: this.currentUserID,
+          },
+          responseType: 'blob',
+        })
+        .then(({ data }) => {
+          const filename = `${this.$t('История организации по периодам')}.pdf`;
+          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        });
+    },
+    back() {
+      const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
+      $(navEl[0])
+        .parent()
+        .parent()
+        .siblings()
+        .addClass('active');
+    },
     col_width(col) {
       if (col.property === 'id') {
-        return 250;
+        if (this.colHide) {
+          return 70;
+        }
+        return 100;
+      } if (col.property === 'name') {
+        return 100;
+      } if (col.property === 'lo' || col.property === 'lo' || col.property === 'go' || col.property === 'ngo' || col.property === 'oo' || col.property === 'ko') {
+        return 50;
+      } if (col.property === 'noact') {
+        return 50;
       }
-      return null;
+      return 0;
     },
     tableRowClassName({ row }) {
-      return `depth-${row.depth}`;
+      return `depth-${row.depth} printa`;
     },
     handleClose(event, tag) {
       // this.tags.splice(this.dynamicTags.indexOf(tag), 1);
       this.tags.splice(this.tags.indexOf(tag), 1);
       if (tag.key === 'tree_type') {
         this.tree_type = 'full';
-      } else if (tag.key === 'agent_id') {
-        this.agent_id = null;
-      } else if (tag.key === 'period') {
-        this.periodIndex = this.periods.length - 1;
+      }
+      if (tag.key === 'modal_agent_id') {
+        this.modal_agent.agent_id = null;
+        this.state2 = '';
       }
       this.updateData();
     },
@@ -239,6 +672,7 @@ export default {
           agent_id: tree.id,
           filter: this.tree_type,
           get_root: false,
+          period: this.currentPeriod,
         },
       };
       backApi.get('/agents-tree-hist/period', data).then((Response) => {
@@ -274,6 +708,7 @@ export default {
           filter: this.tree_type,
           get_root: true,
           period: this.currentPeriod,
+          agent_id: this.modal_agent.agent_id !== '' ? this.modal_agent.agent_id : this.currentUserID,
         },
       };
       const treeNameTranslate = {
@@ -288,41 +723,209 @@ export default {
           tag.name = treeName;
         } else if (this.tree_type !== 'full') {
           this.tags.push({ name: treeName, key: 'tree_type' });
-        }
-      }
-      if (this.agent_id !== null && this.agent_id !== '') {
-        const tag = this.tags.find((t) => t.key === 'agent_id');
-        if (tag) {
-          tag.name = this.agent_id;
         } else {
-          this.tags.push({ name: this.agent_id, key: 'agent_id' });
+          this.tags.push({ name: treeName, key: 'tree_type' });
         }
-        data.params.agent_id = this.agent_id;
       }
-      const tag = this.tags.find((t) => t.key === 'period');
-      if (tag) {
-        tag.name = `${this.months[new Date(this.currentPeriod).getMonth()]} ${new Date(this.currentPeriod).getFullYear()}`;
-      } else if (this.currentPeriod !== this.periods[this.periods.length - 1].comdte) {
-        this.tags.push({ name: `${this.months[new Date(this.currentPeriod).getMonth()]} ${new Date(this.currentPeriod).getFullYear()}`, key: 'period' });
+      if (this.modal_agent.agent_id !== null && this.modal_agent.agent_id !== '') {
+        const tag = this.tags.find((t) => t.key === 'modal_agent_id');
+        if (tag) {
+          tag.name = `${this.modal_agent.agent_id} - ${this.modal_agent.name}`;
+        } else {
+          this.tags.push({ name: `${this.modal_agent.agent_id} - ${this.modal_agent.name}`, key: 'modal_agent_id' });
+        }
+        // data.params.modal_agent_id = this.modal_agent.agent_id;
       }
       this.searchActive = false;
       backApi.get('/agents-tree-hist/period', data).then((response) => {
         this.rows = response.data.entries;
         this.rows.forEach((e) => {
           e.depth = 0;
+          e.children = [];
         });
       });
       this.tree_key += 1;
+    },
+    nextPeriod(x) {
+      this.period_enabled = true;
+      this.periodIndex = (this.periodIndex + this.periods.length + x) % this.periods.length;
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-@media (min-width: 760px) {
+.idBlock.hide{
+  display: none;
+}
+.cls_btn{
+  background-color: #32aaa7;
+  border: 0;
+}
+.modal_icons{
+  font-size: 0;
+  display: flex;
+  align-items: center;
+  & > img{
+    position: relative;
+    top: 2px;
+  }
+  & > span{
+    font-size: 16px;
+  }
+}
+.hide_arrow{
+  display: none;
+}
+.search_icons{
+  position: relative;
+  top: 5px;
+  display: inline-block;
+  width: 24px !important;
+  height: 24px;
+  background-image: url('../../public/icons/search.svg');
+  background-size: contain;
+  &.mobi{
+    position: absolute;
+    top: 20px;
+    right: 15px;
+  }
+}
+.mobile{
+  display: none;
+  margin-bottom: 20px;
+}
+span[class*="el-tag"] deep i{
+  display: none;
+}
+.date_picker_comp{
+  position: relative;
+  /* display: inline-block; */
+}
+.date_show{
+  /* position: relative; */
+  margin-left: 45px;
+  min-width: 120px;
+  display: inline-block;
+  text-align: center;
+}
+.arrow_left,
+.arrow_right{
+  position: absolute;
+  display: inline;
+  background-repeat: no-repeat;
+  /* background-size: contain; */
+  background-position: center;
+  width: 12px;
+  height: 12px;
+  top: 5px;
+  cursor: pointer;
+}
+.arrow_left{
+    background-image: url('../assets/imgs/arrow_left.svg');
+    left: 0px;
+}
+.arrow_right{
+    background-image: url('../assets/imgs/arrow_right.svg');
+    left: 190px;
+}
+@media (min-width: 770px) {
   .radio{
     display: inline;
   }
+}
+@media (max-width: 770px) {
+  .mobile{
+    display: block;
+    padding-left: 0;
+  }
+  .desktop{
+    display: none;
+  }
+}
+@media (max-width: 575px) {
+.hide_arrow{
+  position: absolute;
+  right: 10px;
+  top: 2px;
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+  background-image: url('../../public/icons/vector.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  transform: rotate(-180deg);
+  &.hide{
+    transform: rotate(0deg);
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%, -0%);
+  }
+}
+  .date_picker_comp{
+    & > div{
+      display: flex;
+      position: relative;
+      justify-content: center;
+      & i{
+        position: static;
+        margin-top: 5px;
+        &:nth-of-type(1){
+          margin-right: 20px;
+        }
+        &:nth-of-type(2){
+          margin-left: 20px;
+        }
+      }
+    }
+  }
+}
+.close_btn{
+  right: 10px;
+  top: 10px;
+}
+.rank_icon{
+  width: 25px;
+  margin-left: 10px;
+}
+.rank_icon_rank{
+  width: 20px;
+  // margin-left: -10px;
+}
+.rank_icon_legend{
+  width: 25px;
+  margin-right: 10px;
+}
+.user_id{
+  display: inline-block;
+  float: right;
+}
+.user_name{
+  display: inline-block;
+  position: relative;
+  text-align: right;
+  float: right;
+  padding-bottom: 0;
+  margin-top: 10px;
+  &::after {
+      position: absolute;
+      content: '';
+      width: 100%;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      border-bottom: 1px dotted black;
+  }
+}
+.depth-0 .user_name::after{
+      position: absolute;
+      content: '';
+      width: 100%;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      border-bottom: 1px dotted white;
 }
 .licevoischet__page {
   position: relative;
@@ -338,34 +941,24 @@ export default {
       cursor: pointer;
     }
   }
-  & .search__btn {
-    cursor: pointer;
-    margin-bottom: 30px;
-    text-transform: uppercase;
-    font-weight: bold;
-
-    & .search_icon {
-      color: #32aaa7;
-    }
-  }
   & .organization__modal {
-    //   position: absolute;
+    position: relative;
+    padding-top: 30px;
     width: 100%;
     bottom: 0;
-
+    & .container{
+      position: relative;
+    }
     & .edit {
-      input {
-        width: 100%;
-        border: 0;
-        border-bottom: 1px solid #dee2f3;
-        padding-bottom: 10px;
-        outline: none;
-      }
       button {
         width: 48%;
         border: 0;
         padding: 5px 30px;
         font-size: 16px;
+        &.disabled{
+          color: #9A9A9A;
+          background-color: #DEE2F3;
+        }
         &:nth-of-type(1) {
           background-color: #32aaa7;
           color: white;
@@ -381,40 +974,85 @@ export default {
 }
 </style>
 <style>
-
+.el-table__header-wrapper{
+  background: #DEE2F3 !important;
+}
+button.close{
+  color: #32aaa7;
+  opacity: 1;
+}
+button.close:hover{
+  color: #32aaa7;
+  opacity: 1;
+}
+.modal-dialog-centered.modal-dialog-scrollable .modal-content{
+  max-height: calc(100vh - 5rem) !important;
+}
 .el-table__expand-icon > .el-icon-arrow-right {
         color: white;
         left: 0;
       }
 .el-table__indent {
-  padding-left: 0 !important;
+  /* padding-left: 0 !important; */
+}
+.el-table{
+  font-weight: 500;
+}
+.el-table th{
+  background-color: #DEE2F3 !important;
+  color: black;
+}
+.orgbyhist .el-table tr td:nth-of-type(1){
+  border-right: 1px solid #9A9A9A;
+}
+.orgbyhist{
+  /* border: 1px solid #BABABA; */
+}
+.orgbyhist .el-table td, .el-table th.is-leaf{
+  border-bottom: 1px solid #9A9A9A;
+}
+.el-table th.is-leaf:nth-of-type(1){
+  border-bottom: 1px solid #9A9A9A;
+  border-right: 1px solid #9A9A9A;
 }
 .depth-0 {
   background-color: #32aaa7 !important;
   color: white;
 }
-.depth-1 {
-  background-color: #bebebe !important;
+.orgbyhist .depth-1 {
+  background-color: #AED9D8 !important;
   color: black;
 }
-.depth-2 {
-  background-color: #c4c5c6 !important;
+.orgbyhist .depth-2 {
+  background-color: #B5CCE2 !important;
   color: black;
 }
-.depth-3 {
-  background-color: #cecfd0 !important;
+.orgbyhist .depth-3 {
+  background-color: #C1D5E9 !important;
   color: black;
 }
-.depth-4 {
-  background-color: #d4d5d7 !important;
+.orgbyhist .depth-4 {
+  background-color: #BEBEBE !important;
   color: black;
 }
-.depth-5 {
-  background-color: #e3e3e4 !important;
+.orgbyhist .depth-5 {
+  background-color: #C4C5C6 !important;
   color: black;
 }
-.depth-6 {
-  background-color: #ebedf4 !important;
+.orgbyhist .depth-6 {
+  background-color: #CECFD0 !important;
+  color: black;
+}
+.orgbyhist .depth-7 {
+  background-color: #D4D5D7 !important;
+  color: black;
+}
+.orgbyhist .depth-8 {
+  background-color: #E3E3E4 !important;
+  color: black;
+}
+.orgbyhist .depth-9 {
+  background-color: #EBEDF4 !important;
   color: black;
 }
 .el-table .cell {
