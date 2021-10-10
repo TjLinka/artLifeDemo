@@ -5,7 +5,7 @@ COPY package*.json ./
 RUN npm install
 COPY ./ .
 RUN echo "VUE_APP_BASEURL=${VUE_APP_BASEURL}" >> .env
-RUN vue-cli-service lint --fix src
+RUN npm run fix
 RUN npm run build
 
 FROM nginx as production-stage
