@@ -3,8 +3,9 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY ./ .
-RUN echo ${VUE_APP_BASEUR} > .env
-RUN echo ${VUE_APP_BASEUR}
+RUN echo ${VUE_APP_BASEURL} > .env
+RUN echo ${VUE_APP_BASEURL}
+RUN echo 123
 RUN npm run lint -- --fix
 RUN npm run build
 
