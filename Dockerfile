@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY ./ .
-RUN echo "VUE_APP_BASEURL=${VUE_APP_BASEURL}" >> .env
+RUN echo ${VUE_APP_BASEURL} | grep "http" && echo "VUE_APP_BASEURL=${VUE_APP_BASEURL}" >> .env || true
 RUN npm run fix
 RUN npm run build
 
