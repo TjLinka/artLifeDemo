@@ -1,7 +1,15 @@
 <template>
   <div class="licevoischet__page">
-    <div class="container">
-      <h2 class="page__title">Организация текущего периода</h2>
+    <div v-loading="loading">
+    <div class="container-fluid table_container" v-show="!loading">
+      <h2 class="page__title">
+        <p class="mobile_back" @click="back">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
+        </svg>
+      </p>
+        {{$t("Организация текущего периода")}}
+        </h2>
       <el-tag
         v-for="tag in tags"
         :key="tag.name"
@@ -12,22 +20,26 @@
       >
         {{ tag.name }}
       </el-tag>
-      <p class="exp_print">
-        <span class="mr-3">Печать</span>
-        <span class="mr-3">Экспорт в xls</span>
-        <span class="mr-3">Экспорт в pdf</span>
+      <p class="exp_print mt-3">
+        <!-- <span class="mr-3">Печать</span> -->
+        <span class="mr-3" @click="downloadPdf">
+          {{$t("Экспорт в pdf")}}
+        </span>
+        <span class="mr-3" @click="downloadXls">
+          {{$t("Экспорт в xlsx")}}
+        </span>
       </p>
-      <el-table
+      <div class="orgper">
+        <el-table
         :key="tree_key"
         :data="rows"
         style="width: 100%"
         row-key="id"
-        border
         lazy
         :load="load"
         :tree-props="{ children: 'children', hasChildren: 'has_children' }"
         :row-class-name="tableRowClassName"
-      >
+        >
         <el-table-column
           v-for="(column, index) in columns"
           :prop="column.property"
@@ -38,60 +50,27 @@
         <span v-if="column.property === 'name'">
           <router-link :to="`/agent/${scope.row.id}`">{{scope.row.name}}</router-link>
         </span>
+        <span v-else-if="column.property === 'rank_end'">
+          <!-- <img
+          :src="`../icons/${scope.row.rank_end}${scope.row.depth === 0 ? '_white' : ''}.svg`"
+          :title="scope.row.rank_end" class="rank_icon mr-3"> -->
+          <span>{{scope.row.rank_end}}</span>
+        </span>
+        <span v-else-if="column.property === 'depth'">
+          <span>{{scope.row.depth}}</span>
+        </span>
         <span v-else>{{ column.formater(scope.row)}}</span>
       </template>
         </el-table-column>
       </el-table>
-      <div class="row">
-        <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
-          Поиск партнера <i class="el-icon-search search_icon"></i>
-        </div>
       </div>
-      <div v-if="searchActive" class="organization__modal">
-        <h3>Поиск партнера</h3>
-        <div class="row">
-          <div class="col-md-12">
-            <b-form-group label="Выбор дерева">
-              <b-form-radio
-                v-model="tree_type"
-                name="some-radios-1"
-                value="full"
-                class="radio mr-3"
-                >Полное дерево</b-form-radio
-              >
-              <b-form-radio
-                v-model="tree_type"
-                name="some-radios-1"
-                value="director"
-                class="radio mr-3"
-                >Директорское</b-form-radio
-              >
-              <b-form-radio
-                v-model="tree_type"
-                name="some-radios-1"
-                value="active"
-                class="radio"
-                >Своя группа</b-form-radio
-              >
-            </b-form-group>
-          </div>
-        </div>
-        <div class="row edit">
-          <div class="col-sm-6">
-            <el-input type="number" name="" id="" placeholder="Номер"
-            clearable v-model="agent_id" />
-          </div>
-          <div class="col-sm-6">
-            <button class="mr-2" @click="updateData">Показать</button
-            ><button @click="clearSelectedFilters">Сбросить</button>
-          </div>
-        </div>
-      </div>
+    </div>
     </div>
   </div>
 </template>
 
 <script>
+import $ from 'jquery';
 import backApi from '../assets/backApi';
 
 export default {
@@ -100,28 +79,49 @@ export default {
   data() {
     const rows = [];
     const columns = [
+      // {
+      //   property: 'has_children',
+      //   title: 'Уровень',
+      //   formater: (item) => `${item.depth} УР`,
+      // },
       {
-        property: 'has_children',
-        title: 'Уровень',
-        formater: (item) => `${item.depth} УР`,
+        property: 'depth',
+        title: this.$t('Глубина'),
+        sortable: true,
+        formater: (item) => item.depth,
       },
       {
         property: 'id',
-        title: 'Р/Номер',
+        title: this.$t('Номер партнера'),
+        sortable: true,
         formater: (item) => item.id,
       },
       {
         property: 'name',
-        title: 'ФИО',
+        title: this.$t('ФИО'),
+        sortable: true,
         formater: (item) => item.name,
       },
       {
+        property: 'lo',
+        title: this.$t('ЛО'),
+        sortable: true,
+        formater: (item) => item.lo,
+      },
+      {
+        property: 'ngo',
+        title: this.$t('НГО'),
+        sortable: true,
+        formater: (item) => item.ngo,
+      },
+      {
         property: 'rank_end',
-        title: 'Ранг',
+        title: this.$t('Ранг'),
         formater: (item) => item.rank_end,
       },
     ];
     return {
+      loading: true,
       searchActive: false,
       tree_type: 'full',
       agent_id: null,
@@ -141,10 +141,66 @@ export default {
         e.depth = 0;
         e.children = [];
       });
+    }).then(() => {
+      this.loading = false;
     });
   },
   computed: {},
   methods: {
+    downloadXls() {
+      backApi.get('/agents-tree-hist/excel',
+        {
+          params:
+          {
+            period: this.currentPeriod,
+            agent_id: this.agent_id,
+            filter: this.tree_type,
+            get_root: true,
+          },
+          responseType: 'blob',
+        })
+        .then(({ data }) => {
+          const filename = `${this.$t('Организация текущего периода')}.xlsx`;
+          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        });
+    },
+    downloadPdf() {
+      backApi.get('/agents-tree-hist/pdf',
+        {
+          params:
+          {
+            period: this.currentPeriod,
+            agent_id: this.agent_id,
+            filter: this.tree_type,
+            get_root: true,
+          },
+          responseType: 'blob',
+        })
+        .then(({ data }) => {
+          const filename = `${this.$t('Организация текущего периода')}.pdf`;
+          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', filename);
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        });
+    },
+    back() {
+      const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
+      $(navEl[0])
+        .parent()
+        .parent()
+        .siblings()
+        .addClass('active');
+    },
     tableRowClassName({ row }) {
       return `depth-${row.depth}`;
     },
@@ -228,6 +284,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.rank_icon{
+  width: 25px;
+  margin-left: 10px;
+}
+.rank_icon{
+  width: 25px;
+  margin-left: 10px;
+}
 .licevoischet__page {
   position: relative;
   &__summ {
@@ -242,18 +306,9 @@ export default {
       cursor: pointer;
     }
   }
-  & .search__btn {
-    cursor: pointer;
-    margin-bottom: 30px;
-    text-transform: uppercase;
-    font-weight: bold;
-
-    & .search_icon {
-      color: #32aaa7;
-    }
-  }
   & .organization__modal {
     //   position: absolute;
+    padding: 60px;
     width: 100%;
     bottom: 0;
 
@@ -283,6 +338,17 @@ export default {
     }
   }
 }
+.cust_modal{
+  position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    padding-left: 120px;
+    box-sizing: border-box;
+    background: #FFFFFF;
+    box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);
+}
 @media (min-width: 760px) {
   .radio{
     display: inline;
@@ -297,36 +363,46 @@ export default {
         color: white;
         left: 0;
       }
-.depth-0{
+/* .depth-0{
   background-color: #32AAA7 !important;
   color: white;
 }
 .depth-1{
-  background-color: #BEBEBE !important;
+  background-color: #AED9D8 !important;
   color: black;
 }
 .depth-2{
-  background-color: #C4C5C6 !important;
+  background-color: #B5CCE2 !important;
   color: black;
 }
 .depth-3{
-  background-color: #CECFD0 !important;
+  background-color: #C1D5E9 !important;
   color: black;
 }
 .depth-4{
-  background-color: #D4D5D7 !important;
+  background-color: #BEBEBE !important;
   color: black;
 }
 .depth-5{
-  background-color: #E3E3E4 !important;
+  background-color: #C4C5C6 !important;
   color: black;
 }
 .depth-6{
-  background-color: #EBEDF4 !important;
+  background-color: #CECFD0 !important;
+  color: black;
+} */
+.el-table{
+  font-weight: 500;
+}
+.el-table th{
+  background-color: #DEE2F3 !important;
   color: black;
 }
-.el-table--enable-row-hover .el-table__body tr:hover>td {
-    background-color: unset;
+.orgper .el-table tr td:nth-of-type(1){
+  border-right: 1px solid #9A9A9A;
+}
+.orgper .el-table td, .el-table th.is-leaf{
+  border-bottom: 1px solid #9A9A9A;
 }
 a{
   color: black;

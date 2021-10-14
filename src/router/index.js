@@ -8,6 +8,7 @@ const routes = [
     path: '/login',
     name: 'Auth',
     component: () => import('../views/Auth.vue'),
+    meta: { requiresGuest: true },
     // Видят все
   },
   {
@@ -18,16 +19,16 @@ const routes = [
     // Видят все
   },
   {
-    path: '/myinfoedit',
-    name: 'MyInfoEdit',
-    component: () => import('../views/MyInfoEdit.vue'),
+    path: '/agent/:id',
+    name: 'AgentInfo',
+    component: () => import('../views/AgentInfo.vue'),
     meta: { requiresAuth: true },
     // Видят все
   },
   {
-    path: '/agent/:id',
-    name: 'AgentInfo',
-    component: () => import('../views/AgentInfo.vue'),
+    path: '/myinfoedit',
+    name: 'MyInfoEdit',
+    component: () => import('../views/MyInfoEdit.vue'),
     meta: { requiresAuth: true },
     // Видят все
   },
@@ -70,7 +71,7 @@ const routes = [
     path: '/sponsorcard',
     name: 'SponsorCard',
     component: () => import('../views/SponsorCard.vue'),
-    meta: { requiresAuth: true, requiresRole: 'Дистрибьютор' },
+    meta: { requiresAuth: true },
     // Видит только Дистрбьютор +
   },
   {
@@ -84,7 +85,7 @@ const routes = [
     path: '/organization-period',
     name: 'OrganizationPeriod',
     component: () => import('../views/OrganizationPeriod.vue'),
-    meta: { requiresAuth: true, requiresRole: 'Дистрибьютор' },
+    meta: { requiresAuth: true, requiresRole: 'Клиент' },
     // Видят все
   },
   {
@@ -102,11 +103,67 @@ const routes = [
     // Видит только Дистрибьютор +
   },
   {
-    path: '/transfert',
-    name: 'Transfert',
-    component: () => import('../views/Transfert.vue'),
+    path: '/registration',
+    name: 'Registration',
+    component: () => import('../views/Registration.vue'),
+    meta: { requiresAuth: true },
+    // Видит только Дистрибьютор +
+  },
+  {
+    path: '/rights',
+    name: 'Rights',
+    component: () => import('../views/Rights.vue'),
     meta: { requiresAuth: true, requiresRole: 'Дистрибьютор' },
     // Видит только Дистрибьютор +
+  },
+  {
+    path: '/transfermanagement',
+    name: 'TransferManagement',
+    component: () => import('../views/TransferManagement.vue'),
+    meta: { requiresAuth: true, requiresRole: 'Дистрибьютор' },
+    // Видит только Дистрибьютор +
+  },
+  {
+    path: '/transfermanagement/:id',
+    name: 'TransferManagement',
+    component: () => import('../views/TransferManagement.vue'),
+    meta: { requiresAuth: true, requiresRole: 'Дистрибьютор' },
+    // Видит только Дистрибьютор +
+  },
+  {
+    path: '/partnerindicators',
+    name: 'PartnerIndicators',
+    component: () => import('../views/PartnerIndicators.vue'),
+    meta: { requiresAuth: true },
+    // Видит только Дистрибьютор +
+  },
+  {
+    path: '/partnerindicators/:id',
+    name: 'PartnerIndicatorsChild',
+    component: () => import('../views/PartnerIndicators.vue'),
+    meta: { requiresAuth: true },
+    // Видит только Дистрибьютор +
+  },
+  {
+    path: '/change_mail/:mail_hash',
+    name: 'MailChange',
+    component: () => import('../views/MailChange.vue'),
+    // meta: { requiresAuth: true },
+  },
+  {
+    path: '/signup/:signup_hash',
+    name: 'RegistrationConfirm',
+    component: () => import('../views/RegistrationConfirm.vue'),
+  },
+  {
+    path: '/remind-password/',
+    name: 'RemindPassword',
+    component: () => import('../views/RemindPassword.vue'),
+  },
+  {
+    path: '/auth-by-token*',
+    name: 'AuthIntegration',
+    component: () => import('../views/AuthIntegration.vue'),
   },
 ];
 
@@ -140,7 +197,7 @@ router.beforeEach((to, from, next) => {
         path: '/login',
       });
     } else {
-      // Если авторизировался и ещё требуется проверка по Ролям для доступа к странице
+      // Если авторизировался и еще требуется проверка по Ролям для доступа к странице
       const user = JSON.parse(localStorage.getItem('access_token'));
       if (to.matched.some((record) => record.meta.requiresRole)) {
         // Если требуется, смотрим на права доступа
@@ -160,7 +217,15 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     // Есле не требуется авторизация, то осуществляем переход по ссылке
-    next();
+    // eslint-disable-next-line no-lonely-if
+    if (to.matched.some((record) => record.meta.requiresGuest)) {
+      if (localStorage.getItem('access_token') === null) {
+        next();
+      }
+    } else {
+      next();
+    }
   }
 });
+
 export default router;
