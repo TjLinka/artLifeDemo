@@ -3,7 +3,7 @@
     <div class="container-md">
       <h4 class="mt-4 modal_title">
         {{$t("Перевести баллы другому партнёру")}}
-        <span class="close_btn" v-on:click="$emit('enlarge-text')"></span>
+        <span class="close_btn" v-on:click="$emit('close')"></span>
       </h4>
       <div class="row transfert">
         <!-- <div class="col-md-6">
@@ -180,15 +180,13 @@ export default {
               amount: Number(this.sum.replace(/,/, '.').replace(/\s/g, '')),
               comm: this.comm,
             })
-            .then(() => {
-              this.createMessageBoxError(this.$t('Операция выполнена успешно'));
+            .then(async () => {
+              await this.createMessageBoxError(this.$t('Операция выполнена успешно'));
+              this.$emit('enlarge-text');
             })
             .catch(() => {
               this.createMessageBoxError(this.$t('Что-то пошло не так'));
             });
-          backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then((Response) => {
-            this.transfertInfo = Response.data;
-          });
         } else {
           // console.log(Number(this.sum.replace(/,/, '.').replace(/\s/g, '')), this.reserve);
           this.createMessageBoxError(this.$t('Вы не можете перевести больше чем у Вас есть'));

@@ -223,6 +223,7 @@
     <footer class="container-fluid cust_modal" v-if="showModal1">
       <div>
         <AgentInfoModalPoints
+          v-on:close="showModal1 = false"
           v-on:enlarge-text="pointsAction"
           :lo="transfertInfo.lo"
           :reserve="transfertInfo.reserve"
