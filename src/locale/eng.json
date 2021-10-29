@@ -584,5 +584,7 @@
 "Экспорт расходного перечня" : "Export of the consignment list",
 "Экспорт УПД" : "Export ",
 "ПРОСМОТР" : "VIEWING",
-"РЕДАКТИРОВАНИЕ" : "EDITING"
+"РЕДАКТИРОВАНИЕ" : "EDITING",
+"ЛОГИН ТЕЛЕФОН": "LOGIN PHONE",
+"ЛОГИН ID": "LOGIN ID"
 }
