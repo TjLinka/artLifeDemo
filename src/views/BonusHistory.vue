@@ -163,7 +163,11 @@ export default {
         },
       ],
       mainFields: [
-        'Наименование',
+        {
+          key: 'Наименование',
+          label: this.$t('Наименование'),
+        },
+        // this.$t('Наименование'),
         {
           key: 'bonus',
           label: this.$t('Бонус'),

@@ -240,7 +240,7 @@
             <el-select
             v-model="filterData.area_id"
             clearable
-            placeholder="Регион">
+            :placeholder="`${$t('Регион')}`">
               <el-option
                 v-for="item in areaList"
                 :key="item.area_id"
@@ -265,7 +265,7 @@
             <el-select
             v-model="filterData.rank_beg"
             clearable
-            placeholder="Ранг на начало">
+            :placeholder="`${$t('Ранг на начало')}`">
               <el-option
                 v-for="item in rankList"
                 :key="item.rankname"
@@ -283,7 +283,7 @@
             <el-select
             v-model="filterData.rank_end"
             clearable
-            placeholder="Ранг на конец">
+            :placeholder="`${$t('Ранг на конец')}`">
               <el-option
                 v-for="item in rankList"
                 :key="item.rankname"
@@ -303,7 +303,7 @@
             <el-select
             v-model="filterData.rank_calc"
             clearable
-            placeholder="Расчетный ранг">
+            :placeholder="`${$t('Расчетный ранг')}`">
               <el-option
                 v-for="item in rankList"
                 :key="item.rankname"

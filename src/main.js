@@ -12,8 +12,10 @@ import VueMomentLib from 'vue-moment-lib';
 import VueCurrencyInput from 'vue-currency-input';
 import InfiniteLoading from 'vue-infinite-loading';
 import VueHtmlToPaper from 'vue-html-to-paper';
-import VueI18n from 'vue-i18n';
-import rus from './locale/ru.json';
+import FlagIcon from 'vue-flag-icon';
+// import VueI18n from 'vue-i18n';
+import i18n from './assets/i18n';
+// import rus from './locale/ru.json';
 
 import App from './App.vue';
 import router from './router';
@@ -21,14 +23,14 @@ import store from './store';
 
 locale.use(lang);
 
-Vue.use(VueI18n);
+// Vue.use(VueI18n);
 
-const i18n = new VueI18n({
-  locale: 'ru',
-  messages: {
-    ru: rus,
-  },
-});
+// const i18n = new VueI18n({
+//   locale: 'ru',
+//   messages: {
+//     ru: rus,
+//   },
+// });
 
 Vue.use(InfiniteLoading, {
   slots: {
@@ -40,6 +42,7 @@ const pluginOptions = {
   /* see config reference */
   globalOptions: { currency: 'USD' },
 };
+Vue.use(FlagIcon);
 Vue.use(VueCurrencyInput, pluginOptions);
 Vue.use(BootstrapVue);
 Vue.use(VueMomentLib);

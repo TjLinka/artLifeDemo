@@ -129,7 +129,7 @@
             <el-select
             v-model="status"
             clearable
-            placeholder="Статус">
+            :placeholder="`${$t('Статус')}`">
               <el-option
                 v-for="item in statusList"
                 :key="item.id"
@@ -155,7 +155,7 @@
             <el-select
             v-model="delivery"
             clearable
-            placeholder="Доставка">
+            :placeholder="`${$t('Доставка')}`">
               <el-option
                 v-for="item in deliveryList"
                 :key="item.id"
