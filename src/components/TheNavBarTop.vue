@@ -6,7 +6,7 @@
       :class="is_authorized ? 'main_color' : 'auth_page'"
     >
       <b-navbar-brand to="/" v-if="!is_authorized">
-        <img src="../assets/imgs/lc.png" alt="" srcset=""
+        <img :src="`../icons/${$i18n.locale}lc.png`" alt="" srcset=""
       /></b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>

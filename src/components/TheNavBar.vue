@@ -4,7 +4,7 @@
       <div class="logo">
         <router-link to="/">
           <img src="../assets/imgs/logo.png" alt="Артлайф" />
-          <img class="lhid" src="../assets/imgs/logo_1.png" alt="Артлайф" />
+          <img class="lhid" :src="`../icons/${$i18n.locale}logo_1.png`" alt="Артлайф" />
         </router-link>
       </div>
     </div>
