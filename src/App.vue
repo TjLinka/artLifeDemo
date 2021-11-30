@@ -79,6 +79,74 @@ url('/fonts/FuturaPT-Book.ttf') format('truetype');
 #modal-scrollable .modal-content{
   height: unset !important;
 }
+.btn_type_1{
+      margin-top: 20px;
+      width: 100%;
+      border: 0;
+      padding: 5px 30px;
+      font-size: 16px;
+      background-color: #32aaa7;
+      border: 1px solid #32aaa7;
+      color: white;
+      &.w50{
+        width: 48% !important;
+      }
+      &.fr{
+        float: right;
+      }
+      &.w25{
+        width: 25% !important;
+      }
+      &.mr-2{
+        margin-right: 20px;
+      }
+      &.disabled{
+        color: #9a9a9a;
+        background: none;
+        border: 1px solid;
+        border-color: #c4c4c4;
+        cursor: auto;
+        &:hover{
+          background: none;
+          color: #9a9a9a !important;
+          border-color: #c4c4c4 !important;
+          cursor: auto !important;
+        }
+      }
+}
+.btn_type_2{
+      margin-top: 20px;
+      width: 100%;
+      border: 0;
+      padding: 5px 30px;
+      font-size: 16px;
+      background-color: white;
+      color: #32aaa7;
+      border: 1px solid #32aaa7;
+      transition: .1s ease-in-out;
+      // cursor: pointer;
+      &:hover{
+        background-color: #32aaa7;
+        color: white;
+      }
+      &.w50{
+        width: 48% !important;
+      }
+      &.w25{
+        width: 25% !important;
+      }
+      &.disabled{
+        color: #9a9a9a;
+        border-color: #c4c4c4;
+        cursor: auto;
+        &:hover{
+          background: none;
+          color: #9a9a9a !important;
+          border-color: #c4c4c4 !important;
+          cursor: auto !important;
+        }
+      }
+}
 .modal-content {
     position: relative;
     display: flex;

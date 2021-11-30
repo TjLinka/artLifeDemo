@@ -18,22 +18,29 @@
       </h2>
       <p class="p-0 m-0 history_title"
       v-if="rangeDate[0] !== null && rangeDate.length > 0">{{$t("Период от и до")}}</p>
-        <div class="row">
+        <div class="row edit">
           <div class="col-md-6">
-      <date-picker
-      v-model="rangeDate"
-      range-separator=" - "
-      range
-      type="date"
-      @change="getSelectedDataRange"
-      format="DD.MM.YYYY"
-      :editable = "false"
-      placeholder="дд.мм.гггг - дд.мм.гггг"
-      value-type="YYYY-MM-DD"
-      style="width: 100%"
-      >
-      </date-picker>
+              <date-picker
+              v-model="rangeDate"
+              range-separator=" - "
+              range
+              type="date"
+              @change="getSelectedDataRange"
+              format="DD.MM.YYYY"
+              :editable = "false"
+              placeholder="дд.мм.гггг - дд.мм.гггг"
+              value-type="YYYY-MM-DD"
+              style="width: 100%"
+              >
+              </date-picker>
           </div>
+          <!-- <div class="col">
+            <router-link to="create-order">
+                <button class="btn_type_1 w50 fr">
+                  Сделать покупку
+                </button>
+            </router-link>
+          </div> -->
         </div>
         <div class="row mobile_search">
           <div class="col search__btn noprint" @click="toggleSearch" v-if="!searchActive">
@@ -704,6 +711,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.btn_type_1{
+  margin-top: 0;
+}
 .search_icons{
   position: relative;
   top: 5px;
