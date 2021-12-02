@@ -243,7 +243,7 @@ export default {
   // components: { DatePicker },
   data() {
     return {
-      mask: '',
+      mask: '+###############',
       loading: true,
       phoneHash: null,
       smsCode: null,
@@ -256,7 +256,9 @@ export default {
         currentPass: '',
       },
       userInfo: {},
-      userTopInfo: {},
+      userTopInfo: {
+        country: '',
+      },
       newPass: null,
       oldPass: null,
       rusAreaName: ['Россия', 'РФ', 'Россия Дальний Восток'],
@@ -265,14 +267,14 @@ export default {
   mounted() {
     backApi.get('/agent/profile').then((Response) => {
       this.userTopInfo = {
-        country: Response.data.country,
+        country: Response.data.country === null ? '' : Response.data.country,
         city: Response.data.city,
         address: Response.data.address,
         passport: Response.data.passport,
         bthdte: Response.data.bthdte,
       };
       this.userInfo = Response.data;
-      this.country = Response.data.country;
+      this.country = Response.data.country === null ? '' : Response.data.country;
       console.log(Response.data.phone);
       this.phone = Response.data.phone;
     }).then(() => {
