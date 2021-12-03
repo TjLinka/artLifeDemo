@@ -62,7 +62,7 @@
               value-type="YYYY-MM-DD"
               format="DD.MM.YYYY"
               type="date"
-              placeholder="Дата рождения"
+              :placeholder="`${$t('Дата рождения')}`"
               style="width: 100%"
               range-separator=" - "
             ></date-picker>

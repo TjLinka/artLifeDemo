@@ -6,16 +6,29 @@
       :class="is_authorized ? 'main_color' : 'auth_page'"
     >
       <b-navbar-brand to="/" v-if="!is_authorized">
-        <img src="../assets/imgs/lc.png" alt="" srcset=""
+        <img :src="`../icons/${$i18n.locale}lc.png`" alt="" srcset=""
       /></b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-
+      <b-collapse v-if="!is_authorized" id="nav-collapse" is-nav>
+        <!-- <a href="https://www.artlife.ru/" class="siteBtn">Перейти на сайт</a> -->
+        <b-navbar-nav class="ml-auto">
+          <div class="chLangBlock" @click="changeLang">
+            <flag v-if="$i18n.locale === 'en'" :iso="'gb'"/>
+            <flag v-else :iso="$i18n.locale"/>
+          </div>
+          <div class="d-lg-flex"></div>
+        </b-navbar-nav>
+      </b-collapse>
       <b-collapse v-if="is_authorized" id="nav-collapse" is-nav>
         <a href="https://www.artlife.ru/" class="siteBtn">
         {{$t("Перейти на сайт")}}
         </a>
         <b-navbar-nav class="ml-auto">
+          <div class="chLangBlock" @click="changeLang">
+            <flag v-if="$i18n.locale === 'en'" :iso="'gb'"/>
+            <flag v-else :iso="$i18n.locale"/>
+          </div>
           <div class="d-lg-flex"></div>
           <b-nav-item-dropdown right>
             <template v-slot:button-content>
@@ -49,6 +62,19 @@ export default {
     ...mapState('auth', ['is_authorized', 'agentname', 'role']),
   },
   methods: {
+    changeLang() {
+      if (this.$i18n.locale === 'en') {
+        console.log('1');
+        localStorage.setItem('locale', 'ru');
+        console.log(this.$route);
+        this.$router.go(0);
+      } else {
+        console.log('2');
+        localStorage.setItem('locale', 'en');
+        console.log(this.$route);
+        this.$router.go(0);
+      }
+    },
     ...mapActions('auth', ['logout']),
     out() {
       this.logout().then(() => {
@@ -62,6 +88,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.chLangBlock{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
 .siteBtn{
   margin-left: 120px;
   font-style: normal;

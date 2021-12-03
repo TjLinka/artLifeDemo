@@ -17,8 +17,8 @@
               <el-switch
                 style="display: block"
                 v-model="value2"
-                active-text="ЛОГИН ТЕЛЕФОН"
-                inactive-text="ЛОГИН ID"
+                :active-text="`${$t('ЛОГИН ТЕЛЕФОН')}`"
+                :inactive-text="`${$t('ЛОГИН ID')}`"
               >
               </el-switch>
             </div>

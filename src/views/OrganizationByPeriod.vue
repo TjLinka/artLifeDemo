@@ -149,7 +149,7 @@
             </h3>
         <div class="row">
           <div class="col-md-12 mt-3">
-            <b-form-group label="Выбор дерева">
+            <b-form-group :label="`${$t('Выбор дерева')}`">
               <b-form-radio
                 v-model="tree_type"
                 name="some-radios-1"
@@ -176,7 +176,7 @@
           <el-autocomplete
             v-model="state2"
             :fetch-suggestions="querySearchAsync2"
-            placeholder="Построить дерево для партнера"
+            :placeholder="`${$t('Построить дерево для партнера')}`"
             clearable
             @clear="dd2"
             @change="gg2"

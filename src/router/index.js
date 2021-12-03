@@ -61,6 +61,13 @@ const routes = [
     // Видят все
   },
   {
+    path: '/new-purchase',
+    name: 'NewPurchase',
+    component: () => import('../views/NewPurchase.vue'),
+    meta: { requiresAuth: true },
+    // Видят все
+  },
+  {
     path: '/returns-history',
     name: 'ReturnsHistory',
     component: () => import('../views/ReturnsHistory.vue'),

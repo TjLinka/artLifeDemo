@@ -2,9 +2,9 @@
   <div class="left_menu" v-show="is_authorized && this.$route.path !== '/login'">
     <div class="left_menu_top">
       <div class="logo">
-        <a href="#">
+        <a href="/">
           <img src="../assets/imgs/logo.png" alt="Артлайф" />
-          <img class="lhid" src="../assets/imgs/logo_1.png" alt="Артлайф" />
+          <img class="lhid" :src="`../icons/${$i18n.locale}logo_1.png`" alt="Артлайф" />
         </a>
       </div>
     </div>

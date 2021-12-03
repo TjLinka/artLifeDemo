@@ -22,7 +22,7 @@
       <div class="top__info mt-3">
         <div class="row edit ">
           <div class="col-md-6 custom_input mt-3">
-            <p class="lbl">Страна:</p>
+            <p class="lbl">{{$t('Страна')}}:</p>
             <p>{{userTopInfo.country}}</p>
             <!-- <input
             @blur="checkInput('country')"
@@ -32,7 +32,7 @@
             <span class="clear_icon" @click="clearInputTop('country')"></span> -->
           </div>
           <div class="col-md-6 custom_input mt-3">
-            <p class="lbl">Город:</p>
+            <p class="lbl">{{$t('Город')}}:</p>
             <p>{{userTopInfo.city}} </p>
             <!-- <input
             @blur="checkInput('city')"
@@ -44,7 +44,7 @@
         </div>
         <div class="row edit ">
           <div class="col-md-6 custom_input mt-3">
-            <p class="lbl">Адрес:</p>
+            <p class="lbl">{{$t('Адрес')}}:</p>
             <p>{{userTopInfo.address}} </p>
             <!-- <input
             @blur="checkInput('address')"
@@ -54,7 +54,7 @@
             <span class="clear_icon" @click="clearInputTop('address')"></span> -->
           </div>
           <div class="col-md-6 custom_input mt-3">
-            <p class="lbl">Паспорт:</p>
+            <p class="lbl">{{$t('Паспорт')}}:</p>
             <p>{{userTopInfo.passport}}</p>
             <!-- <input
             @blur="checkInput('passport')"
@@ -68,7 +68,7 @@
         <div class="row edit ">
           <div class="col-md-6 mt-3">
             <p class="lbl">
-              Дата рождения:
+              {{$t('Дата рождения')}}:
             </p>
             <p>
               {{new Date(userTopInfo.bthdte).toLocaleDateString()}}
@@ -88,7 +88,7 @@
           </div>
           <div class="col-md-6 custom_input mt-3">
             <p class="lbl">
-              Доп. контакты:
+              {{$t('Доп. контакты')}}:
             </p>
             <p>
               {{userTopInfo.skype}}
@@ -243,7 +243,7 @@ export default {
   // components: { DatePicker },
   data() {
     return {
-      mask: '',
+      mask: '+###############',
       loading: true,
       phoneHash: null,
       smsCode: null,
@@ -256,7 +256,9 @@ export default {
         currentPass: '',
       },
       userInfo: {},
-      userTopInfo: {},
+      userTopInfo: {
+        country: '',
+      },
       newPass: null,
       oldPass: null,
       rusAreaName: ['Россия', 'РФ', 'Россия Дальний Восток'],
@@ -265,14 +267,14 @@ export default {
   mounted() {
     backApi.get('/agent/profile').then((Response) => {
       this.userTopInfo = {
-        country: Response.data.country,
+        country: Response.data.country === null ? '' : Response.data.country,
         city: Response.data.city,
         address: Response.data.address,
         passport: Response.data.passport,
         bthdte: Response.data.bthdte,
       };
       this.userInfo = Response.data;
-      this.country = Response.data.country;
+      this.country = Response.data.country === null ? '' : Response.data.country;
       console.log(Response.data.phone);
       this.phone = Response.data.phone;
     }).then(() => {
