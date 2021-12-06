@@ -6,9 +6,12 @@
     <div class="row mt-4">
       <div class="col-md-6">
         <div class="custom_input" v-show="!codeCome">
-          <input type="text"
-          v-mask="'+7(###)-###-##-##'"
-          name="mobile_phone" id="mobile_phone"
+          <input
+          type="text"
+          v-mask="mask"
+          @input="checkValue"
+          name="mobile_phone"
+          id="mobile_phone"
           required v-model="newUser.mobile_phone" />
           <label for="mobile_phone">{{$t('Номер телефона')}}:</label>
           <span class="clear_icon" @click="clearPhone()"></span>
@@ -69,7 +72,10 @@ export default {
   name: 'RegistrationConfirm',
   data() {
     return {
-      newUser: {},
+      mask: '+#(###)###-##-##',
+      newUser: {
+        mobile_phone: '',
+      },
       errorStatus: true,
       mobile_phone_code: null,
       codeCome: false,
@@ -82,10 +88,11 @@ export default {
   mounted() {
     backApi.get('/agent/new-agent', { params: { hash_content: this.$route.params.signup_hash } }).then((Response) => {
       this.newUser = Response.data;
-    }).catch(() => {
-      // this.showToast('', 'Произошла ошибка!', 'danger');
-      this.errorStatus = false;
-    });
+    })
+      .catch(() => {
+        // this.showToast('', 'Произошла ошибка!', 'danger');
+        this.errorStatus = false;
+      });
   },
   methods: {
     ...mapActions('auth', ['register']),
@@ -150,7 +157,16 @@ export default {
       });
     },
     clearPhone() {
-      this.newUser.mobile_phone = null;
+      this.newUser.mobile_phone = '+';
+    },
+    checkValue(e) {
+      console.log(e);
+      if (e.target.value === '') {
+        this.newUser.mobile_phone = '+';
+      }
+      if (e.target.value === '+8') {
+        this.newUser.mobile_phone = e.target.value.replace(/\+8/, '+7');
+      }
     },
   },
 };
