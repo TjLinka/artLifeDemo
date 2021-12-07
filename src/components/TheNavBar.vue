@@ -130,9 +130,7 @@
             </span>
           </a>
           <ul class="sub_menu">
-            <li class="mobilis"><span class="i_m">
-              {{$t("Покупки")}}
-              </span></li>
+            <!-- <li class="mobilis"><span class="i_m">{{$t("Покупки")}}</span></li> -->
             <li><router-link to="/purchases-history">
             {{$t("История покупок")}}
             </router-link></li>

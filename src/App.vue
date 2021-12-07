@@ -20,6 +20,8 @@ export default {
   data() {
     return {};
   },
+  mounted() {
+  },
   computed: {
     ...mapState('auth', ['is_authorized', 'agentname', 'role']),
   },
