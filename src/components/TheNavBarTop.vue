@@ -55,6 +55,7 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
+import backAPI from '../assets/backApi';
 
 export default {
   name: 'TheNavBarTop',
@@ -78,6 +79,7 @@ export default {
     ...mapActions('auth', ['logout']),
     out() {
       this.logout().then(() => {
+        delete backAPI.defaults.headers.common['access-token'];
         this.$router.push('/login');
       });
     },

@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
 /* eslint-disable prefer-destructuring */
-import backApi from '../assets/backApi';
+// import backApi from '../assets/backApi';
 
 export default {
   namespaced: true,
@@ -44,89 +44,31 @@ export default {
     },
   },
   actions: {
-    login({ commit }, user) {
-      return new Promise((resolve, reject) => {
+    login({ commit }, resp) {
+      return new Promise((resolve) => {
         commit('AUTH_REQUEST');
-        if (!user.authMethod) {
-          backApi
-            .post('/agent/login/id', user)
-            .then((resp) => {
-              const data = JSON.stringify(resp.data);
-              const token = resp.data.access_token;
-              localStorage.setItem('access_token', data);
-              backApi.defaults.headers.common['access-token'] = token;
-              commit('AUTH_SUCCESS', resp.data);
-              resolve(resp);
-            })
-            .catch((err) => {
-              commit('AUTH_ERROR', err);
-              localStorage.removeItem('access-token');
-              reject(err);
-            });
-        } else {
-          backApi
-            .post('/agent/login/phone', user)
-            .then((resp) => {
-              const data = JSON.stringify(resp.data);
-              const token = resp.data.access_token;
-              localStorage.setItem('access_token', data);
-              backApi.defaults.headers.common['access-token'] = token;
-              commit('AUTH_SUCCESS', resp.data);
-              resolve(resp);
-            })
-            .catch((err) => {
-              commit('AUTH_ERROR', err);
-              localStorage.removeItem('access-token');
-              reject(err);
-            });
-        }
+        commit('AUTH_SUCCESS', resp.data);
+        resolve();
       });
     },
-    loginIntegration({ commit }, data) {
-      return new Promise((resolve, reject) => {
+    loginIntegration({ commit }, resp) {
+      return new Promise((resolve) => {
         commit('AUTH_REQUEST');
-        backApi
-          .post('/agent/login/token', { access_token: data.access_token })
-          .then((resp) => {
-            const data = JSON.stringify(resp.data);
-            const token = resp.data.access_token;
-            localStorage.setItem('access_token', data);
-            backApi.defaults.headers.common['access-token'] = token;
-            commit('AUTH_SUCCESS', resp.data);
-            resolve(resp);
-          })
-          .catch((err) => {
-            commit('AUTH_ERROR', err);
-            localStorage.removeItem('access-token');
-            reject(err);
-          });
+        commit('AUTH_SUCCESS', resp.data);
+        resolve(resp);
       });
     },
-    register({ commit }, user) {
-      return new Promise((resolve, reject) => {
+    register({ commit }, resp) {
+      return new Promise((resolve) => {
         commit('AUTH_REQUEST');
-        backApi
-          .post('/agent/signup-end', user)
-          .then((resp) => {
-            const data = JSON.stringify(resp.data);
-            const token = resp.data.access_token;
-            localStorage.setItem('access_token', data);
-            backApi.defaults.headers.common['access-token'] = token;
-            commit('AUTH_SUCCESS', resp.data);
-            resolve(resp);
-          })
-          .catch((err) => {
-            commit('AUTH_ERROR', err);
-            localStorage.removeItem('access-token');
-            reject(err);
-          });
+        commit('AUTH_SUCCESS', resp.data);
+        resolve(resp);
       });
     },
     logout({ commit }) {
       return new Promise((resolve) => {
         commit('AUTH_LOGOUT');
         localStorage.removeItem('access_token');
-        delete backApi.defaults.headers.common['access-token'];
         resolve();
       });
     },

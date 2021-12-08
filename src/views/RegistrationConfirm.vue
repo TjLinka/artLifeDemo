@@ -146,15 +146,23 @@ export default {
         });
     },
     getAccess() {
-      const data = {
+      const params = {
         hash_content: this.$route.params.signup_hash,
         sms_code: this.mobile_phone_code,
       };
-      this.register(data).then(() => {
-        // this.$router.push('/');
-        this.registeration = true;
-        this.showToast(this.$t('Регистриция'), this.$t('Вы успешно прошли регистрацию'), 'success');
-      });
+      backApi
+        .post('/agent/signup-end', params)
+        .then((resp) => {
+          const data = JSON.stringify(resp.data);
+          const token = resp.data.access_token;
+          localStorage.setItem('access_token', data);
+          backApi.defaults.headers.common['access-token'] = token;
+          this.register(resp).then(() => {
+            // this.$router.push('/');
+            this.registeration = true;
+            this.showToast(this.$t('Регистриция'), this.$t('Вы успешно прошли регистрацию'), 'success');
+          });
+        });
     },
     clearPhone() {
       this.newUser.mobile_phone = '+';

@@ -1,7 +1,5 @@
 import Axios from 'axios';
 import router from '../router';
-// import router from '../router';
-// eslint-disable-next-line import/no-cycle
 import store from '../store';
 
 const backAPI = Axios.create({
