@@ -47,12 +47,21 @@
     </div>
     <div class="row mt-4" v-show='!smsCodeCome'>
       <div class="col-md-6 ">
-          <button class="rempass" @click="remindPassEmail"
-          v-show="!value2">
+          <button
+          :class="`rempass ${emailDis ? 'disabled' : ''}`"
+          @click="remindPassEmail"
+          v-show="!value2"
+          :disabled="emailDis"
+          >
           {{$t("Восстановить пароль")}}
           </button>
-          <button class="rempass" @click="remindPassPhone" v-show="value2">
-            {{$t("Восстановить пароль")}} </button>
+          <button
+          :class="`rempass ${phoneDis ? 'disabled' : ''}`"
+          @click="remindPassPhone"
+          v-show="value2"
+          :disabled="phoneDis"
+          >
+          {{$t("Восстановить пароль")}} </button>
       </div>
     </div>
     <div class="row mt-4" v-show='smsCodeCome'>
@@ -73,6 +82,8 @@ export default {
   name: 'RemindPassword',
   data() {
     return {
+      emailDis: false,
+      phoneDis: false,
       id_hash: '',
       value2: false,
       smsCodeCome: false,
@@ -114,10 +125,14 @@ export default {
             email: this.email,
           },
         };
+        this.emailDis = true;
+        this.phoneDis = true;
         backApi.get('/remind-password', data).then(() => {
           this.showToast(this.$t('Восстановление пароля'), this.$t('На вашу почту пришло письмо'), 'success');
           setTimeout(() => { this.$router.push('/login'); }, 1500);
         }).catch(() => {
+          this.emailDis = false;
+          this.phoneDis = false;
           this.showToast(this.$t('Восстановление пароля'), this.$t('Почта указана не верно'), 'danger');
         });
       }
@@ -127,11 +142,15 @@ export default {
         const data = {
           phone: Number(this.phone),
         };
+        this.emailDis = true;
+        this.phoneDis = true;
         backApi.post('/agent/restore-request', data).then((Response) => {
           this.showToast(this.$t('Восстановление пароля'), this.$t('На ваш телефон придет смс с кодом'), 'success');
           this.smsCodeCome = true;
           this.id_hash = Response.data.id;
         }).catch(() => {
+          this.emailDis = false;
+          this.phoneDis = false;
           this.showToast(this.$t('Восстановление пароля'), this.$t('Телефон указан не верно'), 'danger');
         });
       }
@@ -184,6 +203,19 @@ export default {
         color: #FFF;
         background: #32AAA7;
         // padding: 8px 50px;
+    }
+    &.disabled{
+      color: #9a9a9a;
+      background: none;
+      border: 1px solid;
+      border-color: #c4c4c4;
+      cursor: auto;
+      &:hover{
+        background: none;
+        color: #9a9a9a !important;
+        border-color: #c4c4c4 !important;
+        cursor: auto !important;
+      }
     }
 }
 </style>

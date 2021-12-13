@@ -231,14 +231,17 @@ export default {
     sss() {
       this.$bvToast.show('my-toast-2');
     },
-    takeRight() {
-      backApi.post('/agent/share-transfert', { agent_to: null });
-      setTimeout(() => {
-        backApi.get('/agent/profile').then((Response) => {
-          this.ruleGiver = Response.data.agent2transfer_name;
-        });
-      }, 1000);
-      this.$bvToast.show('my-toast-1');
+    async takeRight() {
+      const res = await this.createMessageBox('Вы уверны, что хотите забрать права?');
+      if (res) {
+        backApi.post('/agent/share-transfert', { agent_to: null });
+        setTimeout(() => {
+          backApi.get('/agent/profile').then((Response) => {
+            this.ruleGiver = Response.data.agent2transfer_name;
+          });
+        }, 1000);
+        this.$bvToast.show('my-toast-1');
+      }
     },
     back() {
       const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
@@ -247,6 +250,19 @@ export default {
         .parent()
         .siblings()
         .addClass('active');
+    },
+    createMessageBox(messageText) {
+      const h = this.$createElement;
+      // More complex structure
+      const messageVNode = h('div', { class: ['foobar'] }, [h('h3', { class: ['text-center'] }, [messageText])]);
+      // We must pass the generated VNodes as arrays
+      return this.$bvModal.msgBoxConfirm([messageVNode], {
+        buttonSize: 'md',
+        centered: true,
+        cancelTitle: 'Нет',
+        okTitle: 'Да',
+        size: 'xl',
+      });
     },
   },
 };

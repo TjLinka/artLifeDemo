@@ -1013,6 +1013,7 @@ export default {
           },
         ];
         this.loading = true;
+        await this.createMessageBox('Операция выполнена успешно');
         this.updateData();
       }
     },
@@ -1111,6 +1112,21 @@ export default {
         cancelTitle: 'Нет',
         okTitle: 'OK',
         size: 'md',
+      });
+    },
+    createMessageBoxError(messageText) {
+      const h = this.$createElement;
+      // More complex structure
+      const messageVNode = h('div', { class: ['foobar'] }, [
+        h('h5', { class: ['text-center'], domProps: { innerHTML: messageText } }),
+      ]);
+      // We must pass the generated VNodes as arrays
+      return this.$bvModal.msgBoxOk([messageVNode], {
+        buttonSize: 'xl',
+        centered: true,
+        cancelTitle: 'Нет',
+        okTitle: 'OK',
+        size: 'xl',
       });
     },
     onRowSelected(item) {
