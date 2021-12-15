@@ -17,7 +17,7 @@
         {{$t("Карточка партнера")}}: {{userinfo.id}} - {{userinfo.name}}
       </h2>
       <div class="myinfo__page__description">
-        <div class="myfoto">
+        <div :class="`myfoto ${userinfo.agreementsystem === 0 ? 'a' : ''}`">
           <div>
             <img v-if="userinfo.male" src="../assets/imgs/male.png" />
             <img v-else src="../assets/imgs/female.png" />
@@ -538,14 +538,23 @@ export default {
 .myinfo__page {
   &__description {
     & .myfoto {
+      position: relative;
       display: inline-block;
       margin-top: 30px;
       border-radius: 50%;
       overflow: hidden;
-
       & img {
         width: 100%;
         height: 100%;
+      }
+      &.a::before{
+          content: " ";
+          position: absolute;
+          display: block;
+          width: 100px;
+          height: 100px;
+          background-color: #cfc824eb;
+          opacity: 0.5;
       }
     }
 
