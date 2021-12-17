@@ -3,27 +3,35 @@
     <h2 class="page_title">
       {{$t("Создание покупки")}}
     </h2>
+    <h4 class="mt-3">
+      {{userInfo.id}} - {{userInfo.name}}
+    </h4>
     <div class="row mt-3">
       <div class="col-md-4">
         <span class="custom_label" v-if="search_user">
-          {{$t("Партнер-получатель")}}
+          {{$t("Склад")}}
         </span>
-        <el-autocomplete
-          v-model="search_user"
-          :fetch-suggestions="querySearchAsync"
-          :placeholder="`${$t('Партнер-получатель')}`"
-          clearable
-          @change="dd"
-          @clear="qq"
-          @select="handleSelectUser"
-          style="width: 100%"
-        ></el-autocomplete>
-        <p v-show="search_user === ''" style="color: red">
-          {{$t("Для работы с каталогом выберите партнера-получателя")}}
+        <el-select
+        v-model="selectedStock"
+        clearable
+        filterable
+        @change="getCatalog"
+        @clear="clearStock"
+        style="width: 100%"
+        :placeholder="`${$t('Склад')}`">
+          <el-option
+            v-for="stock in stockList"
+            :key="stock.stock_id"
+            :label="stock.stock_name"
+            :value="stock.stock_id">
+          </el-option>
+        </el-select>
+        <p v-show="selectedStock === ''" style="color: red">
+          {{$t("Для работы с каталогом выберите склад")}}
         </p>
       </div>
     </div>
-    <div class="row mt-4" v-show="selectedUserInfo.agent_id">
+    <!-- <div class="row mt-4" v-show="selectedUserInfo.agent_id">
       <div class="col">
         <p class="p-0 m-0 lbl">{{$t("Получатель баллов")}}:</p>
         <span>{{selectedUserInfo.partner_name}}</span>
@@ -32,8 +40,8 @@
         <p class="p-0 m-0 lbl">{{$t("Клиентская скидка")}}:</p>
         <span>{{selectedUserInfo.discount_pc === null ? 0 : selectedUserInfo.discount_pc}}</span>
       </div>
-    </div>
-    <div class="row mt-4 mb-4" v-show="selectedUserInfo.agent_stock_id === stock_id">
+    </div> -->
+    <!-- <div class="row mt-4 mb-4" v-show="selectedUserInfo.agent_stock_id === stock_id">
       <div class="col">
         <p class="p-0 m-0 lbl">
          {{$t("На счету у Партнера")}}
@@ -47,7 +55,7 @@
           {{selectedUserInfo.amount === null ? 0 : selectedUserInfo.amount  | localInt}}</router-link>
         </span>
       </div>
-    </div>
+    </div> -->
     <h3 class="mt-3">
       {{$t("Корзина")}}
     </h3>
@@ -74,71 +82,6 @@
     </div>
     <div class="row">
     </div>
-    <b-row align-v="end" class="row mt-4">
-      <span class="pay">{{$t("Оплата")}}:</span>
-      <div class="col custom_input">
-        <input
-        ref="cash"
-        type="text"
-        v-currency="{
-          currency: null,
-          valueAsInteger: false,
-          distractionFree: false,
-          allowNegative: false
-        }"
-        name="cash"
-        id="cash"
-        step="1"
-        required
-        @keydown="checkInput1($event)"
-        v-model="cash"
-        />
-        <label for="cash" :class="cash !== '' ? 'upl' : ''">
-          {{$t("Наличными")}}
-        </label>
-        <span :class="`clear_icon ${cash !== '' ? 'ups' : ''}` " @click="clearCash()"></span>
-      </div>
-      <div class="col custom_input">
-        <input
-        type="text"
-        name="card"
-        id="card"
-        required
-        v-currency="{
-          currency: null,
-          valueAsInteger: false,
-          distractionFree: false,
-          allowNegative: false
-        }"
-        @keydown="checkInput1($event)"
-        v-model="card" />
-        <label for="card">
-          {{$t("Безналичными")}}
-        </label>
-        <span class="clear_icon" @click="clearCard()"></span>
-      </div>
-    </b-row>
-    <div class="row mt-4" v-show="selectedUserInfo.agent_stock_id === stock_id">
-      <div class="col">
-        <p class="p-0 m-0 lbl">
-          <span v-if="bonusMove">
-            {{$t("Будет")}} <strong class="act">{{$t("зачислено")}}</strong> {{$t("на счeт")}}
-          </span>
-          <span v-else>
-            {{$t("Будет")}} <strong class="act"> {{$t("списано")}} </strong> {{$t("со счeта")}}
-          </span>
-        </p>
-        <!-- Зачисленно -->
-        <span v-if="bonusMove">
-          {{Math.abs(cartInfo.ls) | localInt}}
-        </span>
-        <!-- Списано -->
-        <span v-else :class="lowBalance && cartInfo.ls !== 0 ? 'red' : ''">
-          {{Math.abs(cartInfo.ls) | localInt}}
-          {{ lowBalance && cartInfo.ls !== 0 ? `- ${$t("недостаточно средств на лицевом счeте")}` : ''}}
-        </span>
-      </div>
-    </div>
     <b-table
     responsive
     border
@@ -162,6 +105,7 @@
             :value="scope.item.goods_count"
           />
           <span class="clear_icon" @click="clearCount(scope.item.articul)"></span>
+          <p class="countError" v-show="scope.item.goods_count > scope.item.items">Товаров недостаточно</p>
         </div>
         <div v-else class="custom_input col-md">
           <input
@@ -175,6 +119,7 @@
             :value="scope.item.goods_count"
           />
           <span class="clear_icon" @click="clearCountKit(scope.item.id)"></span>
+          <p class="countError" v-show="scope.item.goods_count > scope.item.items">Товаров недостаточно</p>
         </div>
       </template>
       <template v-slot:cell(price_all)="scope">
@@ -211,13 +156,13 @@
     </div>
     <div class="row mt-4">
       <div class="col-md-6 sponsor_bot_btns">
-        <button @click="createSale">
-          {{$t("Создать продажу")}}
+        <button @click="createSale" :disabled="countCheck" :class="`${countCheck ? 'disabled' : ''}`">
+          {{$t("Создать покупку")}}
         </button>
       </div>
     </div>
     </div>
-    <footer class="container-fluid cust_modal sale_footer" :style="search_user !== '' ? '' : 'pointer-events: none;'">
+    <footer class="container-fluid cust_modal sale_footer" :style="selectedStock !== '' ? '' : 'pointer-events: none;'">
       <div class="container-md">
         <div class="row desktop_search">
           <div
@@ -371,7 +316,7 @@
   <b-modal id="bv-modal-example" hide-footer centered  :hide-header-close="true" :no-close-on-backdrop="true">
     <div class="d-block text-center">
       <h3>
-        {{$t('Создание продажи')}}
+        {{$t('Создание покупки')}}
       </h3>
       <p>{{$t("Пожалуйста подождите")}}...</p>
     </div>
@@ -401,8 +346,14 @@ export default {
       boxTwo: '',
       cash: '',
       card: '',
+      userInfo: {
+        id: '',
+        name: '',
+      },
       modalFilter: '',
       search_user: '',
+      selectedStock: '',
+      stockList: [],
       selectedUserInfo: {},
       comm: '',
       keyD: 'price_retail',
@@ -447,7 +398,7 @@ export default {
         },
         {
           key: 'items',
-          label: this.$t('Остаток по складу'),
+          label: this.$t('В наличии'),
           sortable: true,
         },
         {
@@ -654,6 +605,30 @@ export default {
   },
   mounted() {
     this.return_details = new Array(this.total_rows).fill(undefined);
+    backAPI.get('/agent/sales/available-stocks').then((Response) => {
+      this.stockList = Response.data.entries;
+    });
+    backAPI.get('/agent/profile').then((Response) => {
+      this.userInfo = Response.data;
+      this.selectedStock = Response.data.stock_id;
+      backAPI.get('/agent/sales/catalog', { params: { stock_id: Response.data.stock_id } }).then((Response2) => {
+        Response2.data.entries.forEach((i) => {
+        // eslint-disable-next-line no-param-reassign
+          i.goods_count = '';
+        });
+        this.modalEntries = Response2.data.entries;
+      });
+      backAPI.get('/agent/sales/complect-catalog', { params: { stock_id: Response.data.stock_id } }).then((Response2) => {
+        // eslint-disable-next-line no-unused-expressions
+        Response2.data.entries.forEach((kit) => {
+          // eslint-disable-next-line no-param-reassign
+          kit.goods_count = '';
+          // eslint-disable-next-line no-param-reassign
+          kit.isKit = true;
+        });
+        this.modalKitEntires = Response2.data.entries;
+      });
+    });
   },
   directives: {
     focus: {
@@ -674,6 +649,31 @@ export default {
     },
   },
   methods: {
+    clearStock() {
+      this.selectedStock = '';
+      this.showModal = false;
+    },
+    getCatalog(stock) {
+      if (stock !== '') {
+        backAPI.get('/agent/sales/catalog', { params: { stock_id: stock } }).then((Response) => {
+          Response.data.entries.forEach((i) => {
+          // eslint-disable-next-line no-param-reassign
+            i.goods_count = '';
+          });
+          this.modalEntries = Response.data.entries;
+        });
+        backAPI.get('/agent/sales/complect-catalog', { params: { stock_id: stock } }).then((Response) => {
+          // eslint-disable-next-line no-unused-expressions
+          Response.data.entries.forEach((kit) => {
+            // eslint-disable-next-line no-param-reassign
+            kit.goods_count = '';
+            // eslint-disable-next-line no-param-reassign
+            kit.isKit = true;
+          });
+          this.modalKitEntires = Response.data.entries;
+        });
+      }
+    },
     rowClass(item, type) {
       console.log(item, type);
       if (!item || type !== 'row') return;
@@ -685,7 +685,7 @@ export default {
       if (row.detailsShowing === true) {
         row.toggleDetails();
       } else if (!this.return_details[row.item.id]) {
-        backAPI.get(`/stocks/sale/complect-catalog/detail/${row.item.id}`).then((response) => {
+        backAPI.get('/agent/sales/complect-catalog/detail/', { params: { complect_id: row.item.id } }).then((response) => {
           this.return_details[row.item.id] = response.data.entries;
           row.toggleDetails();
         });
@@ -802,397 +802,25 @@ export default {
         }
       }, 100);
     },
-    querySearchAsync(queryString, cb) {
-      const qr = queryString === '' ? 'а' : queryString;
-      backAPI.get('/stocks/sale/agent-list-retail', { params: { q: qr } }).then((Response) => {
-        console.log(Response.data);
-        Response.data.entries.forEach((u) => {
-          // eslint-disable-next-line no-param-reassign
-          u.value = `${u.agent_id} - ${u.fullname}`;
-        });
-        cb(Response.data.entries.slice(0, 10));
-      });
-    },
-    handleSelectUser(item) {
-      this.selectedUserInfo = item;
-      console.log(item);
-      backAPI.get(`/stocks/sale/catalog/distributor/${item.agent_id}`).then((Response) => {
-        console.log(Response.data);
-        Response.data.entries.forEach((i) => {
-        // eslint-disable-next-line no-param-reassign
-          i.goods_count = '';
-        });
-        if (item.rank > 0) {
-          this.modalFields = [
-            {
-              key: 'articul',
-              label: this.$t('Артикул'),
-              sortable: true,
-              formatter: (v) => String(v),
-              sortByFormatted: true,
-            },
-            {
-              key: 'name',
-              label: this.$t('Наименование'),
-            },
-            {
-              key: 'points',
-              label: this.$t('Баллы'),
-              formatter(v) {
-                if (v >= 0) {
-                  const formatter = new Intl.NumberFormat('ru');
-                  return formatter.format(v);
-                }
-                return null;
-              },
-            },
-            {
-              key: 'pricex',
-              label: this.$t('Цена дистрибьюторская'),
-              formatter(v) {
-                if (v >= 0) {
-                  const formatter = new Intl.NumberFormat('ru');
-                  return formatter.format(v);
-                }
-                return null;
-              },
-            },
-            {
-              key: 'price',
-              label: this.$t('Цена фактическая'),
-              formatter(v) {
-                if (v >= 0) {
-                  const formatter = new Intl.NumberFormat('ru');
-                  return formatter.format(v);
-                }
-                return null;
-              },
-            },
-            {
-              key: 'price_discount',
-              label: this.$t('Размер скидки'),
-              formatter(v) {
-                if (v >= 0) {
-                  const formatter = new Intl.NumberFormat('ru');
-                  return formatter.format(v);
-                }
-                return null;
-              },
-            },
-            {
-              key: 'price_discount_pc',
-              label: this.$t('Размер скидки, %'),
-            },
-            {
-              key: 'items',
-              label: this.$t('Остаток по складу'),
-            },
-            {
-              key: 'goods_count',
-              label: this.$t('Количество'),
-            },
-          ];
-          this.cartFields = [
-            {
-              key: 'articul',
-              label: this.$t('Артикул'),
-              sortable: true,
-              formatter: (v) => String(v),
-              sortByFormatted: true,
-            },
-            {
-              key: 'name',
-              label: this.$t('Наименование'),
-            },
-            {
-              key: 'points',
-              label: this.$t('Баллы'),
-              formatter(v) {
-                if (v >= 0) {
-                  const formatter = new Intl.NumberFormat('ru');
-                  return formatter.format(v);
-                }
-                return null;
-              },
-            },
-            {
-              key: 'pricex',
-              label: this.$t('Цена дистрибьюторская'),
-              formatter(v) {
-                if (v >= 0) {
-                  const formatter = new Intl.NumberFormat('ru');
-                  return formatter.format(v);
-                }
-                return null;
-              },
-            },
-            {
-              key: 'price',
-              label: this.$t('Цена фактическая'),
-              formatter(v) {
-                if (v >= 0) {
-                  const formatter = new Intl.NumberFormat('ru');
-                  return formatter.format(v);
-                }
-                return null;
-              },
-            },
-            {
-              key: 'price_discount',
-              label: this.$t('Размер скидки'),
-              formatter(v) {
-                if (v >= 0) {
-                  const formatter = new Intl.NumberFormat('ru');
-                  return formatter.format(v);
-                }
-                return null;
-              },
-            },
-            {
-              key: 'price_discount_pc',
-              label: this.$t('Размер скидки, %'),
-            },
-            {
-              key: 'items',
-              label: this.$t('Остаток по складу'),
-            },
-            {
-              key: 'goods_count',
-              label: this.$t('Количество'),
-            },
-            {
-              key: 'price_all',
-              label: this.$t('Сумма'),
-            },
-            {
-              key: 'points_count',
-              label: this.$t('Сумма баллов'),
-            },
-          ];
-        } else {
-          this.modalFields = [
-            {
-              key: 'articul',
-              label: this.$t('Артикул'),
-              sortable: true,
-              formatter: (v) => String(v),
-              sortByFormatted: true,
-            },
-            {
-              key: 'name',
-              label: this.$t('Наименование'),
-            },
-            {
-              key: 'points',
-              label: this.$t('Баллы'),
-              formatter(v) {
-                if (v >= 0) {
-                  const formatter = new Intl.NumberFormat('ru');
-                  return formatter.format(v);
-                }
-                return null;
-              },
-            },
-            {
-              key: 'price_retail',
-              label: this.$t('Цена розничная'),
-              formatter(v) {
-                if (v >= 0) {
-                  const formatter = new Intl.NumberFormat('ru');
-                  return formatter.format(v);
-                }
-                return null;
-              },
-            },
-            {
-              key: 'price',
-              label: this.$t('Цена фактическая'),
-              formatter(v) {
-                if (v >= 0) {
-                  const formatter = new Intl.NumberFormat('ru');
-                  return formatter.format(v);
-                }
-                return null;
-              },
-            },
-            {
-              key: 'price_discount',
-              label: this.$t('Размер скидки'),
-              formatter(v) {
-                if (v >= 0) {
-                  const formatter = new Intl.NumberFormat('ru');
-                  return formatter.format(v);
-                }
-                return null;
-              },
-            },
-            {
-              key: 'price_discount_pc',
-              label: this.$t('Размер скидки, %'),
-            },
-            {
-              key: 'items',
-              label: this.$t('Остаток по складу'),
-            },
-            {
-              key: 'goods_count',
-              label: this.$t('Количество'),
-            },
-          ];
-          this.cartFields = [
-            {
-              key: 'articul',
-              label: this.$t('Артикул'),
-              sortable: true,
-              formatter: (v) => String(v),
-              sortByFormatted: true,
-            },
-            {
-              key: 'name',
-              label: this.$t('Наименование'),
-            },
-            {
-              key: 'points',
-              label: this.$t('Баллы'),
-            },
-            {
-              key: 'price_retail',
-              label: this.$t('Цена розничная'),
-              formatter(v) {
-                if (v >= 0) {
-                  const formatter = new Intl.NumberFormat('ru');
-                  return formatter.format(v);
-                }
-                return null;
-              },
-            },
-            {
-              key: 'price',
-              label: this.$t('Цена фактическая'),
-              formatter(v) {
-                if (v >= 0) {
-                  const formatter = new Intl.NumberFormat('ru');
-                  return formatter.format(v);
-                }
-                return null;
-              },
-            },
-            {
-              key: 'price_discount',
-              label: this.$t('Размер скидки'),
-              formatter(v) {
-                if (v >= 0) {
-                  const formatter = new Intl.NumberFormat('ru');
-                  return formatter.format(v);
-                }
-                return null;
-              },
-            },
-            {
-              key: 'price_discount_pc',
-              label: this.$t('Размер скидки, %'),
-            },
-            {
-              key: 'items',
-              label: this.$t('Остаток по складу'),
-              formatter(v) {
-                if (v >= 0) {
-                  const formatter = new Intl.NumberFormat('ru');
-                  return formatter.format(v);
-                }
-                return null;
-              },
-            },
-            {
-              key: 'goods_count',
-              label: this.$t('Количество'),
-            },
-            {
-              key: 'price_all',
-              label: this.$t('Сумма'),
-              formatter(v) {
-                if (v >= 0) {
-                  const formatter = new Intl.NumberFormat('ru');
-                  return formatter.format(v);
-                }
-                return null;
-              },
-            },
-            {
-              key: 'points_count',
-              label: this.$t('Сумма баллов'),
-              formatter(v) {
-                if (v >= 0) {
-                  const formatter = new Intl.NumberFormat('ru');
-                  return formatter.format(v);
-                }
-                return null;
-              },
-            },
-          ];
-        }
-        this.modalEntries = Response.data.entries;
-        this.showModal = true;
-      });
-      backAPI.get(`/stocks/sale/complect-catalog/distributor/${item.agent_id}`).then((Response) => {
-        // eslint-disable-next-line no-unused-expressions
-        Response.data.entries.forEach((kit) => {
-          // eslint-disable-next-line no-param-reassign
-          kit.goods_count = '';
-          // eslint-disable-next-line no-param-reassign
-          kit.isKit = true;
-        });
-        this.modalKitEntires = Response.data.entries;
-      });
-    },
     async createSale() {
       console.log(this.cash, this.card);
-      const res = await this.createMessageBox(this.$t('Вы уверены, что хотите создать продажу?'));
-      if (this.selectedUserInfo.agent_stock_id !== this.stock_id && res) {
-        if (Number(this.cash.replace(/\s/g, '').replace(/[,]/g, '.')) + Number(this.card.replace(/\s/g, '').replace(/[,]/g, '.')) !== this.cartInfo.priceAm) {
-          this.showToast(this.$t('Ошибка'), this.$t('Недостаточно денег'), 'danger');
-        } else {
-          this.$bvModal.show('bv-modal-example');
-          const goodsMass = this.newCart.map((item) => ({ goods_id: item.id, goods_quantity: Number(item.goods_count.replace(/\s/g, '')) }));
-          const reuslt = await backAPI.post('/stocks/sale/create-agent-sale', {
-            agent_id: this.selectedUserInfo.agent_id,
-            // eslint-disable-next-line radix
-            cash_sum: Number(this.cash.replace(/\s/g, '').replace(/[,]/g, '.')),
-            // eslint-disable-next-line radix
-            card_sum: Number(this.card.replace(/\s/g, '').replace(/[,]/g, '.')),
-            positions: goodsMass,
-            comm: this.comm,
-          });
-          if (reuslt.status === 200) {
-            this.$bvModal.hide('bv-modal-example');
-            await this.createMessageBoxError(this.$t("Продажа создана успешно. Вы будете перенаправлены на страницу 'Продажи'"));
-            this.$router.push('/sales');
-          } else {
-            this.$bvModal.hide('bv-modal-example');
-            this.showToast(this.$t('Ошибка'), this.$t('"Продажа в минус" возможна только с более высокой роли, необходимо внести всю сумму наличными или безналичными"'), 'danger');
-          }
-        }
-      } else if (res) {
+      const res = await this.createMessageBox(this.$t('Вы уверены, что хотите создать покупку?'));
+      if (res) {
         this.$bvModal.show('bv-modal-example');
         const goodsMass = this.newCart.map((item) => ({ goods_id: item.id, goods_quantity: Number(item.goods_count.replace(/\s/g, '')) }));
-        backAPI.post('/stocks/sale/create-agent-sale', {
-          agent_id: this.selectedUserInfo.agent_id,
-          // eslint-disable-next-line radix
-          cash_sum: Number(this.cash.replace(/\s/g, '').replace(/[,]/g, '.')),
-          // eslint-disable-next-line radix
-          card_sum: Number(this.card.replace(/\s/g, '').replace(/[,]/g, '.')),
+        const reuslt = await backAPI.post('/agent/sales/sale-create', {
           positions: goodsMass,
+          stock_id: this.selectedStock,
           comm: this.comm,
-        })
-          .then(async () => {
-            this.$bvModal.hide('bv-modal-example');
-            await this.createMessageBoxError(this.$t('Продажа создана успешно. Вы будете перенаправлены на страницу "Продажи"'));
-            this.$router.push('/sales');
-          })
-          .catch(() => {
-            this.$bvModal.hide('bv-modal-example');
-            this.showToast(this.$t('Ошибка'), this.$t('"Продажа в минус" возможна только с более высокой роли, необходимо внести всю сумму наличными или безналичными"'), 'danger');
-          });
+        });
+        if (reuslt.status === 200) {
+          this.$bvModal.hide('bv-modal-example');
+          await this.createMessageBoxError(this.$t("Покупка создана успешно. Вы будете перенаправлены на страницу 'Продажи'"));
+          // this.$router.push('/sales');
+        } else {
+          this.$bvModal.hide('bv-modal-example');
+          this.showToast(this.$t('Ошибка'), this.$t('Ну не хочу я работать!'), 'danger');
+        }
       } else {
         this.$bvModal.hide('bv-modal-example');
       }
@@ -1259,17 +887,8 @@ export default {
   },
   computed: {
     ...mapState('auth', ['stock_id']),
-    bonusMove() {
-      return this.cartInfo.ls >= 0;
-    },
-    negativeAmount() {
-      return this.selectedUserInfo.amount < 0;
-    },
-    lowBalance() {
-      if (this.selectedUserInfo.agent_stock_id === this.stock_id) {
-        return (this.cash === '' ? 0 : Number(this.cash.replace(/\s/g, '').replace(/[,]/g, '.'))) + (this.card === '' ? 0 : Number(this.card.replace(/\s/g, '').replace(/[,]/g, '.'))) + this.selectedUserInfo.amount < this.cartInfo.priceAm;
-      }
-      return (this.cash === '' ? 0 : Number(this.cash.replace(/\s/g, '').replace(/[,]/g, '.'))) + (this.card === '' ? 0 : Number(this.card.replace(/\s/g, '').replace(/[,]/g, '.'))) < this.cartInfo.priceAm;
+    countCheck() {
+      return this.newCart.some((item) => item.goods_count > item.items);
     },
     newCart() {
       console.log(this.modalKitEntires);
@@ -1294,6 +913,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.countError{
+  padding: 0;
+  margin: 0;
+  color: red;
+  font-weight: bold;
+}
 .red{
   color: red;
   font-weight: bold;

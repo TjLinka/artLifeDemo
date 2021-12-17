@@ -112,8 +112,9 @@
                 <span class="mr-4">{{ scope.row.lvl }} {{$t("УР")}}</span>
               <img :src="`../icons/${scope.row.rank_calc}${scope.row.lvl==='0'?'_white':''}.svg`"
               :title="scope.row.rank_end" class="rank_icon" />
-                <span style="display: inline-block; float:right">{{ scope.row.id }}</span><br>
-                <router-link :to="`/agent/${scope.row.id}`">
+                <!-- <span style="display: inline-block; float:right">{{ scope.row.id }}</span><br> -->
+                <router-link class="link" :to="`/agent/${scope.row.id}`">
+                  <span style="display: inline-block; float:right">{{ scope.row.id }}</span><br>
                 </router-link>
               </p>
               <p style="text-align: right; margin: 0">{{ scope.row.fio }}</p>
@@ -1641,6 +1642,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.link{
+    color: black;
+    cursor: pointer;
+}
 .modal_p{
   margin-top: 10px;
   font-family: "FuturaPTDemi";
