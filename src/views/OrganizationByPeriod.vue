@@ -82,7 +82,10 @@
             <span v-if="column.property === 'id'">
               <div v-if="!colHide" style="display: inline">
               <span>{{scope.row.depth}} УР</span>
-                <span class="user_id" @click="agentCard(scope.row.id)">{{ scope.row.id }}</span>
+                <!-- <span class="user_id" @click="agentCard(scope.row.id)">{{ scope.row.id }}</span> -->
+                <router-link :to="`/agent/${scope.row.id}`">
+                  <span class="user_id">{{ scope.row.id }}</span>
+                </router-link>
               </div>
               <div v-else style="text-align: center; margin-top: -25px;">
               <img
