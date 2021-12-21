@@ -25,6 +25,7 @@
         {{$t("Перейти на сайт")}}
         </a>
         <b-navbar-nav class="ml-auto">
+
           <div class="chLangBlock" @click="changeLang">
             <flag v-if="$i18n.locale === 'en'" :iso="'gb'"/>
             <flag v-else :iso="$i18n.locale"/>
@@ -60,7 +61,7 @@ import backAPI from '../assets/backApi';
 export default {
   name: 'TheNavBarTop',
   computed: {
-    ...mapState('auth', ['is_authorized', 'agentname', 'role']),
+    ...mapState('auth', ['is_authorized', 'agentname', 'role', 'self_agreementsystem']),
   },
   methods: {
     changeLang() {
@@ -95,6 +96,20 @@ export default {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+}
+.chLangBlock2{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  color: #e60c0c;
+  & span{
+    background: white;
+    padding: 5px;
+    color: #ff0000b3;;
+    font-weight: 500;
+  }
 }
 .siteBtn{
   margin-left: 120px;

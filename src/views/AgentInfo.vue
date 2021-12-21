@@ -16,6 +16,8 @@
         </p>
         {{$t("Карточка партнера")}}: {{userinfo.id}} - {{userinfo.name}}
       </h2>
+      <h5 style="color: red;" v-if="self_agreementsystem">Внимание! Ваш доступ в ЛК Партнёра только для чтения т.к. учёт ваших данных ведётся в старой системе,<br>
+        попросите  Ваш Склад обслуживания перевести Вас на обслуживание в Новой Системе.</h5>
       <div class="myinfo__page__description">
         <div :class="`myfoto ${userinfo.agreementsystem === 0 ? 'a' : ''}`">
           <div>
