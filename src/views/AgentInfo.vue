@@ -24,7 +24,7 @@
           </div>
         </div>
         <div class="container-md top__info">
-          <div class="row noprint" v-if="!this.$route.params.id">
+          <div class="row noprint" v-if="!this.$route.params.id && userinfo.agreementsystem">
             <div class="col-md mt-1">
               <span class="modal_btn" @click="showTransfModal1" v-if="transfertAccess">
                 {{$t("Перевести баллы другому партнёру")}}
@@ -178,7 +178,7 @@
                 {{ showTransfertInfo ? 'Свернуть' : 'Раскрыть' }}
               </p>
             </div>
-            <div class="col-md-6 mt-3 noprint">
+            <div class="col-md-6 mt-3 noprint" v-if="userinfo.agreementsystem">
               <button v-if="showTransfertInfo" class="transfert__btn" @click="showTransfModal">
                 {{$t("ТРАНСФЕРТ")}}
               </button>

@@ -34,13 +34,13 @@
               >
               </date-picker>
           </div>
-          <!-- <div class="col">
-            <router-link to="create-order">
+          <div class="col" v-if="self_agreementsystem">
+            <router-link to="/new-purchase">
                 <button class="btn_type_1 w50 fr">
                   Сделать покупку
                 </button>
             </router-link>
-          </div> -->
+          </div>
         </div>
         <div class="row mobile_search">
           <div class="col search__btn noprint" @click="toggleSearch" v-if="!searchActive">
@@ -196,6 +196,7 @@
 <script>
 import $ from 'jquery';
 /* eslint-disable no-param-reassign */
+import { mapState } from 'vuex';
 import DatePicker from 'vue2-datepicker';
 import backApi from '../assets/backApi';
 // import BasePeriodPicker from '../components/BasePeriodPicker.vue';
@@ -417,6 +418,7 @@ export default {
     });
   },
   computed: {
+    ...mapState('auth', ['self_agreementsystem']),
     currentPeriod() {
       try {
         return this.periods[this.periodIndex].comdte;

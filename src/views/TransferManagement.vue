@@ -48,7 +48,7 @@
           </el-tag>
         </div>
       </div>
-      <div class="row noprint">
+      <div class="row noprint" v-if="self_agreementsystem">
         <div class="col mt-4">
           <button
           :class="`update ${transAccess ? 'disabled' : ''}`"
@@ -378,7 +378,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 import InfiniteLoading from 'vue-infinite-loading';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import $ from 'jquery';
 import backApi from '../assets/backApi';
 import TransfertMass from '../components/TransfertMass.vue';
@@ -391,19 +391,6 @@ export default {
     CustomInput,
     InfiniteLoading,
   },
-  // mounted() {
-  //   const tr = document.querySelector('.thead-light');
-  //   // eslint-disable-next-line prefer-arrow-callback
-  //   window.addEventListener('scroll', function () {
-  //     const trCoord = tr.getBoundingClientRect();
-  //     console.log(window.pageYOffset);
-  //     // console.log(tr.getBoundingClientRect().top);
-  //     if (trCoord.top < 0) {
-  //       tr.style.position = 'relative';
-  //       tr.style.top = `${Math.abs(trCoord.top) + 10}px`;
-  //     }
-  //   });
-  // },
   data() {
     return {
       selectedRow: null,
@@ -559,13 +546,6 @@ export default {
     };
   },
   methods: {
-    // colWidth(key) {
-    //   if (key === 'id') return 150;
-    //   if (key === 'fullname') return 200;
-    //   if (key === 'go' || key === 'ngo' || key === 'so' || key === 'ko') return 100;
-    //   if (key === 'discount_pc') return 80;
-    //   return '';
-    // },
     print() {
       const colGroup1 = document.getElementsByTagName('colgroup')[0];
       const colGroup2 = document.getElementsByTagName('colgroup')[1];
@@ -1635,6 +1615,7 @@ export default {
   },
   computed: {
     ...mapGetters('transStore', ['getReadyMulti', 'getErrorMulti']),
+    ...mapState('auth', ['self_agreementsystem']),
     canMultiTrans() {
       return this.getReadyMulti.length > 0;
     },

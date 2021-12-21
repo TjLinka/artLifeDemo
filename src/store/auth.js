@@ -18,6 +18,9 @@ export default {
     role: JSON.parse(localStorage.getItem('access_token'))
       ? JSON.parse(localStorage.getItem('access_token')).role
       : '',
+    self_agreementsystem: JSON.parse(localStorage.getItem('access_token'))
+      ? JSON.parse(localStorage.getItem('access_token')).self_agreementsystem
+      : '',
   },
   mutations: {
     AUTH_REQUEST: (state) => {
@@ -32,6 +35,7 @@ export default {
       state.access_token = payload.access_token;
       state.agentname = JSON.parse(localStorage.getItem('access_token')).agentname;
       state.role = JSON.parse(localStorage.getItem('access_token')).role;
+      state.self_agreementsystem = JSON.parse(localStorage.getItem('access_token')).self_agreementsystem;
     },
     AUTH_ERROR: (state) => {
       state.auth_request_status = 'error';
@@ -41,6 +45,7 @@ export default {
       state.is_authorized = false;
       state.agentname = '';
       state.role = '';
+      state.self_agreementsystem = '';
     },
   },
   actions: {

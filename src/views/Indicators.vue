@@ -89,7 +89,7 @@
           </div>
         </div>
       </div>
-      <footer class="container-md-fluid cust_modal">
+      <footer class="container-md-fluid cust_modal" v-if="self_agreementsystem">
       <div class="row desk_trans">
         <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
           {{$t("Настройки трансфера")}} <i class="el-icon-s-tools search_icon"></i>
@@ -171,6 +171,7 @@
 
 <script>
 import $ from 'jquery';
+import { mapState } from 'vuex';
 import backApi from '../assets/backApi';
 import BasePeriodPicker from '../components/BasePeriodPicker.vue';
 import { ReplaceNull } from '../assets/utils';
@@ -302,6 +303,7 @@ export default {
     },
   },
   computed: {
+    ...mapState('auth', ['self_agreementsystem']),
     isDisabled() {
       if (this.points_rule === 0 || this.points_rule === null) {
         return false;
