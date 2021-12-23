@@ -16,15 +16,17 @@
         </p>
         {{$t("Карточка партнера")}}: {{userinfo.id}} - {{userinfo.name}}
       </h2>
+      <h5 style="color: red;" v-if="self_agreementsystem">Внимание! Ваш доступ в ЛК Партнёра только для чтения т.к. учёт ваших данных ведётся в старой системе,<br>
+        попросите  Ваш Склад обслуживания перевести Вас на обслуживание в Новой Системе.</h5>
       <div class="myinfo__page__description">
-        <div class="myfoto">
+        <div :class="`myfoto ${userinfo.agreementsystem === 0 ? 'a' : ''}`">
           <div>
             <img v-if="userinfo.male" src="../assets/imgs/male.png" />
             <img v-else src="../assets/imgs/female.png" />
           </div>
         </div>
         <div class="container-md top__info">
-          <div class="row noprint" v-if="!this.$route.params.id">
+          <div class="row noprint" v-if="!this.$route.params.id && userinfo.agreementsystem">
             <div class="col-md mt-1">
               <span class="modal_btn" @click="showTransfModal1" v-if="transfertAccess">
                 {{$t("Перевести баллы другому партнёру")}}
@@ -178,7 +180,7 @@
                 {{ showTransfertInfo ? 'Свернуть' : 'Раскрыть' }}
               </p>
             </div>
-            <div class="col-md-6 mt-3 noprint">
+            <div class="col-md-6 mt-3 noprint" v-if="userinfo.agreementsystem">
               <button v-if="showTransfertInfo" class="transfert__btn" @click="showTransfModal">
                 {{$t("ТРАНСФЕРТ")}}
               </button>
@@ -538,14 +540,23 @@ export default {
 .myinfo__page {
   &__description {
     & .myfoto {
+      position: relative;
       display: inline-block;
       margin-top: 30px;
       border-radius: 50%;
       overflow: hidden;
-
       & img {
         width: 100%;
         height: 100%;
+      }
+      &.a::before{
+          content: " ";
+          position: absolute;
+          display: block;
+          width: 100px;
+          height: 100px;
+          background-color: #cfc824eb;
+          opacity: 0.5;
       }
     }
 

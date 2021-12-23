@@ -82,7 +82,10 @@
             <span v-if="column.property === 'id'">
               <div v-if="!colHide" style="display: inline">
               <span>{{scope.row.depth}} УР</span>
-              <span class="user_id">{{ scope.row.id }}</span><br />
+                <!-- <span class="user_id" @click="agentCard(scope.row.id)">{{ scope.row.id }}</span> -->
+                <router-link :to="`/agent/${scope.row.id}`">
+                  <span class="user_id">{{ scope.row.id }}</span>
+                </router-link>
               </div>
               <div v-else style="text-align: center; margin-top: -25px;">
               <img
@@ -420,6 +423,17 @@ export default {
     },
   },
   methods: {
+    agentCard(id) {
+      backApi.get('/agent/profile/child', {
+        params: {
+          another_agent_id: id,
+        },
+      }).then(() => {
+        this.$router.push(`/agent/${id}`);
+      }).catch((error) => {
+        this.showToast('Ошибка', error.response.data.detail, 'danger');
+      });
+    },
     print() {
       const colGroup1 = document.getElementsByTagName('colgroup')[0];
       const colGroup2 = document.getElementsByTagName('colgroup')[1];
@@ -746,6 +760,30 @@ export default {
       });
       this.tree_key += 1;
     },
+    showToast(title, message, status) {
+      // Use a shorter name for this.$createElement
+      const h = this.$createElement;
+      // Increment the toast count
+      // Create the message
+      const vNodesMsg = h('p', { class: ['text-center', 'mb-0'] }, [
+        h('strong', { class: 'mr-2' }, message),
+      ]);
+      // Create the title
+      const vNodesTitle = h(
+        'div',
+        { class: ['d-flex', 'flex-grow-1', 'align-items-baseline', 'mr-2'] },
+        [
+          h('strong', { class: 'mr-2' }, title),
+        ],
+      );
+      // Pass the VNodes as an array for message and title
+      this.$bvToast.toast([vNodesMsg], {
+        title: [vNodesTitle],
+        solid: true,
+        autoHideDelay: 5000,
+        variant: status,
+      });
+    },
     nextPeriod(x) {
       this.period_enabled = true;
       this.periodIndex = (this.periodIndex + this.periods.length + x) % this.periods.length;
@@ -900,6 +938,7 @@ span[class*="el-tag"] deep i{
 .user_id{
   display: inline-block;
   float: right;
+  cursor: pointer;
 }
 .user_name{
   display: inline-block;

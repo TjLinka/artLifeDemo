@@ -21,59 +21,61 @@
       </div> -->
       <div class="top__info mt-3">
         <div class="row edit ">
-          <div class="col-md-6 custom_input mt-3">
-            <p class="lbl">{{$t('Страна')}}:</p>
-            <p>{{userTopInfo.country}}</p>
-            <!-- <input
+          <div class="col-md-6 custom_input mt-3" v-if="userInfo.agreementsystem">
+            <input
             @blur="checkInput('country')"
             ref="country"
             type="text" name="country" id="country" required v-model="userTopInfo.country" />
             <label for="country">{{$t("Страна")}}</label>
-            <span class="clear_icon" @click="clearInputTop('country')"></span> -->
+            <span class="clear_icon" @click="clearInputTop('country')"></span>
           </div>
-          <div class="col-md-6 custom_input mt-3">
-            <p class="lbl">{{$t('Город')}}:</p>
-            <p>{{userTopInfo.city}} </p>
-            <!-- <input
+          <div class="col-md-6 custom_input mt-3" v-if="userInfo.agreementsystem">
+            <input
             @blur="checkInput('city')"
             ref="city"
             type="text" name="city" id="city" required v-model="userTopInfo.city" />
             <label for="city">{{$t("Город")}}</label>
-            <span class="clear_icon" @click="clearInputTop('city')"></span> -->
+            <span class="clear_icon" @click="clearInputTop('city')"></span>
+          </div>
+          <div class="col-md-6 custom_input mt-3" v-if="!userInfo.agreementsystem">
+            <p class="lbl">{{$t('Страна')}}:</p>
+            <p>{{userTopInfo.country}}</p>
+          </div>
+          <div class="col-md-6 custom_input mt-3" v-if="!userInfo.agreementsystem">
+            <p class="lbl">{{$t('Город')}}:</p>
+            <p>{{userTopInfo.city}} </p>
           </div>
         </div>
         <div class="row edit ">
-          <div class="col-md-6 custom_input mt-3">
-            <p class="lbl">{{$t('Адрес')}}:</p>
-            <p>{{userTopInfo.address}} </p>
-            <!-- <input
+          <div class="col-md-6 custom_input mt-3" v-if="userInfo.agreementsystem">
+            <input
             @blur="checkInput('address')"
             ref="address"
             type="text" name="address" id="address" required v-model="userTopInfo.address" />
             <label for="address">{{$t("Адрес")}}</label>
-            <span class="clear_icon" @click="clearInputTop('address')"></span> -->
+            <span class="clear_icon" @click="clearInputTop('address')"></span>
           </div>
-          <div class="col-md-6 custom_input mt-3">
-            <p class="lbl">{{$t('Паспорт')}}:</p>
-            <p>{{userTopInfo.passport}}</p>
-            <!-- <input
+          <div class="col-md-6 custom_input mt-3" v-if="userInfo.agreementsystem">
+            <input
             @blur="checkInput('passport')"
             ref='passport'
             type="text" name="passport" id="passport"
             required v-model="userTopInfo.passport" />
             <label for="passport">{{$t("Паспорт")}}</label>
-            <span class="clear_icon" @click="clearInputTop('passport')"></span> -->
+            <span class="clear_icon" @click="clearInputTop('passport')"></span>
+          </div>
+          <div class="col-md-6 custom_input mt-3" v-if="!userInfo.agreementsystem">
+            <p class="lbl">{{$t('Адрес')}}:</p>
+            <p>{{userTopInfo.address}} </p>
+          </div>
+          <div class="col-md-6 custom_input mt-3" v-if="!userInfo.agreementsystem">
+            <p class="lbl">{{$t('Паспорт')}}:</p>
+            <p>{{userTopInfo.passport}}</p>
           </div>
         </div>
         <div class="row edit ">
-          <div class="col-md-6 mt-3">
-            <p class="lbl">
-              {{$t('Дата рождения')}}:
-            </p>
-            <p>
-              {{new Date(userTopInfo.bthdte).toLocaleDateString()}}
-            </p>
-            <!-- <div ref="bthdte" :class="userTopInfo.bthdte ? '' : 'error'">
+          <div class="col-md-6 mt-3" v-if="userInfo.agreementsystem">
+            <div ref="bthdte" :class="userTopInfo.bthdte ? '' : 'error'">
               <span v-if="userTopInfo.bthdte" class="custom_label">{{$t("Дата рождения")}}</span>
               <date-picker
                 v-model="userTopInfo.bthdte"
@@ -84,30 +86,40 @@
                 style="width: 100%"
                 range-separator=" - "
               ></date-picker>
-            </div> -->
+            </div>
           </div>
-          <div class="col-md-6 custom_input mt-3">
+          <div class="col-md-6 custom_input mt-3" v-if="userInfo.agreementsystem">
+            <input type="text" name="skype" id="skype" required v-model="userInfo.skype" />
+            <label for="skype">{{$t("Доп. контакты")}}</label>
+            <span class="clear_icon" @click="clearSkype('skype')"></span>
+          </div>
+          <div class="col-md-6 mt-3" v-if="!userInfo.agreementsystem">
+            <p class="lbl">
+              {{$t('Дата рождения')}}:
+            </p>
+            <p>
+              {{new Date(userTopInfo.bthdte).toLocaleDateString()}}
+            </p>
+          </div>
+          <div class="col-md-6 custom_input mt-3" v-if="!userInfo.agreementsystem">
             <p class="lbl">
               {{$t('Доп. контакты')}}:
             </p>
             <p>
               {{userTopInfo.skype}}
             </p>
-            <!-- <input type="text" name="skype" id="skype" required v-model="userInfo.skype" />
-            <label for="skype">{{$t("Доп. контакты")}}</label>
-            <span class="clear_icon" @click="clearSkype('skype')"></span> -->
           </div>
         </div>
-        <!-- <div class="row edit mt-3">
+        <div class="row edit mt-3" v-if="userInfo.agreementsystem">
           <div class="col-md">
             <button class="save__newinfo"
             v-on:click="saveTopEdit">{{$t("Сохранить изменения")}}</button>
           </div>
-        </div> -->
+        </div>
       </div>
       <div class="bot__info custom_input mt-3">
         <div class="row edit">
-          <div class="col-md-6">
+          <div class="col-md-6" v-if="userInfo.agreementsystem">
             <p class="page__caption">{{$t("Смена адреса почтового ящика")}}</p>
             <div class="custom_input t">
               <input
@@ -124,7 +136,7 @@
               @click="saveEmail">{{$t("Сохранить изменения")}}</button>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6" v-if="userInfo.agreementsystem">
             <p class="page__caption">{{$t("Смена телефона")}}</p>
             <div class="custom_input t" v-show="!smsStatus">
               <input
@@ -152,6 +164,22 @@
                 {{$t("Потвердить")}}
               </button>
             </div>
+          </div>
+          <div class="col-md-6" v-if="!userInfo.agreementsystem">
+            <p class="lbl">
+              Почтовый ящик
+            </p>
+            <p>
+              {{userInfo.email}}
+            </p>
+          </div>
+          <div class="col-md-6" v-if="!userInfo.agreementsystem">
+            <p class="lbl">
+              Телефон
+            </p>
+            <p>
+              {{userInfo.phone}}
+            </p>
           </div>
         </div>
         <div class="row edit">

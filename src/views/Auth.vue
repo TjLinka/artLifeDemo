@@ -86,6 +86,7 @@ import VueRecaptcha from 'vue-recaptcha';
 import md5 from 'md5';
 import { mapActions } from 'vuex';
 import $ from 'jquery';
+import backAPI from '../assets/backApi';
 
 export default {
   name: 'Home',
@@ -152,30 +153,59 @@ export default {
         && (this.log.password !== '' || this.log.password !== null)
       ) {
         $('.login_input, .password_input').removeClass('error');
-        let data = {};
+        let params = {};
         if (!this.value2) {
-          data = {
+          params = {
             login: this.log.login_ID,
             pwd_hash: md5(this.log.password),
             authMethod: this.value2,
             recaptchaToken: recaptchaToken1,
           };
+          backAPI
+            .post('/agent/login/id', params)
+            .then((resp) => {
+              const data = JSON.stringify(resp.data);
+              const token = resp.data.access_token;
+              localStorage.setItem('access_token', data);
+              backAPI.defaults.headers.common['access-token'] = token;
+              this.login(resp)
+                .then(() => {
+                  this.badLogin = false;
+                  this.$router.push('/');
+                });
+            })
+            .catch(() => {
+              this.badLogin = true;
+            });
         } else {
-          data = {
+          params = {
             phone: this.log.login_phone.replace(/[-,(,),+]/g, ''),
             pwd_hash: md5(this.log.password),
             authMethod: this.value2,
             recaptchaToken: recaptchaToken1,
           };
+          backAPI
+            .post('/agent/login/phone', params)
+            .then((resp) => {
+              const data = JSON.stringify(resp.data);
+              const token = resp.data.access_token;
+              localStorage.setItem('access_token', data);
+              backAPI.defaults.headers.common['access-token'] = token;
+              this.login(resp)
+                .then(() => {
+                  this.badLogin = false;
+                  this.$router.push('/');
+                });
+            })
+            .catch(() => {
+              this.badLogin = true;
+            });
         }
-        this.login(data)
-          .then(() => {
-            this.badLogin = false;
-            this.$router.push('/');
-          })
-          .catch(() => {
-            this.badLogin = true;
-          });
+        // this.login(data)
+        //   .then(() => {
+        //     this.badLogin = false;
+        //     this.$router.push('/');
+        //   });
       }
       $('.login_input, .password_input').removeClass('error');
       if (this.log.login_ID === '') {

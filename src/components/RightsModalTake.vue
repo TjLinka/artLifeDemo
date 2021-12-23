@@ -98,16 +98,32 @@ export default {
       this.$emit('enlarge-text');
     },
     async takeRights() {
-      if (this.selectedUser !== null && this.selectedUser !== '') {
-        await backApi.post('/agent/share-transfert', { agent_to: this.selectedUser.agent_id });
-        await backApi.get('/agent/profile/').then((Response) => {
-          this.$emit('rulegiver', Response.data.agent2transfer_name);
-        });
-        this.$emit('enlarge-text');
-        this.$emit('toast');
-      } else {
-        this.$bvToast.show('my-toast-error');
+      const res = await this.createMessageBox('Вы уверны, что хотите передать права?');
+      if (res) {
+        if (this.selectedUser !== null && this.selectedUser !== '') {
+          await backApi.post('/agent/share-transfert', { agent_to: this.selectedUser.agent_id });
+          await backApi.get('/agent/profile/').then((Response) => {
+            this.$emit('rulegiver', Response.data.agent2transfer_name);
+          });
+          this.$emit('enlarge-text');
+          this.$emit('toast');
+        } else {
+          this.$bvToast.show('my-toast-error');
+        }
       }
+    },
+    createMessageBox(messageText) {
+      const h = this.$createElement;
+      // More complex structure
+      const messageVNode = h('div', { class: ['foobar'] }, [h('h3', { class: ['text-center'] }, [messageText])]);
+      // We must pass the generated VNodes as arrays
+      return this.$bvModal.msgBoxConfirm([messageVNode], {
+        buttonSize: 'md',
+        centered: true,
+        cancelTitle: 'Нет',
+        okTitle: 'Да',
+        size: 'xl',
+      });
     },
   },
   computed: {

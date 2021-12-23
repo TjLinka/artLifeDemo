@@ -48,7 +48,7 @@
           </el-tag>
         </div>
       </div>
-      <div class="row noprint">
+      <div class="row noprint" v-if="self_agreementsystem">
         <div class="col mt-4">
           <button
           :class="`update ${transAccess ? 'disabled' : ''}`"
@@ -112,8 +112,9 @@
                 <span class="mr-4">{{ scope.row.lvl }} {{$t("УР")}}</span>
               <img :src="`../icons/${scope.row.rank_calc}${scope.row.lvl==='0'?'_white':''}.svg`"
               :title="scope.row.rank_end" class="rank_icon" />
-                <span style="display: inline-block; float:right">{{ scope.row.id }}</span><br>
-                <router-link :to="`/agent/${scope.row.id}`">
+                <!-- <span style="display: inline-block; float:right">{{ scope.row.id }}</span><br> -->
+                <router-link class="link" :to="`/agent/${scope.row.id}`">
+                  <span style="display: inline-block; float:right">{{ scope.row.id }}</span><br>
                 </router-link>
               </p>
               <p style="text-align: right; margin: 0">{{ scope.row.fio }}</p>
@@ -377,7 +378,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-param-reassign */
 import InfiniteLoading from 'vue-infinite-loading';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import $ from 'jquery';
 import backApi from '../assets/backApi';
 import TransfertMass from '../components/TransfertMass.vue';
@@ -390,19 +391,6 @@ export default {
     CustomInput,
     InfiniteLoading,
   },
-  // mounted() {
-  //   const tr = document.querySelector('.thead-light');
-  //   // eslint-disable-next-line prefer-arrow-callback
-  //   window.addEventListener('scroll', function () {
-  //     const trCoord = tr.getBoundingClientRect();
-  //     console.log(window.pageYOffset);
-  //     // console.log(tr.getBoundingClientRect().top);
-  //     if (trCoord.top < 0) {
-  //       tr.style.position = 'relative';
-  //       tr.style.top = `${Math.abs(trCoord.top) + 10}px`;
-  //     }
-  //   });
-  // },
   data() {
     return {
       selectedRow: null,
@@ -558,13 +546,6 @@ export default {
     };
   },
   methods: {
-    // colWidth(key) {
-    //   if (key === 'id') return 150;
-    //   if (key === 'fullname') return 200;
-    //   if (key === 'go' || key === 'ngo' || key === 'so' || key === 'ko') return 100;
-    //   if (key === 'discount_pc') return 80;
-    //   return '';
-    // },
     print() {
       const colGroup1 = document.getElementsByTagName('colgroup')[0];
       const colGroup2 = document.getElementsByTagName('colgroup')[1];
@@ -1013,6 +994,7 @@ export default {
           },
         ];
         this.loading = true;
+        await this.createMessageBox('Операция выполнена успешно');
         this.updateData();
       }
     },
@@ -1111,6 +1093,21 @@ export default {
         cancelTitle: 'Нет',
         okTitle: 'OK',
         size: 'md',
+      });
+    },
+    createMessageBoxError(messageText) {
+      const h = this.$createElement;
+      // More complex structure
+      const messageVNode = h('div', { class: ['foobar'] }, [
+        h('h5', { class: ['text-center'], domProps: { innerHTML: messageText } }),
+      ]);
+      // We must pass the generated VNodes as arrays
+      return this.$bvModal.msgBoxOk([messageVNode], {
+        buttonSize: 'xl',
+        centered: true,
+        cancelTitle: 'Нет',
+        okTitle: 'OK',
+        size: 'xl',
       });
     },
     onRowSelected(item) {
@@ -1618,6 +1615,7 @@ export default {
   },
   computed: {
     ...mapGetters('transStore', ['getReadyMulti', 'getErrorMulti']),
+    ...mapState('auth', ['self_agreementsystem']),
     canMultiTrans() {
       return this.getReadyMulti.length > 0;
     },
@@ -1625,6 +1623,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.link{
+    color: black;
+    cursor: pointer;
+}
 .modal_p{
   margin-top: 10px;
   font-family: "FuturaPTDemi";

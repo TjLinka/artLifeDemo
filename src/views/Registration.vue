@@ -171,35 +171,51 @@ export default {
         .siblings()
         .addClass('active');
     },
-    registr() {
-      const reMail = /^[\w-.]+@[\w-]+\.[a-z]{2,4}$/i;
-      if (
-        this.newUser.fio !== '' && this.country !== ''
-        && this.newUser.city !== '' && this.newUser.bthdte !== ''
-        && this.phone !== '' && this.newUser.email !== '' && reMail.test(this.newUser.email)
-      ) {
-        const data = {
-          access_level: this.newUser.role,
-          male: this.newUser.sex,
-          fullname: this.newUser.fio,
-          country: this.country,
-          city: this.newUser.city,
-          bthdte: this.newUser.bthdte,
-          mobile_phone: this.phone.replace(/[-,(,),+]/g, ''),
-          email: this.newUser.email,
-        };
-        backApi.post('/agent/signup-start', data)
-          .then(() => {
-            this.showToast(this.$t('Регистрация'), this.$t('На вашу почту пришло письмо'), 'success');
-          })
-          .catch((error) => {
-            this.showToast(this.$t('Регистрация'), error.response.data.detail, 'danger');
-          });
-      } else {
-        this.showToast(this.$t('Регистрация'),
-          this.$t('Заполните все поля для продолжения регистрации'),
-          'danger');
+    async registr() {
+      const res = await this.createMessageBox('Вы уверны, что хотите зарегистрировать пользователя?');
+      if (res) {
+        const reMail = /^[\w-.]+@[\w-]+\.[a-z]{2,4}$/i;
+        if (
+          this.newUser.fio !== '' && this.country !== ''
+          && this.newUser.city !== '' && this.newUser.bthdte !== ''
+          && this.phone !== '' && this.newUser.email !== '' && reMail.test(this.newUser.email)
+        ) {
+          const data = {
+            access_level: this.newUser.role,
+            male: this.newUser.sex,
+            fullname: this.newUser.fio,
+            country: this.country,
+            city: this.newUser.city,
+            bthdte: this.newUser.bthdte,
+            mobile_phone: this.phone.replace(/[-,(,),+]/g, ''),
+            email: this.newUser.email,
+          };
+          backApi.post('/agent/signup-start', data)
+            .then(() => {
+              this.showToast(this.$t('Регистрация'), this.$t('На вашу почту пришло письмо'), 'success');
+            })
+            .catch((error) => {
+              this.showToast(this.$t('Регистрация'), error.response.data.detail, 'danger');
+            });
+        } else {
+          this.showToast(this.$t('Регистрация'),
+            this.$t('Заполните все поля для продолжения регистрации'),
+            'danger');
+        }
       }
+    },
+    createMessageBox(messageText) {
+      const h = this.$createElement;
+      // More complex structure
+      const messageVNode = h('div', { class: ['foobar'] }, [h('h3', { class: ['text-center'] }, [messageText])]);
+      // We must pass the generated VNodes as arrays
+      return this.$bvModal.msgBoxConfirm([messageVNode], {
+        buttonSize: 'md',
+        centered: true,
+        cancelTitle: 'Нет',
+        okTitle: 'Да',
+        size: 'xl',
+      });
     },
     clearInput(name) {
       this.newUser[name] = '';
