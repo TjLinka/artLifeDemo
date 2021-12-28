@@ -10,6 +10,9 @@
       <h4 class="text-center mb-5 error_log" v-if="badLogin">
         {{$t("Введен неправильно логин или пароль")}} !
       </h4>
+      <h4 class="text-center mb-5 error_log" v-if="isTerm">
+        {{$t("Данный Агент терминирован, если это ошибка - обратитесь к сотрудникам Компании")}} !
+      </h4>
       <div class="auth__page__form">
         <div class="row">
           <div class="col mb-4 text-center switch">
@@ -97,6 +100,7 @@ export default {
     return {
       value2: false,
       badLogin: false,
+      isTerm: false,
       sitekey: '6LdD2c8aAAAAAOQXfujlkoLbR_bQyxI4kKLifnCU',
       log: {
         login: '',
@@ -174,8 +178,19 @@ export default {
                   this.$router.push('/');
                 });
             })
-            .catch(() => {
-              this.badLogin = true;
+            .catch((error) => {
+              if (!error.response) {
+                this.isTerm = false;
+                this.badLogin = true;
+                return;
+              }
+              if (error.response.data.detail.toLowerCase() === 'agent is terminated') {
+                this.isTerm = true;
+                this.badLogin = false;
+              } else {
+                this.isTerm = false;
+                this.badLogin = true;
+              }
             });
         } else {
           params = {
@@ -197,8 +212,19 @@ export default {
                   this.$router.push('/');
                 });
             })
-            .catch(() => {
-              this.badLogin = true;
+            .catch((error) => {
+              if (!error.response) {
+                this.isTerm = false;
+                this.badLogin = true;
+                return;
+              }
+              if (error.response.data.detail.toLowerCase() === 'agent is terminated') {
+                this.isTerm = true;
+                this.badLogin = false;
+              } else {
+                this.isTerm = false;
+                this.badLogin = true;
+              }
             });
         }
         // this.login(data)
