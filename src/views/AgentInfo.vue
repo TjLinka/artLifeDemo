@@ -180,7 +180,7 @@
                 {{ showTransfertInfo ? 'Свернуть' : 'Раскрыть' }}
               </p>
             </div>
-            <div class="col-md-6 mt-3 noprint" v-if="userinfo.agreementsystem">
+            <div class="col-md-6 mt-3 noprint" >
               <button v-if="showTransfertInfo" class="transfert__btn" @click="showTransfModal">
                 {{$t("ТРАНСФЕРТ")}}
               </button>

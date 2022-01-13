@@ -37,7 +37,7 @@
           <div class="col" v-if="self_agreementsystem">
             <router-link to="/new-purchase">
                 <button class="btn_type_1 w50 fr">
-                  Сделать покупку
+                  Создать покупку
                 </button>
             </router-link>
           </div>

@@ -808,18 +808,23 @@ export default {
       if (res) {
         this.$bvModal.show('bv-modal-example');
         const goodsMass = this.newCart.map((item) => ({ goods_id: item.id, goods_quantity: Number(item.goods_count.replace(/\s/g, '')) }));
-        const reuslt = await backAPI.post('/agent/sales/sale-create', {
-          positions: goodsMass,
-          stock_id: this.selectedStock,
-          comm: this.comm,
-        });
-        if (reuslt.status === 200) {
+        try {
+          const reuslt = await backAPI.post('/agent/sales/sale-create', {
+            positions: goodsMass,
+            stock_id: this.selectedStock,
+            comm: this.comm,
+          });
+          if (reuslt.status === 200) {
+            this.$bvModal.hide('bv-modal-example');
+            await this.createMessageBoxError(this.$t("Покупка создана успешно. Вы будете перенаправлены на страницу 'Продажи'"));
+            this.$router.push('/purchases-history');
+          } else {
+            this.$bvModal.hide('bv-modal-example');
+            this.showToast(this.$t('Ошибка'), this.$t('Что-то пошло не так'), 'danger');
+          }
+        } catch (error) {
           this.$bvModal.hide('bv-modal-example');
-          await this.createMessageBoxError(this.$t("Покупка создана успешно. Вы будете перенаправлены на страницу 'Продажи'"));
-          // this.$router.push('/sales');
-        } else {
-          this.$bvModal.hide('bv-modal-example');
-          this.showToast(this.$t('Ошибка'), this.$t('Ну не хочу я работать!'), 'danger');
+          this.showToast(this.$t('Ошибка'), this.$t('Что-то пошло не так'), 'danger');
         }
       } else {
         this.$bvModal.hide('bv-modal-example');
@@ -913,6 +918,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.close_btn{
+  top: unset;
+}
 .countError{
   padding: 0;
   margin: 0;

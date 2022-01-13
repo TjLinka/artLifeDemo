@@ -18,9 +18,10 @@ export default {
     role: JSON.parse(localStorage.getItem('access_token'))
       ? JSON.parse(localStorage.getItem('access_token')).role
       : '',
-    self_agreementsystem: JSON.parse(localStorage.getItem('access_token'))
-      ? JSON.parse(localStorage.getItem('access_token')).self_agreementsystem
-      : '',
+    self_agreementsystem: 1,
+    // self_agreementsystem: JSON.parse(localStorage.getItem('access_token'))
+    //   ? JSON.parse(localStorage.getItem('access_token')).self_agreementsystem
+    //   : '',
   },
   mutations: {
     AUTH_REQUEST: (state) => {
