@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import { BootstrapVue } from 'bootstrap-vue';
+import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import ElementUI from 'element-ui';
@@ -45,6 +45,7 @@ const pluginOptions = {
 Vue.use(FlagIcon);
 Vue.use(VueCurrencyInput, pluginOptions);
 Vue.use(BootstrapVue);
+Vue.use(BootstrapVueIcons);
 Vue.use(VueMomentLib);
 Vue.use(VueMask);
 Vue.use(VueMask, {
