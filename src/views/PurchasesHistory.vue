@@ -389,7 +389,7 @@ export default {
   },
   mounted() {
     this.rangeDate = [
-      this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+      this.$moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD'),
       this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
     ];
     backApi.get('agent/bonus-detail/periods').then((Response) => {
@@ -401,7 +401,7 @@ export default {
     });
     backApi.get('agent/sales', {
       params: {
-        beg_dte: this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+        beg_dte: this.$moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD'),
         end_dte: this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
       },
     }).then((Response) => {
@@ -442,7 +442,7 @@ export default {
     getSelectedDataRange() {
       if (this.rangeDate.some((d) => d === null)) {
         this.rangeDate = [
-          this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+          this.$moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD'),
           this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
         ];
       }
@@ -452,7 +452,7 @@ export default {
           name: this.name,
           // eslint-disable-next-line radix
           saleid: this.naknum !== '' ? this.naknum : null,
-          beg_dte: this.rangeDate[0] !== null ? this.rangeDate[0] : this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+          beg_dte: this.rangeDate[0] !== null ? this.rangeDate[0] : this.$moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD'),
           end_dte: this.rangeDate[1] !== null ? this.rangeDate[1] : this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
           i_delivery: this.delivery !== '' ? this.delivery : null,
           // eslint-disable-next-line radix

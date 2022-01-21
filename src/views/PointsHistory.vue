@@ -284,14 +284,14 @@ export default {
       this.transInfo = Response.data;
     });
     this.rangeDate = [
-      this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+      this.$moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD'),
       this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
     ];
     // console.log(this.$moment().format('Y-MM-DD'));
     backApi.get('agent/points-detail',
       {
         params: {
-          beg_dte: this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+          beg_dte: this.$moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD'),
           end_dte: this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
         },
       }).then((Response) => {
