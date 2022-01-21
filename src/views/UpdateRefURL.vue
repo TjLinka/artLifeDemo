@@ -73,7 +73,7 @@
         </div>
       </div>
       <!-- Выбор лендинг -->
-      <div class="row mt-3" v-if="ref_type === 2">
+      <!-- <div class="row mt-3" v-if="ref_type === 2">
         <div class="col-6">
           <el-select
             v-model="selected_landing"
@@ -90,9 +90,9 @@
             </el-option>
           </el-select>
         </div>
-      </div>
+      </div> -->
       <!-- Выбор бизнес -->
-      <div class="row mt-3" v-if="ref_type === 3">
+      <!-- <div class="row mt-3" v-if="ref_type === 3">
         <div class="col-6">
           <el-select
             v-model="selected_business"
@@ -109,9 +109,9 @@
             </el-option>
           </el-select>
         </div>
-      </div>
+      </div> -->
       <!-- Выбор регистрация -->
-      <div class="row mt-3" v-if="ref_type === 4">
+      <!-- <div class="row mt-3" v-if="ref_type === 4">
         <div class="col-6">
           <el-select
             v-model="selected_registration"
@@ -128,11 +128,15 @@
             </el-option>
           </el-select>
         </div>
-      </div>
+      </div> -->
       <div class="row mt-3">
         <div class="col-6">
           <button class="btn_type_2 w50 mr-2" @click="$router.push('/ref-urls')">Отмена</button>
-          <button class="btn_type_1 w50 fr" @click="saveEditRefLink">Сохранить</button>
+          <button
+          :class="`btn_type_1 w50 fr ${canSaveRefLink ? '' : 'disabled'}`"
+          @click="saveEditRefLink"
+          :disabled="!canSaveRefLink"
+          >Сохранить</button>
         </div>
       </div>
     </div>
@@ -218,6 +222,19 @@ export default {
       };
       await backAPI.post(`/agent/reflinks/update/${this.$route.params.id}`, params);
       this.$router.push('/ref-urls');
+    },
+  },
+  computed: {
+    canSaveRefLink() {
+      if (this.ref_type) {
+        if (this.ref_type === 1 && this.selected_product) {
+          return true;
+        }
+        if (this.ref_type !== null && this.ref_type !== 1) {
+          return true;
+        }
+      }
+      return false;
     },
   },
 };

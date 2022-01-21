@@ -55,16 +55,16 @@
       >
       <template v-slot:cell(url)="scope">
         <div class="link_wrapper">
-          <p class="popa" :ref="`popa-${scope.item.id}`">Ссклыка скопирована</p>
+          <p class="popa" :ref="`popa-${scope.item.id}`">Ссылка скопирована</p>
         <a class="link" :id="`ref-link-${scope.item.id}`" :href="scope.item.url" target="_blank">
           {{scope.item.url}}
         </a>
         <!-- <span >Copy</span> -->
-         <b-icon-link class="ml-3" style="width: 18px; height: 18px;" @click.stop="copyLink(scope.item.id)"></b-icon-link>
+         <b-icon-link class="ml-3" style="width: 18px; height: 18px; float: right;" @click.stop="copyLink(scope.item.id)"></b-icon-link>
         </div>
       </template>
       </b-table>
-      <footer class="container-fluid cust_modal">
+      <!-- <footer class="container-fluid cust_modal">
         <div class="container-md">
           <div class="row desktop_search">
             <div
@@ -85,7 +85,7 @@
             <div class="row edit"></div>
           </div>
         </div>
-      </footer>
+      </footer> -->
     </div>
   </div>
 </template>
