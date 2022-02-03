@@ -134,6 +134,9 @@ url('/fonts/FuturaPT-Book.ttf') format('truetype');
       &.w50{
         width: 48% !important;
       }
+      &.fr{
+        float: right;
+      }
       &.w25{
         width: 25% !important;
       }
@@ -466,7 +469,7 @@ main {
   background-size: 85%;
   width: 13px;
   height: 13px;
-  bottom: 5px;
+  bottom: 15px;
   right: -5px;
 }
 .no_scroll {

@@ -296,12 +296,12 @@ export default {
   },
   mounted() {
     this.rangeDate = [
-      this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+      this.$moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD'),
       this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
     ];
     backApi.get('agent/refunds', {
       params: {
-        beg_dte: this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+        beg_dte: this.$moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD'),
         end_dte: this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
       },
     }).then((Response) => {
@@ -425,12 +425,12 @@ export default {
     },
     resetData() {
       this.rangeDate = [
-        this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+        this.$moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD'),
         this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
       ];
       backApi.get('agent/refunds', {
         params: {
-          beg_dte: this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+          beg_dte: this.$moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD'),
           end_dte: this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
         },
       }).then((Response) => {
@@ -520,7 +520,7 @@ export default {
     getSelectedDataRange() {
       if (this.rangeDate.some((d) => d === null)) {
         this.rangeDate = [
-          this.$moment().subtract(0, 'months').startOf('month').format('YYYY-MM-DD'),
+          this.$moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD'),
           this.$moment().subtract(0, 'months').endOf('month').format('YYYY-MM-DD'),
         ];
       }

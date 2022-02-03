@@ -172,6 +172,21 @@ const routes = [
     name: 'AuthIntegration',
     component: () => import('../views/AuthIntegration.vue'),
   },
+  {
+    path: '/ref-urls/',
+    name: 'RefURL',
+    component: () => import('../views/RefURL.vue'),
+  },
+  {
+    path: '/ref-urls-create/',
+    name: 'CreateRefURL',
+    component: () => import('../views/CreateRefURL.vue'),
+  },
+  {
+    path: '/ref-urls-update/:id',
+    name: 'UpdateRefURL',
+    component: () => import('../views/UpdateRefURL.vue'),
+  },
 ];
 
 const router = new VueRouter({
