@@ -520,7 +520,7 @@ export default {
   computed: {
     ...mapState('auth', ['role']),
     transfertAccess() {
-      return this.role !== 'Клиент';
+      return this.role === 'Клиент' && this.$router.path === '/';
     },
   },
 };

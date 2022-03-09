@@ -53,6 +53,7 @@
         :key="tree_key"
         :data="rows"
         style="width: 100%"
+        height="60vh"
         row-key="id"
         lazy
         :load="load"
