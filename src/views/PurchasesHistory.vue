@@ -34,7 +34,7 @@
               >
               </date-picker>
           </div>
-          <div class="col" v-if="self_agreementsystem">
+          <div class="col" v-if="self_agreementsystem && role !== 'Клиент'">
             <router-link to="/new-purchase">
                 <button class="btn_type_1 w50 fr">
                   Создать покупку
@@ -418,7 +418,7 @@ export default {
     });
   },
   computed: {
-    ...mapState('auth', ['self_agreementsystem']),
+    ...mapState('auth', ['self_agreementsystem', 'role']),
     currentPeriod() {
       try {
         return this.periods[this.periodIndex].comdte;
