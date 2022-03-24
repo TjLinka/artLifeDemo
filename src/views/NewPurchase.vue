@@ -22,7 +22,7 @@
           <el-option
             v-for="stock in stockList"
             :key="stock.stock_id"
-            :label="stock.stock_name"
+            :label="`${stock.stock_id} - ${stock.stock_name}`"
             :value="stock.stock_id">
           </el-option>
         </el-select>

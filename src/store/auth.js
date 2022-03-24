@@ -21,6 +21,9 @@ export default {
     self_agreementsystem: JSON.parse(localStorage.getItem('access_token'))
       ? JSON.parse(localStorage.getItem('access_token')).self_agreementsystem
       : '',
+    self_agent_id: JSON.parse(localStorage.getItem('access_token'))
+      ? JSON.parse(localStorage.getItem('access_token')).agent_id
+      : '',
   },
   mutations: {
     AUTH_REQUEST: (state) => {

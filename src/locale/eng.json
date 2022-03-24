@@ -52,7 +52,7 @@
 "Ваша почта подтверждена" : "Your Email is confirmed",
 "Введeн не правильно логин или пароль" : "Login or password entered incorrectly",
 "Введeнная вами сумма превышает ваш баланс" : "The amount you entered exceeds your balance",
-"Введен неправильно логин или пароль" : "The username or password was entered incorrectly",
+"Логин или пароль введён неверно" : "The username or password was entered incorrectly",
 "Введите логин" : "Enter login",
 "Введите Текущий пароль" : "Enter the current password",
 "Величина сервисного сбора" : "Service charge",
