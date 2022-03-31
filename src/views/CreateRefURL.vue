@@ -72,63 +72,15 @@
           Загрузка данных...
         </div>
       </div>
-      <!-- Выбор лендинг -->
-      <!-- <div class="row mt-3" v-if="ref_type === 2">
-        <div class="col-6">
-          <el-select
-            v-model="selected_landing"
-            placeholder="Лендинг"
-            style="width: 100%;"
-            clearable
-          >
-            <el-option
-              v-for="data in ref_landing_list"
-              :key="data.id"
-              :label="data.name"
-              :value="data.id"
-            >
-            </el-option>
-          </el-select>
+      <!-- Комментарий для реф ссылки -->
+      <div class="row mt-3" v-if="ref_type">
+        <div class="col custom_input">
+          <input type="text" name="preview_info" id="preview_info" required v-model="preview_info" />
+          <label for="oppreview_infoepreview_inforType">{{$t("Комментарий")}}</label>
+          <span class="clear_icon" @click="clearInput()"></span>
         </div>
-      </div> -->
-      <!-- Выбор бизнес -->
-      <!-- <div class="row mt-3" v-if="ref_type === 3">
-        <div class="col-6">
-          <el-select
-            v-model="selected_business"
-            placeholder="Бизнес-предложение"
-            style="width: 100%;"
-            clearable
-          >
-            <el-option
-              v-for="data in ref_business_list"
-              :key="data.id"
-              :label="data.name"
-              :value="data.id"
-            >
-            </el-option>
-          </el-select>
-        </div>
-      </div> -->
-      <!-- Выбор регистрация -->
-      <!-- <div class="row mt-3" v-if="ref_type === 4">
-        <div class="col-6">
-          <el-select
-            v-model="selected_registration"
-            placeholder="Регистрация"
-            style="width: 100%;"
-            clearable
-          >
-            <el-option
-              v-for="data in ref_registration_list"
-              :key="data.id"
-              :label="data.name"
-              :value="data.id"
-            >
-            </el-option>
-          </el-select>
-        </div>
-      </div> -->
+        <div class="col"></div>
+      </div>
       <div class="row mt-3">
         <div class="col-6">
           <button class="btn_type_2 w50 mr-2" @click="$router.push('/ref-urls')">Отмена</button>
@@ -139,6 +91,14 @@
         </div>
       </div>
     </div>
+    <b-modal id="bv-modal-example" hide-footer centered  :hide-header-close="true" :no-close-on-backdrop="true">
+      <div class="d-block text-center">
+        <h3>
+          {{$t('Создание реферальной ссылки')}}
+        </h3>
+        <p>{{$t("Пожалуйста подождите")}}...</p>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -150,6 +110,7 @@ export default {
   name: 'CreateRefURL',
   data() {
     return {
+      preview_info: '',
       ref_agrigment: 1,
       ref_type: null,
       selected_product: null,
@@ -193,6 +154,9 @@ export default {
         .siblings()
         .addClass('active');
     },
+    clearInput() {
+      this.preview_info = '';
+    },
     getRefData(type) {
       if (type === 1) {
         backAPI.get('/agent/sales/catalog/', { params: { stock_id: 0 } }).then((Response) => {
@@ -201,14 +165,46 @@ export default {
       }
     },
     async createRefLink() {
+      this.$bvModal.show('bv-modal-example');
       const params = {
         reflink_type: this.ref_type,
         access_level: this.ref_agrigment,
         catalog_id: this.ref_type === 1 ? this.selected_product : null,
         reflink_base_id: 0,
+        preview_info: this.preview_info,
       };
-      await backAPI.post('/agent/reflinks/create', params);
-      this.$router.push('/ref-urls');
+      const result = await backAPI.post('/agent/reflinks/create', params);
+      if (result.status === 200) {
+        this.$bvModal.hide('bv-modal-example');
+        this.$router.push('/ref-urls');
+      } else {
+        this.$bvModal.hide('bv-modal-example');
+        this.showToast(this.$t('Ошибка'), this.$t('Что-то пошло не так'), 'danger');
+      }
+    },
+    showToast(title, message, status) {
+      // Use a shorter name for this.$createElement
+      const h = this.$createElement;
+      // Increment the toast count
+      // Create the message
+      const vNodesMsg = h('p', { class: ['text-center', 'mb-0'] }, [
+        h('strong', { class: 'mr-2' }, message),
+      ]);
+      // Create the title
+      const vNodesTitle = h(
+        'div',
+        { class: ['d-flex', 'flex-grow-1', 'align-items-baseline', 'mr-2'] },
+        [
+          h('p', { class: 'mr-2' }, title),
+        ],
+      );
+      // Pass the VNodes as an array for message and title
+      this.$bvToast.toast([vNodesMsg], {
+        title: [vNodesTitle],
+        solid: true,
+        autoHideDelay: 5000,
+        variant: status,
+      });
     },
   },
   computed: {

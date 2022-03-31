@@ -116,45 +116,55 @@ export default {
         {
           key: 'id',
           label: 'ID',
+          sortable: true,
         },
         {
           key: 'reflink_type_name',
           label: 'Тип',
+          sortable: true,
         },
         {
           key: 'param',
           label: 'Параметр',
+          sortable: true,
         },
         {
           key: 'access_level',
           label: 'Тип соглашения',
+          sortable: true,
           formatter: (v) => this.access_type_enum.find((type) => type.key === v).name,
         },
         {
           key: 'cnt_links',
           label: 'Число переходов',
+          sortable: true,
         },
         {
           key: 'cnt_reg',
           label: 'Число регистраций',
+          sortable: true,
         },
         {
           key: 'created',
           label: 'Дата создания',
+          sortable: true,
           formatter: (v) => dateFormat(v),
         },
         {
           key: 'last_link',
           label: 'Дата последнего перехода',
+          sortable: true,
           formatter: (v) => dateFormat(v),
         },
         {
-          key: 'url',
-          label: 'URL',
+          key: 'preview_info',
+          label: 'Комментарий',
+          sortable: true,
         },
         {
           key: 'state',
-          label: 'URL',
+          label: 'Статус URL',
+          sortable: true,
           formatter: (v) => {
             if (v) return 'Активна';
             return 'Не активна';

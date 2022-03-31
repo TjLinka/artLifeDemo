@@ -38,7 +38,7 @@
             <li v-if="role !== 'Клиент'"><router-link to="/rights">
             {{$t("Передача прав")}}
             </router-link></li>
-            <li><router-link to="/refs-link">{{$t("Мои реферальные ссылки")}}</router-link></li>
+            <li><router-link to="/ref-urls/">{{$t("Мои реферальные ссылки")}}</router-link></li>
             <li><router-link to="/registration">
             {{$t("Регистрация партнера")}}
             </router-link></li>
