@@ -207,6 +207,11 @@ export default {
       ],
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('Показатели')}`,
+    };
+  },
   mounted() {
     backApi.get('/agent/get-current-period').then((Response) => {
       this.currentPeriodTop = Response.data;

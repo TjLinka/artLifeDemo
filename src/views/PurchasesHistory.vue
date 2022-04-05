@@ -387,6 +387,11 @@ export default {
       ],
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('История покупок')}`,
+    };
+  },
   mounted() {
     this.rangeDate = [
       this.$moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD'),

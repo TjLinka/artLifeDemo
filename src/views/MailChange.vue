@@ -32,6 +32,11 @@ export default {
       email: '',
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('Смена адреса почтового ящика')}`,
+    };
+  },
   mounted() {
     this.email = this.$route.query.email;
     backApi

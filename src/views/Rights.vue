@@ -181,6 +181,11 @@ export default {
       ],
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('Передача прав')}`,
+    };
+  },
   mounted() {
     backApi.get('/agent/profile').then((Response) => {
       this.ruleGiver = Response.data.agent2transfer_name;

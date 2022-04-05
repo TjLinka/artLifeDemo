@@ -13,6 +13,7 @@ import VueCurrencyInput from 'vue-currency-input';
 import InfiniteLoading from 'vue-infinite-loading';
 import VueHtmlToPaper from 'vue-html-to-paper';
 import FlagIcon from 'vue-flag-icon';
+import VueMeta from 'vue-meta';
 // import VueI18n from 'vue-i18n';
 import i18n from './assets/i18n';
 // import rus from './locale/ru.json';
@@ -48,6 +49,7 @@ Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 Vue.use(VueMomentLib);
 Vue.use(VueMask);
+Vue.use(VueMeta);
 Vue.use(VueMask, {
   placeholders: {
     '#': null, // passing `null` removes default placeholder, so `#` is treated as character

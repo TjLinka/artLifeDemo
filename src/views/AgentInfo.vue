@@ -309,6 +309,11 @@ export default {
       transfertInfo: {},
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('Карточка партнера')} : ${this.userinfo.id} - ${this.userinfo.name}`,
+    };
+  },
   methods: {
     async ddd() {
       if (this.$route.params.id) {

@@ -273,6 +273,11 @@ export default {
       ],
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('История баллов')} : ${this.agentData.id} - ${this.agentData.name}`,
+    };
+  },
   async mounted() {
     const response = await backApi.get('/agent/profile');
     this.agentData = response.data;

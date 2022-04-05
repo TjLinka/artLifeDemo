@@ -65,6 +65,11 @@ export default {
       someText: '',
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('Данные спонсора')}`,
+    };
+  },
   mounted() {
     backApi.get('agent/sponsor').then((Response) => {
       this.userInfo = Response.data;

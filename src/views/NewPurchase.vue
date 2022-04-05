@@ -603,6 +603,11 @@ export default {
       return_details: [],
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('Создание покупки')}`,
+    };
+  },
   mounted() {
     this.return_details = new Array(this.total_rows).fill(undefined);
     backAPI.get('/agent/sales/available-stocks').then((Response) => {

@@ -146,6 +146,11 @@ export default {
       ref_registration_list: [],
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('Редактирование реферальной ссылки')}`,
+    };
+  },
   mounted() {
     backAPI.get(`/agent/reflinks/${this.$route.params.id}`).then(async (Response) => {
       this.ref_agrigment = Response.data.access_level;

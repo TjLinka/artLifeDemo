@@ -145,6 +145,11 @@ export default {
       ref_registration_list: [],
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('Создание реферальной ссылки')}`,
+    };
+  },
   methods: {
     back() {
       const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');

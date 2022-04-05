@@ -61,6 +61,11 @@ export default {
       area: null,
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('Количество бонусных баллов')}`,
+    };
+  },
   mounted() {
     backApi.get('/agent/area-by-currency').then((Response) => {
       this.areaList = Response.data.entries;

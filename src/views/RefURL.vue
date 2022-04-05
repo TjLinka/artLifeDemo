@@ -174,6 +174,11 @@ export default {
       entries: [],
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('Реферальные ссылки')}`,
+    };
+  },
   async mounted() {
     try {
       const response = await backAPI.get('/agent/reflinks');

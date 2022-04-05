@@ -545,6 +545,11 @@ export default {
       ],
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('Управление трансфертами структуры')}`,
+    };
+  },
   methods: {
     print() {
       const colGroup1 = document.getElementsByTagName('colgroup')[0];

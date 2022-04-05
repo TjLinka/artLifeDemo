@@ -300,6 +300,11 @@ export default {
       userInfo: {},
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('История показателей партнера по периодам')} : ${this.userInfo.id} - ${this.userInfo.name}`,
+    };
+  },
   mounted() {
     this.monthRange = [
       this.$moment().startOf('year').format('YYYY-MM-DD'),
