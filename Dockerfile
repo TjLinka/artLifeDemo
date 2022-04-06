@@ -1,10 +1,12 @@
 FROM node:latest as build-stage
 ARG VUE_APP_BASEURL
+ARG VUE_APP_ENVIRONMENT
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY ./ .
 RUN echo ${VUE_APP_BASEURL} | grep "http" && echo "VUE_APP_BASEURL=${VUE_APP_BASEURL}" >> .env || true
+RUN echo "VUE_APP_ENVIRONMENT=${VUE_APP_ENVIRONMENT}" >> .env
 RUN npm run fix
 RUN npm run build
 
