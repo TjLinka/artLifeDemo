@@ -1628,6 +1628,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.rank_icon_legend{
+  width: 25px;
+  margin-right: 10px;
+}
 .link{
     color: black;
     cursor: pointer;
