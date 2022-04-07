@@ -61,7 +61,7 @@
     <div class="row mt-3">
       <div class="col">
         <p class="userInfo">
-          <img class="mb-1 mr-2" :src="`../icons/${userIcon}.svg`" alt="" />
+          <img class="mb-1 mr-2" :src="`../icons/${userIcon}.svg`" alt="" :title="userInfo.rank_calc"/>
           <span class="mr-3">{{ userInfo.name }} {{ userInfo.id }}</span>
         </p>
       </div>
@@ -94,6 +94,15 @@
         {{ row.item.ko | localInt }}
       </template>
       <template v-slot:cell(rank_end)="row">
+        {{ row.item.rank_end }}
+      </template>
+      <template v-slot:cell(rank_beg_npp)="row">
+        {{ row.item.rank_beg }}
+      </template>
+      <template v-slot:cell(rank_calc_npp)="row">
+        {{ row.item.rank_calc }}
+      </template>
+      <template v-slot:cell(rank_end_npp)="row">
         {{ row.item.rank_end }}
       </template>
       <template #empty="scope">
@@ -276,22 +285,28 @@ export default {
           },
         },
         {
-          key: 'rank_beg',
+          key: 'rank_beg_npp',
           label: this.$t('Ранг на начало'),
+          sortable: true,
+          // formatter: (v) => v.rank_beg,
           thStyle: {
             minWidth: '120px',
           },
         },
         {
-          key: 'rank_calc',
+          key: 'rank_calc_npp',
           label: this.$t('Расчетный ранг'),
+          // formatter: (v) => v.rank_calc,
+          sortable: true,
           thStyle: {
             minWidth: '120px',
           },
         },
         {
-          key: 'rank_end',
+          key: 'rank_end_npp',
           label: this.$t('Ранг на конец'),
+          // formatter: (v) => v.rank_end,
+          sortable: true,
           thStyle: {
             minWidth: '120px',
           },

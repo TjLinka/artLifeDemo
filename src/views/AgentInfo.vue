@@ -523,7 +523,7 @@ export default {
   mounted() {
   },
   computed: {
-    ...mapState('auth', ['role']),
+    ...mapState('auth', ['role', 'self_agreementsystem']),
     transfertAccess() {
       return this.role === 'Клиент' && this.$router.path === '/';
     },
