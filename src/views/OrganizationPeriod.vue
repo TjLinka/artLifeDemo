@@ -133,6 +133,11 @@ export default {
       tree_key: 0,
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('Организация текущего периода')}`,
+    };
+  },
   mounted() {
     const data = { params: { filter: this.tree_type, get_root: true } };
     backApi.get('/agents-tree-hist', data).then((response) => {

@@ -309,6 +309,11 @@ export default {
       transfertInfo: {},
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('Карточка партнера')} : ${this.userinfo.id} - ${this.userinfo.name}`,
+    };
+  },
   methods: {
     async ddd() {
       if (this.$route.params.id) {
@@ -518,7 +523,7 @@ export default {
   mounted() {
   },
   computed: {
-    ...mapState('auth', ['role']),
+    ...mapState('auth', ['role', 'self_agreementsystem']),
     transfertAccess() {
       return this.role === 'Клиент' && this.$router.path === '/';
     },

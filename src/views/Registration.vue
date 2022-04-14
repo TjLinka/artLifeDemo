@@ -127,6 +127,11 @@ export default {
       rusAreaName: ['Россия', 'РФ', 'Россия Дальний Восток'],
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('Регистрация')}`,
+    };
+  },
   mounted() {
     this.loading = false;
   },

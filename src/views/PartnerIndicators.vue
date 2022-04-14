@@ -61,7 +61,7 @@
     <div class="row mt-3">
       <div class="col">
         <p class="userInfo">
-          <img class="mb-1 mr-2" :src="`../icons/${userIcon}.svg`" alt="" />
+          <img class="mb-1 mr-2" :src="`../icons/${userIcon}.svg`" alt="" :title="userInfo.rank_calc"/>
           <span class="mr-3">{{ userInfo.name }} {{ userInfo.id }}</span>
         </p>
       </div>
@@ -71,6 +71,7 @@
         <!-- <span>Печать</span> -->
         <span @click="downloadPdf">{{$t("Экспорт в pdf")}}</span>
         <span @click="downloadXls">{{$t("Экспорт в xlsx")}}</span>
+        <span class="mr-3" v-b-modal.modal-scrollable>{{$t("Легенда")}}</span>
       </div>
     </div>
     <b-table responsive outlined head-variant="light"
@@ -96,6 +97,15 @@
       <template v-slot:cell(rank_end)="row">
         {{ row.item.rank_end }}
       </template>
+      <template v-slot:cell(rank_beg_npp)="row">
+        {{ row.item.rank_beg }}
+      </template>
+      <template v-slot:cell(rank_calc_npp)="row">
+        {{ row.item.rank_calc }}
+      </template>
+      <template v-slot:cell(rank_end_npp)="row">
+        {{ row.item.rank_end }}
+      </template>
       <template #empty="scope">
         <h4>{{ scope.emptyText }}</h4>
       </template>
@@ -115,6 +125,48 @@
       </div>
     </footer> -->
   </div>
+  <b-modal v-model="show"
+  id="modal-scrollable" centered scrollable title="Легенда">
+    <div class="modal_icons">
+      <img :src="`../icons/Клиент.svg`"
+      class="rank_icon_legend"> <span>{{$t("Привилегированный клиент")}}</span></div> <br>
+    <div class="modal_icons">
+      <img :src="`../icons/Консультант.svg`"
+      class="rank_icon_legend"> <span>{{$t("Консультант")}}</span></div><br>
+    <div class="modal_icons">
+      <img :src="`../icons/Мастер.svg`"
+      class="rank_icon_legend"><span>{{$t("Мастер")}}</span></div><br>
+    <div class="modal_icons">
+      <img :src="`../icons/Управляющий.svg`"
+      class="rank_icon_legend"><span>{{$t("Управляющий")}}</span></div><br><br>
+    <div class="modal_icons">
+      <img :src="`../icons/Директор.svg`"
+      class="rank_icon_legend"><span>{{$t("Директор")}}</span></div><br>
+    <div class="modal_icons"><img :src="`../icons/Серебряный Директор.svg`"
+    class="rank_icon_legend">
+    <span>{{$t("Серебряный Директор")}}</span></div><br>
+    <div class="modal_icons"><img :src="`../icons/Золотой Директор.svg`"
+    class="rank_icon_legend">
+    <span>{{$t("Золотой Директор")}}</span></div><br><br>
+    <div class="modal_icons"><img :src="`../icons/Рубиновый Директор.svg`" class="rank_icon_legend">
+    <span>{{$t("Рубиновый Директор")}}</span></div><br>
+    <div class="modal_icons"><img :src="`../icons/Бриллиантовый Директор.svg`"
+    class="rank_icon_legend">
+    <span>{{$t("Бриллиантовый Директор")}}</span></div><br>
+    <div class="modal_icons">
+      <img :src="`../icons/Президент.svg`"
+      class="rank_icon_legend"><span>{{$t("Президент")}}</span></div><br>
+    <template #modal-footer>
+          <b-button
+            variant="primary"
+            size="sm"
+            class="float-right cls_btn"
+            @click="show=false"
+          >
+            {{$t("Закрыть")}}
+          </b-button>
+    </template>
+  </b-modal>
   </div>
 </template>
 
@@ -193,6 +245,7 @@ export default {
           'short': 'Брил.Директор',
         },
       },
+      show: false,
       monthRange: [],
       showModal: false,
       rank_icon: '',
@@ -276,28 +329,39 @@ export default {
           },
         },
         {
-          key: 'rank_beg',
+          key: 'rank_beg_npp',
           label: this.$t('Ранг на начало'),
+          sortable: true,
+          // formatter: (v) => v.rank_beg,
           thStyle: {
             minWidth: '120px',
           },
         },
         {
-          key: 'rank_calc',
+          key: 'rank_calc_npp',
           label: this.$t('Расчетный ранг'),
+          // formatter: (v) => v.rank_calc,
+          sortable: true,
           thStyle: {
             minWidth: '120px',
           },
         },
         {
-          key: 'rank_end',
+          key: 'rank_end_npp',
           label: this.$t('Ранг на конец'),
+          // formatter: (v) => v.rank_end,
+          sortable: true,
           thStyle: {
             minWidth: '120px',
           },
         },
       ],
       userInfo: {},
+    };
+  },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('История показателей партнера по периодам')} : ${this.userInfo.id} - ${this.userInfo.name}`,
     };
   },
   mounted() {
@@ -438,6 +502,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.rank_icon_legend{
+  width: 25px;
+  margin-right: 10px;
+}
 .mobile{
   display: none;
 }

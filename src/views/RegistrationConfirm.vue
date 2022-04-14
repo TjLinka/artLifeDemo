@@ -85,6 +85,11 @@ export default {
       registeration: false,
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('Верификация')}`,
+    };
+  },
   mounted() {
     backApi.get('/agent/new-agent', { params: { hash_content: this.$route.params.signup_hash } }).then((Response) => {
       this.newUser = Response.data;

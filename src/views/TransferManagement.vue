@@ -545,6 +545,11 @@ export default {
       ],
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('Управление трансфертами структуры')}`,
+    };
+  },
   methods: {
     print() {
       const colGroup1 = document.getElementsByTagName('colgroup')[0];
@@ -1623,6 +1628,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.rank_icon_legend{
+  width: 25px;
+  margin-right: 10px;
+}
 .link{
     color: black;
     cursor: pointer;

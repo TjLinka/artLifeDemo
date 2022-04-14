@@ -34,7 +34,7 @@
               >
               </date-picker>
           </div>
-          <div class="col" v-if="self_agreementsystem && role !== 'Клиент'">
+          <div class="col" v-if="(self_agreementsystem && role !== 'Клиент') || isDev">
             <router-link to="/new-purchase">
                 <button class="btn_type_1 w50 fr">
                   Создать покупку
@@ -212,6 +212,7 @@ export default {
   },
   data() {
     return {
+      isDev: process.env.VUE_APP_ENVIRONMENT,
       loading: true,
       deliveryList: [],
       delivery: null,
@@ -385,6 +386,11 @@ export default {
           sortable: true,
         },
       ],
+    };
+  },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('История покупок')}`,
     };
   },
   mounted() {

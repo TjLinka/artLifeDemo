@@ -93,6 +93,11 @@ export default {
       phone: '',
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('Восстановить пароль')}`,
+    };
+  },
   methods: {
     showToast(title, message, status) {
       // Use a shorter name for this.$createElement

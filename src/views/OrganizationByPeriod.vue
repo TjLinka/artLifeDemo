@@ -354,6 +354,11 @@ export default {
       periodIndex: 0,
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('История организации по периодам')}`,
+    };
+  },
   mounted() {
     backApi.get('agent/bonus-detail/periods').then((Response) => {
       this.periods = Response.data.entries.sort((a, b) => {

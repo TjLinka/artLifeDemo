@@ -108,6 +108,11 @@ export default {
       },
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('Авторизация')}`,
+    };
+  },
   methods: {
     // eslint-disable-next-line consistent-return
     checkInput(e) {

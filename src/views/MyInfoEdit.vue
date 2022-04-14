@@ -292,6 +292,11 @@ export default {
       rusAreaName: ['Россия', 'РФ', 'Россия Дальний Восток'],
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('Редактирование личных данных')}`,
+    };
+  },
   mounted() {
     backApi.get('/agent/profile').then((Response) => {
       this.userTopInfo = {

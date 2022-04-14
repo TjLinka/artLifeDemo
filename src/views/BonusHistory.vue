@@ -241,6 +241,11 @@ export default {
       ],
     };
   },
+  metaInfo() {
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('История начисления бонусов')} : ${this.agentData.id} - ${this.agentData.name}`,
+    };
+  },
   mounted() {
     backApi.get('/agent/profile').then((Response) => {
       this.agentData = Response.data;
