@@ -162,6 +162,11 @@ export default {
           sortable: true,
         },
         {
+          key: 'url',
+          label: 'URL',
+          sortable: true,
+        },
+        {
           key: 'state',
           label: 'Статус URL',
           sortable: true,
