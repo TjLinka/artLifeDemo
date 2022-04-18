@@ -72,6 +72,22 @@
           <span>Загрузка данных...</span>
         </div>
       </div>
+      <div class="row mt-3" v-if="ref_type === 2">
+        <div class="col-6" v-if="ref_landing_list.length > 0">
+          <el-select v-model="selected_landing" placeholder="Лендинг" style="width: 100%;" clearable filterable>
+            <el-option
+              v-for="data in ref_landing_list"
+              :key="data.id"
+              :label="data.name"
+              :value="data.id"
+            >
+            </el-option>
+          </el-select>
+        </div>
+        <div class="col-6" v-else>
+          <span>Загрузка данных...</span>
+        </div>
+      </div>
       <!-- Комментарий для реф ссылки -->
       <div class="row mt-3" v-if="ref_type">
         <div class="col custom_input">
@@ -131,13 +147,13 @@ export default {
         },
         {
           id: 3,
-          name: 'Бизнес-предложение',
-          type_value: 'selected_business',
+          name: 'Регистрация',
+          type_value: 'selected_registration',
         },
         {
           id: 4,
-          name: 'Регистрация',
-          type_value: 'selected_registration',
+          name: 'Бизнес-предложение',
+          type_value: 'selected_business',
         },
       ],
       ref_products_list: [],
@@ -152,7 +168,7 @@ export default {
     };
   },
   mounted() {
-    backAPI.get(`/agent/reflinks/${this.$route.params.id}`).then(async (Response) => {
+    backAPI.get(`/agent/reflinks/get/${this.$route.params.id}`).then(async (Response) => {
       this.ref_agrigment = Response.data.access_level;
       this.ref_type = Response.data.reflink_type;
       this.preview_info = Response.data.preview_info;
@@ -160,6 +176,12 @@ export default {
         backAPI.get('/agent/sales/catalog', { params: { stock_id: 0 } }).then((Response2) => {
           this.ref_products_list = Response2.data.entries.map((product) => ({ id: product.id, articul: product.articul, name: product.name }));
           this.selected_product = Response.data.catalog_id;
+        });
+      }
+      if (this.ref_type === 2) {
+        backAPI.get('/agent/reflinks/landings/').then((Response2) => {
+          this.ref_landing_list = Response2.data.entries;
+          this.selected_landing = Response.data.reflink_base_id;
         });
       }
     });
@@ -203,14 +225,19 @@ export default {
           this.ref_products_list = Response.data.entries.map((product) => ({ id: product.id, articul: product.articul, name: product.name }));
         });
       }
+      if (type === 2) {
+        backAPI.get('/agent/reflinks/landings/').then((Response) => {
+          this.ref_landing_list = Response.data.entries;
+        });
+      }
     },
     async saveEditRefLink() {
       this.$bvModal.show('bv-modal-example');
       const params = {
         reflink_type: this.ref_type,
         access_level: this.ref_agrigment,
-        catalog_id: this.selected_product,
-        reflink_base_id: 0,
+        catalog_id: this.ref_type === 1 ? this.selected_product : null,
+        reflink_base_id: this.ref_type === 2 ? this.selected_landing : 0,
         preview_info: this.preview_info,
       };
       const result = await backAPI.post(`/agent/reflinks/update/${this.$route.params.id}`, params);
