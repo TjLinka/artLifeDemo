@@ -1,5 +1,5 @@
 <template>
-  <div class="licevoischet__page">
+  <div class="licevoischet__page ref_link_page">
     <div class="container-fluid table_container">
       <h2 class="page__title">
         <p class="mobile_back noprint" @click="back">
@@ -17,10 +17,7 @@
       </h2>
       <div class="row mb-4">
         <div class="col-6">
-          <button
-            :class="`btn_type_1 w50`"
-            @click="$router.push('/ref-urls-create')"
-          >
+          <button :class="`btn_type_1 w50`" @click="$router.push('/ref-urls-create')">
             Создать реферальную ссылку
           </button>
         </div>
@@ -39,7 +36,7 @@
             :disabled="!selectedRefURL"
             @click="changeRefState"
           >
-            {{selectedRef.state ? 'Приостановить' : 'Запустить'}}
+            {{ selectedRef.state ? 'Приостановить' : 'Запустить' }}
           </button>
         </div>
       </div>
@@ -49,20 +46,35 @@
         head-variant="light"
         responsive
         selectable
+        ref="selectableTable"
         select-mode="single"
         @row-selected="onRowSelected"
         bordered
       >
-      <template v-slot:cell(url)="scope">
-        <div class="link_wrapper">
-          <p class="popa" :ref="`popa-${scope.item.id}`">Ссылка скопирована</p>
-        <a class="link" :id="`ref-link-${scope.item.id}`" :href="scope.item.url" target="_blank">
-          {{scope.item.url}}
-        </a>
-        <!-- <span >Copy</span> -->
-         <b-icon-link class="ml-3" style="width: 18px; height: 18px; float: right;" @click.stop="copyLink(scope.item.id)"></b-icon-link>
-        </div>
-      </template>
+        <template v-slot:cell(url)="scope">
+          <div class="link_wrapper">
+            <p class="popa" :ref="`popa-${scope.item.id}`">Ссылка скопирована</p>
+            <a
+              class="link"
+              :id="`ref-link-${scope.item.id}`"
+              :href="scope.item.url"
+              target="_blank"
+            >
+              {{ scope.item.url }}
+            </a>
+            <!-- <span >Copy</span> -->
+            <!-- <b-icon-share
+              v-b-modal.modal-scrollable
+              class="ml-3"
+              style="width: 14px; height: 14px; float: right;"
+            ></b-icon-share> -->
+            <b-icon-link
+              class="ml-3"
+              style="width: 18px; height: 18px; float: right;"
+              @click.stop="copyLink(scope.item.id)"
+            ></b-icon-link>
+          </div>
+        </template>
       </b-table>
       <!-- <footer class="container-fluid cust_modal">
         <div class="container-md">
@@ -87,25 +99,89 @@
         </div>
       </footer> -->
     </div>
+        <!-- <b-modal v-model="show" id="modal-scrollable" centered hide-header-close scrollable title="Поделиться">
+      <p style="text-align: center; font-size: 26px;">
+        <strong>QR Code</strong>
+      </p>
+      <div style="text-align: center;">
+        <qrcode-vue :value="qrURL" :size="200" level="H"></qrcode-vue>
+      </div>
+      <p style="text-align: center; font-size: 26px; margin: 0;">
+        <strong>Поделиться</strong>
+      </p>
+      <br />
+      <div class="share_links">
+        <div class="share-buttons">
+          <button
+            class="facebook"
+            onClick="window.open('https://www.facebook.com/sharer.php?u=АДРЕС_СТРАНИЦЫ','sharer','status=0,toolbar=0,width=650,height=500');"
+            title="Поделиться в Facebook"
+          ></button>
+          <button
+            class="vkontakte"
+            onClick="window.open('https://vkontakte.ru/share.php?url=АДРЕС_СТРАНИЦЫ','sharer','status=0,toolbar=0,width=650,height=500');"
+            title="Поделиться Вконтакте"
+          ></button>
+          <button
+            class="ok"
+            onClick="window.open('https://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1&st._surl=АДРЕС_СТРАНИЦЫ&st.comments=ОПИСАНИЕ','sharer','status=0,toolbar=0,width=650,height=500');"
+            title="Поделиться в Одноклассниках"
+          ></button>
+          <button
+            class="telegram"
+            onClick="window.open('https://telegram.me/share/url?url=АДРЕС_СТРАНИЦЫ','sharer','status=0,toolbar=0,width=650,height=500');"
+            title="Поделиться в Телеграм"
+          ></button>
+          <button
+            class="pinterest"
+            onClick="window.open('https://ru.pinterest.com/pin/create/button/?url=АДРЕС_СТРАНИЦЫ','sharer','status=0,toolbar=0,width=650,height=500');"
+            data-media="АДРЕС_ИЗОБРАЖЕНИЯ"
+            title="Запинить"
+          ></button>
+          <button
+            class="twitter"
+            onClick="window.open('https://twitter.com/intent/tweet?text=ТАЙТЛ_СТРАНИЦЫ. ОПИСАНИЕ. СССЫЛКА','sharer','status=0,toolbar=0,width=650,height=500');"
+            title="Твитнуть"
+          ></button>
+          <button
+            class="mail"
+            onClick="window.open('https://connect.mail.ru/share?url=АДРЕС_СТРАНИЦЫ','sharer','status=0,toolbar=0,width=650,height=500');"
+            title="Поделиться в @Мой мир"
+          ></button>
+        </div>
+      </div>
+      <template #modal-footer>
+        <b-button variant="primary" size="sm" class="float-right cls_btn" @click="show = false">
+          {{ $t('Закрыть') }}
+        </b-button>
+      </template>
+    </b-modal> -->
   </div>
 </template>
 
 <script>
 import $ from 'jquery';
+// import QrcodeVue from 'qrcode.vue';
 import backAPI from '../assets/backApi';
 import dateFormat from '../assets/localDateFunc';
+// import RightsModalTakeVue from '../components/RightsModalTake.vue';
 
 export default {
   name: 'RefURL',
+  components: {
+    // QrcodeVue,
+  },
   data() {
     return {
+      show: false,
+      qrURL: 'http://dev.artlife.ru/ref/?ref=nplHE4Q2',
       searchActive: false,
       selectedRefURL: null,
       selectedRef: null,
       access_type_enum: [
         {
           key: 1,
-          name: 'Партнёр',
+          name: 'Дистрибьютор',
         },
         {
           key: 0,
@@ -137,11 +213,13 @@ export default {
         {
           key: 'cnt_links',
           label: 'Число переходов',
+          thClass: 'ref_th_class',
           sortable: true,
         },
         {
           key: 'cnt_reg',
           label: 'Число регистраций',
+          thClass: 'ref_th_class',
           sortable: true,
         },
         {
@@ -164,6 +242,7 @@ export default {
         {
           key: 'url',
           label: 'URL',
+          thClass: 'ref_th_class_url',
           sortable: true,
         },
         {
@@ -210,12 +289,33 @@ export default {
         this.selectedRefURL = null;
       }
     },
-    changeRefState() {
-      backAPI.post(`/agent/reflinks/set_state/${this.selectedRef.id}/${this.selectedRef.state ? 0 : 1}`).then(() => {
-        backAPI.get('/agent/reflinks').then((Response) => {
-          this.entries = Response.data.entries;
-        });
-      });
+    async changeRefState() {
+      try {
+        await backAPI.post(`/agent/reflinks/set_state/${this.selectedRef.id}/${this.selectedRef.state ? 0 : 1}`);
+        const result = await backAPI.get('/agent/reflinks');
+        // eslint-disable-next-line no-unused-vars
+        const someData = this.selectedRef.id;
+        this.entries = await result.data.entries;
+        setTimeout(() => {
+          const refLinkIndex = result.data.entries.indexOf(result.data.entries.find((reflink) => reflink.id === someData));
+          this.$refs.selectableTable.selectRow(refLinkIndex);
+        }, 0);
+      } catch (error) {
+        console.log(error);
+      }
+      // backAPI.post(`/agent/reflinks/set_state/${this.selectedRef.id}/${this.selectedRef.state ? 0 : 1}`)
+      //   .then(() => {
+      //     backAPI.get('/agent/reflinks').then((Response) => {
+      //       this.entries = Response.data.entries;
+      //       console.log(this.selectedRef);
+      //       return (Response, this.selectedRef);
+      //     }).then((Response, id) => {
+      //       console.log(Response.data);
+      //       console.log(id);
+      //       const refLinkIndex = Response.data.entries.indexOf(Response.data.entries.find((reflink) => reflink.id === this.selectedRef.id));
+      //       this.$refs.selectableTable.selectRow(refLinkIndex);
+      //     });
+      //   });
     },
     editReflink() {
       this.$router.push(`/ref-urls-update/${this.selectedRef.id}`);
@@ -242,10 +342,54 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.link{
+.share-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.share-buttons button {
+    margin-bottom: 5px;
+    width: 40px;
+    height: 40px;
+    border: 0;
+}
+
+.share-buttons a:not(:last-child) {
+    margin-right: 5px;
+}
+
+.share-buttons .facebook {
+    background: url("../assets/imgs/share-btns.png") no-repeat left top;
+}
+
+.share-buttons .vkontakte {
+    background: url("../assets/imgs/share-btns.png") no-repeat -168px top;
+}
+
+.share-buttons .ok {
+    background: url("../assets/imgs/share-btns.png") no-repeat -126px top;
+}
+
+.share-buttons .twitter {
+    background: url("../assets/imgs/share-btns.png") no-repeat -42px top;
+}
+
+.share-buttons .pinterest {
+    background: url("../assets/imgs/share-btns.png") no-repeat -210px top;
+}
+
+.share-buttons .mail {
+    background: url("../assets/imgs/share-btns.png") no-repeat -294px top;
+}
+
+.share-buttons .telegram {
+    background: url("../assets/imgs/share-btns.png") no-repeat -672px top;
+}
+.link {
   color: #32aaa7;
 }
-.link_wrapper{
+.link_wrapper {
   position: relative;
   & .popa {
     background: rgb(252, 250, 250);
@@ -259,10 +403,10 @@ export default {
     color: black;
     display: none;
     border: 1px solid gray;
-    &.open{
+    &.open {
       display: block;
     }
-    &::after{
+    &::after {
       position: absolute;
       bottom: -5px;
       transform: rotate(45deg);
@@ -322,5 +466,19 @@ export default {
       }
     }
   }
+}
+</style>
+<style>
+.modal-title{
+  width: 100%;
+  text-align: center;
+  font-size: 30px;
+  font-weight: semibold;
+}
+.ref_th_class{
+  max-width: 100px;
+}
+.ref_th_class_url{
+  min-width: 360px;
 }
 </style>
