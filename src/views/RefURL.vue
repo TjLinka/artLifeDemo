@@ -359,33 +359,33 @@ export default {
     margin-right: 5px;
 }
 
-.share-buttons .facebook {
-    background: url("../assets/imgs/share-btns.png") no-repeat left top;
-}
+// .share-buttons .facebook {
+//     background: url("../assets/imgs/share-btns.png") no-repeat left top;
+// }
 
-.share-buttons .vkontakte {
-    background: url("../assets/imgs/share-btns.png") no-repeat -168px top;
-}
+// .share-buttons .vkontakte {
+//     background: url("../assets/imgs/share-btns.png") no-repeat -168px top;
+// }
 
-.share-buttons .ok {
-    background: url("../assets/imgs/share-btns.png") no-repeat -126px top;
-}
+// .share-buttons .ok {
+//     background: url("../assets/imgs/share-btns.png") no-repeat -126px top;
+// }
 
-.share-buttons .twitter {
-    background: url("../assets/imgs/share-btns.png") no-repeat -42px top;
-}
+// .share-buttons .twitter {
+//     background: url("../assets/imgs/share-btns.png") no-repeat -42px top;
+// }
 
-.share-buttons .pinterest {
-    background: url("../assets/imgs/share-btns.png") no-repeat -210px top;
-}
+// .share-buttons .pinterest {
+//     background: url("../assets/imgs/share-btns.png") no-repeat -210px top;
+// }
 
-.share-buttons .mail {
-    background: url("../assets/imgs/share-btns.png") no-repeat -294px top;
-}
+// .share-buttons .mail {
+//     background: url("../assets/imgs/share-btns.png") no-repeat -294px top;
+// }
 
-.share-buttons .telegram {
-    background: url("../assets/imgs/share-btns.png") no-repeat -672px top;
-}
+// .share-buttons .telegram {
+//     background: url("../assets/imgs/share-btns.png") no-repeat -672px top;
+// }
 .link {
   color: #32aaa7;
 }
