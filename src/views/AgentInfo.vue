@@ -35,7 +35,7 @@
                 {{$t("Перевести деньги другому партнёру")}}
               </span>
               <span class="modal_btn" @click="becomePartner" v-if="!transfertAccess">
-                {{$t("Стать партнером")}}
+                {{$t("Стать дистрибьютором")}}
               </span>
             </div>
           </div>
