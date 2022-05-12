@@ -23,7 +23,7 @@
               name="some-radios-1"
               :value="1"
               class="radio mr-3"
-              >{{ $t('Партнёр') }}</b-form-radio
+              >{{ $t('Дистрибьютор') }}</b-form-radio
             >
             <b-form-radio
               v-model="ref_agrigment"
