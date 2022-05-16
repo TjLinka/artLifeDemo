@@ -17,6 +17,7 @@
         filterable
         @change="getCatalog"
         @clear="clearStock"
+        @focus="focusQ"
         style="width: 100%"
         :placeholder="`${$t('Склад')}`">
           <el-option
@@ -157,7 +158,7 @@
     <div class="row mt-4">
       <div class="col-md-6 sponsor_bot_btns">
         <button @click="createSale" :disabled="countCheck" :class="`${countCheck ? 'disabled' : ''}`">
-          {{$t("Создать покупку")}}
+          {{$t("Зарезервировать")}}
         </button>
       </div>
     </div>
@@ -378,7 +379,7 @@ export default {
         },
         {
           key: 'price_retail',
-          label: this.$t('Цена розничная'),
+          label: this.$t('Цена дистрибьюторская'),
           sortable: true,
         },
         {
@@ -422,7 +423,7 @@ export default {
         },
         {
           key: 'price_retail',
-          label: this.$t('Цена розничная'),
+          label: this.$t('Цена дистрибьюторская'),
           formatter(v) {
             if (v >= 0) {
               const formatter = new Intl.NumberFormat('ru');
@@ -457,10 +458,10 @@ export default {
           key: 'price_discount_pc',
           label: this.$t('Размер скидки, %'),
         },
-        {
-          key: 'items',
-          label: this.$t('Остаток по складу'),
-        },
+        // {
+        //   key: 'items',
+        //   label: this.$t('Остаток по складу'),
+        // },
         {
           key: 'goods_count',
           label: this.$t('Количество'),
@@ -527,11 +528,11 @@ export default {
           label: this.$t('Размер скидки, %'),
           sortable: true,
         },
-        {
-          key: 'items',
-          label: this.$t('Остаток по складу'),
-          sortable: true,
-        },
+        // {
+        //   key: 'items',
+        //   label: this.$t('Остаток по складу'),
+        //   sortable: true,
+        // },
         {
           key: 'goods_count',
           label: this.$t('Количество'),
@@ -654,6 +655,9 @@ export default {
     },
   },
   methods: {
+    focusQ() {
+      this.selectedStock = '';
+    },
     clearStock() {
       this.selectedStock = '';
       this.showModal = false;
@@ -809,7 +813,7 @@ export default {
     },
     async createSale() {
       console.log(this.cash, this.card);
-      const res = await this.createMessageBox(this.$t('Вы уверены, что хотите создать покупку?'));
+      const res = await this.createMessageBox(this.$t('Вы уверены, что хотите зарезервировать покупку?'));
       if (res) {
         this.$bvModal.show('bv-modal-example');
         const goodsMass = this.newCart.map((item) => ({ goods_id: item.id, goods_quantity: Number(item.goods_count.replace(/\s/g, '')) }));
