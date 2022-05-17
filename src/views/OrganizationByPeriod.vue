@@ -667,7 +667,7 @@ export default {
       } if (col.property === 'lo' || col.property === 'lo' || col.property === 'go' || col.property === 'ngo' || col.property === 'oo' || col.property === 'ko') {
         return 50;
       } if (col.property === 'noact') {
-        return 50;
+        return 100;
       }
       return 0;
     },

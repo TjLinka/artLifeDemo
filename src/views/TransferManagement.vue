@@ -598,6 +598,7 @@ export default {
       if (key === 'name') return 200;
       if (key === 'go' || key === 'ngo' || key === 'so' || key === 'ko' || key === 'lo') return 70;
       if (key === 'discount_pc') return 80;
+      if (key === 'noact') return 100;
       // eslint-disable-next-line consistent-return
     },
     ...mapActions('transStore', ['setData', 'setAllDefault', 'setDefault', 'clearAll']),
