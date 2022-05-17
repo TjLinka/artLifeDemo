@@ -161,7 +161,7 @@
               <label for="smsCode">{{$t("Код подтверждения")}}</label>
               <span class="clear_icon" @click="clearInput('phone')"></span>
               <button class="save__newinfo mt-3" v-on:click="checkSmsCode">
-                {{$t("Потвердить")}}
+                {{$t("Подтвердить")}}
               </button>
             </div>
           </div>

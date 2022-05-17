@@ -35,14 +35,14 @@
           v-if="codeCome"
           :unchecked-value="false"
         >
-          {{$t("Согласен на обработку данных")}}
+          {{$t("Я даю своё согласие на обработку, и использование моих персональных данных")}}
         </b-form-checkbox>
         <button
         v-if="codeCome"
         @click="getAccess"
         :disabled="!status"
         :class="`${status ? '' : 'disabled'}`">
-            {{$t("Потвердить код")}}
+            {{$t("Подтвердить код")}}
         </button>
         <br>
         <button
