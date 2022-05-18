@@ -183,7 +183,7 @@ export default {
         if (
           this.newUser.fio !== '' && this.country !== ''
           && this.newUser.city !== '' && this.newUser.bthdte !== ''
-          && this.phone !== '' && this.newUser.email !== '' && reMail.test(this.newUser.email)
+          && this.phone.replace(/[-,(,),+]/g, '') !== '' && this.newUser.email !== '' && reMail.test(this.newUser.email)
         ) {
           const data = {
             access_level: this.newUser.role,
