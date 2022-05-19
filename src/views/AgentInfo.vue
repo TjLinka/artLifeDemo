@@ -34,7 +34,7 @@
               <span class="modal_btn" @click="showTransfModal2">
                 {{$t("Перевести деньги другому партнёру")}}
               </span>
-              <span class="modal_btn" @click="becomePartner" v-if="!transfertAccess">
+              <span class="modal_btn" @click="becomePartner" v-if="transfertAccess && !userinfo.is_terminated">
                 {{$t("Стать дистрибьютором")}}
               </span>
             </div>
