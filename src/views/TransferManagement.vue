@@ -555,7 +555,7 @@ export default {
     };
   },
   mounted() {
-    this.tags.push({ name: 'Показывать терменированных', key: 'status' });
+    this.tags.push({ name: 'Показывать терминированных', key: 'status' });
     this.tags.push({ name: 'Фильтр по ЛО: Все', key: 'lo_type' });
   },
   metaInfo() {
@@ -1470,9 +1470,9 @@ export default {
       if (this.filterData.status) {
         const tag = this.tags.find((t) => t.key === 'status');
         if (tag) {
-          tag.name = 'Показывать терменированных';
+          tag.name = 'Показывать терминированных';
         } else {
-          this.tags.push({ name: 'Показывать терменированных', key: 'status' });
+          this.tags.push({ name: 'Показывать терминированных', key: 'status' });
         }
       } else if (this.tags.find((t) => t.key === 'status')) {
         this.tags.splice(this.tags.indexOf(this.tags.find((t) => t.key === 'status')), 1);
