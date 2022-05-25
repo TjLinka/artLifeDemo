@@ -337,7 +337,7 @@ export default {
       state: '',
       state2: '',
       searchActive: false,
-      months: ['Январь', 'Ферваль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+      months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
       tree_type: 'full',
       currentUserID: null,
       modal_agent: {
@@ -667,7 +667,7 @@ export default {
       } if (col.property === 'lo' || col.property === 'lo' || col.property === 'go' || col.property === 'ngo' || col.property === 'oo' || col.property === 'ko') {
         return 50;
       } if (col.property === 'noact') {
-        return 50;
+        return 100;
       }
       return 0;
     },

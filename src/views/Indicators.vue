@@ -83,7 +83,7 @@
               <p>{{ userInfo.reserve | localInt }}</p>
             </div>
             <div class="col-md-6 mt-4">
-              <p>{{$t("Неакт.")}}:</p>
+              <p>{{$t("Неактивность")}}:</p>
               <p>{{ userInfo.noact }}</p>
             </div>
           </div>
@@ -193,7 +193,7 @@ export default {
       periodIndex: 0,
       months: [
         'Январь',
-        'Ферваль',
+        'Февраль',
         'Март',
         'Апрель',
         'Май',

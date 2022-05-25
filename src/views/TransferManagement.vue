@@ -241,6 +241,7 @@
             <el-select
             v-model="filterData.area_id"
             clearable
+            @clear="clearRegion"
             :placeholder="`${$t('Регион')}`">
               <el-option
                 v-for="item in areaList"
@@ -314,7 +315,10 @@
             </el-select>
           </div>
           <div class="col-md-6 custom_input">
-            <button class="mr-2 update w-100" @click="updateData">{{$t("Применить")}}</button>
+            <div style="display: flex; justify-content: space-between; gap: 20px">
+              <button class="update w-50" @click="updateData">{{$t("Применить")}}</button>
+              <button class="update w-50" @click="resetData">{{$t("Сбросить")}}</button>
+            </div>
           </div>
         </div>
       </div>
@@ -416,6 +420,11 @@ export default {
       searchActive: false,
       filterData: {
         status: 1,
+      },
+      lo_types: {
+        null: 'Все',
+        1: '> 0',
+        '-1': '<=0',
       },
       rankList: [],
       areaList: [],
@@ -545,12 +554,19 @@ export default {
       ],
     };
   },
+  mounted() {
+    this.tags.push({ name: 'Показывать терминированных', key: 'status' });
+    this.tags.push({ name: 'Фильтр по ЛО: Все', key: 'lo_type' });
+  },
   metaInfo() {
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('Управление трансфертами структуры')}`,
     };
   },
   methods: {
+    clearRegion() {
+      this.filterData.area_id = null;
+    },
     print() {
       const colGroup1 = document.getElementsByTagName('colgroup')[0];
       const colGroup2 = document.getElementsByTagName('colgroup')[1];
@@ -598,6 +614,7 @@ export default {
       if (key === 'name') return 200;
       if (key === 'go' || key === 'ngo' || key === 'so' || key === 'ko' || key === 'lo') return 70;
       if (key === 'discount_pc') return 80;
+      if (key === 'noact') return 100;
       // eslint-disable-next-line consistent-return
     },
     ...mapActions('transStore', ['setData', 'setAllDefault', 'setDefault', 'clearAll']),
@@ -1175,6 +1192,16 @@ export default {
         this.filterData.store = null;
         this.updateData();
       }
+      if (tag.key === 'status') {
+        this.tags.splice(this.tags.indexOf(tag), 1);
+        this.filterData.status = 0;
+        this.updateData();
+      }
+      if (tag.key === 'lo_type') {
+        this.tags.splice(this.tags.indexOf(tag), 1);
+        this.lo_type = null;
+        this.updateData();
+      }
       if (tag.key === 'tree_type') {
         if (tag.name !== 'Полное дерево') {
           this.tree_type = 0;
@@ -1356,6 +1383,8 @@ export default {
         } else {
           this.tags.push({ name: `Номер агента: ${this.filterData.agent_id}`, key: 'agent_id' });
         }
+      } else if (this.tags.find((t) => t.key === 'agent_id')) {
+        this.tags.splice(this.tags.indexOf(this.tags.find((t) => t.key === 'agent_id')), 1);
       }
       // ФИО
       if (this.filterData.fullname !== null
@@ -1367,6 +1396,8 @@ export default {
         } else {
           this.tags.push({ name: `ФИО: ${this.filterData.fullname}`, key: 'fullname' });
         }
+      } else if (this.tags.find((t) => t.key === 'fullname')) {
+        this.tags.splice(this.tags.indexOf(this.tags.find((t) => t.key === 'fullname')), 1);
       }
       // Город склада обслуживания
       if (this.filterData.store !== null
@@ -1378,6 +1409,8 @@ export default {
         } else {
           this.tags.push({ name: `Город склада обслуживания: ${this.filterData.store}`, key: 'store' });
         }
+      } else if (this.tags.find((t) => t.key === 'store')) {
+        this.tags.splice(this.tags.indexOf(this.tags.find((t) => t.key === 'store')), 1);
       }
       // Ранг на начало
       if (this.filterData.rank_beg !== null
@@ -1389,6 +1422,8 @@ export default {
         } else {
           this.tags.push({ name: `Ранг на начало: ${this.filterData.rank_beg}`, key: 'rank_beg' });
         }
+      } else if (this.tags.find((t) => t.key === 'rank_beg')) {
+        this.tags.splice(this.tags.indexOf(this.tags.find((t) => t.key === 'rank_beg')), 1);
       }
       // Ранг на конец
       if (this.filterData.rank_end !== null
@@ -1400,6 +1435,8 @@ export default {
         } else {
           this.tags.push({ name: `Ранг на конец: ${this.filterData.rank_end}`, key: 'rank_end' });
         }
+      } else if (this.tags.find((t) => t.key === 'rank_end')) {
+        this.tags.splice(this.tags.indexOf(this.tags.find((t) => t.key === 'rank_end')), 1);
       }
       // Рассчетный ранг
       if (this.filterData.rank_calc !== null
@@ -1411,6 +1448,8 @@ export default {
         } else {
           this.tags.push({ name: `Рассчетный ранг: ${this.filterData.rank_calc}`, key: 'rank_calc' });
         }
+      } else if (this.tags.find((t) => t.key === 'rank_calc')) {
+        this.tags.splice(this.tags.indexOf(this.tags.find((t) => t.key === 'rank_calc')), 1);
       }
       // Регион
       if (this.filterData.area_id !== null
@@ -1418,10 +1457,32 @@ export default {
       && this.filterData.area_id !== undefined) {
         const tag = this.tags.find((t) => t.key === 'area_id');
         if (tag) {
-          tag.name = `Регион: ${this.areaList[this.filterData.area_id].area_name}`;
+          console.log('area 1');
+          tag.name = `Регион: ${this.areaList.find((area) => area.area_id === this.filterData.area_id).area_name}`;
         } else {
-          this.tags.push({ name: `Регион: ${this.areaList[this.filterData.area_id].area_name}`, key: 'area_id' });
+          console.log('area 2');
+          this.tags.push({ name: `Регион: ${this.areaList.find((area) => area.area_id === this.filterData.area_id).area_name}`, key: 'area_id' });
         }
+      } else if (this.tags.find((t) => t.key === 'area_id')) {
+        this.tags.splice(this.tags.indexOf(this.tags.find((t) => t.key === 'area_id')), 1);
+      }
+      // Показывать терменированных
+      if (this.filterData.status) {
+        const tag = this.tags.find((t) => t.key === 'status');
+        if (tag) {
+          tag.name = 'Показывать терминированных';
+        } else {
+          this.tags.push({ name: 'Показывать терминированных', key: 'status' });
+        }
+      } else if (this.tags.find((t) => t.key === 'status')) {
+        this.tags.splice(this.tags.indexOf(this.tags.find((t) => t.key === 'status')), 1);
+      }
+      // Фильтр по ЛО
+      const tag = this.tags.find((t) => t.key === 'lo_type');
+      if (tag) {
+        tag.name = `Фильтр по ЛО: ${this.lo_types[String(this.lo_type)]}`;
+      } else {
+        this.tags.push({ name: `Фильтр по ЛО: ${this.lo_types[String(this.lo_type)]}`, key: 'lo_type' });
       }
 
       // if (this.filterData.comment !== null && this.filterData.comment !== '') {
@@ -1447,6 +1508,14 @@ export default {
           this.infiniteId += 1;
           this.loading = false;
         });
+    },
+    resetData() {
+      this.filterData = { status: 1 };
+      this.tags = [];
+      this.tree_type = 2;
+      this.lo_type = null;
+      this.entries = [];
+      this.updateData();
     },
     back() {
       const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');

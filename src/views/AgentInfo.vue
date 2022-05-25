@@ -16,7 +16,7 @@
         </p>
         {{$t("Карточка партнера")}}: {{userinfo.id}} - {{userinfo.name}}
       </h2>
-      <h5 style="color: red;" v-if="self_agreementsystem">Внимание! Ваш доступ в ЛК Партнёра только для чтения т.к. учёт ваших данных ведётся в старой системе,<br>
+      <h5 style="color: red;" v-if="!self_agreementsystem">Внимание! Ваш доступ в ЛК Партнёра только для чтения т.к. учёт ваших данных ведётся в старой системе,<br>
         попросите  Ваш Склад обслуживания перевести Вас на обслуживание в Новой Системе.</h5>
       <div class="myinfo__page__description">
         <div :class="`myfoto ${userinfo.agreementsystem === 0 ? 'a' : ''}`">
@@ -34,7 +34,7 @@
               <span class="modal_btn" @click="showTransfModal2">
                 {{$t("Перевести деньги другому партнёру")}}
               </span>
-              <span class="modal_btn" @click="becomePartner" v-if="!transfertAccess">
+              <span class="modal_btn" @click="becomePartner" v-if="transfertAccess && !userinfo.is_terminated">
                 {{$t("Стать дистрибьютором")}}
               </span>
             </div>

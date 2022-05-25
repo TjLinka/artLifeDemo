@@ -1,6 +1,7 @@
 <template>
-  <div class="container" v-if="errorStatus">
-    <h2 class="page__title">
+  <div class="container" v-if="loaded">
+    <div v-if="errorStatus">
+       <h2 class="page__title">
       {{$t('Верификация')}}
     </h2>
     <div class="row mt-4">
@@ -34,14 +35,14 @@
           v-if="codeCome"
           :unchecked-value="false"
         >
-          {{$t("Согласен на обработку данных")}}
+          {{$t("Я даю своё согласие на обработку и использование моих персональных данных")}}
         </b-form-checkbox>
         <button
         v-if="codeCome"
         @click="getAccess"
         :disabled="!status"
         :class="`${status ? '' : 'disabled'}`">
-            {{$t("Потвердить код")}}
+            {{$t("Подтвердить код")}}
         </button>
         <br>
         <button
@@ -56,12 +57,13 @@
         <p class="posr">{{ newUser.email }}<span class="chval"></span></p>
       </div>
     </div>
-  </div>
+    </div>
     <div v-else>
     <h2 class="page__title">
-      {{$t("Страница не найдена")}}
+      Такой Hash не существует! Вы будете перенаправлены на страницу авторизации.
     </h2>
     </div>
+  </div>
 </template>
 
 <script>
@@ -76,6 +78,7 @@ export default {
       newUser: {
         mobile_phone: '',
       },
+      loaded: false,
       errorStatus: true,
       mobile_phone_code: null,
       codeCome: false,
@@ -92,11 +95,16 @@ export default {
   },
   mounted() {
     backApi.get('/agent/new-agent', { params: { hash_content: this.$route.params.signup_hash } }).then((Response) => {
+      this.loaded = true;
       this.newUser = Response.data;
     })
       .catch(() => {
-        // this.showToast('', 'Произошла ошибка!', 'danger');
+        // this.showToast('Ошибка', error.response.data.detail, 'danger');
         this.errorStatus = false;
+        this.loaded = true;
+        setTimeout(() => {
+          this.$router.push('/login');
+        }, 4000);
       });
   },
   methods: {

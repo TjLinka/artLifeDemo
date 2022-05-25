@@ -23,7 +23,7 @@
               name="some-radios-1"
               :value="1"
               class="radio mr-3"
-              >{{ $t('Партнёр') }}</b-form-radio
+              >{{ $t('Дистрибьютор') }}</b-form-radio
             >
             <b-form-radio
               v-model="ref_agrigment"
@@ -180,12 +180,12 @@ export default {
     },
     getRefData(type) {
       if (type === 1) {
-        backAPI.get('/agent/sales/catalog/', { params: { stock_id: 0 } }).then((Response) => {
+        backAPI.get('/agent/sales/catalog', { params: { stock_id: 0 } }).then((Response) => {
           this.ref_products_list = Response.data.entries.map((product) => ({ id: product.id, articul: product.articul, name: product.name }));
         });
       }
       if (type === 2) {
-        backAPI.get('/agent/reflinks/landings/').then((Response) => {
+        backAPI.get('/agent/reflinks/landings').then((Response) => {
           console.log(Response);
           this.ref_landing_list = Response.data.entries;
         });
