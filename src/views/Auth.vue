@@ -13,6 +13,11 @@
       <h4 class="text-center mb-5 error_log" v-if="isTerm">
         {{$t("Данный Агент терминирован, если это ошибка - обратитесь к сотрудникам Компании")}} !
       </h4>
+      <h4 class="text-center mb-5 error_log" v-if="isLVL1">
+        {{$t("К сожалению, у Вас нет возможности начать работу в ЛК Партнёра, так как при регистрации личного кабинета на сайте Вы отказались от статуса Партнёра.")}} <br>
+        {{$t(`В случае, если Вы захотите принять участие в программе и стать Партнёром компании \"Артлайф\"`)}} <br>
+        {{$t(`необходимо в личном кабинете на сайте www.artlife.ru дать согласие на участие в партнёрской программе.`)}}
+      </h4>
       <div class="auth__page__form">
         <div class="row">
           <div class="col mb-4 text-center switch">
@@ -101,6 +106,7 @@ export default {
       value2: false,
       badLogin: false,
       isTerm: false,
+      isLVL1: false,
       sitekey: '6LdD2c8aAAAAAOQXfujlkoLbR_bQyxI4kKLifnCU',
       log: {
         login: '',
@@ -189,12 +195,20 @@ export default {
                 this.badLogin = true;
                 return;
               }
+              if (error.response.data.detail === 'LVL1') {
+                this.isLVL1 = true;
+                this.isTerm = false;
+                this.badLogin = false;
+                return;
+              }
               if (error.response.data.detail.toLowerCase() === 'agent is terminated') {
                 this.isTerm = true;
                 this.badLogin = false;
+                this.isLVL1 = false;
               } else {
                 this.isTerm = false;
                 this.badLogin = true;
+                this.isLVL1 = false;
               }
             });
         } else {
