@@ -154,6 +154,11 @@ export default {
           name: 'Бизнес-предложение',
           type_value: 'selected_business',
         },
+        {
+          id: 5,
+          name: 'На главную страницу',
+          type_value: 'selected_mainpage',
+        },
       ],
       ref_products_list: [],
       ref_landing_list: [],

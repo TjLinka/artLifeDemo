@@ -19,6 +19,7 @@
     "element-ui": "^2.13.2",
     "jquery": "^3.5.1",
     "md5": "^2.3.0",
+    "qrcode.vue": "^1.7.0",
     "v-mask": "^2.2.3",
     "vue": "^2.6.12",
     "vue-ads-table-tree": "^2.4.2",

@@ -62,12 +62,11 @@
             >
               {{ scope.item.url }}
             </a>
-            <!-- <span >Copy</span> -->
-            <!-- <b-icon-share
+            <b-icon-share
               v-b-modal.modal-scrollable
               class="ml-3"
               style="width: 14px; height: 14px; float: right;"
-            ></b-icon-share> -->
+            ></b-icon-share>
             <b-icon-link
               class="ml-3"
               style="width: 18px; height: 18px; float: right;"
@@ -99,7 +98,7 @@
         </div>
       </footer> -->
     </div>
-        <!-- <b-modal v-model="show" id="modal-scrollable" centered hide-header-close scrollable title="Поделиться">
+    <b-modal v-model="show" id="modal-scrollable" centered hide-header-close scrollable title="Поделиться">
       <p style="text-align: center; font-size: 26px;">
         <strong>QR Code</strong>
       </p>
@@ -155,13 +154,13 @@
           {{ $t('Закрыть') }}
         </b-button>
       </template>
-    </b-modal> -->
+    </b-modal>
   </div>
 </template>
 
 <script>
 import $ from 'jquery';
-// import QrcodeVue from 'qrcode.vue';
+import QrcodeVue from 'qrcode.vue';
 import backAPI from '../assets/backApi';
 import dateFormat from '../assets/localDateFunc';
 // import RightsModalTakeVue from '../components/RightsModalTake.vue';
@@ -169,7 +168,7 @@ import dateFormat from '../assets/localDateFunc';
 export default {
   name: 'RefURL',
   components: {
-    // QrcodeVue,
+    QrcodeVue,
   },
   data() {
     return {
@@ -219,6 +218,18 @@ export default {
         {
           key: 'cnt_reg',
           label: 'Число регистраций',
+          thClass: 'ref_th_class',
+          sortable: true,
+        },
+        {
+          key: 'count_of_purchases',
+          label: 'Количество покупок',
+          thClass: 'ref_th_class',
+          sortable: true,
+        },
+        {
+          key: 'purchase_amount',
+          label: 'Сумма покупок',
           thClass: 'ref_th_class',
           sortable: true,
         },
@@ -359,33 +370,33 @@ export default {
     margin-right: 5px;
 }
 
-// .share-buttons .facebook {
-//     background: url("../assets/imgs/share-btns.png") no-repeat left top;
-// }
+.share-buttons .facebook {
+    background: url("../assets/imgs/share-btns.png") no-repeat left top;
+}
 
-// .share-buttons .vkontakte {
-//     background: url("../assets/imgs/share-btns.png") no-repeat -168px top;
-// }
+.share-buttons .vkontakte {
+    background: url("../assets/imgs/share-btns.png") no-repeat -168px top;
+}
 
-// .share-buttons .ok {
-//     background: url("../assets/imgs/share-btns.png") no-repeat -126px top;
-// }
+.share-buttons .ok {
+    background: url("../assets/imgs/share-btns.png") no-repeat -126px top;
+}
 
-// .share-buttons .twitter {
-//     background: url("../assets/imgs/share-btns.png") no-repeat -42px top;
-// }
+.share-buttons .twitter {
+    background: url("../assets/imgs/share-btns.png") no-repeat -42px top;
+}
 
-// .share-buttons .pinterest {
-//     background: url("../assets/imgs/share-btns.png") no-repeat -210px top;
-// }
+.share-buttons .pinterest {
+    background: url("../assets/imgs/share-btns.png") no-repeat -210px top;
+}
 
-// .share-buttons .mail {
-//     background: url("../assets/imgs/share-btns.png") no-repeat -294px top;
-// }
+.share-buttons .mail {
+    background: url("../assets/imgs/share-btns.png") no-repeat -294px top;
+}
 
-// .share-buttons .telegram {
-//     background: url("../assets/imgs/share-btns.png") no-repeat -672px top;
-// }
+.share-buttons .telegram {
+    background: url("../assets/imgs/share-btns.png") no-repeat -672px top;
+}
 .link {
   color: #32aaa7;
 }
