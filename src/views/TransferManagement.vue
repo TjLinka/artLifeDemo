@@ -1157,6 +1157,7 @@ export default {
       return `depth-${row.lvl}`;
     },
     handleClose(event, tag) {
+      this.entries = [];
       if (tag.key === 'rank_beg') {
         this.tags.splice(this.tags.indexOf(tag), 1);
         this.filterData.rank_beg = null;
