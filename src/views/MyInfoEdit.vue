@@ -14,7 +14,7 @@
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
           </svg>
         </p>
-        {{$t("Редактирование личных данных")}}
+        <!-- {{$t("Редактирование личных данных")}} -->
       </h2>
       <!-- <div class="myfoto">
         <img src="../assets/imgs/unnamed 1.png" alt="" />
@@ -260,6 +260,7 @@
 
 <script>
 import md5 from 'md5';
+import { mapActions } from 'vuex';
 // import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/ru';
@@ -293,6 +294,7 @@ export default {
     };
   },
   metaInfo() {
+    this.setPageTitle(this.$t('Редактирование личных данных'));
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('Редактирование личных данных')}`,
     };
@@ -315,6 +317,7 @@ export default {
     });
   },
   methods: {
+    ...mapActions('currentPage', ['setPageTitle']),
     checkValue(e) {
       if (e.target.value === '') {
         this.phone = '+';

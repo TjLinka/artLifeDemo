@@ -14,7 +14,7 @@
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
           </svg>
         </p>
-        {{$t("Передача прав")}}
+        <!-- {{$t("Передача прав")}} -->
       </h2>
       <div class="row cur_p">
         <div class="col">
@@ -106,6 +106,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import $ from 'jquery';
 import backApi from '../assets/backApi';
 import RightsModalTake from '../components/RightsModalTake.vue';
@@ -182,6 +183,7 @@ export default {
     };
   },
   metaInfo() {
+    this.setPageTitle(this.$t('Передача прав'));
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('Передача прав')}`,
     };
@@ -197,6 +199,7 @@ export default {
     });
   },
   methods: {
+    ...mapActions('currentPage', ['setPageTitle']),
     downloadXls() {
       backApi.get('/agent/share-transfert-list/excel', { responseType: 'blob' })
         .then(({ data }) => {

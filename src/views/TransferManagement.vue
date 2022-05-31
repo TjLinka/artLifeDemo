@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 <template>
   <div class="licevoischet__page">
     <div v-loading="loading">
@@ -15,7 +14,7 @@
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
           </svg>
         </p>
-        {{$t("Управление трансфертами структуры")}}
+        <!-- {{$t("Управление трансфертами структуры")}} -->
       </h2>
       <div class="row mb-4">
         <div class="col-md-6 uptran">
@@ -559,11 +558,13 @@ export default {
     this.tags.push({ name: 'Фильтр по ЛО: Все', key: 'lo_type' });
   },
   metaInfo() {
+    this.setPageTitle(this.$t('Управление трансфертами структуры'));
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('Управление трансфертами структуры')}`,
     };
   },
   methods: {
+    ...mapActions('currentPage', ['setPageTitle']),
     clearRegion() {
       this.filterData.area_id = null;
     },

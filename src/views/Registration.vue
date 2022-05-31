@@ -14,7 +14,7 @@
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
           </svg>
         </p>
-        {{$t("Регистрация")}}
+        <!-- {{$t("Регистрация")}} -->
       </h2>
       <div class="row mt-5">
         <div class="col-md-6">
@@ -102,6 +102,7 @@
 
 <script>
 import $ from 'jquery';
+import { mapActions } from 'vuex';
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/ru';
@@ -128,6 +129,7 @@ export default {
     };
   },
   metaInfo() {
+    this.setPageTitle(this.$t('Регистрация'));
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('Регистрация')}`,
     };
@@ -136,6 +138,7 @@ export default {
     this.loading = false;
   },
   methods: {
+    ...mapActions('currentPage', ['setPageTitle']),
     checkValue(e) {
       console.log(e);
       if (e.target.value === '') {

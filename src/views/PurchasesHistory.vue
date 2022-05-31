@@ -14,7 +14,7 @@
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
           </svg>
         </p>
-        {{$t("История покупок")}}
+        <!-- {{$t("История покупок")}} -->
       </h2>
       <p class="p-0 m-0 history_title"
       v-if="rangeDate[0] !== null && rangeDate.length > 0">{{$t("Период от и до")}}</p>
@@ -196,7 +196,7 @@
 <script>
 import $ from 'jquery';
 /* eslint-disable no-param-reassign */
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import DatePicker from 'vue2-datepicker';
 import backApi from '../assets/backApi';
 // import BasePeriodPicker from '../components/BasePeriodPicker.vue';
@@ -389,6 +389,7 @@ export default {
     };
   },
   metaInfo() {
+    this.setPageTitle(this.$t('История покупок'));
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('История покупок')}`,
     };
@@ -434,6 +435,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions('currentPage', ['setPageTitle']),
     // eslint-disable-next-line consistent-return
     sortCompare(aRow, bRow, key) {
       const a = aRow[key];

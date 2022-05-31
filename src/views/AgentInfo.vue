@@ -14,7 +14,7 @@
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
           </svg>
         </p>
-        {{$t("Карточка партнера")}}: {{userinfo.id}} - {{userinfo.name}}
+        <!-- {{$t("Карточка партнера")}}: {{userinfo.id}} - {{userinfo.name}} -->
       </h2>
       <h5 style="color: red;" v-if="!self_agreementsystem">Внимание! Ваш доступ в ЛК Партнёра только для чтения т.к. учёт ваших данных ведётся в старой системе,<br>
         попросите  Ваш Склад обслуживания перевести Вас на обслуживание в Новой Системе.</h5>
@@ -285,7 +285,7 @@
 
 <script>
 import $ from 'jquery';
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import Transfert2 from '../components/Transfert2.vue';
 import AgentInfoModalPoints from '../components/AgentInfoModalPoints.vue';
 import AgentInfoModalMoney from '../components/AgentInfoModalMoney.vue';
@@ -310,11 +310,13 @@ export default {
     };
   },
   metaInfo() {
+    this.setPageTitle(`${this.$t('Карточка партнера')} : ${this.userinfo.id} - ${this.userinfo.name}`);
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('Карточка партнера')} : ${this.userinfo.id} - ${this.userinfo.name}`,
     };
   },
   methods: {
+    ...mapActions('currentPage', ['setPageTitle']),
     async ddd() {
       if (this.$route.params.id) {
         const response = await backApi.get('/agent/profile/child', {

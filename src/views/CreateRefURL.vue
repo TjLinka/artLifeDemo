@@ -13,7 +13,7 @@
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
           </svg>
         </p>
-        {{ $t('Создание реферальной ссылки') }}
+        <!-- {{ $t('Создание реферальной ссылки') }} -->
       </h2>
       <div class="row">
         <div class="col-6">
@@ -120,6 +120,7 @@
 
 <script>
 import $ from 'jquery';
+import { mapActions } from 'vuex';
 import backAPI from '../assets/backApi';
 
 export default {
@@ -167,11 +168,13 @@ export default {
     };
   },
   metaInfo() {
+    this.setPageTitle(this.$t('Создание реферальной ссылки'));
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('Создание реферальной ссылки')}`,
     };
   },
   methods: {
+    ...mapActions('currentPage', ['setPageTitle']),
     back() {
       const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
       $(navEl[0])

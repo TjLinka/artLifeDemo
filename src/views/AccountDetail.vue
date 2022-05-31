@@ -8,7 +8,7 @@
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
-        {{$t("Детализация лицевого счета")}}: {{agentData.id}} - {{agentData.name}}
+        <!-- {{$t("Детализация лицевого счета")}}: {{agentData.id}} - {{agentData.name}} -->
         </h2>
       <p>
         <span class="licshet">{{$t("Состояние лицевого счета")}}:
@@ -117,6 +117,7 @@
 
 <script>
 import $ from 'jquery';
+import { mapActions } from 'vuex';
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/ru';
@@ -203,6 +204,7 @@ export default {
     };
   },
   metaInfo() {
+    this.setPageTitle(`${this.$t('Детализация лицевого счета')} : ${this.agentData.id} - ${this.agentData.name}`);
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('Детализация лицевого счета')} : ${this.agentData.id} - ${this.agentData.name}`,
     };
@@ -268,6 +270,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions('currentPage', ['setPageTitle']),
     clearDP() {
     },
     downloadXls() {

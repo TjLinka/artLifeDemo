@@ -13,7 +13,7 @@
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
           </svg>
         </p>
-        {{ $t('Реферальные ссылки') }}
+        <!-- {{ $t('Реферальные ссылки') }} -->
       </h2>
       <div class="row mb-4">
         <div class="col-6">
@@ -160,6 +160,7 @@
 
 <script>
 import $ from 'jquery';
+import { mapActions } from 'vuex';
 import QrcodeVue from 'qrcode.vue';
 import backAPI from '../assets/backApi';
 import dateFormat from '../assets/localDateFunc';
@@ -270,6 +271,7 @@ export default {
     };
   },
   metaInfo() {
+    this.setPageTitle(this.$t('Реферальные ссылки'));
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('Реферальные ссылки')}`,
     };
@@ -283,6 +285,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('currentPage', ['setPageTitle']),
     back() {
       const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
       $(navEl[0])

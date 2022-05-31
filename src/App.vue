@@ -354,7 +354,7 @@ input[type="checkbox"]{
 // КОНЕЦ СТИЛЕЙ ДЛЯ RADIO КНОПОК
 
 main {
-  margin-top: 40px;
+  // margin-top: 40px;
   padding-bottom: 70px;
   padding-left: 120px;
 }
