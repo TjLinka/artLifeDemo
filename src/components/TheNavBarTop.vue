@@ -1,7 +1,7 @@
 <template>
   <b-navbar type="dark" variant="grey" :class="is_authorized ? 'main_color' : 'auth_page'">
     <div class="container">
-      <span class="page__title_nav">{{ pageTitle }}</span>
+      <span class="page__title_nav" v-if="is_authorized" >{{ pageTitle }}</span>
       <b-navbar-brand to="/" v-if="!is_authorized">
         <img :src="`../icons/${$i18n.locale}lc.png`" alt="" srcset="" />
       </b-navbar-brand>
