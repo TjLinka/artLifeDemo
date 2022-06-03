@@ -185,7 +185,7 @@ export default {
         const reMail = /^[\w-.]+@[\w-]+\.[a-z]{2,4}$/i;
         if (
           this.newUser.fio !== '' && this.country !== ''
-          && this.newUser.city !== '' && this.newUser.bthdte !== ''
+          && this.newUser.city !== '' && this.newUser.bthdte !== '' && this.newUser.bthdte !== null
           && this.phone.replace(/[-,(,),+]/g, '') !== '' && this.newUser.email !== '' && reMail.test(this.newUser.email)
         ) {
           const data = {
