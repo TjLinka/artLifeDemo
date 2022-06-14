@@ -34,7 +34,7 @@
               >
               </date-picker>
           </div>
-          <div class="col" v-if="(self_agreementsystem && role !== 'Клиент') || isDev">
+          <div class="col" v-if="(self_agreementsystem && role !== 'Клиент')">
             <router-link to="/new-purchase">
                 <button class="btn_type_1 w50 fr">
                   Создать покупку
