@@ -361,7 +361,7 @@ export default {
     };
   },
   metaInfo() {
-    this.setPageTitle(`${this.$t('История показателей партнера по периодам')} : ${this.userInfo.id} - ${this.userInfo.name}`);
+    // this.setPageTitle(`${this.$t('История показателей партнера по периодам')} : ${this.userInfo.id} - ${this.userInfo.name}`);
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('История показателей партнера по периодам')} : ${this.userInfo.id} - ${this.userInfo.name}`,
     };
