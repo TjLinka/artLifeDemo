@@ -197,13 +197,13 @@ export default {
           sortable: true,
         },
         {
-          key: 'count_of_purchases',
+          key: 'cnt_sale',
           label: 'Количество покупок',
           thClass: 'ref_th_class',
           sortable: true,
         },
         {
-          key: 'purchase_amount',
+          key: 'sum_sale',
           label: 'Сумма покупок',
           thClass: 'ref_th_class',
           sortable: true,
