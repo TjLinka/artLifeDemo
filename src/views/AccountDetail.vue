@@ -204,7 +204,7 @@ export default {
     };
   },
   metaInfo() {
-    this.setPageTitle(`${this.$t('Детализация лицевого счета')} : ${this.agentData.id} - ${this.agentData.name}`);
+    this.setPageTitle(`${this.$t('Детализация лицевого счета')}`);
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('Детализация лицевого счета')} : ${this.agentData.id} - ${this.agentData.name}`,
     };

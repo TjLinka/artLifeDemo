@@ -28,7 +28,7 @@
           <div class="d-lg-flex"></div>
           <b-nav-item-dropdown right>
             <template v-slot:button-content>
-              <span class="mr-3 username">{{ agentname }}</span>
+              <span class="mr-3 username">{{self_agent_id}} - {{ agentname }}</span>
               <img class="mb-1" src="../assets/imgs/UserIcon.svg" alt="" />
             </template>
             <b-dropdown-item to="/">{{ agentname }}</b-dropdown-item>
@@ -57,7 +57,7 @@ import backAPI from '../assets/backApi';
 export default {
   name: 'TheNavBarTop',
   computed: {
-    ...mapState('auth', ['is_authorized', 'agentname', 'role', 'self_agreementsystem']),
+    ...mapState('auth', ['is_authorized', 'agentname', 'role', 'self_agreementsystem', 'self_agent_id']),
     ...mapState('currentPage', ['pageTitle']),
   },
   methods: {
@@ -129,6 +129,8 @@ export default {
   border: 1px solid #ffffff;
 }
 .username {
+  position: relative;
+  top: 2.4px;
   text-transform: uppercase;
   color: white;
 }

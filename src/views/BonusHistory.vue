@@ -243,7 +243,7 @@ export default {
     };
   },
   metaInfo() {
-    this.setPageTitle(`${this.$t('История начисления бонусов')} : ${this.agentData.id} - ${this.agentData.name}`);
+    this.setPageTitle(`${this.$t('История начисления бонусов')}`);
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('История начисления бонусов')} : ${this.agentData.id} - ${this.agentData.name}`,
     };

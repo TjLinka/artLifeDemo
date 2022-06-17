@@ -310,7 +310,6 @@ export default {
     };
   },
   metaInfo() {
-    this.setPageTitle(`${this.$t('Карточка партнера')} : ${this.userinfo.id} - ${this.userinfo.name}`);
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('Карточка партнера')} : ${this.userinfo.id} - ${this.userinfo.name}`,
     };
@@ -416,6 +415,16 @@ export default {
     },
     setData(user, transer) {
       this.userinfo = user;
+      if (this.$route.params.id) {
+        if (this.$route.params.id === String(this.self_agent_id)) {
+          this.setPageTitle(`${this.$t('Карточка партнера')}`);
+        } else {
+          this.setPageTitle(`${this.$t('Карточка партнера')} : ${this.userinfo.id} - ${this.userinfo.name}`);
+        }
+      } else {
+        this.setPageTitle(`${this.$t('Карточка партнера')}`);
+      }
+      // this.setPageTitle(`${this.$t('Карточка партнера')} : ${this.userinfo.id} - ${this.userinfo.name}`);
       if (transer) {
         this.transfertInfo = transer;
         this.transLoaded = true;
@@ -502,6 +511,7 @@ export default {
         });
       }
     } else {
+      this.setPageTitle('');
       // Загрузка данных, если перешли на свою карточку партнера
       const response = await backApi.get('/agent/profile');
       // Если 200, то грузим информацию о трансферте
@@ -525,7 +535,7 @@ export default {
   mounted() {
   },
   computed: {
-    ...mapState('auth', ['role', 'self_agreementsystem']),
+    ...mapState('auth', ['role', 'self_agreementsystem', 'self_agent_id']),
     transfertAccess() {
       return this.role === 'Клиент' && this.$router.path === '/';
     },

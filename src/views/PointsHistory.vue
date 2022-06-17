@@ -276,7 +276,7 @@ export default {
     };
   },
   metaInfo() {
-    this.setPageTitle(`${this.$t('История баллов')} : ${this.agentData.id} - ${this.agentData.name}`);
+    this.setPageTitle(`${this.$t('История баллов')}`);
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('История баллов')} : ${this.agentData.id} - ${this.agentData.name}`,
     };

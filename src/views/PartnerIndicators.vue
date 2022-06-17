@@ -388,6 +388,7 @@ export default {
         .get('/agent/profile/child/', { params: { another_agent_id: this.$route.params.id } })
         .then((Response) => {
           this.userInfo = Response.data;
+          this.setPageTitle(`${this.$t('История показателей партнера по периодам')} : ${this.userInfo.id} - ${this.userInfo.name}`);
         });
     } else {
       backApi.get('/agent/all-periods-indicators', {
@@ -408,6 +409,7 @@ export default {
           this.rank_icon = response.data.rank_calc;
         });
       });
+      this.setPageTitle(`${this.$t('История показателей партнера по периодам')}`);
     }
   },
   methods: {

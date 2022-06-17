@@ -1,0 +1,567 @@
+<template>
+  <div class="licevoischet__page">
+    <div class="container-fluid table_container">
+      <h2 class="page__title">
+        <!-- {{$t("История начисления бонусов")}}: {{agentData.id}} - {{agentData.name}} -->
+      </h2>
+      <p class="p-0 m-0 history_title mt-4">
+        {{ $t('Период от и до') }}
+      </p>
+      <b-row align-v="end" class="row mb-4">
+        <div class="col-4">
+          <date-picker
+            v-model="rangeDate"
+            range-separator=" - "
+            range
+            @clear="clearDP"
+            @change="getSelectedDataRange"
+            format="DD.MM.YYYY"
+            :editable="false"
+            placeholder="дд.мм.гггг - дд.мм.гггг"
+            value-type="YYYY-MM-DD"
+            style="width: 100%"
+          >
+          </date-picker>
+        </div>
+        <div class="col">
+        </div>
+      </b-row>
+      <div class="row">
+        <div class="col">
+          <span v-b-modal.modal-scrollable style="color: #32aaa7;">Легенда</span>
+        </div>
+      </div>
+      <h2 class="licevoischet__page__summ mt-3">
+        <!-- <span class="mr-4">{{ $t('ПЕРЕХОДОВ') }} = {{ incomes }} </span>
+        <span class="mr-4">{{ $t('РЕГИСТРАЦИЙ') }} = {{ outcomes }} </span>
+        <span class="mr-4">{{ $t('КОНВЕРСИЯ В РЕГ, %') }} = {{ balance2 }} </span>
+        <span class="mr-4">{{ $t('КОЛ-ВО ЗАКАЗОВ') }} = {{ balance2 }} </span>
+        <span class="mr-4">{{ $t('СУММА ЗАКАЗОВ') }} = {{ balance2 }} </span>
+        <span class="mr-4">{{ $t('КОЛ-ВО ВОЗВРАТОВ') }} = {{ balance2 }} </span>
+        <span class="mr-4">{{ $t('СУММА ВОЗВРАТОВ') }} = {{ balance2 }} </span>
+        <span class="mr-4">{{ $t('ДОЛЯ ВОЗВРАТОВ') }} = {{ balance2 }} </span> -->
+      </h2>
+      <b-table
+        :fields="fields"
+        :items="entries"
+        responsive
+        head-variant="light"
+        border
+        small
+        class="mt-1"
+      >
+        <template v-slot:cell(reflink_type)="scope">
+          <b-button size="sm" @click="showStocks(scope)" class="mr-2">
+            <span>{{ scope.detailsShowing ? '-' : '+' }}</span>
+          </b-button>
+          {{scope.item.reflink_type}}
+        </template>
+        <template v-slot:row-details>
+          <b-table :fields="returnFields" :items="returnData" head-variant="light" sticky-header>
+            <template v-slot:cell(ref_registration)="scope">
+              <span
+              style="color:#32aaa7; cursor: pointer;"
+              @click="openRegInfo(scope.item.ref_id)"
+              >
+                {{scope.item.ref_registration}}
+              </span>
+            </template>
+          </b-table>
+        </template>
+      </b-table>
+    </div>
+    <footer class="container-fluid cust_modal">
+      <div class="container-md">
+        <div class="row desktop_search">
+          <div
+            class="col text-center search__btn"
+            @click="searchActive = !searchActive"
+            v-if="!searchActive"
+          >
+            {{ $t('Фильтр') }} <span class="search_icons"></span>
+          </div>
+        </div>
+        <div v-if="searchActive" class="organization__modal">
+          <h3>
+            {{ $t('Фильтр') }}
+            <span @click="searchActive = !searchActive" class="close_btn"></span>
+          </h3>
+          <b-row align-v="end" class="row edit">
+            <div class="col-sm-6">
+              <el-select v-model="refType" placeholder="Тип ссылки" style="width: 100%">
+                <el-option
+                  v-for="ref in refTypeList"
+                  :key="ref.ref_id"
+                  :label="ref.ref_name"
+                  :value="ref.ref_id"
+                >
+                </el-option>
+              </el-select>
+            </div>
+            <div class="col-sm-6 custom_input">
+              <input type="text" name="ref_id" id="ref_id" required v-model="ref_id" />
+              <label for="ref_id">{{ $t('ID ссылки') }}</label>
+              <span class="clear_icon" @click="clearRefInput"></span>
+            </div>
+          </b-row>
+          <!-- <div class="row edit">
+          <div class="col-sm-6 custom_input">
+            <input type="number" name="naknum" id="naknum"
+            required v-model="filterData.naknum" />
+            <label for="naknum">{{$t("Номер накладной")}}</label>
+            <span class="clear_icon" @click="clearInput('naknum')"></span>
+          </div>
+          <div class="col-sm-6 custom_input">
+            <input type="number" name="docnum" id="docnum"
+            required v-model="filterData.docnum" />
+            <label for="docnum">{{$t("Номер возвратной накладной")}}</label>
+            <span class="clear_icon" @click="clearInput('docnum')"></span>
+          </div>
+        </div> -->
+          <div class="row edit mt-4">
+            <div class="col-xl-6"></div>
+            <div class="col-xl-6">
+              <div class="update">
+                <button :class="`mr-2`" @click="updateData">{{ $t('Показать') }}</button>
+                <button @click="resetData">{{ $t('Сбросить') }}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <footer class="container-fluid cust_modal" v-show="showNewUserModal">
+      <div class="container-md">
+        <div class="organization__modal">
+          <h3>
+            Реферальная ссылка {{currentRegInfo}}
+            <span class="close_btn" @click="showNewUserModal = !showNewUserModal"></span>
+          </h3>
+          <b-table
+            :fields="currentRefFields"
+            :items="currentRefData"
+            responsive
+            head-variant="light"
+            sticky-header
+            height="40vh"
+            border
+            small
+            class="mt-1"
+          >
+          </b-table>
+        </div>
+      </div>
+    </footer>
+    <!-- <b-modal v-model="show" id="modal-scrollable" centered scrollable title="Легенда">
+      <div>
+      <div class="modal_icons">
+        <img :src="`../icons/Клиент.svg`"
+        class="rank_icon_legend"> <span>{{$t("Привилегированный клиент")}}</span></div> <br>
+      <div class="modal_icons">
+        <img :src="`../icons/Консультант.svg`"
+        class="rank_icon_legend"> <span>{{$t("Консультант")}}</span></div><br>
+      <div class="modal_icons">
+        <img :src="`../icons/Мастер.svg`"
+        class="rank_icon_legend"><span>{{$t("Мастер")}}</span></div><br>
+      <div class="modal_icons">
+        <img :src="`../icons/Управляющий.svg`"
+        class="rank_icon_legend"><span>{{$t("Управляющий")}}</span></div><br><br>
+      <div class="modal_icons">
+        <img :src="`../icons/Директор.svg`"
+        class="rank_icon_legend"><span>{{$t("Директор")}}</span></div><br>
+      <div class="modal_icons"><img :src="`../icons/Серебряный Директор.svg`"
+      class="rank_icon_legend">
+      <span>{{$t("Серебряный Директор")}}</span></div><br>
+      <div class="modal_icons"><img :src="`../icons/Золотой Директор.svg`"
+      class="rank_icon_legend">
+      <span>{{$t("Золотой Директор")}}</span></div><br><br>
+      <div class="modal_icons"><img :src="`../icons/Рубиновый Директор.svg`" class="rank_icon_legend">
+      <span>{{$t("Рубиновый Директор")}}</span></div><br>
+      <div class="modal_icons"><img :src="`../icons/Бриллиантовый Директор.svg`"
+      class="rank_icon_legend">
+      <span>{{$t("Бриллиантовый Директор")}}</span></div><br>
+      <div class="modal_icons">
+        <img :src="`../icons/Президент.svg`"
+        class="rank_icon_legend"><span>{{$t("Президент")}}</span></div>
+        </div>
+        <br>
+      <template #modal-footer>
+        <b-button variant="primary" size="sm" class="float-right cls_btn" @click="show = false">
+          {{ $t('Закрыть') }}
+        </b-button>
+      </template>
+    </b-modal> -->
+  </div>
+</template>
+
+<script>
+
+/* eslint-disable no-param-reassign */
+import DatePicker from 'vue2-datepicker';
+// import backAPI from '../assets/backApi';
+import 'vue2-datepicker/index.css';
+import 'vue2-datepicker/locale/ru';
+import backAPI from '../assets/backApi';
+
+export default {
+  name: 'RefLinksGroup',
+  components: {
+    DatePicker,
+  },
+  data() {
+    return {
+      ref_id: '',
+      refType: '',
+      currentRegInfo: '',
+      showModal1: false,
+      showNewUserModal: false,
+      showRegInfo: false,
+      searchActive: false,
+      show: false,
+      newUser: {
+        id: '',
+        name: '',
+        phone: '',
+        email: '',
+        reg_date: '',
+      },
+      refTypeList: [
+        {
+          ref_id: 1,
+          ref_name: 'Регистрация',
+        },
+        {
+          ref_id: 2,
+          ref_name: 'Лендинг',
+        },
+        {
+          ref_id: 3,
+          ref_name: 'Бизнес',
+        },
+        {
+          ref_id: 4,
+          ref_name: 'Товар',
+        },
+      ],
+      fields: [
+        {
+          key: 'reflink_type',
+          label: 'Тип',
+        },
+        // {
+        //   key: 'ref_id',
+        //   label: 'ID',
+        // },
+        {
+          key: 'ref_visit',
+          label: 'Переходы',
+        },
+        {
+          key: 'ref_registration',
+          label: 'Регистрация',
+        },
+        {
+          key: 'conversion_pc',
+          label: 'Конверсия в рег, %',
+        },
+        {
+          key: 'sale_cnt',
+          label: 'Кол-во заказов (оплат)',
+        },
+        {
+          key: 'sale_sum',
+          label: 'Сумма заказов (оплат)',
+        },
+        {
+          key: 'return_cnt',
+          label: 'Кол-во возвратов',
+        },
+        {
+          key: 'return_sum',
+          label: 'Сумма возвратов',
+        },
+        {
+          key: 'return_porcion',
+          label: 'Доля возвратов',
+        },
+        {
+          key: 'ref_award',
+          label: 'Сумма розн. Возн.',
+        },
+        {
+          key: 'ref_points_sum',
+          label: 'Сумма баллов',
+        },
+      ],
+      entries: [
+        {
+          ref_id: 1,
+          type: 'Регистрация',
+          ref_visit: 100,
+          ref_registration: 50,
+          _showDetails: false,
+        },
+        {
+          ref_id: 2,
+          type: 'Landing',
+          ref_visit: 100,
+          ref_registration: 50,
+          _showDetails: false,
+        },
+        {
+          ref_id: 3,
+          type: 'Бизнес',
+          ref_visit: 100,
+          ref_registration: 50,
+          _showDetails: false,
+        },
+        {
+          ref_id: 4,
+          type: 'Товар',
+          ref_visit: 100,
+          ref_registration: 50,
+          _showDetails: false,
+        },
+      ],
+      returnFields: [
+        // {
+        //   key: 'type',
+        //   label: 'Тип',
+        // },
+        {
+          key: 'ref_id',
+          label: 'ID',
+        },
+        {
+          key: 'ref_visit',
+          label: 'Переходы',
+        },
+        {
+          key: 'ref_registration',
+          label: 'Регистрация',
+        },
+        {
+          key: 'ref_convertion',
+          label: 'Конверсия в рег, %',
+        },
+        {
+          key: 'ref_orders',
+          label: 'Кол-во заказов (оплат)',
+        },
+        {
+          key: 'ref_orders_sum',
+          label: 'Сумма заказов (оплат)',
+        },
+        {
+          key: 'ref_refounds',
+          label: 'Кол-во возвратов',
+        },
+        {
+          key: 'ref_refounds_sum',
+          label: 'Сумма возвратов',
+        },
+        {
+          key: 'ref_refound_fraction',
+          label: 'Доля возвратов',
+        },
+        {
+          key: 'ref_award',
+          label: 'Сумма розн. Возн.',
+        },
+        {
+          key: 'ref_points_sum',
+          label: 'Сумма баллов',
+        },
+      ],
+      returnData: [],
+      currentRefFields: [
+        {
+          key: 'partner_id',
+          label: 'ID Партёнра',
+        },
+        {
+          key: 'partner_fio',
+          label: 'ФИО',
+        },
+        {
+          key: 'partner_phone',
+          label: 'Телефон',
+        },
+        {
+          key: 'partner_email',
+          label: 'E-mail',
+        },
+        {
+          key: 'partner_reg_date',
+          label: 'Дата регистрации',
+        },
+      ],
+      currentRefData: [],
+      rangeDate: [
+        this.$moment()
+          .subtract(0, 'months')
+          .startOf('year')
+          .format('YYYY-MM-DD'),
+        this.$moment()
+          .subtract(0, 'months')
+          .endOf('year')
+          .format('YYYY-MM-DD'),
+      ],
+      rangeDateReg: [],
+    };
+  },
+  mounted() {
+    backAPI.get('/agent/reflinks-summary-by-agent').then((Response) => {
+      // console.log(Response.data);
+      this.entries = Response.data.entries;
+    });
+  },
+  methods: {
+    clearRefInput() {
+      this.ref_id = '';
+    },
+    clearUserInfo(key) {
+      this.newUser[key] = '';
+    },
+    async showStocks(scope) {
+      this.entries.forEach((ref) => {
+        if (ref.ref_id !== scope.item.ref_id) {
+          // eslint-disable-next-line no-underscore-dangle
+          ref._showDetails = false;
+        }
+      });
+      this.returnData = [];
+      // eslint-disable-next-line no-underscore-dangle
+      if (!scope.item._showDetails) {
+        try {
+          // const response = await backAPI.get('/agent/reflinks');
+          this.returnData = [
+            {
+              ref_id: 1,
+              ref_registration: 100,
+            },
+          ];
+        } catch (error) {
+          console.log('Произошла ошибка');
+        }
+      }
+      scope.toggleDetails();
+    },
+    openRegInfo(id) {
+      this.currentRegInfo = id;
+      this.showNewUserModal = !this.showNewUserModal;
+    },
+    updateData() {
+      console.log('Update');
+    },
+    resetData() {
+      console.log('Reset Data');
+    },
+    getSelectedDataRange() {
+      console.log('Date changes');
+    },
+    clearDP() {
+      console.log('Clear Date');
+    },
+    clearDPReg() {
+      console.log('Clear Reg Date');
+    },
+    regAction() {
+      console.log('Registration');
+    },
+  },
+};
+</script>
+<style lang="scss" scoped>
+.licevoischet__page {
+  &__summ {
+    text-align: center;
+    // font-family: 'Futura PT Book';
+    // font-weight: 500;
+    background-color: #dee2f3;
+    font-size: 16px;
+    padding: 10px 0px;
+    margin-bottom: 0;
+    // margin-bottom: 160px;
+  }
+}
+.search_icons {
+  position: relative;
+  top: 5px;
+  display: inline-block;
+  width: 24px !important;
+  height: 24px;
+  background-image: url('../../public/icons/search.svg');
+  background-size: contain;
+  &.mobi {
+    position: absolute;
+    top: 20px;
+    right: 15px;
+  }
+}
+.organization__modal {
+  position: relative;
+  padding: 0px 0px;
+  margin: 30px 0px;
+  width: 100%;
+  bottom: 0;
+
+  & .edit {
+    margin-top: 50px;
+    input {
+      // margin-bottom: 20px;
+    }
+    button {
+      margin-top: 20px;
+      width: 48%;
+      border: 0;
+      padding: 5px 30px;
+      font-size: 16px;
+      &:nth-of-type(1) {
+        background-color: #32aaa7;
+        color: white;
+        border: 2px solid #32aaa7;
+      }
+      &:nth-of-type(2) {
+        float: right;
+        background-color: white;
+        color: #32aaa7;
+        border: 2px solid #32aaa7;
+      }
+    }
+  }
+}
+</style>
+<style>
+.btn-secondary {
+  color: black;
+  background: none;
+  border: 0;
+  outline: none !important;
+  box-shadow: none;
+  font-weight: 500;
+  font-size: 18px;
+}
+.btn-secondary:hover {
+  color: black;
+  background: transparent;
+}
+.btn-secondary:not(:disabled):not(.disabled):active,
+.btn-secondary:not(:disabled):not(.disabled).active,
+.show > .btn-secondary.dropdown-toggle {
+  background-color: unset;
+  outline: none !important;
+}
+.btn-secondary:not(:disabled):not(.disabled):active:focus,
+.btn-secondary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-secondary.dropdown-toggle:focus {
+  box-shadow: none;
+}
+.btn-secondary:focus,
+.btn-secondary.focus {
+  color: black;
+  background-color: transparent;
+  border: 0;
+  box-shadow: none;
+}
+</style>
