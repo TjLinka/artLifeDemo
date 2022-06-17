@@ -202,6 +202,7 @@ export default {
     for (const link of links) {
       // eslint-disable-next-line prefer-arrow-callback
       link.addEventListener('click', function () {
+        console.log(this.parentNode);
         this.parentNode.firstChild.classList.remove('active');
       });
     }

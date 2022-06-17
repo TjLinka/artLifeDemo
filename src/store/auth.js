@@ -39,6 +39,7 @@ export default {
       state.agentname = JSON.parse(localStorage.getItem('access_token')).agentname;
       state.role = JSON.parse(localStorage.getItem('access_token')).role;
       state.self_agreementsystem = JSON.parse(localStorage.getItem('access_token')).self_agreementsystem;
+      state.self_agent_id = JSON.parse(localStorage.getItem('access_token')).agent_id;
     },
     AUTH_ERROR: (state) => {
       state.auth_request_status = 'error';
