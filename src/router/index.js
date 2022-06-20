@@ -178,7 +178,7 @@ const routes = [
     component: () => import('../views/RefURL.vue'),
   },
   {
-    path: '/ref-urls-group/',
+    path: '/ref-urls-report/',
     name: 'RefLinksGroup',
     component: () => import('../views/RefLinksGroup.vue'),
   },

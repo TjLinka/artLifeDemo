@@ -105,7 +105,7 @@
             {{$t("История показателей партнера по периодам")}}
             </router-link></li>
             <li>
-              <router-link to="/ref-urls-group">
+              <router-link to="/ref-urls-report">
               {{$t("Отчет по реферальным ссылкам")}}
               </router-link>
             </li>

@@ -555,12 +555,12 @@ export default {
       this.currentRefData = [];
       this.currentRegInfo = '';
     },
-    clearDPReg() {
-      console.log('Clear Reg Date');
-    },
-    regAction() {
-      console.log('Registration');
-    },
+    // clearDPReg() {
+    //   console.log('Clear Reg Date');
+    // },
+    // regAction() {
+    //   console.log('Registration');
+    // },
   },
   computed: {
     all_links() {
