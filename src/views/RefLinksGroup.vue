@@ -26,20 +26,20 @@
         <div class="col">
         </div>
       </b-row>
-      <div class="row">
+      <!-- <div class="row">
         <div class="col">
           <span v-b-modal.modal-scrollable style="color: #32aaa7;">Легенда</span>
         </div>
-      </div>
+      </div> -->
       <h2 class="licevoischet__page__summ mt-3">
-        <!-- <span class="mr-4">{{ $t('ПЕРЕХОДОВ') }} = {{ incomes }} </span>
-        <span class="mr-4">{{ $t('РЕГИСТРАЦИЙ') }} = {{ outcomes }} </span>
-        <span class="mr-4">{{ $t('КОНВЕРСИЯ В РЕГ, %') }} = {{ balance2 }} </span>
-        <span class="mr-4">{{ $t('КОЛ-ВО ЗАКАЗОВ') }} = {{ balance2 }} </span>
-        <span class="mr-4">{{ $t('СУММА ЗАКАЗОВ') }} = {{ balance2 }} </span>
-        <span class="mr-4">{{ $t('КОЛ-ВО ВОЗВРАТОВ') }} = {{ balance2 }} </span>
-        <span class="mr-4">{{ $t('СУММА ВОЗВРАТОВ') }} = {{ balance2 }} </span>
-        <span class="mr-4">{{ $t('ДОЛЯ ВОЗВРАТОВ') }} = {{ balance2 }} </span> -->
+        <span class="mr-4">{{ $t('ПЕРЕХОДОВ') }} = {{ all_links }} </span>
+        <span class="mr-4">{{ $t('РЕГИСТРАЦИЙ') }} = {{ all_reg }} </span>
+        <span class="mr-4">{{ $t('КОНВЕРСИЯ В РЕГ, %') }} = {{ all_conversion_pc }} </span>
+        <span class="mr-4">{{ $t('КОЛ-ВО ЗАКАЗОВ') }} = {{ all_sales }} </span>
+        <span class="mr-4">{{ $t('СУММА ЗАКАЗОВ') }} = {{ all_sale_sum }} </span>
+        <span class="mr-4">{{ $t('КОЛ-ВО ВОЗВРАТОВ') }} = {{ all_returns }} </span>
+        <span class="mr-4">{{ $t('СУММА ВОЗВРАТОВ') }} = {{ all_return_sum }} </span>
+        <span class="mr-4">{{ $t('ДОЛЯ ВОЗВРАТОВ') }} = {{ all_return_porcion }} </span>
       </h2>
       <b-table
         :fields="fields"
@@ -58,19 +58,19 @@
         </template>
         <template v-slot:row-details>
           <b-table :fields="returnFields" :items="returnData" head-variant="light" sticky-header>
-            <template v-slot:cell(ref_registration)="scope">
+            <template v-slot:cell(cnt_reg)="scope">
               <span
               style="color:#32aaa7; cursor: pointer;"
-              @click="openRegInfo(scope.item.ref_id)"
+              @click="openRegInfo(scope.item.reflink_id)"
               >
-                {{scope.item.ref_registration}}
+                {{scope.item.cnt_reg}}
               </span>
             </template>
           </b-table>
         </template>
       </b-table>
     </div>
-    <footer class="container-fluid cust_modal">
+    <!-- <footer class="container-fluid cust_modal">
       <div class="container-md">
         <div class="row desktop_search">
           <div
@@ -104,7 +104,7 @@
               <span class="clear_icon" @click="clearRefInput"></span>
             </div>
           </b-row>
-          <!-- <div class="row edit">
+          <div class="row edit">
           <div class="col-sm-6 custom_input">
             <input type="number" name="naknum" id="naknum"
             required v-model="filterData.naknum" />
@@ -117,7 +117,7 @@
             <label for="docnum">{{$t("Номер возвратной накладной")}}</label>
             <span class="clear_icon" @click="clearInput('docnum')"></span>
           </div>
-        </div> -->
+        </div>
           <div class="row edit mt-4">
             <div class="col-xl-6"></div>
             <div class="col-xl-6">
@@ -129,7 +129,7 @@
           </div>
         </div>
       </div>
-    </footer>
+    </footer> -->
     <footer class="container-fluid cust_modal" v-show="showNewUserModal">
       <div class="container-md">
         <div class="organization__modal">
@@ -152,45 +152,6 @@
         </div>
       </div>
     </footer>
-    <!-- <b-modal v-model="show" id="modal-scrollable" centered scrollable title="Легенда">
-      <div>
-      <div class="modal_icons">
-        <img :src="`../icons/Клиент.svg`"
-        class="rank_icon_legend"> <span>{{$t("Привилегированный клиент")}}</span></div> <br>
-      <div class="modal_icons">
-        <img :src="`../icons/Консультант.svg`"
-        class="rank_icon_legend"> <span>{{$t("Консультант")}}</span></div><br>
-      <div class="modal_icons">
-        <img :src="`../icons/Мастер.svg`"
-        class="rank_icon_legend"><span>{{$t("Мастер")}}</span></div><br>
-      <div class="modal_icons">
-        <img :src="`../icons/Управляющий.svg`"
-        class="rank_icon_legend"><span>{{$t("Управляющий")}}</span></div><br><br>
-      <div class="modal_icons">
-        <img :src="`../icons/Директор.svg`"
-        class="rank_icon_legend"><span>{{$t("Директор")}}</span></div><br>
-      <div class="modal_icons"><img :src="`../icons/Серебряный Директор.svg`"
-      class="rank_icon_legend">
-      <span>{{$t("Серебряный Директор")}}</span></div><br>
-      <div class="modal_icons"><img :src="`../icons/Золотой Директор.svg`"
-      class="rank_icon_legend">
-      <span>{{$t("Золотой Директор")}}</span></div><br><br>
-      <div class="modal_icons"><img :src="`../icons/Рубиновый Директор.svg`" class="rank_icon_legend">
-      <span>{{$t("Рубиновый Директор")}}</span></div><br>
-      <div class="modal_icons"><img :src="`../icons/Бриллиантовый Директор.svg`"
-      class="rank_icon_legend">
-      <span>{{$t("Бриллиантовый Директор")}}</span></div><br>
-      <div class="modal_icons">
-        <img :src="`../icons/Президент.svg`"
-        class="rank_icon_legend"><span>{{$t("Президент")}}</span></div>
-        </div>
-        <br>
-      <template #modal-footer>
-        <b-button variant="primary" size="sm" class="float-right cls_btn" @click="show = false">
-          {{ $t('Закрыть') }}
-        </b-button>
-      </template>
-    </b-modal> -->
   </div>
 </template>
 
@@ -198,6 +159,7 @@
 
 /* eslint-disable no-param-reassign */
 import DatePicker from 'vue2-datepicker';
+import { mapActions } from 'vuex';
 // import backAPI from '../assets/backApi';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/ru';
@@ -210,6 +172,12 @@ export default {
     DatePicker,
   },
   mixins: [nullConvertor],
+  metaInfo() {
+    this.setPageTitle(`${this.$t('Отчет по реферальным ссылкам')}`);
+    return {
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('Отчет по реферальным ссылкам')}`,
+    };
+  },
   data() {
     return {
       ref_id: '',
@@ -366,53 +334,93 @@ export default {
         },
       ],
       returnFields: [
+        {
+          key: 'reflink_type',
+          label: 'Тип',
+        },
         // {
-        //   key: 'type',
-        //   label: 'Тип',
+        //   key: 'ref_id',
+        //   label: 'ID',
         // },
         {
-          key: 'ref_id',
-          label: 'ID',
-        },
-        {
-          key: 'ref_visit',
+          key: 'cnt_links',
           label: 'Переходы',
+          formatter: (val) => {
+            if (val === null) return 0;
+            return val;
+          },
         },
         {
-          key: 'ref_registration',
+          key: 'cnt_reg',
           label: 'Регистрация',
+          formatter: (val) => {
+            if (val === null) return 0;
+            return val;
+          },
         },
         {
-          key: 'ref_convertion',
+          key: 'conversion_pc',
           label: 'Конверсия в рег, %',
+          formatter: (val) => {
+            if (val === null) return 0;
+            return val;
+          },
         },
         {
-          key: 'ref_orders',
+          key: 'sale_cnt',
           label: 'Кол-во заказов (оплат)',
+          formatter: (val) => {
+            if (val === null) return 0;
+            return val;
+          },
         },
         {
-          key: 'ref_orders_sum',
+          key: 'sale_sum',
           label: 'Сумма заказов (оплат)',
+          formatter: (val) => {
+            if (val === null) return 0;
+            return val;
+          },
         },
         {
-          key: 'ref_refounds',
+          key: 'return_cnt',
           label: 'Кол-во возвратов',
+          formatter: (val) => {
+            if (val === null) return 0;
+            return val;
+          },
         },
         {
-          key: 'ref_refounds_sum',
+          key: 'return_sum',
           label: 'Сумма возвратов',
+          formatter: (val) => {
+            if (val === null) return 0;
+            return val;
+          },
         },
         {
-          key: 'ref_refound_fraction',
+          key: 'return_porcion',
           label: 'Доля возвратов',
+          formatter: (val) => {
+            if (val === null) return 0;
+            return val;
+          },
         },
         {
-          key: 'ref_award',
+          key: 'retail_sum',
           label: 'Сумма розн. Возн.',
+          formatter: (val) => {
+            if (val === null) return 0;
+            return val;
+          },
         },
         {
-          key: 'ref_points_sum',
+          key: 'points',
           label: 'Сумма баллов',
+          formatter: (val) => {
+            if (val === null) return 0;
+            return val;
+          },
         },
       ],
       returnData: [],
@@ -454,11 +462,15 @@ export default {
   },
   mounted() {
     backAPI.get('/agent/reflinks-summary-by-agent').then((Response) => {
-      // console.log(Response.data);
+      Response.data.entries.forEach((type) => {
+        // eslint-disable-next-line no-underscore-dangle
+        type._showDetails = false;
+      });
       this.entries = Response.data.entries;
     });
   },
   methods: {
+    ...mapActions('currentPage', ['setPageTitle']),
     clearRefInput() {
       this.ref_id = '';
     },
@@ -466,15 +478,20 @@ export default {
       this.newUser[key] = '';
     },
     async showRefTypeDetails(scope) {
+      this.showNewUserModal = false;
+      this.currentRefData = [];
+      this.currentRegInfo = '';
+      this.returnData = [];
       this.entries.forEach((ref) => {
         if (ref.reflink_type_id !== scope.item.reflink_type_id) {
+          console.log('1');
           // eslint-disable-next-line no-underscore-dangle
           ref._showDetails = false;
         }
       });
-      this.returnData = [];
       // eslint-disable-next-line no-underscore-dangle
       if (!scope.item._showDetails) {
+        console.log('2');
         try {
           const params = {
             params: {
@@ -484,7 +501,7 @@ export default {
             },
           };
           backAPI.get('/agent/reflinks-summary-by-type', params).then((Response) => {
-            console.log(Response.data);
+            this.returnData = Response.data.entries;
           });
         } catch (error) {
           console.log('Произошла ошибка');
@@ -493,20 +510,50 @@ export default {
       scope.toggleDetails();
     },
     openRegInfo(id) {
+      // Старая информация по зарегестрированным партёнрам
+      this.currentRegInfo = '';
+      this.showNewUserModal = false;
+      this.currentRefData = [];
+      // Новая информация по зарегестрированным партёнрам
       this.currentRegInfo = id;
-      this.showNewUserModal = !this.showNewUserModal;
+      this.showNewUserModal = true;
+      const params = {
+        params: {
+          reflink_id: id,
+          beg_dte: this.rangeDate[0],
+          end_dte: this.rangeDate[1],
+        },
+      };
+      backAPI.get('/agent/reflink-reg-list', params).then((Response) => {
+        this.currentRefData = Response.data.entries;
+      });
     },
-    updateData() {
-      console.log('Update');
-    },
-    resetData() {
-      console.log('Reset Data');
-    },
+    // updateData() {
+    //   console.log('Update');
+    // },
+    // resetData() {
+    //   console.log('Reset Data');
+    // },
     getSelectedDataRange() {
-      console.log('Date changes');
+      const params = {
+        params: {
+          beg_dte: this.rangeDate[0],
+          end_dte: this.rangeDate[1],
+        },
+      };
+      backAPI.get('/agent/reflinks-summary-by-agent', params).then((Response) => {
+        Response.data.entries.forEach((type) => {
+          // eslint-disable-next-line no-underscore-dangle
+          type._showDetails = false;
+        });
+        this.entries = Response.data.entries;
+      });
     },
     clearDP() {
-      console.log('Clear Date');
+      console.log('Reset Data');
+      this.showNewUserModal = false;
+      this.currentRefData = [];
+      this.currentRegInfo = '';
     },
     clearDPReg() {
       console.log('Clear Reg Date');
@@ -515,19 +562,46 @@ export default {
       console.log('Registration');
     },
   },
+  computed: {
+    all_links() {
+      return this.entries.reduce((sum, type) => sum + type.cnt_links, 0);
+    },
+    all_reg() {
+      return this.entries.reduce((sum, type) => sum + type.cnt_reg, 0);
+    },
+    all_conversion_pc() {
+      return this.entries.reduce((sum, type) => sum + type.conversion_pc, 0);
+    },
+    all_sales() {
+      return this.entries.reduce((sum, type) => sum + type.sale_cnt, 0);
+    },
+    all_sale_sum() {
+      return this.entries.reduce((sum, type) => sum + type.sale_sum, 0);
+    },
+    all_returns() {
+      return this.entries.reduce((sum, type) => sum + type.return_cnt, 0);
+    },
+    all_return_sum() {
+      return this.entries.reduce((sum, type) => sum + type.return_sum, 0);
+    },
+    all_return_porcion() {
+      return this.entries.reduce((sum, type) => sum + type.return_porcion, 0);
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
 .licevoischet__page {
   &__summ {
     text-align: center;
-    // font-family: 'Futura PT Book';
-    // font-weight: 500;
     background-color: #dee2f3;
-    font-size: 16px;
+    font-size: 14px;
     padding: 10px 0px;
     margin-bottom: 0;
-    // margin-bottom: 160px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
   }
 }
 .search_icons {

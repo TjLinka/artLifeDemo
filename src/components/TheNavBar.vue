@@ -104,10 +104,11 @@
             <li  v-show="role !== 'Клиент'"><router-link to="/partnerindicators">
             {{$t("История показателей партнера по периодам")}}
             </router-link></li>
-            <li v-if="role === 'Клиент'"><router-link to="/client-bonus"
-            >
-            {{$t("Количество бонусных баллов")}}
-            </router-link></li>
+            <li>
+              <router-link to="/ref-urls-group">
+              {{$t("Отчет по реферальным ссылкам")}}
+              </router-link>
+            </li>
           </ul>
         </li>
         <!-- <li>
