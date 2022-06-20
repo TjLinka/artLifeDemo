@@ -419,7 +419,7 @@ export default {
         if (this.$route.params.id === String(this.self_agent_id)) {
           this.setPageTitle(`${this.$t('Карточка партнера')}`);
         } else {
-          this.setPageTitle(`${this.$t('Карточка партнера')} : ${this.userinfo.id} - ${this.userinfo.name}`);
+          this.setPageTitle(`${this.$t('Карточка партнера')} : ${this.userinfo.fio}`);
         }
       } else {
         this.setPageTitle(`${this.$t('Карточка партнера')}`);

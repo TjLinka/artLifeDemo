@@ -388,7 +388,7 @@ export default {
         .get('/agent/profile/child/', { params: { another_agent_id: this.$route.params.id } })
         .then((Response) => {
           this.userInfo = Response.data;
-          this.setPageTitle(`${this.$t('История показателей партнера по периодам')} : ${this.userInfo.id} - ${this.userInfo.name}`);
+          this.setPageTitle(`${this.$t('История показателей партнера по периодам')} : ${this.userInfo.fio}`);
         });
     } else {
       backApi.get('/agent/all-periods-indicators', {
