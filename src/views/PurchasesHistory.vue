@@ -379,6 +379,14 @@ export default {
           key: 'points',
           label: this.$t('Сумма баллов'),
           sortable: true,
+          formatter: (v) => {
+            const formatter = new Intl.NumberFormat('ru');
+            // eslint-disable-next-line no-restricted-globals
+            if (isNaN(v)) {
+              return '-';
+            }
+            return formatter.format(v);
+          },
         },
         {
           key: 'stock_name',

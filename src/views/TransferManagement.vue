@@ -130,6 +130,9 @@
             <div v-else-if="column.key === 'rank_calc_npp'">
               {{scope.row.rank_calc}}
             </div>
+            <div v-else-if="['lo', 'go', 'ngo', 'oo', 'ko', 'reserve'].includes(column.key)">
+              {{scope.row[column.key] | localInt}}
+            </div>
             <div v-else-if="column.key === 'trans'">
               <CustomInput :rowa="scope.row" v-show="scope.row.is_can_transfer"/>
             </div>

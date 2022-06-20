@@ -178,6 +178,11 @@ const routes = [
     component: () => import('../views/RefURL.vue'),
   },
   {
+    path: '/ref-urls-group/',
+    name: 'RefLinksGroup',
+    component: () => import('../views/RefLinksGroup.vue'),
+  },
+  {
     path: '/ref-urls-create/',
     name: 'CreateRefURL',
     component: () => import('../views/CreateRefURL.vue'),

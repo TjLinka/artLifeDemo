@@ -51,7 +51,7 @@
         class="mt-1"
       >
         <template v-slot:cell(reflink_type)="scope">
-          <b-button size="sm" @click="showStocks(scope)" class="mr-2">
+          <b-button size="sm" @click="showRefTypeDetails(scope)" class="mr-2">
             <span>{{ scope.detailsShowing ? '-' : '+' }}</span>
           </b-button>
           {{scope.item.reflink_type}}
@@ -202,12 +202,14 @@ import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/ru';
 import backAPI from '../assets/backApi';
+import nullConvertor from '../mixins/nullConvertor';
 
 export default {
   name: 'RefLinksGroup',
   components: {
     DatePicker,
   },
+  mixins: [nullConvertor],
   data() {
     return {
       ref_id: '',
@@ -253,44 +255,84 @@ export default {
         //   label: 'ID',
         // },
         {
-          key: 'ref_visit',
+          key: 'cnt_links',
           label: 'Переходы',
+          formatter: (val) => {
+            if (val === null) return 0;
+            return val;
+          },
         },
         {
-          key: 'ref_registration',
+          key: 'cnt_reg',
           label: 'Регистрация',
+          formatter: (val) => {
+            if (val === null) return 0;
+            return val;
+          },
         },
         {
           key: 'conversion_pc',
           label: 'Конверсия в рег, %',
+          formatter: (val) => {
+            if (val === null) return 0;
+            return val;
+          },
         },
         {
           key: 'sale_cnt',
           label: 'Кол-во заказов (оплат)',
+          formatter: (val) => {
+            if (val === null) return 0;
+            return val;
+          },
         },
         {
           key: 'sale_sum',
           label: 'Сумма заказов (оплат)',
+          formatter: (val) => {
+            if (val === null) return 0;
+            return val;
+          },
         },
         {
           key: 'return_cnt',
           label: 'Кол-во возвратов',
+          formatter: (val) => {
+            if (val === null) return 0;
+            return val;
+          },
         },
         {
           key: 'return_sum',
           label: 'Сумма возвратов',
+          formatter: (val) => {
+            if (val === null) return 0;
+            return val;
+          },
         },
         {
           key: 'return_porcion',
           label: 'Доля возвратов',
+          formatter: (val) => {
+            if (val === null) return 0;
+            return val;
+          },
         },
         {
-          key: 'ref_award',
+          key: 'retail_sum',
           label: 'Сумма розн. Возн.',
+          formatter: (val) => {
+            if (val === null) return 0;
+            return val;
+          },
         },
         {
-          key: 'ref_points_sum',
+          key: 'points',
           label: 'Сумма баллов',
+          formatter: (val) => {
+            if (val === null) return 0;
+            return val;
+          },
         },
       ],
       entries: [
@@ -423,9 +465,9 @@ export default {
     clearUserInfo(key) {
       this.newUser[key] = '';
     },
-    async showStocks(scope) {
+    async showRefTypeDetails(scope) {
       this.entries.forEach((ref) => {
-        if (ref.ref_id !== scope.item.ref_id) {
+        if (ref.reflink_type_id !== scope.item.reflink_type_id) {
           // eslint-disable-next-line no-underscore-dangle
           ref._showDetails = false;
         }
@@ -434,13 +476,16 @@ export default {
       // eslint-disable-next-line no-underscore-dangle
       if (!scope.item._showDetails) {
         try {
-          // const response = await backAPI.get('/agent/reflinks');
-          this.returnData = [
-            {
-              ref_id: 1,
-              ref_registration: 100,
+          const params = {
+            params: {
+              i_reflink_type_id: scope.item.reflink_type_id,
+              beg_dte: this.rangeDate[0],
+              end_dte: this.rangeDate[1],
             },
-          ];
+          };
+          backAPI.get('/agent/reflinks-summary-by-type', params).then((Response) => {
+            console.log(Response.data);
+          });
         } catch (error) {
           console.log('Произошла ошибка');
         }
