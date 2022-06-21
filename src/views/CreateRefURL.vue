@@ -15,7 +15,7 @@
         </p>
         <!-- {{ $t('Создание реферальной ссылки') }} -->
       </h2>
-      <div class="row">
+      <div class="row" v-if="role !== 'Клиент'">
         <div class="col-6">
           <b-form-group :label="`${$t('Тип соглашения')}`">
             <b-form-radio
@@ -120,7 +120,7 @@
 
 <script>
 import $ from 'jquery';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import backAPI from '../assets/backApi';
 
 export default {
@@ -203,7 +203,7 @@ export default {
       this.$bvModal.show('bv-modal-example');
       const params = {
         reflink_type: this.ref_type,
-        access_level: this.ref_agrigment,
+        access_level: this.role !== 'Клиент' ? this.ref_agrigment : 0,
         catalog_id: this.ref_type === 1 ? this.selected_product : null,
         reflink_base_id: this.ref_type === 2 ? this.selected_landing : 0,
         preview_info: this.preview_info,
@@ -243,6 +243,7 @@ export default {
     },
   },
   computed: {
+    ...mapState('auth', ['role']),
     canSaveRefLink() {
       if (this.ref_type) {
         if (this.ref_type === 1 && this.selected_product) {
