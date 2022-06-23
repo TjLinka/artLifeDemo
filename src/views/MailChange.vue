@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import backApi from '../assets/backApi';
 
 export default {
@@ -33,6 +34,7 @@ export default {
     };
   },
   metaInfo() {
+    this.setPageTitle(this.$t('Смена адреса почтового ящика'));
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('Смена адреса почтового ящика')}`,
     };
@@ -48,6 +50,9 @@ export default {
       .catch(() => {
         this.errorStatus = true;
       });
+  },
+  methods: {
+    ...mapActions('currentPage', ['setPageTitle']),
   },
 };
 </script>

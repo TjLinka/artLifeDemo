@@ -13,7 +13,7 @@
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
           </svg>
         </p>
-        {{ $t('Реферальные ссылки') }}
+        <!-- {{ $t('Реферальные ссылки') }} -->
       </h2>
       <div class="row mb-4">
         <div class="col-6">
@@ -62,17 +62,11 @@
             >
               {{ scope.item.url }}
             </a>
-            <!-- <span >Copy</span> -->
-            <!-- <b-icon-share
-              v-b-modal.modal-scrollable
-              class="ml-3"
-              style="width: 14px; height: 14px; float: right;"
-            ></b-icon-share> -->
-            <b-icon-link
-              class="ml-3"
-              style="width: 18px; height: 18px; float: right;"
-              @click.stop="copyLink(scope.item.id)"
-            ></b-icon-link>
+            <!-- <img src="../assets/imgs/copy_icon.svg" alt="" style="width: 20px; height: 20px;"> -->
+            <div class="float-right">
+            <img src="../assets/imgs/copy_icon.svg" alt="" style="width: 15px; height: 15px;" @click.stop="copyLink(scope.item.id)">
+            <img src="../assets/imgs/share_icon.svg" alt="" style="width: 15px; height: 15px; margin-left: 15px;" v-b-modal.modal-scrollable>
+            </div>
           </div>
         </template>
       </b-table>
@@ -99,7 +93,7 @@
         </div>
       </footer> -->
     </div>
-        <!-- <b-modal v-model="show" id="modal-scrollable" centered hide-header-close scrollable title="Поделиться">
+    <b-modal v-model="show" id="modal-scrollable" centered hide-header-close scrollable title="Поделиться">
       <p style="text-align: center; font-size: 26px;">
         <strong>QR Code</strong>
       </p>
@@ -113,40 +107,19 @@
       <div class="share_links">
         <div class="share-buttons">
           <button
-            class="facebook"
-            onClick="window.open('https://www.facebook.com/sharer.php?u=АДРЕС_СТРАНИЦЫ','sharer','status=0,toolbar=0,width=650,height=500');"
-            title="Поделиться в Facebook"
-          ></button>
-          <button
             class="vkontakte"
-            onClick="window.open('https://vkontakte.ru/share.php?url=АДРЕС_СТРАНИЦЫ','sharer','status=0,toolbar=0,width=650,height=500');"
+            :onClick="`window.open('https://vkontakte.ru/share.php?url=${qrURL}','sharer','status=0,toolbar=0,width=650,height=500');`"
             title="Поделиться Вконтакте"
           ></button>
           <button
-            class="ok"
-            onClick="window.open('https://www.odnoklassniki.ru/dk?st.cmd=addShare&st.s=1&st._surl=АДРЕС_СТРАНИЦЫ&st.comments=ОПИСАНИЕ','sharer','status=0,toolbar=0,width=650,height=500');"
-            title="Поделиться в Одноклассниках"
-          ></button>
-          <button
             class="telegram"
-            onClick="window.open('https://telegram.me/share/url?url=АДРЕС_СТРАНИЦЫ','sharer','status=0,toolbar=0,width=650,height=500');"
+            :onClick="`window.open('https://telegram.me/share/url?url=${qrURL}','sharer','status=0,toolbar=0,width=650,height=500')`"
             title="Поделиться в Телеграм"
           ></button>
           <button
-            class="pinterest"
-            onClick="window.open('https://ru.pinterest.com/pin/create/button/?url=АДРЕС_СТРАНИЦЫ','sharer','status=0,toolbar=0,width=650,height=500');"
-            data-media="АДРЕС_ИЗОБРАЖЕНИЯ"
-            title="Запинить"
-          ></button>
-          <button
-            class="twitter"
-            onClick="window.open('https://twitter.com/intent/tweet?text=ТАЙТЛ_СТРАНИЦЫ. ОПИСАНИЕ. СССЫЛКА','sharer','status=0,toolbar=0,width=650,height=500');"
-            title="Твитнуть"
-          ></button>
-          <button
-            class="mail"
-            onClick="window.open('https://connect.mail.ru/share?url=АДРЕС_СТРАНИЦЫ','sharer','status=0,toolbar=0,width=650,height=500');"
-            title="Поделиться в @Мой мир"
+            class="whatsapp"
+            :onClick="`window.open('https://api.whatsapp.com/send?text=${qrURL}','sharer','status=0,toolbar=0,width=650,height=500')`"
+            title="Поделиться в Whatsapp"
           ></button>
         </div>
       </div>
@@ -155,13 +128,14 @@
           {{ $t('Закрыть') }}
         </b-button>
       </template>
-    </b-modal> -->
+    </b-modal>
   </div>
 </template>
 
 <script>
 import $ from 'jquery';
-// import QrcodeVue from 'qrcode.vue';
+import { mapActions } from 'vuex';
+import QrcodeVue from 'qrcode.vue';
 import backAPI from '../assets/backApi';
 import dateFormat from '../assets/localDateFunc';
 // import RightsModalTakeVue from '../components/RightsModalTake.vue';
@@ -169,7 +143,7 @@ import dateFormat from '../assets/localDateFunc';
 export default {
   name: 'RefURL',
   components: {
-    // QrcodeVue,
+    QrcodeVue,
   },
   data() {
     return {
@@ -223,6 +197,18 @@ export default {
           sortable: true,
         },
         {
+          key: 'cnt_sale',
+          label: 'Количество покупок',
+          thClass: 'ref_th_class',
+          sortable: true,
+        },
+        {
+          key: 'sum_sale',
+          label: 'Сумма покупок',
+          thClass: 'ref_th_class',
+          sortable: true,
+        },
+        {
           key: 'created',
           label: 'Дата создания',
           sortable: true,
@@ -259,6 +245,7 @@ export default {
     };
   },
   metaInfo() {
+    this.setPageTitle(this.$t('Реферальные ссылки'));
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('Реферальные ссылки')}`,
     };
@@ -272,6 +259,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('currentPage', ['setPageTitle']),
     back() {
       const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
       $(navEl[0])
@@ -345,7 +333,8 @@ export default {
 .share-buttons {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 15px;
 }
 
 .share-buttons button {
@@ -359,33 +348,19 @@ export default {
     margin-right: 5px;
 }
 
-// .share-buttons .facebook {
-//     background: url("../assets/imgs/share-btns.png") no-repeat left top;
-// }
+.share-buttons .vkontakte {
+    background: url("../assets/imgs/vk_logo.svg");
+    background-size: contain;
+}
 
-// .share-buttons .vkontakte {
-//     background: url("../assets/imgs/share-btns.png") no-repeat -168px top;
-// }
-
-// .share-buttons .ok {
-//     background: url("../assets/imgs/share-btns.png") no-repeat -126px top;
-// }
-
-// .share-buttons .twitter {
-//     background: url("../assets/imgs/share-btns.png") no-repeat -42px top;
-// }
-
-// .share-buttons .pinterest {
-//     background: url("../assets/imgs/share-btns.png") no-repeat -210px top;
-// }
-
-// .share-buttons .mail {
-//     background: url("../assets/imgs/share-btns.png") no-repeat -294px top;
-// }
-
-// .share-buttons .telegram {
-//     background: url("../assets/imgs/share-btns.png") no-repeat -672px top;
-// }
+.share-buttons .telegram {
+    background: url("../assets/imgs/t_logo.svg") no-repeat;
+    background-size: contain;
+}
+.share-buttons .whatsapp {
+    background: url("../assets/imgs/whatsapp_logo.svg") no-repeat;
+    background-size: contain;
+}
 .link {
   color: #32aaa7;
 }

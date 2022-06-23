@@ -8,7 +8,7 @@
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
-        {{$t("Данные спонсора")}}
+        <!-- {{$t("Данные спонсора")}} -->
         </h2>
       <div class="sponsor__page__description">
         <div class="myfoto">
@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import $ from 'jquery';
 import backApi from '../assets/backApi';
 
@@ -66,6 +67,7 @@ export default {
     };
   },
   metaInfo() {
+    this.setPageTitle(this.$t('Данные спонсора'));
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('Данные спонсора')}`,
     };
@@ -78,6 +80,7 @@ export default {
     });
   },
   methods: {
+    ...mapActions('currentPage', ['setPageTitle']),
     back() {
       const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
       $(navEl[0])

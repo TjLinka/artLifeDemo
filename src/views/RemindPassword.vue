@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h2 class="page__title">
-      {{$t("Восстановить пароль")}}
+      <!-- {{$t("Восстановить пароль")}} -->
     </h2>
       <div class="row">
         <div class="col mt-3 switch">
@@ -76,6 +76,7 @@
 
 <script>
 import md5 from 'md5';
+import { mapActions } from 'vuex';
 import backApi from '../assets/backApi';
 
 export default {
@@ -94,11 +95,13 @@ export default {
     };
   },
   metaInfo() {
+    this.setPageTitle(this.$t('Восстановить пароль'));
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('Восстановить пароль')}`,
     };
   },
   methods: {
+    ...mapActions('currentPage', ['setPageTitle']),
     showToast(title, message, status) {
       // Use a shorter name for this.$createElement
       const h = this.$createElement;

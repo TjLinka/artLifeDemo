@@ -104,10 +104,11 @@
             <li  v-show="role !== 'Клиент'"><router-link to="/partnerindicators">
             {{$t("История показателей партнера по периодам")}}
             </router-link></li>
-            <li v-if="role === 'Клиент'"><router-link to="/client-bonus"
-            >
-            {{$t("Количество бонусных баллов")}}
-            </router-link></li>
+            <li>
+              <router-link to="/ref-urls-report">
+              {{$t("Отчет по реферальным ссылкам")}}
+              </router-link>
+            </li>
           </ul>
         </li>
         <!-- <li>
@@ -202,6 +203,7 @@ export default {
     for (const link of links) {
       // eslint-disable-next-line prefer-arrow-callback
       link.addEventListener('click', function () {
+        console.log(this.parentNode);
         this.parentNode.firstChild.classList.remove('active');
       });
     }

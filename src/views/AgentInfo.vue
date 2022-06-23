@@ -14,7 +14,7 @@
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
           </svg>
         </p>
-        {{$t("Карточка партнера")}}: {{userinfo.id}} - {{userinfo.name}}
+        <!-- {{$t("Карточка партнера")}}: {{userinfo.id}} - {{userinfo.name}} -->
       </h2>
       <h5 style="color: red;" v-if="!self_agreementsystem">Внимание! Ваш доступ в ЛК Партнёра только для чтения т.к. учёт ваших данных ведётся в старой системе,<br>
         попросите  Ваш Склад обслуживания перевести Вас на обслуживание в Новой Системе.</h5>
@@ -285,7 +285,7 @@
 
 <script>
 import $ from 'jquery';
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import Transfert2 from '../components/Transfert2.vue';
 import AgentInfoModalPoints from '../components/AgentInfoModalPoints.vue';
 import AgentInfoModalMoney from '../components/AgentInfoModalMoney.vue';
@@ -315,6 +315,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions('currentPage', ['setPageTitle']),
     async ddd() {
       if (this.$route.params.id) {
         const response = await backApi.get('/agent/profile/child', {
@@ -414,6 +415,16 @@ export default {
     },
     setData(user, transer) {
       this.userinfo = user;
+      if (this.$route.params.id) {
+        if (this.$route.params.id === String(this.self_agent_id)) {
+          this.setPageTitle(`${this.$t('Карточка партнера')}`);
+        } else {
+          this.setPageTitle(`${this.$t('Карточка партнера')} : ${this.userinfo.fio}`);
+        }
+      } else {
+        this.setPageTitle(`${this.$t('Карточка партнера')}`);
+      }
+      // this.setPageTitle(`${this.$t('Карточка партнера')} : ${this.userinfo.id} - ${this.userinfo.name}`);
       if (transer) {
         this.transfertInfo = transer;
         this.transLoaded = true;
@@ -500,6 +511,7 @@ export default {
         });
       }
     } else {
+      this.setPageTitle('');
       // Загрузка данных, если перешли на свою карточку партнера
       const response = await backApi.get('/agent/profile');
       // Если 200, то грузим информацию о трансферте
@@ -523,7 +535,7 @@ export default {
   mounted() {
   },
   computed: {
-    ...mapState('auth', ['role', 'self_agreementsystem']),
+    ...mapState('auth', ['role', 'self_agreementsystem', 'self_agent_id']),
     transfertAccess() {
       return this.role === 'Клиент' && this.$router.path === '/';
     },

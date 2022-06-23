@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h2 class="page_title">
-      {{$t("Создание покупки")}}
+      <!-- {{$t("Создание покупки")}} -->
     </h2>
     <h4 class="mt-3">
       {{userInfo.id}} - {{userInfo.name}}
@@ -329,7 +329,7 @@
 /* eslint-disable max-len */
 /* eslint-disable func-names */
 /* eslint-disable prefer-arrow-callback */
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import $ from 'jquery';
 import backAPI from '../assets/backApi';
 // import backAPI from '../assets/backApi';
@@ -605,6 +605,7 @@ export default {
     };
   },
   metaInfo() {
+    this.setPageTitle(this.$t('Создание покупки'));
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('Создание покупки')}`,
     };
@@ -655,6 +656,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions('currentPage', ['setPageTitle']),
     focusQ() {
       this.selectedStock = '';
     },

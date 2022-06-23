@@ -8,7 +8,7 @@
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
-        {{$t("Показатели")}}
+        <!-- {{$t("Показатели")}} -->
         </h2>
       <div class="row cur_p">
         <div class="col-sm current_period">
@@ -171,7 +171,7 @@
 
 <script>
 import $ from 'jquery';
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import backApi from '../assets/backApi';
 import BasePeriodPicker from '../components/BasePeriodPicker.vue';
 import { ReplaceNull } from '../assets/utils';
@@ -208,6 +208,7 @@ export default {
     };
   },
   metaInfo() {
+    this.setPageTitle(this.$t('Показатели'));
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('Показатели')}`,
     };
@@ -237,6 +238,7 @@ export default {
     });
   },
   methods: {
+    ...mapActions('currentPage', ['setPageTitle']),
     showToast(title, message, status) {
       // Use a shorter name for this.$createElement
       const h = this.$createElement;
@@ -445,8 +447,8 @@ export default {
   top: 2px;
 }
 .current_period{
-  background-color: #EBEEFA;
-  padding: 16px 12px;
+  // background-color: #EBEEFA;
+  // padding: 16px 12px;
   display: inline-block;
   border-radius: 1px;
 
@@ -455,6 +457,8 @@ export default {
   }
   & p {
     margin-bottom: 0 ;
+    padding: 15px 10px;
+    background-color: #EBEEFA;
   }
 }
 .update{

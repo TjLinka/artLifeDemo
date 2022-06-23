@@ -13,9 +13,9 @@
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
           </svg>
         </p>
-        {{ $t('Создание реферальной ссылки') }}
+        <!-- {{ $t('Создание реферальной ссылки') }} -->
       </h2>
-      <div class="row">
+      <div class="row" v-if="role !== 'Клиент'">
         <div class="col-6">
           <b-form-group :label="`${$t('Тип соглашения')}`">
             <b-form-radio
@@ -120,6 +120,7 @@
 
 <script>
 import $ from 'jquery';
+import { mapActions, mapState } from 'vuex';
 import backAPI from '../assets/backApi';
 
 export default {
@@ -154,6 +155,11 @@ export default {
           name: 'Бизнес-предложение',
           type_value: 'selected_business',
         },
+        {
+          id: 5,
+          name: 'На главную страницу',
+          type_value: 'selected_mainpage',
+        },
       ],
       ref_products_list: [],
       ref_landing_list: [],
@@ -162,11 +168,13 @@ export default {
     };
   },
   metaInfo() {
+    this.setPageTitle(this.$t('Создание реферальной ссылки'));
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('Создание реферальной ссылки')}`,
     };
   },
   methods: {
+    ...mapActions('currentPage', ['setPageTitle']),
     back() {
       const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
       $(navEl[0])
@@ -180,7 +188,7 @@ export default {
     },
     getRefData(type) {
       if (type === 1) {
-        backAPI.get('/agent/sales/catalog', { params: { stock_id: 0 } }).then((Response) => {
+        backAPI.get('/agent/sales/catalog', { params: { stock_id: 0, catalog_switch: 1 } }).then((Response) => {
           this.ref_products_list = Response.data.entries.map((product) => ({ id: product.id, articul: product.articul, name: product.name }));
         });
       }
@@ -195,7 +203,7 @@ export default {
       this.$bvModal.show('bv-modal-example');
       const params = {
         reflink_type: this.ref_type,
-        access_level: this.ref_agrigment,
+        access_level: this.role !== 'Клиент' ? this.ref_agrigment : 0,
         catalog_id: this.ref_type === 1 ? this.selected_product : null,
         reflink_base_id: this.ref_type === 2 ? this.selected_landing : 0,
         preview_info: this.preview_info,
@@ -235,6 +243,7 @@ export default {
     },
   },
   computed: {
+    ...mapState('auth', ['role']),
     canSaveRefLink() {
       if (this.ref_type) {
         if (this.ref_type === 1 && this.selected_product) {

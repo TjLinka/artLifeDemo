@@ -2,7 +2,7 @@
   <div class="container" v-if="loaded">
     <div v-if="errorStatus">
        <h2 class="page__title">
-      {{$t('Верификация')}}
+      <!-- {{$t('Верификация')}} -->
     </h2>
     <div class="row mt-4">
       <div class="col-md-6">
@@ -89,6 +89,7 @@ export default {
     };
   },
   metaInfo() {
+    this.setPageTitle(this.$t('Верификация'));
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('Верификация')}`,
     };
@@ -109,6 +110,7 @@ export default {
   },
   methods: {
     ...mapActions('auth', ['register']),
+    ...mapActions('currentPage', ['setPageTitle']),
     showToast(title, message, status) {
       // Use a shorter name for this.$createElement
       const h = this.$createElement;

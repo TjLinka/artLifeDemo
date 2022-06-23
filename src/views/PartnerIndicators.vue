@@ -13,7 +13,7 @@
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
         </svg>
       </p>
-      {{$t("История показателей партнера по периодам")}}: {{userInfo.id}} - {{userInfo.name}}
+      <!-- {{$t("История показателей партнера по периодам")}}: {{userInfo.id}} - {{userInfo.name}} -->
     </h2>
         <!-- <div class="col mt-4 search__btn mobile"
         @click="showModal = !showModal" v-if="!showModal">
@@ -173,6 +173,7 @@
 <script>
 /* eslint-disable quote-props */
 import DatePicker from 'vue2-datepicker';
+import { mapActions } from 'vuex';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/ru';
 import $ from 'jquery';
@@ -360,6 +361,7 @@ export default {
     };
   },
   metaInfo() {
+    // this.setPageTitle(`${this.$t('История показателей партнера по периодам')} : ${this.userInfo.id} - ${this.userInfo.name}`);
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('История показателей партнера по периодам')} : ${this.userInfo.id} - ${this.userInfo.name}`,
     };
@@ -386,6 +388,7 @@ export default {
         .get('/agent/profile/child/', { params: { another_agent_id: this.$route.params.id } })
         .then((Response) => {
           this.userInfo = Response.data;
+          this.setPageTitle(`${this.$t('История показателей партнера по периодам')} : ${this.userInfo.fio}`);
         });
     } else {
       backApi.get('/agent/all-periods-indicators', {
@@ -406,9 +409,11 @@ export default {
           this.rank_icon = response.data.rank_calc;
         });
       });
+      this.setPageTitle(`${this.$t('История показателей партнера по периодам')}`);
     }
   },
   methods: {
+    ...mapActions('currentPage', ['setPageTitle']),
     dd() {
       if (this.monthRange.some((m) => m === null)) {
         this.monthRange = [

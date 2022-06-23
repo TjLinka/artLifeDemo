@@ -14,7 +14,7 @@
             <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
           </svg>
         </p>
-        {{$t("Редактирование личных данных")}}
+        <!-- {{$t("Редактирование личных данных")}} -->
       </h2>
       <!-- <div class="myfoto">
         <img src="../assets/imgs/unnamed 1.png" alt="" />
@@ -75,7 +75,7 @@
         </div>
         <div class="row edit ">
           <div class="col-md-6 mt-3" v-if="userInfo.agreementsystem">
-            <div ref="bthdte" :class="userTopInfo.bthdte ? '' : 'error'">
+            <!-- <div ref="bthdte" :class="userTopInfo.bthdte ? '' : 'error'">
               <span v-if="userTopInfo.bthdte" class="custom_label">{{$t("Дата рождения")}}</span>
               <date-picker
                 v-model="userTopInfo.bthdte"
@@ -86,7 +86,7 @@
                 style="width: 100%"
                 range-separator=" - "
               ></date-picker>
-            </div>
+            </div> -->
           </div>
           <div class="col-md-6 custom_input mt-3" v-if="userInfo.agreementsystem">
             <input type="text" name="skype" id="skype" required v-model="userInfo.skype" />
@@ -260,6 +260,7 @@
 
 <script>
 import md5 from 'md5';
+import { mapActions } from 'vuex';
 // import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/ru';
@@ -293,6 +294,7 @@ export default {
     };
   },
   metaInfo() {
+    this.setPageTitle(this.$t('Редактирование личных данных'));
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('Редактирование личных данных')}`,
     };
@@ -315,6 +317,7 @@ export default {
     });
   },
   methods: {
+    ...mapActions('currentPage', ['setPageTitle']),
     checkValue(e) {
       if (e.target.value === '') {
         this.phone = '+';
@@ -504,14 +507,19 @@ export default {
       });
     },
     saveTopEdit() {
-      if (!Object.values(this.userTopInfo).some((val) => val === null || val === '')) {
+      if (!Object.keys(this.userTopInfo).some((key) => {
+        if (key !== 'bthdte') {
+          return this.userTopInfo[key] === null || this.userTopInfo[key] === '';
+        }
+        return false;
+      })) {
         backApi.post('agent/profile-edit',
           {
             country: this.userTopInfo.country,
             city: this.userTopInfo.city,
             address: this.userTopInfo.address,
             passport: this.userTopInfo.passport,
-            bthdte: this.userTopInfo.bthdte,
+            // bthdte: this.userTopInfo.bthdte,
             skype: this.userInfo.skype,
           }).then(() => {
           backApi.get('/agent/profile').then((Response) => {
@@ -519,15 +527,17 @@ export default {
           }).then(() => {
             // eslint-disable-next-line max-len
             Object.keys(this.userTopInfo).forEach((key) => {
-              this.$refs[key].classList.remove('error');
+              if (key !== 'bthdte') {
+                this.$refs[key].classList.remove('error');
+              }
             });
             this.createMessageBoxError(this.$t('Данные успешно изменены'));
           });
         });
       } else {
         // eslint-disable-next-line max-len
-        Object.keys(this.userTopInfo).filter((key) => this.userTopInfo[key] === null).forEach((kkey) => {
-          this.$refs[kkey].classList.add('error');
+        Object.keys(this.userTopInfo).filter((key) => this.userTopInfo[key] === null || this.userTopInfo[key] === '').forEach((kkey) => {
+          if (kkey !== 'bthdte') this.$refs[kkey].classList.add('error');
         });
         this.showToast(this.$t('Ошибка'), this.$t('Заполните обязательные поля'), 'danger');
       }

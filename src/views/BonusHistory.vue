@@ -8,7 +8,7 @@
           <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
         </svg>
       </p>
-        {{$t("История начисления бонусов")}}: {{agentData.id}} - {{agentData.name}}
+        <!-- {{$t("История начисления бонусов")}}: {{agentData.id}} - {{agentData.name}} -->
         </h2>
       <div class="row mt-3 mb-3">
         <div class="col-md-6 perioad__picker">
@@ -52,6 +52,7 @@
 <script>
 // import DatePicker from 'vue2-datepicker';
 import $ from 'jquery';
+import { mapActions } from 'vuex';
 import backApi from '../assets/backApi';
 import BasePeriodPicker from '../components/BasePeriodPicker.vue';
 
@@ -242,6 +243,7 @@ export default {
     };
   },
   metaInfo() {
+    this.setPageTitle(`${this.$t('История начисления бонусов')}`);
     return {
       title: `${this.$t('ЛК Партнера')} - ${this.$t('История начисления бонусов')} : ${this.agentData.id} - ${this.agentData.name}`,
     };
@@ -296,6 +298,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions('currentPage', ['setPageTitle']),
     downloadXls() {
       backApi.get('/agent/bonus-detail/excel',
         {
