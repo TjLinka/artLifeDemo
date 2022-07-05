@@ -31,9 +31,9 @@
               <span class="modal_btn" @click="showTransfModal1" v-if="transfertAccess">
                 {{$t("Перевести баллы другому партнёру")}}
               </span>
-              <span class="modal_btn" @click="showTransfModal2">
+              <!-- <span class="modal_btn" @click="showTransfModal2">
                 {{$t("Перевести деньги другому партнёру")}}
-              </span>
+              </span> -->
               <span class="modal_btn" @click="becomePartner" v-if="transfertAccess && !userinfo.is_terminated">
                 {{$t("Стать дистрибьютором")}}
               </span>
@@ -233,7 +233,7 @@
         />
       </div>
     </footer>
-    <footer class="container-fluid cust_modal" v-if="showModal2">
+    <!-- <footer class="container-fluid cust_modal" v-if="showModal2">
       <div>
         <AgentInfoModalMoney
           v-on:enlarge-text="moneyAction"
@@ -241,7 +241,7 @@
           :id="userinfo.id"
         />
       </div>
-    </footer>
+    </footer> -->
     <!-- <div>
       <b-modal id="modal-center" hide-footer size="xl" centered title="BootstrapVue">
         <template #modal-title>
@@ -288,13 +288,17 @@ import $ from 'jquery';
 import { mapState, mapActions } from 'vuex';
 import Transfert2 from '../components/Transfert2.vue';
 import AgentInfoModalPoints from '../components/AgentInfoModalPoints.vue';
-import AgentInfoModalMoney from '../components/AgentInfoModalMoney.vue';
+// import AgentInfoModalMoney from '../components/AgentInfoModalMoney.vue';
 import backApi from '../assets/backApi';
 import { ReplaceNull } from '../assets/utils';
 
 export default {
   name: 'MyInfo',
-  components: { Transfert2, AgentInfoModalPoints, AgentInfoModalMoney },
+  components: {
+    Transfert2,
+    AgentInfoModalPoints,
+    // AgentInfoModalMoney,
+  },
   data() {
     return {
       loading: true,
