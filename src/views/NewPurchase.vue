@@ -397,11 +397,11 @@ export default {
           label: this.$t('Размер скидки, %'),
           sortable: true,
         },
-        {
-          key: 'items',
-          label: this.$t('В наличии'),
-          sortable: true,
-        },
+        // {
+        //   key: 'items',
+        //   label: this.$t('В наличии'),
+        //   sortable: true,
+        // },
         {
           key: 'goods_count',
           label: this.$t('Количество'),
