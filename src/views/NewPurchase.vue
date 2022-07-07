@@ -106,7 +106,7 @@
             :value="scope.item.goods_count"
           />
           <span class="clear_icon" @click="clearCount(scope.item.articul)"></span>
-          <p class="countError" v-show="scope.item.goods_count > scope.item.items">Товаров недостаточно</p>
+          <p class="countError" v-show="scope.item.goods_count.replace(/\s/g, '') > scope.item.items">Товаров недостаточно</p>
         </div>
         <div v-else class="custom_input col-md">
           <input
@@ -120,7 +120,7 @@
             :value="scope.item.goods_count"
           />
           <span class="clear_icon" @click="clearCountKit(scope.item.id)"></span>
-          <p class="countError" v-show="scope.item.goods_count > scope.item.items">Товаров недостаточно</p>
+          <p class="countError" v-show="scope.item.goods_count.replace(/\s/g, '') > scope.item.items">Товаров недостаточно</p>
         </div>
       </template>
       <template v-slot:cell(price_all)="scope">
@@ -397,11 +397,11 @@ export default {
           label: this.$t('Размер скидки, %'),
           sortable: true,
         },
-        {
-          key: 'items',
-          label: this.$t('В наличии'),
-          sortable: true,
-        },
+        // {
+        //   key: 'items',
+        //   label: this.$t('В наличии'),
+        //   sortable: true,
+        // },
         {
           key: 'goods_count',
           label: this.$t('Количество'),

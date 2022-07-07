@@ -288,18 +288,18 @@ export default {
             return null;
           },
         },
-        {
-          key: 'cnt',
-          label: this.$t('Кол-во'),
-          sortable: true,
-          formatter(v) {
-            if (v !== null) {
-              const formatter = new Intl.NumberFormat('ru');
-              return formatter.format(v);
-            }
-            return null;
-          },
-        },
+        // {
+        //   key: 'cnt',
+        //   label: this.$t('Кол-во'),
+        //   sortable: true,
+        //   formatter(v) {
+        //     if (v !== null) {
+        //       const formatter = new Intl.NumberFormat('ru');
+        //       return formatter.format(v);
+        //     }
+        //     return null;
+        //   },
+        // },
         {
           key: 'points_all',
           label: this.$t('Сумма балов'),

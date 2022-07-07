@@ -55,7 +55,7 @@
             <label for="address">{{$t("Адрес")}}</label>
             <span class="clear_icon" @click="clearInputTop('address')"></span>
           </div>
-          <div class="col-md-6 custom_input mt-3" v-if="userInfo.agreementsystem">
+          <!-- <div class="col-md-6 custom_input mt-3" v-if="userInfo.agreementsystem">
             <input
             @blur="checkInput('passport')"
             ref='passport'
@@ -63,14 +63,14 @@
             required v-model="userTopInfo.passport" />
             <label for="passport">{{$t("Паспорт")}}</label>
             <span class="clear_icon" @click="clearInputTop('passport')"></span>
-          </div>
+          </div> -->
           <div class="col-md-6 custom_input mt-3" v-if="!userInfo.agreementsystem">
             <p class="lbl">{{$t('Адрес')}}:</p>
             <p>{{userTopInfo.address}} </p>
           </div>
-          <div class="col-md-6 custom_input mt-3" v-if="!userInfo.agreementsystem">
+          <div class="col-md-6 custom_input mt-3">
             <p class="lbl">{{$t('Паспорт')}}:</p>
-            <p>{{userTopInfo.passport}}</p>
+            <p>{{passport}}</p>
           </div>
         </div>
         <div class="row edit ">
@@ -279,6 +279,7 @@ export default {
       smsStatus: false,
       country: '',
       phone: '',
+      passport: '',
       password: {
         newPass: '',
         newPassRepeat: '',
@@ -305,9 +306,10 @@ export default {
         country: Response.data.country === null ? '' : Response.data.country,
         city: Response.data.city,
         address: Response.data.address,
-        passport: Response.data.passport,
+        // passport: Response.data.passport,
         bthdte: Response.data.bthdte,
       };
+      this.passport = Response.data.passport;
       this.userInfo = Response.data;
       this.country = Response.data.country === null ? '' : Response.data.country;
       console.log(Response.data.phone);
@@ -518,7 +520,7 @@ export default {
             country: this.userTopInfo.country,
             city: this.userTopInfo.city,
             address: this.userTopInfo.address,
-            passport: this.userTopInfo.passport,
+            // passport: this.userTopInfo.passport,
             // bthdte: this.userTopInfo.bthdte,
             skype: this.userInfo.skype,
           }).then(() => {
