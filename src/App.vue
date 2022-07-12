@@ -381,9 +381,21 @@ main {
     display: none;
     position: absolute;
     right: 12px;
-    top: 12px;
+    top: 10px;
     color: #32aaa7;
     cursor: pointer;
+    &.show_pass_icon {
+      top: 0;
+      right: 38px;
+      width: 40px;
+      height: 40px;
+    }
+    &.show_pass_icon_close {
+      top: 0;
+      right: 38px;
+      width: 40px;
+      height: 40px;
+    }
   }
   label {
     position: absolute;
@@ -442,6 +454,26 @@ main {
   background-position: center;
   width: 20px;
   height: 20px;
+}
+.show_pass_icon{
+  position: relative;
+  background-image: url('assets/imgs/show_pass_icon.svg');
+  background-repeat: no-repeat;
+  background-size: 55%;
+  background-position: center;
+  width: 20px;
+  height: 20px;
+  right: 10px;
+}
+.show_pass_icon_close{
+  position: relative;
+  background-image: url('assets/imgs/show_pass_icon_close.svg');
+  background-repeat: no-repeat;
+  background-size: 55%;
+  background-position: center;
+  width: 20px;
+  height: 20px;
+  right: 10px;
 }
 .sr-only{
   display: none;

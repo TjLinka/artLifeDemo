@@ -199,6 +199,7 @@
               v-model="password.currentPass"
             />
             <label for="currentPass">{{$t("Текущий пароль")}}</label>
+            <span :class="`show_pass_icon${curPassIsHide ? '_close' : ''}`" @click="showPass('currentPass')" ></span>
             <span class="clear_icon" @click="clearPass('currentPass')"></span>
           </div>
           <div class="col-md custom_input mt-3">
@@ -212,6 +213,7 @@
               v-model="password.newPass"
             />
             <label for="newPass">{{$t("Новый пароль")}}</label>
+            <span :class="`show_pass_icon${newPassIsHide ? '_close' : ''}`" @click="showPass('newPass')" ></span>
             <span class="clear_icon" @click="clearPass('newPass')"></span>
           </div>
           <div class="col-md custom_input mt-3">
@@ -225,6 +227,7 @@
               v-model="password.newPassRepeat"
             />
             <label for="newPassRepeat">{{$t("Повтор пароля")}}</label>
+            <span :class="`show_pass_icon${newPassRepIsHide ? '_close' : ''}`" @click="showPass('newPassRepeat')" ></span>
             <span class="clear_icon" @click="clearPass('newPassRepeat')"></span>
           </div>
         </div>
@@ -277,6 +280,9 @@ export default {
       phoneHash: null,
       smsCode: null,
       smsStatus: false,
+      curPassIsHide: true,
+      newPassIsHide: true,
+      newPassRepIsHide: true,
       country: '',
       phone: '',
       passport: '',
@@ -319,6 +325,13 @@ export default {
     });
   },
   methods: {
+    showPass(refName) {
+      if (refName === 'currentPass') this.curPassIsHide = !this.curPassIsHide;
+      if (refName === 'newPass') this.newPassIsHide = !this.newPassIsHide;
+      if (refName === 'newPassRepeat') this.newPassRepIsHide = !this.newPassRepIsHide;
+      const type = this.$refs[refName].getAttribute('type') === 'password' ? 'text' : 'password';
+      this.$refs[refName].setAttribute('type', type);
+    },
     ...mapActions('currentPage', ['setPageTitle']),
     checkValue(e) {
       if (e.target.value === '') {
@@ -574,6 +587,8 @@ export default {
         }
       },
     },
+  },
+  computed: {
   },
 };
 </script>

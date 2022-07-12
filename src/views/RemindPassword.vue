@@ -38,10 +38,11 @@
         <span class="clear_icon" @click="clearSmsCode()"></span>
       </div>
       <div class="col-md-3 custom_input">
-        <input type="text" name="newPass" id="newPass" required v-model="newPass" />
+        <input type="password" ref="newPass" name="newPass" id="newPass" required v-model="newPass" />
         <label for="newPass">
           {{$t("Новый пароль")}}
         </label>
+        <span :class="`show_pass_icon${newPassIsHide ? '_close' : ''}`" @click="showPass()" ></span>
         <span class="clear_icon" @click="clearNewPass()"></span>
       </div>
     </div>
@@ -85,6 +86,7 @@ export default {
     return {
       emailDis: false,
       phoneDis: false,
+      newPassIsHide: true,
       id_hash: '',
       value2: false,
       smsCodeCome: false,
@@ -101,6 +103,11 @@ export default {
     };
   },
   methods: {
+    showPass() {
+      const type = this.$refs.newPass.getAttribute('type') === 'password' ? 'text' : 'password';
+      this.$refs.newPass.setAttribute('type', type);
+      this.newPassIsHide = !this.newPassIsHide;
+    },
     ...mapActions('currentPage', ['setPageTitle']),
     showToast(title, message, status) {
       // Use a shorter name for this.$createElement

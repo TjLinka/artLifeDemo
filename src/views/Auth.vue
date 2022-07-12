@@ -59,10 +59,11 @@
             <span class="clear_icon" @click="clearInput('login_phone')"></span>
           </div>
           <div class="custom_input password_input">
-            <input type="password" name="password" id="password" required v-model="log.password" />
+            <input ref="password" type="password" name="password" id="password" required v-model="log.password" />
             <label for="password">
               {{$t("Пароль")}}
             </label>
+            <span :class="`show_pass_icon${isPassHide ? '_close' : ''}`" @click="showPass" ></span>
             <span class="clear_icon" @click="clearInput('password')"></span>
           </div>
           <vue-recaptcha
@@ -107,6 +108,7 @@ export default {
       badLogin: false,
       isTerm: false,
       isLVL1: false,
+      isPassHide: true,
       sitekey: '6LdD2c8aAAAAAOQXfujlkoLbR_bQyxI4kKLifnCU',
       log: {
         login: '',
@@ -260,6 +262,18 @@ export default {
       if (this.log.password === '') {
         $('.password_input').addClass('error');
         this.showToast('Ошибка!', `${this.$t('Заполните поле Пароль')}`, 'danger');
+      }
+    },
+    showPass() {
+      // console.log(this.$refs.password.getAttribute('type'));
+      if (this.$refs.password.getAttribute('type') === 'password') {
+        // console.log('1');
+        this.isPassHide = false;
+        this.$refs.password.setAttribute('type', 'text');
+      } else {
+        // console.log('2');
+        this.isPassHide = true;
+        this.$refs.password.setAttribute('type', 'password');
       }
     },
   },
