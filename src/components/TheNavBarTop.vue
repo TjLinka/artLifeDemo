@@ -77,7 +77,7 @@ export default {
     ...mapActions('auth', ['logout']),
     out() {
       this.logout().then(() => {
-        delete backAPI.defaults.headers.common['access-token'];
+        delete backAPI.backAPI.defaults.headers.common['access-token'];
         this.$router.push('/login');
       });
     },

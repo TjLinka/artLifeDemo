@@ -1,247 +1,299 @@
 <template>
   <div class="licevoischet__page">
-    <div  v-loading="loading">
-    <div class="container-fluid table_container" v-show="!loading">
-      <h2 class="page__title">
-                              <p class="mobile_back noprint" @click="back">
-        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
-        </svg>
-      </p>
-        <!-- {{$t("История организации по периодам")}} -->
+    <div v-loading="loading">
+      <div class="container-fluid table_container" v-show="!loading">
+        <h2 class="page__title">
+          <p class="mobile_back noprint" @click="back">
+            <svg
+              width="18"
+              height="12"
+              viewBox="0 0 18 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
+            </svg>
+          </p>
+          <!-- {{$t("История организации по периодам")}} -->
         </h2>
         <div class="row mb-1">
           <div class="col-md-6">
-          <el-autocomplete
-            v-model="state"
-            :fetch-suggestions="querySearchAsync"
-            placeholder="Партнер получатель"
-            clearable
-            @clear="dd"
-            @change="gg"
-            @select="handleSelect"
-            style="width: 100%"
-          ></el-autocomplete>
+            <el-autocomplete
+              v-model="state"
+              :fetch-suggestions="querySearchAsync"
+              placeholder="Партнер получатель"
+              clearable
+              @clear="dd"
+              @change="gg"
+              @select="handleSelect"
+              style="width: 100%"
+            ></el-autocomplete>
           </div>
         </div>
         <div class="col search__btn mobile noprint" @click="toggleSearch">
-          {{$t("Настройки дерева")}} <span class="search_icons mobi"></span>
+          {{ $t('Настройки дерева') }} <span class="search_icons mobi"></span>
         </div>
         <div class="perioad__picker mb-3 mt-3">
-        <BasePeriodPicker :currentPeriod="currentPeriod"
-        v-on:next-period="nextPeriod" class="period_picker"/>
+          <BasePeriodPicker
+            :currentPeriod="currentPeriod"
+            v-on:next-period="nextPeriod"
+            class="period_picker"
+          />
         </div>
-      <div class="noprint">
-      <el-tag
-        v-for="tag in tags"
-        :key="tag.name"
-        closable
-        @close="handleClose($event, tag)"
-        :type="tag.type"
-        :disable-transitions="true"
-      >
-        {{ tag.name }}
-      </el-tag>
-      </div>
-      <p class="exp_print mt-3 noprint">
-        <span class="mr-3" @click="downloadPdf">{{$t("Экспорт в pdf")}}</span>
-        <span class="mr-3" @click="downloadXls">{{$t("Экспорт в xlsx")}}</span>
-        <span class="mr-3" v-b-modal.modal-scrollable>{{$t("Легенда")}}</span>
-      </p>
-      <div class="orgbyhist">
-        <el-table
-        :key="tree_key"
-        :data="rows"
-        style="width: 100%"
-        height="60vh"
-        row-key="id"
-        lazy
-        :load="load"
-        header-row-class-name='wwwww'
-        :tree-props="{ children: 'children', hasChildren: 'has_children' }"
-        :row-class-name="tableRowClassName"
-      >
-        <el-table-column
-          v-for="(column, index) in columns"
-          :prop="column.property"
-          :key="index"
-          resizable
-          :label="column.title"
-          :min-width="col_width(column)"
-        >
-          <!--  -->
-          <template slot="header" v-if="column.property === 'id' && !colHide">
-             <div class="idBlock" ref="idBlock">
-               {{column.label}}
-             </div>
-             <span class="hide_arrow" @click="toogleColumn()" ref="hideBtn"></span>
-          </template>
-          <template v-else slot="header">
-            {{column.label}}
-          </template>
-          <template slot-scope="scope">
-            <span v-if="column.property === 'id'">
-              <div v-if="!colHide" style="display: inline">
-              <span>{{scope.row.depth}} УР</span>
-                <!-- <span class="user_id" @click="agentCard(scope.row.id)">{{ scope.row.id }}</span> -->
-                <router-link :to="`/agent/${scope.row.id}`">
-                  <span class="user_id">{{ scope.row.id }}</span>
-                </router-link>
-              </div>
-              <div v-else style="text-align: center; margin-top: -25px;">
-              <img
-              style="margin-left: 10px;"
-              :src="`../icons/${scope.row.rank_calc}${scope.row.depth === 0 ? '_white' : ''}.svg`"
-              :title="scope.row.rank_end" class="rank_icon">
-              <span style="display: block; margin-left: 10px;">{{scope.row.depth}} УР</span>
-              </div>
-            </span>
-            <span v-if="column.property === 'name'">
-              {{scope.row.name}}
-            </span>
-            <span v-if="column.property === 'lo'">
-              {{column.formater(scope.row)}}
-            </span>
-            <span v-if="column.property === 'go'">
-              {{column.formater(scope.row)}}
-            </span>
-            <span v-if="column.property === 'ngo'">
-              {{column.formater(scope.row)}}
-            </span>
-            <span v-if="column.property === 'oo'">
-              {{column.formater(scope.row)}}
-            </span>
-            <span v-if="column.property === 'ko'">
-              {{column.formater(scope.row)}}
-            </span>
-            <span v-if="column.property === 'noact'">
-              {{scope.row.noact}}
-            </span>
-            <span v-if="column.property === 'rank_beg'">
-              <img
-              :src="`../icons/${scope.row.rank_beg}${scope.row.depth === 0 ? '_white' : ''}.svg`"
-              :title="scope.row.rank_beg" class="rank_icon_rank">
-              {{scope.row.rank_beg}}
-            </span>
-            <span v-if="column.property === 'rank_calc'">
-              <img
-              :src="`../icons/${scope.row.rank_calc}${scope.row.depth === 0 ? '_white' : ''}.svg`"
-              :title="scope.row.rank_calc" class="rank_icon_rank">
-              {{scope.row.rank_calc}}
-            </span>
-            <span v-if="column.property === 'rank_end'">
-              <img
-              :src="`../icons/${scope.row.rank_end}${scope.row.depth === 0 ? '_white' : ''}.svg`"
-              :title="scope.row.rank_end" class="rank_icon_rank">
-              {{scope.row.rank_end}}
-            </span>
-          </template>
-        </el-table-column>
-      </el-table>
-      </div>
-      <footer class="cust_modal noprint">
-              <div class="row">
-        <div class="col text-center search__btn desktop" @click="toggleSearch" v-if="!searchActive">
-          {{$t("Настройки дерева")}} <span class="search_icons"></span>
-        </div>
-      </div>
-      <div v-if="searchActive" class="organization__modal">
-        <div class="container">
-          <h3 class="mb-3">
-            {{$t("Настройки дерева")}}
-            <span class="close_btn" @click="searchActive = !searchActive"></span>
-            </h3>
-        <div class="row">
-          <div class="col-md-12 mt-3">
-            <b-form-group :label="`${$t('Выбор дерева')}`">
-              <b-form-radio
-                v-model="tree_type"
-                name="some-radios-1"
-                value="full"
-                class="radio mr-3"
-                >{{$t("Полное дерево")}}</b-form-radio
-              >
-              <b-form-radio
-                v-model="tree_type"
-                name="some-radios-1"
-                value="director"
-                class="radio mr-3"
-                >{{$t("Директорское")}}</b-form-radio
-              >
-              <b-form-radio v-model="tree_type" name="some-radios-1" value="active" class="radio"
-                >{{$t("Своя группа")}}</b-form-radio
-              >
-            </b-form-group>
-          </div>
-        </div>
-        <div class="row mt-3 edit">
-          <div class="col-sm-6 mb-4">
-            <span v-if="state2" class="custom_label">{{$t("Построить дерево для партнера")}}</span>
-          <el-autocomplete
-            v-model="state2"
-            :fetch-suggestions="querySearchAsync2"
-            :placeholder="`${$t('Построить дерево для партнера')}`"
-            clearable
-            @clear="dd2"
-            @change="gg2"
-            @select="handleSelect2"
-            style='width: 100%'
-          ></el-autocomplete>
-          </div>
-          <div class="col-sm-6">
-            <button
-            class="mr-2"
-            @click="updateData">{{$t("Показать")}}</button
-            ><button @click="clearSelectedFilters">{{$t("Сбросить")}}</button>
-          </div>
-        </div>
-        </div>
-      </div>
-      </footer>
-    </div>
-    </div>
-  <b-modal v-model="show"
-  id="modal-scrollable" centered scrollable title="Легенда">
-    <div class="modal_icons">
-      <img :src="`../icons/Клиент.svg`"
-      class="rank_icon_legend"> <span>{{$t("Привилегированный клиент")}}</span></div> <br>
-    <div class="modal_icons">
-      <img :src="`../icons/Консультант.svg`"
-      class="rank_icon_legend"> <span>{{$t("Консультант")}}</span></div><br>
-    <div class="modal_icons">
-      <img :src="`../icons/Мастер.svg`"
-      class="rank_icon_legend"><span>{{$t("Мастер")}}</span></div><br>
-    <div class="modal_icons">
-      <img :src="`../icons/Управляющий.svg`"
-      class="rank_icon_legend"><span>{{$t("Управляющий")}}</span></div><br><br>
-    <div class="modal_icons">
-      <img :src="`../icons/Директор.svg`"
-      class="rank_icon_legend"><span>{{$t("Директор")}}</span></div><br>
-    <div class="modal_icons"><img :src="`../icons/Серебряный Директор.svg`"
-    class="rank_icon_legend">
-    <span>{{$t("Серебряный Директор")}}</span></div><br>
-    <div class="modal_icons"><img :src="`../icons/Золотой Директор.svg`"
-    class="rank_icon_legend">
-    <span>{{$t("Золотой Директор")}}</span></div><br><br>
-    <div class="modal_icons"><img :src="`../icons/Рубиновый Директор.svg`" class="rank_icon_legend">
-    <span>{{$t("Рубиновый Директор")}}</span></div><br>
-    <div class="modal_icons"><img :src="`../icons/Бриллиантовый Директор.svg`"
-    class="rank_icon_legend">
-    <span>{{$t("Бриллиантовый Директор")}}</span></div><br>
-    <div class="modal_icons">
-      <img :src="`../icons/Президент.svg`"
-      class="rank_icon_legend"><span>{{$t("Президент")}}</span></div><br>
-    <template #modal-footer>
-          <b-button
-            variant="primary"
-            size="sm"
-            class="float-right cls_btn"
-            @click="show=false"
+        <div class="noprint">
+          <el-tag
+            v-for="tag in tags"
+            :key="tag.name"
+            closable
+            @close="handleClose($event, tag)"
+            :type="tag.type"
+            :disable-transitions="true"
           >
-            {{$t("Закрыть")}}
-          </b-button>
-    </template>
-  </b-modal>
+            {{ tag.name }}
+          </el-tag>
+        </div>
+        <p class="exp_print mt-3 noprint">
+          <span class="mr-3" @click="downloadPdf">{{ $t('Экспорт в pdf') }}</span>
+          <span class="mr-3" @click="downloadXls">{{ $t('Экспорт в xlsx') }}</span>
+          <span class="mr-3" v-b-modal.modal-scrollable>{{ $t('Легенда') }}</span>
+        </p>
+        <div class="orgbyhist">
+          <el-table
+            :key="tree_key"
+            :data="rows"
+            style="width: 100%"
+            height="60vh"
+            row-key="id"
+            lazy
+            :load="load"
+            header-row-class-name="wwwww"
+            :tree-props="{ children: 'children', hasChildren: 'has_children' }"
+            :row-class-name="tableRowClassName"
+          >
+            <el-table-column
+              v-for="(column, index) in columns"
+              :prop="column.property"
+              :key="index"
+              resizable
+              :label="column.title"
+              :min-width="col_width(column)"
+            >
+              <!--  -->
+              <template slot="header" v-if="column.property === 'id' && !colHide">
+                <div class="idBlock" ref="idBlock">
+                  {{ column.label }}
+                </div>
+                <span class="hide_arrow" @click="toogleColumn()" ref="hideBtn"></span>
+              </template>
+              <template v-else slot="header">
+                {{ column.label }}
+              </template>
+              <template slot-scope="scope">
+                <span v-if="column.property === 'id'">
+                  <div v-if="!colHide" style="display: inline">
+                    <span>{{ scope.row.depth }} УР</span>
+                    <!-- <span class="user_id" @click="agentCard(scope.row.id)">{{ scope.row.id }}</span> -->
+                    <router-link :to="`/agent/${scope.row.id}`">
+                      <span class="user_id">{{ scope.row.id }}</span>
+                    </router-link>
+                  </div>
+                  <div v-else style="text-align: center; margin-top: -25px;">
+                    <img
+                      style="margin-left: 10px;"
+                      :src="
+                        `../icons/${scope.row.rank_calc}${
+                          scope.row.depth === 0 ? '_white' : ''
+                        }.svg`
+                      "
+                      :title="scope.row.rank_end"
+                      class="rank_icon"
+                    />
+                    <span style="display: block; margin-left: 10px;">{{ scope.row.depth }} УР</span>
+                  </div>
+                </span>
+                <span v-if="column.property === 'name'">
+                  {{ scope.row.name }}
+                </span>
+                <span v-if="column.property === 'lo'">
+                  {{ column.formater(scope.row) }}
+                </span>
+                <span v-if="column.property === 'go'">
+                  {{ column.formater(scope.row) }}
+                </span>
+                <span v-if="column.property === 'ngo'">
+                  {{ column.formater(scope.row) }}
+                </span>
+                <span v-if="column.property === 'oo'">
+                  {{ column.formater(scope.row) }}
+                </span>
+                <span v-if="column.property === 'ko'">
+                  {{ column.formater(scope.row) }}
+                </span>
+                <span v-if="column.property === 'noact'">
+                  {{ scope.row.noact }}
+                </span>
+                <span v-if="column.property === 'rank_beg'">
+                  <img
+                    :src="
+                      `../icons/${scope.row.rank_beg}${scope.row.depth === 0 ? '_white' : ''}.svg`
+                    "
+                    :title="scope.row.rank_beg"
+                    class="rank_icon_rank"
+                  />
+                  {{ scope.row.rank_beg }}
+                </span>
+                <span v-if="column.property === 'rank_calc'">
+                  <img
+                    :src="
+                      `../icons/${scope.row.rank_calc}${scope.row.depth === 0 ? '_white' : ''}.svg`
+                    "
+                    :title="scope.row.rank_calc"
+                    class="rank_icon_rank"
+                  />
+                  {{ scope.row.rank_calc }}
+                </span>
+                <span v-if="column.property === 'rank_end'">
+                  <img
+                    :src="
+                      `../icons/${scope.row.rank_end}${scope.row.depth === 0 ? '_white' : ''}.svg`
+                    "
+                    :title="scope.row.rank_end"
+                    class="rank_icon_rank"
+                  />
+                  {{ scope.row.rank_end }}
+                </span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <footer class="cust_modal noprint">
+          <div class="row">
+            <div
+              class="col text-center search__btn desktop"
+              @click="toggleSearch"
+              v-if="!searchActive"
+            >
+              {{ $t('Настройки дерева') }} <span class="search_icons"></span>
+            </div>
+          </div>
+          <div v-if="searchActive" class="organization__modal">
+            <div class="container">
+              <h3 class="mb-3">
+                {{ $t('Настройки дерева') }}
+                <span class="close_btn" @click="searchActive = !searchActive"></span>
+              </h3>
+              <div class="row">
+                <div class="col-md-12 mt-3">
+                  <b-form-group :label="`${$t('Выбор дерева')}`">
+                    <b-form-radio
+                      v-model="tree_type"
+                      name="some-radios-1"
+                      value="full"
+                      class="radio mr-3"
+                      >{{ $t('Полное дерево') }}</b-form-radio
+                    >
+                    <b-form-radio
+                      v-model="tree_type"
+                      name="some-radios-1"
+                      value="director"
+                      class="radio mr-3"
+                      >{{ $t('Директорское') }}</b-form-radio
+                    >
+                    <b-form-radio
+                      v-model="tree_type"
+                      name="some-radios-1"
+                      value="active"
+                      class="radio"
+                      >{{ $t('Своя группа') }}</b-form-radio
+                    >
+                  </b-form-group>
+                </div>
+              </div>
+              <div class="row mt-3 edit">
+                <div class="col-sm-6 mb-4">
+                  <span v-if="state2" class="custom_label">{{
+                    $t('Построить дерево для партнера')
+                  }}</span>
+                  <el-autocomplete
+                    v-model="state2"
+                    :fetch-suggestions="querySearchAsync2"
+                    :placeholder="`${$t('Построить дерево для партнера')}`"
+                    clearable
+                    @clear="dd2"
+                    @change="gg2"
+                    @select="handleSelect2"
+                    style="width: 100%"
+                  ></el-autocomplete>
+                </div>
+                <div class="col-sm-6">
+                  <button class="mr-2" @click="updateData">{{ $t('Показать') }}</button
+                  ><button @click="clearSelectedFilters">{{ $t('Сбросить') }}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <b-modal v-model="show" id="modal-scrollable" centered scrollable title="Легенда">
+      <div class="modal_icons">
+        <img :src="`../icons/Клиент.svg`" class="rank_icon_legend" />
+        <span>{{ $t('Привилегированный клиент') }}</span>
+      </div>
+      <br />
+      <div class="modal_icons">
+        <img :src="`../icons/Консультант.svg`" class="rank_icon_legend" />
+        <span>{{ $t('Консультант') }}</span>
+      </div>
+      <br />
+      <div class="modal_icons">
+        <img :src="`../icons/Мастер.svg`" class="rank_icon_legend" /><span>{{ $t('Мастер') }}</span>
+      </div>
+      <br />
+      <div class="modal_icons">
+        <img :src="`../icons/Управляющий.svg`" class="rank_icon_legend" /><span>{{
+          $t('Управляющий')
+        }}</span>
+      </div>
+      <br /><br />
+      <div class="modal_icons">
+        <img :src="`../icons/Директор.svg`" class="rank_icon_legend" /><span>{{
+          $t('Директор')
+        }}</span>
+      </div>
+      <br />
+      <div class="modal_icons">
+        <img :src="`../icons/Серебряный Директор.svg`" class="rank_icon_legend" />
+        <span>{{ $t('Серебряный Директор') }}</span>
+      </div>
+      <br />
+      <div class="modal_icons">
+        <img :src="`../icons/Золотой Директор.svg`" class="rank_icon_legend" />
+        <span>{{ $t('Золотой Директор') }}</span>
+      </div>
+      <br /><br />
+      <div class="modal_icons">
+        <img :src="`../icons/Рубиновый Директор.svg`" class="rank_icon_legend" />
+        <span>{{ $t('Рубиновый Директор') }}</span>
+      </div>
+      <br />
+      <div class="modal_icons">
+        <img :src="`../icons/Бриллиантовый Директор.svg`" class="rank_icon_legend" />
+        <span>{{ $t('Бриллиантовый Директор') }}</span>
+      </div>
+      <br />
+      <div class="modal_icons">
+        <img :src="`../icons/Президент.svg`" class="rank_icon_legend" /><span>{{
+          $t('Президент')
+        }}</span>
+      </div>
+      <br />
+      <template #modal-footer>
+        <b-button variant="primary" size="sm" class="float-right cls_btn" @click="show = false">
+          {{ $t('Закрыть') }}
+        </b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -263,7 +315,7 @@ export default {
       {
         property: 'id',
         label: this.$t('P/номер / Ранг'),
-        formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
+        formater: item => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
       },
       {
         property: 'name',
@@ -272,7 +324,7 @@ export default {
       {
         property: 'lo',
         label: this.$t('ЛО'),
-        formater: (item) => {
+        formater: item => {
           const formatter = new Intl.NumberFormat('ru');
           return formatter.format(item.lo);
         },
@@ -280,7 +332,7 @@ export default {
       {
         property: 'go',
         label: this.$t('ГО'),
-        formater: (item) => {
+        formater: item => {
           const formatter = new Intl.NumberFormat('ru');
           return formatter.format(item.go);
         },
@@ -288,7 +340,7 @@ export default {
       {
         property: 'ngo',
         label: this.$t('НГО'),
-        formater: (item) => {
+        formater: item => {
           const formatter = new Intl.NumberFormat('ru');
           return formatter.format(item.ngo);
         },
@@ -296,7 +348,7 @@ export default {
       {
         property: 'oo',
         label: this.$t('ОО'),
-        formater: (item) => {
+        formater: item => {
           const formatter = new Intl.NumberFormat('ru');
           return formatter.format(item.oo);
         },
@@ -304,7 +356,7 @@ export default {
       {
         property: 'ko',
         label: this.$t('КО'),
-        formater: (item) => {
+        formater: item => {
           const formatter = new Intl.NumberFormat('ru');
           return formatter.format(item.ko);
         },
@@ -312,22 +364,22 @@ export default {
       {
         property: 'noact',
         label: this.$t('Неактивность'),
-        formater: (item) => item.noact,
+        formater: item => item.noact,
       },
       {
         property: 'rank_beg',
         label: this.$t('Ранг на начало'),
-        formater: (item) => item.rank_beg,
+        formater: item => item.rank_beg,
       },
       {
         property: 'rank_calc',
         label: this.$t('Расчетный ранг'),
-        formater: (item) => item.rank_calc,
+        formater: item => item.rank_calc,
       },
       {
         property: 'rank_end',
         label: this.$t('Ранг на конец'),
-        formater: (item) => item.rank_end,
+        formater: item => item.rank_end,
       },
     ];
     return {
@@ -338,7 +390,20 @@ export default {
       state: '',
       state2: '',
       searchActive: false,
-      months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+      months: [
+        'Январь',
+        'Февраль',
+        'Март',
+        'Апрель',
+        'Май',
+        'Июнь',
+        'Июль',
+        'Августь',
+        'Сентябрь',
+        'Октябрь',
+        'Ноябрь',
+        'Декабрь',
+      ],
       tree_type: 'full',
       currentUserID: null,
       modal_agent: {
@@ -362,7 +427,7 @@ export default {
     };
   },
   mounted() {
-    backApi.get('agent/bonus-detail/periods').then((Response) => {
+    backApi.get('agent/bonus-detail/periods').then(Response => {
       this.periods = Response.data.entries.sort((a, b) => {
         const result = a.comdte > b.comdte ? 1 : -1;
         return result;
@@ -375,19 +440,22 @@ export default {
           period: this.currentPeriod,
         },
       };
-      backApi.get('/agents-tree-hist/period', data).then((response) => {
-        this.rows = response.data.entries;
-        this.rows.forEach((e) => {
-          e.depth = 0;
-          e.children = [];
+      backApi
+        .get('/agents-tree-hist/period', data)
+        .then(response => {
+          this.rows = response.data.entries;
+          this.rows.forEach(e => {
+            e.depth = 0;
+            e.children = [];
+          });
+        })
+        .then(() => {
+          setTimeout(() => {
+            this.loading = false;
+          });
         });
-      }).then(() => {
-        setTimeout(() => {
-          this.loading = false;
-        });
-      });
     });
-    backApi.get('/agent/profile').then((Response) => {
+    backApi.get('/agent/profile').then(Response => {
       this.state = `${Response.data.id} - ${Response.data.name}`;
       this.currentUserID = Response.data.id;
       this.currentUserIDName = { id: Response.data.id, agentname: Response.data.name };
@@ -417,12 +485,13 @@ export default {
           get_root: true,
           period: v,
           // agent_id: this.currentUserID,
-          agent_id: this.modal_agent.agent_id !== '' ? this.modal_agent.agent_id : this.currentUserID,
+          agent_id:
+            this.modal_agent.agent_id !== '' ? this.modal_agent.agent_id : this.currentUserID,
         },
       };
-      backApi.get('/agents-tree-hist/period', data).then((response) => {
+      backApi.get('/agents-tree-hist/period', data).then(response => {
         this.rows = response.data.entries;
-        this.rows.forEach((e) => {
+        this.rows.forEach(e => {
           e.depth = 0;
           e.children = [];
         });
@@ -433,15 +502,18 @@ export default {
   methods: {
     ...mapActions('currentPage', ['setPageTitle']),
     agentCard(id) {
-      backApi.get('/agent/profile/child', {
-        params: {
-          another_agent_id: id,
-        },
-      }).then(() => {
-        this.$router.push(`/agent/${id}`);
-      }).catch((error) => {
-        this.showToast('Ошибка', error.response.data.detail, 'danger');
-      });
+      backApi
+        .get('/agent/profile/child', {
+          params: {
+            another_agent_id: id,
+          },
+        })
+        .then(() => {
+          this.$router.push(`/agent/${id}`);
+        })
+        .catch(error => {
+          this.showToast('Ошибка', error.response.data.detail, 'danger');
+        });
     },
     print() {
       const colGroup1 = document.getElementsByTagName('colgroup')[0];
@@ -489,14 +561,14 @@ export default {
           period: this.currentPeriod,
         },
       };
-      backApi.get('/agents-tree-hist/period', data).then((response) => {
+      backApi.get('/agents-tree-hist/period', data).then(response => {
         this.rows = response.data.entries;
-        this.rows.forEach((e) => {
+        this.rows.forEach(e => {
           e.depth = 0;
           e.children = [];
         });
       });
-      backApi.get('/agent/profile').then((Response) => {
+      backApi.get('/agent/profile').then(Response => {
         this.state = `${Response.data.id} - ${Response.data.name}`;
         this.currentUserID = Response.data.id;
         this.currentUserIDName = { id: Response.data.id, agentname: Response.data.name };
@@ -512,9 +584,9 @@ export default {
           agent_id: this.currentUserID,
         },
       };
-      backApi.get('/agents-tree-hist/period', data).then((response) => {
+      backApi.get('/agents-tree-hist/period', data).then(response => {
         this.rows = response.data.entries;
-        this.rows.forEach((e) => {
+        this.rows.forEach(e => {
           e.depth = 0;
           e.children = [];
         });
@@ -524,12 +596,12 @@ export default {
     },
     querySearchAsync(queryString, cb) {
       // const qr = queryString === '' ? 'а' : queryString;
-      backApi.get('/agent/share-transfert-list', { params: { show_root: 1 } }).then((Response2) => {
+      backApi.get('/agent/share-transfert-list', { params: { show_root: 1 } }).then(Response2 => {
         // eslint-disable-next-line no-param-reassign
         // Response.data.agentname = Response.data.name;
         // // Response2.data.entries.push
         // Response2.data.entries.push(Response.data);
-        Response2.data.entries.forEach((u) => {
+        Response2.data.entries.forEach(u => {
           // eslint-disable-next-line no-param-reassign
           u.value = `${u.id}-${u.agentname}`;
         });
@@ -546,9 +618,9 @@ export default {
           agent_id: item.id,
         },
       };
-      backApi.get('/agents-tree-hist/period', data).then((response) => {
+      backApi.get('/agents-tree-hist/period', data).then(response => {
         this.rows = response.data.entries;
-        this.rows.forEach((e) => {
+        this.rows.forEach(e => {
           e.depth = 0;
           e.children = [];
         });
@@ -572,8 +644,8 @@ export default {
           comdte: this.currentPeriod,
         },
       };
-      backApi.get('/agent/tree-agents-list', data).then((Response2) => {
-        Response2.data.entries.forEach((u) => {
+      backApi.get('/agent/tree-agents-list', data).then(Response2 => {
+        Response2.data.entries.forEach(u => {
           // eslint-disable-next-line no-param-reassign
           u.value = `${u.agent_id}-${u.name}`;
         });
@@ -590,9 +662,9 @@ export default {
           agent_id: item.id,
         },
       };
-      backApi.get('/agents-tree-hist/period', data).then((response) => {
+      backApi.get('/agents-tree-hist/period', data).then(response => {
         this.rows = response.data.entries;
-        this.rows.forEach((e) => {
+        this.rows.forEach(e => {
           e.depth = 0;
           e.children = [];
         });
@@ -604,10 +676,9 @@ export default {
       this.agent_id = null;
     },
     downloadXls() {
-      backApi.get('/agents-tree-hist/period/excel',
-        {
-          params:
-          {
+      backApi
+        .get('/agents-tree-hist/period/excel', {
+          params: {
             agent_id: this.modal_agent.agent_id !== '' ? this.modal_agent.agent_id : null,
             period: this.currentPeriod,
             filter: this.tree_type,
@@ -618,7 +689,11 @@ export default {
         })
         .then(({ data }) => {
           const filename = `${this.$t('История организации по периодам')}.xlsx`;
-          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const url = window.URL.createObjectURL(
+            new Blob([data], {
+              type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            }),
+          );
           const link = document.createElement('a');
           link.href = url;
           link.setAttribute('download', filename);
@@ -628,10 +703,9 @@ export default {
         });
     },
     downloadPdf() {
-      backApi.get('/agents-tree-hist/period/pdf',
-        {
-          params:
-          {
+      backApi
+        .get('/agents-tree-hist/period/pdf', {
+          params: {
             agent_id: this.modal_agent.agent_id !== '' ? this.modal_agent.agent_id : null,
             period: this.currentPeriod,
             filter: this.tree_type,
@@ -642,7 +716,11 @@ export default {
         })
         .then(({ data }) => {
           const filename = `${this.$t('История организации по периодам')}.pdf`;
-          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const url = window.URL.createObjectURL(
+            new Blob([data], {
+              type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            }),
+          );
           const link = document.createElement('a');
           link.href = url;
           link.setAttribute('download', filename);
@@ -665,11 +743,21 @@ export default {
           return 70;
         }
         return 100;
-      } if (col.property === 'name') {
+      }
+      if (col.property === 'name') {
         return 100;
-      } if (col.property === 'lo' || col.property === 'lo' || col.property === 'go' || col.property === 'ngo' || col.property === 'oo' || col.property === 'ko') {
+      }
+      if (
+        col.property === 'lo'
+        || col.property === 'lo'
+        || col.property === 'go'
+        || col.property === 'ngo'
+        || col.property === 'oo'
+        || col.property === 'ko'
+      ) {
         return 50;
-      } if (col.property === 'noact') {
+      }
+      if (col.property === 'noact') {
         return 100;
       }
       return 0;
@@ -698,8 +786,8 @@ export default {
           period: this.currentPeriod,
         },
       };
-      backApi.get('/agents-tree-hist/period', data).then((Response) => {
-        Response.data.entries.forEach((e) => {
+      backApi.get('/agents-tree-hist/period', data).then(Response => {
+        Response.data.entries.forEach(e => {
           e.depth = tree.depth + 1;
           e.children = [];
         });
@@ -717,9 +805,9 @@ export default {
           get_root: true,
         },
       };
-      backApi.get('/agents-tree-hist/period', data).then((Response) => {
+      backApi.get('/agents-tree-hist/period', data).then(Response => {
         this.rows = Response.data.entries;
-        this.rows.forEach((e) => {
+        this.rows.forEach(e => {
           e.depth = 0;
         });
       });
@@ -731,7 +819,8 @@ export default {
           filter: this.tree_type,
           get_root: true,
           period: this.currentPeriod,
-          agent_id: this.modal_agent.agent_id !== '' ? this.modal_agent.agent_id : this.currentUserID,
+          agent_id:
+            this.modal_agent.agent_id !== '' ? this.modal_agent.agent_id : this.currentUserID,
         },
       };
       const treeNameTranslate = {
@@ -741,7 +830,7 @@ export default {
       };
       if (this.tree_type !== null) {
         const treeName = treeNameTranslate[this.tree_type];
-        const tag = this.tags.find((t) => t.key === 'tree_type');
+        const tag = this.tags.find(t => t.key === 'tree_type');
         if (tag) {
           tag.name = treeName;
         } else if (this.tree_type !== 'full') {
@@ -751,18 +840,21 @@ export default {
         }
       }
       if (this.modal_agent.agent_id !== null && this.modal_agent.agent_id !== '') {
-        const tag = this.tags.find((t) => t.key === 'modal_agent_id');
+        const tag = this.tags.find(t => t.key === 'modal_agent_id');
         if (tag) {
           tag.name = `${this.modal_agent.agent_id} - ${this.modal_agent.name}`;
         } else {
-          this.tags.push({ name: `${this.modal_agent.agent_id} - ${this.modal_agent.name}`, key: 'modal_agent_id' });
+          this.tags.push({
+            name: `${this.modal_agent.agent_id} - ${this.modal_agent.name}`,
+            key: 'modal_agent_id',
+          });
         }
         // data.params.modal_agent_id = this.modal_agent.agent_id;
       }
       this.searchActive = false;
-      backApi.get('/agents-tree-hist/period', data).then((response) => {
+      backApi.get('/agents-tree-hist/period', data).then(response => {
         this.rows = response.data.entries;
-        this.rows.forEach((e) => {
+        this.rows.forEach(e => {
           e.depth = 0;
           e.children = [];
         });
@@ -781,9 +873,7 @@ export default {
       const vNodesTitle = h(
         'div',
         { class: ['d-flex', 'flex-grow-1', 'align-items-baseline', 'mr-2'] },
-        [
-          h('strong', { class: 'mr-2' }, title),
-        ],
+        [h('strong', { class: 'mr-2' }, title)],
       );
       // Pass the VNodes as an array for message and title
       this.$bvToast.toast([vNodesMsg], {
@@ -802,29 +892,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.idBlock.hide{
+.idBlock.hide {
   display: none;
 }
-.cls_btn{
+.cls_btn {
   background-color: #32aaa7;
   border: 0;
 }
-.modal_icons{
+.modal_icons {
   font-size: 0;
   display: flex;
   align-items: center;
-  & > img{
+  & > img {
     position: relative;
     top: 2px;
   }
-  & > span{
+  & > span {
     font-size: 16px;
   }
 }
-.hide_arrow{
+.hide_arrow {
   display: none;
 }
-.search_icons{
+.search_icons {
   position: relative;
   top: 5px;
   display: inline-block;
@@ -832,24 +922,24 @@ export default {
   height: 24px;
   background-image: url('../../public/icons/search.svg');
   background-size: contain;
-  &.mobi{
+  &.mobi {
     position: absolute;
     top: 20px;
     right: 15px;
   }
 }
-.mobile{
+.mobile {
   display: none;
   margin-bottom: 20px;
 }
-span[class*="el-tag"] deep i{
+span[class*='el-tag'] deep i {
   display: none;
 }
-.date_picker_comp{
+.date_picker_comp {
   position: relative;
   /* display: inline-block; */
 }
-.date_show{
+.date_show {
   /* position: relative; */
   margin-left: 45px;
   min-width: 120px;
@@ -857,7 +947,7 @@ span[class*="el-tag"] deep i{
   text-align: center;
 }
 .arrow_left,
-.arrow_right{
+.arrow_right {
   position: absolute;
   display: inline;
   background-repeat: no-repeat;
@@ -868,88 +958,88 @@ span[class*="el-tag"] deep i{
   top: 5px;
   cursor: pointer;
 }
-.arrow_left{
-    background-image: url('../assets/imgs/arrow_left.svg');
-    left: 0px;
+.arrow_left {
+  background-image: url('../assets/imgs/arrow_left.svg');
+  left: 0px;
 }
-.arrow_right{
-    background-image: url('../assets/imgs/arrow_right.svg');
-    left: 190px;
+.arrow_right {
+  background-image: url('../assets/imgs/arrow_right.svg');
+  left: 190px;
 }
 @media (min-width: 770px) {
-  .radio{
+  .radio {
     display: inline;
   }
 }
 @media (max-width: 770px) {
-  .mobile{
+  .mobile {
     display: block;
     padding-left: 0;
   }
-  .desktop{
+  .desktop {
     display: none;
   }
 }
 @media (max-width: 575px) {
-.hide_arrow{
-  position: absolute;
-  right: 10px;
-  top: 2px;
-  height: 20px;
-  width: 20px;
-  display: inline-block;
-  background-image: url('../../public/icons/vector.svg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  cursor: pointer;
-  transform: rotate(-180deg);
-  &.hide{
-    transform: rotate(0deg);
-    left: 50%;
-    top: 60%;
-    transform: translate(-50%, -0%);
+  .hide_arrow {
+    position: absolute;
+    right: 10px;
+    top: 2px;
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    background-image: url('../../public/icons/vector.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    transform: rotate(-180deg);
+    &.hide {
+      transform: rotate(0deg);
+      left: 50%;
+      top: 60%;
+      transform: translate(-50%, -0%);
+    }
   }
-}
-  .date_picker_comp{
-    & > div{
+  .date_picker_comp {
+    & > div {
       display: flex;
       position: relative;
       justify-content: center;
-      & i{
+      & i {
         position: static;
         margin-top: 5px;
-        &:nth-of-type(1){
+        &:nth-of-type(1) {
           margin-right: 20px;
         }
-        &:nth-of-type(2){
+        &:nth-of-type(2) {
           margin-left: 20px;
         }
       }
     }
   }
 }
-.close_btn{
+.close_btn {
   right: 10px;
   top: 10px;
 }
-.rank_icon{
+.rank_icon {
   width: 25px;
   margin-left: 10px;
 }
-.rank_icon_rank{
+.rank_icon_rank {
   width: 20px;
   // margin-left: -10px;
 }
-.rank_icon_legend{
+.rank_icon_legend {
   width: 25px;
   margin-right: 10px;
 }
-.user_id{
+.user_id {
   display: inline-block;
   float: right;
   cursor: pointer;
 }
-.user_name{
+.user_name {
   display: inline-block;
   position: relative;
   text-align: right;
@@ -957,23 +1047,23 @@ span[class*="el-tag"] deep i{
   padding-bottom: 0;
   margin-top: 10px;
   &::after {
-      position: absolute;
-      content: '';
-      width: 100%;
-      left: 0;
-      bottom: 0;
-      height: 2px;
-      border-bottom: 1px dotted black;
+    position: absolute;
+    content: '';
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    border-bottom: 1px dotted black;
   }
 }
-.depth-0 .user_name::after{
-      position: absolute;
-      content: '';
-      width: 100%;
-      left: 0;
-      bottom: 0;
-      height: 2px;
-      border-bottom: 1px dotted white;
+.depth-0 .user_name::after {
+  position: absolute;
+  content: '';
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  border-bottom: 1px dotted white;
 }
 .licevoischet__page {
   position: relative;
@@ -994,7 +1084,7 @@ span[class*="el-tag"] deep i{
     padding-top: 30px;
     width: 100%;
     bottom: 0;
-    & .container{
+    & .container {
       position: relative;
     }
     & .edit {
@@ -1003,9 +1093,9 @@ span[class*="el-tag"] deep i{
         border: 0;
         padding: 5px 30px;
         font-size: 16px;
-        &.disabled{
-          color: #9A9A9A;
-          background-color: #DEE2F3;
+        &.disabled {
+          color: #9a9a9a;
+          background-color: #dee2f3;
         }
         &:nth-of-type(1) {
           background-color: #32aaa7;
@@ -1022,85 +1112,86 @@ span[class*="el-tag"] deep i{
 }
 </style>
 <style>
-.el-table__header-wrapper{
-  background: #DEE2F3 !important;
+.el-table__header-wrapper {
+  background: #dee2f3 !important;
 }
-button.close{
+button.close {
   color: #32aaa7;
   opacity: 1;
 }
-button.close:hover{
+button.close:hover {
   color: #32aaa7;
   opacity: 1;
 }
-.modal-dialog-centered.modal-dialog-scrollable .modal-content{
+.modal-dialog-centered.modal-dialog-scrollable .modal-content {
   max-height: calc(100vh - 5rem) !important;
 }
 .el-table__expand-icon > .el-icon-arrow-right {
-        color: white;
-        left: 0;
-      }
+  color: white;
+  left: 0;
+}
 .el-table__indent {
   /* padding-left: 0 !important; */
 }
-.el-table{
+.el-table {
   font-weight: 500;
 }
-.el-table th{
-  background-color: #DEE2F3 !important;
+.el-table th {
+  background-color: #dee2f3 !important;
   color: black;
 }
-.orgbyhist .el-table tr td:nth-of-type(1){
-  border-right: 1px solid #9A9A9A;
+.orgbyhist .el-table tr td:nth-of-type(1) {
+  border-right: 1px solid #9a9a9a;
 }
-.orgbyhist{
+.orgbyhist {
   /* border: 1px solid #BABABA; */
 }
-.orgbyhist .el-table td, .el-table th.is-leaf{
-  border-bottom: 1px solid #9A9A9A;
+.orgbyhist .el-table td,
+.el-table th.is-leaf {
+  border-bottom: 1px solid #9a9a9a;
 }
-.el-table th.is-leaf:nth-of-type(1){
-  border-bottom: 1px solid #9A9A9A;
-  border-right: 1px solid #9A9A9A;
+.el-table th.is-leaf:nth-of-type(1) {
+  border-bottom: 1px solid #9a9a9a;
+  border-right: 1px solid #9a9a9a;
 }
 .depth-0 {
   background-color: #32aaa7 !important;
   color: white;
 }
 .orgbyhist .depth-1 {
-  background-color: #AED9D8 !important;
+  background-color: #aed9d8 !important;
   color: black;
 }
 .orgbyhist .depth-2 {
-  background-color: #B5CCE2 !important;
+  background-color: #b5cce2 !important;
   color: black;
 }
 .orgbyhist .depth-3 {
-  background-color: #C1D5E9 !important;
+  background-color: #c1d5e9 !important;
   color: black;
 }
 .orgbyhist .depth-4 {
-  background-color: #BEBEBE !important;
+  background-color: #bebebe !important;
   color: black;
 }
 .orgbyhist .depth-5 {
-  background-color: #C4C5C6 !important;
+  background-color: #c4c5c6 !important;
   color: black;
 }
 .orgbyhist .depth-6 {
-  background-color: #CECFD0 !important;
+  background-color: #cecfd0 !important;
   color: black;
 }
 .orgbyhist .depth-7 {
-  background-color: #D4D5D7 !important;
+  background-color: #d4d5d7 !important;
   color: black;
 }
 .orgbyhist .depth-8 {
-  background-color: #E3E3E4 !important;
+  background-color: #e3e3e4 !important;
   color: black;
 }
 .orgbyhist .depth-9 {
-  background-color: #EBEDF4 !important;
+  background-color: #ebedf4 !important;
   color: black;
 }
 .el-table .cell {
@@ -1108,19 +1199,19 @@ button.close:hover{
   overflow: unset;
   text-overflow: unset;
 }
-.el-table__body tr.hover-row.current-row>td,
-.el-table__body tr.hover-row.el-table__row--striped.current-row>td,
-.el-table__body tr.hover-row.el-table__row--striped>td,
-.el-table__body tr.hover-row>td{
+.el-table__body tr.hover-row.current-row > td,
+.el-table__body tr.hover-row.el-table__row--striped.current-row > td,
+.el-table__body tr.hover-row.el-table__row--striped > td,
+.el-table__body tr.hover-row > td {
   background-color: unset;
 }
-a{
+a {
   color: black;
 }
-.depth-0 a{
+.depth-0 a {
   color: white;
 }
-a:hover{
+a:hover {
   color: unset;
   text-decoration: none;
 }

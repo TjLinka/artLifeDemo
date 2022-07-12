@@ -17,22 +17,12 @@
       </h2>
       <div class="row" v-if="role !== 'Клиент'">
         <div class="col-6">
-          <b-form-group :label="`${$t('Тип соглашения')}`">
-            <b-form-radio
-              v-model="ref_agrigment"
-              name="some-radios-1"
-              :value="1"
-              class="radio mr-3"
-              >{{ $t('Дистрибьютор') }}</b-form-radio
-            >
-            <b-form-radio
-              v-model="ref_agrigment"
-              name="some-radios-1"
-              :value="0"
-              class="radio mr-3"
-              >{{ $t('Клиент') }}</b-form-radio
-            >
-          </b-form-group>
+          <g-radio
+            label="Тип соглашения"
+            :id="'ref_agrigment'"
+            :radios="ref_agrigment_radios"
+            v-model="ref_agrigment"
+          />
         </div>
       </div>
       <!-- Выбор типа реферальной ссылки -->
@@ -58,7 +48,13 @@
       <!-- Выбор товара -->
       <div class="row mt-3" v-if="ref_type === 1">
         <div class="col-6" v-if="ref_products_list.length > 0">
-          <el-select v-model="selected_product" placeholder="Товар" style="width: 100%;" clearable filterable>
+          <el-select
+            v-model="selected_product"
+            placeholder="Товар"
+            style="width: 100%;"
+            clearable
+            filterable
+          >
             <el-option
               v-for="data in ref_products_list"
               :key="data.id"
@@ -74,7 +70,13 @@
       </div>
       <div class="row mt-3" v-if="ref_type === 2">
         <div class="col-6" v-if="ref_landing_list.length > 0">
-          <el-select v-model="selected_landing" placeholder="Лендинг" style="width: 100%;" clearable filterable>
+          <el-select
+            v-model="selected_landing"
+            placeholder="Лендинг"
+            style="width: 100%;"
+            clearable
+            filterable
+          >
             <el-option
               v-for="data in ref_landing_list"
               :key="data.id"
@@ -90,29 +92,39 @@
       </div>
       <!-- Комментарий для реф ссылки -->
       <div class="row mt-3" v-if="ref_type">
-        <div class="col custom_input">
-          <input type="text" name="preview_info" id="preview_info" required v-model="preview_info" />
-          <label for="oppreview_infoepreview_inforType">{{$t("Комментарий")}}</label>
-          <span class="clear_icon" @click="clearInput()"></span>
+        <div class="col">
+          <g-input
+            :id="preview_info"
+            :placeholder="'Комментарий'"
+            :type="'text'"
+            v-model="preview_info"
+          />
         </div>
         <div class="col"></div>
       </div>
       <div class="row mt-3">
         <div class="col-6">
-          <button class="btn_type_2 w50 mr-2" @click="$router.push('/ref-urls')">Отмена</button>
-          <button
-          :class="`btn_type_1 w50 fr ${canSaveRefLink ? '' : 'disabled'}`"
-          :disabled="!canSaveRefLink"
-          @click="createRefLink">Сохранить</button>
+          <g-grouped-button>
+            <g-button :disabled="!canSaveRefLink" @click="createRefLink" primary
+              >Сохранить</g-button
+            >
+            <g-button @click="$router.push('/ref-urls')">Отмена</g-button>
+          </g-grouped-button>
         </div>
       </div>
     </div>
-    <b-modal id="bv-modal-example" hide-footer centered  :hide-header-close="true" :no-close-on-backdrop="true">
+    <b-modal
+      id="bv-modal-example"
+      hide-footer
+      centered
+      :hide-header-close="true"
+      :no-close-on-backdrop="true"
+    >
       <div class="d-block text-center">
         <h3>
-          {{$t('Создание реферальной ссылки')}}
+          {{ $t('Создание реферальной ссылки') }}
         </h3>
-        <p>{{$t("Пожалуйста подождите")}}...</p>
+        <p>{{ $t('Пожалуйста подождите') }}...</p>
       </div>
     </b-modal>
   </div>
@@ -122,8 +134,18 @@
 import $ from 'jquery';
 import { mapActions, mapState } from 'vuex';
 import backAPI from '../assets/backApi';
+import GGroupedButton from '../components/Forms/GGroupedButton.vue';
+import GButton from '../components/Forms/GButton.vue';
+import GInput from '../components/Forms/GInput.vue';
+import GRadio from '../components/Forms/GRadio.vue';
 
 export default {
+  components: {
+    GGroupedButton,
+    GButton,
+    GInput,
+    GRadio,
+  },
   name: 'CreateRefURL',
   data() {
     return {
@@ -134,6 +156,18 @@ export default {
       selected_business: null,
       selected_landing: null,
       selected_registration: null,
+      ref_agrigment_radios: [
+        {
+          key: 1,
+          label: 'Дистрибьютор',
+          value: 1,
+        },
+        {
+          key: 2,
+          label: 'Клиент',
+          value: 0,
+        },
+      ],
       ref_type_list: [
         {
           id: 1,
@@ -188,12 +222,16 @@ export default {
     },
     getRefData(type) {
       if (type === 1) {
-        backAPI.get('/agent/sales/catalog', { params: { stock_id: 0, catalog_switch: 1 } }).then((Response) => {
-          this.ref_products_list = Response.data.entries.map((product) => ({ id: product.id, articul: product.articul, name: product.name }));
+        backAPI.get('/agent/sales/catalog', { params: { stock_id: 0 } }).then(Response => {
+          this.ref_products_list = Response.data.entries.map(product => ({
+            id: product.id,
+            articul: product.articul,
+            name: product.name,
+          }));
         });
       }
       if (type === 2) {
-        backAPI.get('/agent/reflinks/landings').then((Response) => {
+        backAPI.get('/agent/reflinks/landings').then(Response => {
           console.log(Response);
           this.ref_landing_list = Response.data.entries;
         });
@@ -229,9 +267,7 @@ export default {
       const vNodesTitle = h(
         'div',
         { class: ['d-flex', 'flex-grow-1', 'align-items-baseline', 'mr-2'] },
-        [
-          h('p', { class: 'mr-2' }, title),
-        ],
+        [h('p', { class: 'mr-2' }, title)],
       );
       // Pass the VNodes as an array for message and title
       this.$bvToast.toast([vNodesMsg], {

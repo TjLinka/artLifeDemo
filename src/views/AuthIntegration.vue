@@ -12,7 +12,7 @@ export default {
     this.logout();
     backAPI
       .post('/agent/login/token', { access_token: this.$route.query.access_token })
-      .then((resp) => {
+      .then(resp => {
         const data = JSON.stringify(resp.data);
         const token = resp.data.access_token;
         localStorage.setItem('access_token', data);

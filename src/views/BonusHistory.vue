@@ -1,50 +1,71 @@
 <template>
   <div class="licevoischet__page">
     <div v-loading="loading">
-    <div class="container-fluid table_container" v-show="!loading">
-      <h2 class="page__title">
-                              <p class="mobile_back noprint" @click="back">
-        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
-        </svg>
-      </p>
-        <!-- {{$t("История начисления бонусов")}}: {{agentData.id}} - {{agentData.name}} -->
+      <div class="container-fluid table_container" v-show="!loading">
+        <h2 class="page__title">
+          <p class="mobile_back noprint" @click="back">
+            <svg
+              width="18"
+              height="12"
+              viewBox="0 0 18 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
+            </svg>
+          </p>
+          <!-- {{$t("История начисления бонусов")}}: {{agentData.id}} - {{agentData.name}} -->
         </h2>
-      <div class="row mt-3 mb-3">
-        <div class="col-md-6 perioad__picker">
-        <BasePeriodPicker :currentPeriod="currentPeriod"
-        v-on:next-period="nextPeriod" class="period_picker"/>
+        <div class="row mt-3 mb-3">
+          <div class="col-md-6 perioad__picker">
+            <BasePeriodPicker
+              :currentPeriod="currentPeriod"
+              v-on:next-period="nextPeriod"
+              class="period_picker"
+            />
+          </div>
+        </div>
+        <p class="exp_print mt-3 noprint">
+          <!-- <span class="mr-3">Печать</span> -->
+          <span class="mr-3" @click="downloadPdf">{{ $t('Экспорт в pdf') }}</span>
+          <span class="mr-3" @click="downloadXls">{{ $t('Экспорт в xlsx') }}</span>
+        </p>
+        <div class="bonus_hist_table">
+          <div class="mb-5">
+            <b-table
+              :fields="topFields"
+              :items="topTableData"
+              head-variant="light"
+              responsive
+              outlined
+              class="bonus_history_table"
+            >
+              <template #cell(period)="data">
+                <span>{{ data.value }}</span>
+              </template>
+            </b-table>
+          </div>
+          <b-table
+            :fields="mainFields"
+            :items="bonus"
+            head-variant="light"
+            class="sub_2"
+            responsive
+            outlined
+          >
+            <template v-slot:cell(Наименование)="row">
+              <b-button size="sm" @click="row.toggleDetails" class="mr-2">
+                <span>{{ row.detailsShowing ? '-' : '+' }}</span>
+              </b-button>
+              <span>{{ row.item.bonusname }}</span>
+            </template>
+            <template v-slot:row-details="row">
+              <b-table :fields="returnFields" :items="row.item.detail" head-variant="light">
+              </b-table>
+            </template>
+          </b-table>
         </div>
       </div>
-      <p class="exp_print mt-3 noprint">
-        <!-- <span class="mr-3">Печать</span> -->
-        <span class="mr-3" @click="downloadPdf">{{$t("Экспорт в pdf")}}</span>
-        <span class="mr-3" @click="downloadXls">{{$t("Экспорт в xlsx")}}</span>
-      </p>
-      <div class="bonus_hist_table">
-      <div class="mb-5">
-      <b-table :fields="topFields " :items="topTableData" head-variant="light"
-      responsive outlined class="bonus_history_table">
-          <template #cell(period)="data">
-            <span>{{ data.value }}</span>
-          </template>
-      </b-table>
-      </div>
-      <b-table :fields="mainFields" :items="bonus" head-variant="light"
-      class="sub_2" responsive outlined>
-        <template v-slot:cell(Наименование)="row">
-          <b-button size="sm" @click="row.toggleDetails" class="mr-2">
-            <span>{{ row.detailsShowing ? '-' : '+' }}</span>
-          </b-button>
-          <span>{{ row.item.bonusname }}</span>
-        </template>
-        <template v-slot:row-details="row">
-          <b-table :fields="returnFields"
-          :items="row.item.detail" head-variant="light"> </b-table>
-        </template>
-      </b-table>
-      </div>
-    </div>
     </div>
   </div>
 </template>
@@ -68,7 +89,20 @@ export default {
       currentPeriodTop: {},
       periods: [],
       periodIndex: 0,
-      months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+      months: [
+        'Январь',
+        'Февраль',
+        'Март',
+        'Апрель',
+        'Май',
+        'Июнь',
+        'Июль',
+        'Августь',
+        'Сентябрь',
+        'Октябрь',
+        'Ноябрь',
+        'Декабрь',
+      ],
       bonus: [],
       returnItems: [],
       topTableData: [],
@@ -245,17 +279,19 @@ export default {
   metaInfo() {
     this.setPageTitle(`${this.$t('История начисления бонусов')}`);
     return {
-      title: `${this.$t('ЛК Партнера')} - ${this.$t('История начисления бонусов')} : ${this.agentData.id} - ${this.agentData.name}`,
+      title: `${this.$t('ЛК Партнера')} - ${this.$t('История начисления бонусов')} : ${
+        this.agentData.id
+      } - ${this.agentData.name}`,
     };
   },
   mounted() {
-    backApi.get('/agent/profile').then((Response) => {
+    backApi.get('/agent/profile').then(Response => {
       this.agentData = Response.data;
     });
-    backApi.get('/agent/get-current-period').then((Response2) => {
+    backApi.get('/agent/get-current-period').then(Response2 => {
       this.currentPeriodTop = Response2.data;
     });
-    backApi.get('agent/bonus-detail/periods').then((Response) => {
+    backApi.get('agent/bonus-detail/periods').then(Response => {
       this.periods = Response.data.entries.sort((a, b) => {
         const result = a.comdte > b.comdte ? 1 : -1;
         return result;
@@ -263,12 +299,13 @@ export default {
       this.periodIndex = this.periods.length - 1;
       backApi
         .get('agent/bonus-detail-new', { params: { comdte: this.currentPeriod } })
-        .then((response) => {
+        .then(response => {
           this.bonus = response.data.entries;
           // eslint-disable-next-line no-param-reassign
           response.data.header.period = this.currentPeriod;
           this.topTableData = [response.data.header];
-        }).then(() => {
+        })
+        .then(() => {
           setTimeout(() => {
             this.loading = false;
           });
@@ -289,7 +326,7 @@ export default {
   },
   watch: {
     currentPeriod(v) {
-      backApi.get('agent/bonus-detail-new', { params: { comdte: v } }).then((response) => {
+      backApi.get('agent/bonus-detail-new', { params: { comdte: v } }).then(response => {
         this.bonus = response.data.entries;
         // eslint-disable-next-line no-param-reassign
         response.data.header.period = this.currentPeriod;
@@ -300,17 +337,20 @@ export default {
   methods: {
     ...mapActions('currentPage', ['setPageTitle']),
     downloadXls() {
-      backApi.get('/agent/bonus-detail/excel',
-        {
-          params:
-          {
+      backApi
+        .get('/agent/bonus-detail/excel', {
+          params: {
             comdte: this.currentPeriod,
           },
           responseType: 'blob',
         })
         .then(({ data }) => {
           const filename = `${this.$t('История бонусов')}.xlsx`;
-          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const url = window.URL.createObjectURL(
+            new Blob([data], {
+              type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            }),
+          );
           const link = document.createElement('a');
           link.href = url;
           link.setAttribute('download', filename);
@@ -320,17 +360,20 @@ export default {
         });
     },
     downloadPdf() {
-      backApi.get('/agent/bonus-detail/pdf',
-        {
-          params:
-          {
+      backApi
+        .get('/agent/bonus-detail/pdf', {
+          params: {
             comdte: this.currentPeriod,
           },
           responseType: 'blob',
         })
         .then(({ data }) => {
           const filename = `${this.$t('История бонусов')}.pdf`;
-          const url = window.URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+          const url = window.URL.createObjectURL(
+            new Blob([data], {
+              type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            }),
+          );
           const link = document.createElement('a');
           link.href = url;
           link.setAttribute('download', filename);
@@ -378,10 +421,10 @@ export default {
     }
   }
 }
-.btn{
+.btn {
   border: 0 !important;
 }
-.cur_p{
+.cur_p {
   margin: 0;
 }
 .btn-secondary {
@@ -393,62 +436,62 @@ export default {
   font-weight: 500;
   font-size: 18px;
 }
-.current_period{
-  background-color: #EBEEFA;
+.current_period {
+  background-color: #ebeefa;
   padding: 16px 12px;
   display: inline-block;
   border-radius: 1px;
 
-  & br{
+  & br {
     display: none;
   }
   & p {
-    margin-bottom: 0 ;
+    margin-bottom: 0;
   }
 }
 .btn-secondary:not(:disabled):not(.disabled):active,
 .btn-secondary:not(:disabled):not(.disabled).active,
-.show > .btn-secondary.dropdown-toggle{
+.show > .btn-secondary.dropdown-toggle {
   background-color: unset;
   outline: none;
 }
 .btn-secondary:not(:disabled):not(.disabled):active:focus,
 .btn-secondary:not(:disabled):not(.disabled).active:focus,
-.show > .btn-secondary.dropdown-toggle:focus{
+.show > .btn-secondary.dropdown-toggle:focus {
   box-shadow: none;
 }
 </style>
 <style>
-.bonus_hist_table table[aria-colcount="8"] td{
+.bonus_hist_table table[aria-colcount='8'] td {
   /* background: #32AAA7; */
   /* color: white !important; */
 }
-.bonus_hist_table table[aria-colcount="6"]{
+.bonus_hist_table table[aria-colcount='6'] {
   margin-bottom: 0;
 }
-.bonus_hist_table table[aria-colcount="6"] td{
-  background-color: #D4D5D7;
+.bonus_hist_table table[aria-colcount='6'] td {
+  background-color: #d4d5d7;
 }
-.bonus_hist_table table[aria-colcount="6"] td[aria-colindex='1']{
+.bonus_hist_table table[aria-colcount='6'] td[aria-colindex='1'] {
   width: 350px;
 }
-.bonus_hist_table table[aria-colcount="2"] td[aria-colindex='1']{
+.bonus_hist_table table[aria-colcount='2'] td[aria-colindex='1'] {
   width: 350px;
 }
-.bonus_hist_table th[aria-colindex='1']{
-  width: 350px;
-  min-width: 300px;
-}
-.bonus_hist_table table[aria-colcount="2"] > thead > tr > th[role="columnheader"]:nth-of-type(1){
+.bonus_hist_table th[aria-colindex='1'] {
   width: 350px;
   min-width: 300px;
 }
-.bonus_hist_table table[aria-colcount="2"] tr[tabindex='-1'] > td{
+.bonus_hist_table table[aria-colcount='2'] > thead > tr > th[role='columnheader']:nth-of-type(1) {
+  width: 350px;
+  min-width: 300px;
+}
+.bonus_hist_table table[aria-colcount='2'] tr[tabindex='-1'] > td {
   padding: 0;
   /* padding-top: 10px !important; */
 }
-tr.b-table-has-details > td{
- background: #32AAA7;
- color: white !important;
+tr.b-table-has-details > td {
+  background: #32aaa7;
+  color: white !important;
 }
 </style>

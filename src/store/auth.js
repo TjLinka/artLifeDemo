@@ -26,10 +26,10 @@ export default {
       : '',
   },
   mutations: {
-    AUTH_REQUEST: (state) => {
+    AUTH_REQUEST: state => {
       state.auth_request_status = 'loading';
     },
-    AUTH_UPDATE: (state) => {
+    AUTH_UPDATE: state => {
       state.auth_request_status = 'update';
     },
     AUTH_SUCCESS: (state, payload) => {
@@ -38,13 +38,15 @@ export default {
       state.access_token = payload.access_token;
       state.agentname = JSON.parse(localStorage.getItem('access_token')).agentname;
       state.role = JSON.parse(localStorage.getItem('access_token')).role;
-      state.self_agreementsystem = JSON.parse(localStorage.getItem('access_token')).self_agreementsystem;
+      state.self_agreementsystem = JSON.parse(
+        localStorage.getItem('access_token'),
+      ).self_agreementsystem;
       state.self_agent_id = JSON.parse(localStorage.getItem('access_token')).agent_id;
     },
-    AUTH_ERROR: (state) => {
+    AUTH_ERROR: state => {
       state.auth_request_status = 'error';
     },
-    AUTH_LOGOUT: (state) => {
+    AUTH_LOGOUT: state => {
       state.auth_request_status = '';
       state.is_authorized = false;
       state.agentname = '';
@@ -54,28 +56,29 @@ export default {
   },
   actions: {
     login({ commit }, resp) {
-      return new Promise((resolve) => {
+      console.log(resp);
+      return new Promise(resolve => {
         commit('AUTH_REQUEST');
         commit('AUTH_SUCCESS', resp.data);
         resolve();
       });
     },
     loginIntegration({ commit }, resp) {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         commit('AUTH_REQUEST');
         commit('AUTH_SUCCESS', resp.data);
         resolve(resp);
       });
     },
     register({ commit }, resp) {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         commit('AUTH_REQUEST');
         commit('AUTH_SUCCESS', resp.data);
         resolve(resp);
       });
     },
     logout({ commit }) {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         commit('AUTH_LOGOUT');
         localStorage.removeItem('access_token');
         resolve();

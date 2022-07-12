@@ -38,12 +38,6 @@ export default {
       ],
     };
   },
-  // methods: {
-  //   nextPeriod(x) {
-  //     this.period_enabled = true;
-  //     this.periodIndex = (this.periodIndex + this.periods.length + x) % this.periods.length;
-  //   },
-  // },
 };
 </script>
 <style scoped>

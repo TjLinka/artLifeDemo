@@ -1,67 +1,72 @@
 <template>
   <div class="container" v-if="loaded">
     <div v-if="errorStatus">
-       <h2 class="page__title">
-      <!-- {{$t('Верификация')}} -->
-    </h2>
-    <div class="row mt-4">
-      <div class="col-md-6">
-        <div class="custom_input" v-show="!codeCome">
-          <input
-          type="text"
-          v-mask="mask"
-          @input="checkValue"
-          name="mobile_phone"
-          id="mobile_phone"
-          required v-model="newUser.mobile_phone" />
-          <label for="mobile_phone">{{$t('Номер телефона')}}:</label>
-          <span class="clear_icon" @click="clearPhone()"></span>
+      <h2 class="page__title">
+        <!-- {{$t('Верификация')}} -->
+      </h2>
+      <div class="row mt-4">
+        <div class="col-md-6">
+          <div class="custom_input" v-show="!codeCome">
+            <input
+              type="text"
+              v-mask="mask"
+              @input="checkValue"
+              name="mobile_phone"
+              id="mobile_phone"
+              required
+              v-model="newUser.mobile_phone"
+            />
+            <label for="mobile_phone">{{ $t('Номер телефона') }}:</label>
+            <span class="clear_icon" @click="clearPhone()"></span>
+          </div>
+          <div class="custom_input" v-show="codeCome">
+            <input
+              type="text"
+              name="mobile_phone_code"
+              id="mobile_phone_code"
+              required
+              v-model="mobile_phone_code"
+            />
+            <label for="mobile_phone_code">{{ $t('Смс код') }}:</label>
+            <span class="clear_icon" @click="clearPhoneCode()"></span>
+          </div>
+          <button @click="phoneCodeCome" v-if="!codeCome">
+            {{ $t('Отправить код потверждения') }}
+          </button>
+          <b-form-checkbox
+            class="mt-3"
+            id="checkbox-1"
+            v-model="status"
+            name="checkbox-1"
+            :value="true"
+            v-if="codeCome"
+            :unchecked-value="false"
+          >
+            {{ $t('Я даю своё согласие на обработку и использование моих персональных данных') }}
+          </b-form-checkbox>
+          <button
+            v-if="codeCome"
+            @click="getAccess"
+            :disabled="!status"
+            :class="`${status ? '' : 'disabled'}`"
+          >
+            {{ $t('Подтвердить код') }}
+          </button>
+          <br />
+          <button v-if="registeration" :disabled="!registeration" @click="$router.push('/')">
+            {{ $t('Перейти в профиль') }}
+          </button>
         </div>
-        <div class="custom_input" v-show="codeCome">
-          <input type="text" name="mobile_phone_code"
-          id="mobile_phone_code" required v-model="mobile_phone_code" />
-          <label for="mobile_phone_code">{{$t('Смс код')}}:</label>
-          <span class="clear_icon" @click="clearPhoneCode()"></span>
+        <div class="col-md-6">
+          <h4>{{ $t('Ваша почта подтверждена') }}</h4>
+          <p class="posr">{{ newUser.email }}<span class="chval"></span></p>
         </div>
-        <button @click="phoneCodeCome" v-if="!codeCome">
-            {{$t("Отправить код потверждения")}}
-        </button>
-        <b-form-checkbox
-          class="mt-3"
-          id="checkbox-1"
-          v-model="status"
-          name="checkbox-1"
-          :value="true"
-          v-if="codeCome"
-          :unchecked-value="false"
-        >
-          {{$t("Я даю своё согласие на обработку и использование моих персональных данных")}}
-        </b-form-checkbox>
-        <button
-        v-if="codeCome"
-        @click="getAccess"
-        :disabled="!status"
-        :class="`${status ? '' : 'disabled'}`">
-            {{$t("Подтвердить код")}}
-        </button>
-        <br>
-        <button
-        v-if="registeration"
-        :disabled="!registeration"
-        @click="$router.push('/');">
-        {{$t("Перейти в профиль")}}
-        </button>
       </div>
-      <div class="col-md-6">
-        <h4>{{$t("Ваша почта подтверждена")}}</h4>
-        <p class="posr">{{ newUser.email }}<span class="chval"></span></p>
-      </div>
-    </div>
     </div>
     <div v-else>
-    <h2 class="page__title">
-      Такой Hash не существует! Вы будете перенаправлены на страницу авторизации.
-    </h2>
+      <h2 class="page__title">
+        Такой Hash не существует! Вы будете перенаправлены на страницу авторизации.
+      </h2>
     </div>
   </div>
 </template>
@@ -95,10 +100,12 @@ export default {
     };
   },
   mounted() {
-    backApi.get('/agent/new-agent', { params: { hash_content: this.$route.params.signup_hash } }).then((Response) => {
-      this.loaded = true;
-      this.newUser = Response.data;
-    })
+    backApi
+      .get('/agent/new-agent', { params: { hash_content: this.$route.params.signup_hash } })
+      .then(Response => {
+        this.loaded = true;
+        this.newUser = Response.data;
+      })
       .catch(() => {
         // this.showToast('Ошибка', error.response.data.detail, 'danger');
         this.errorStatus = false;
@@ -123,9 +130,7 @@ export default {
       const vNodesTitle = h(
         'div',
         { class: ['d-flex', 'flex-grow-1', 'align-items-baseline', 'mr-2'] },
-        [
-          h('strong', { class: 'mr-2' }, title),
-        ],
+        [h('strong', { class: 'mr-2' }, title)],
       );
       // Pass the VNodes as an array for message and title
       this.$bvToast.toast([vNodesMsg], {
@@ -139,11 +144,14 @@ export default {
         hash_content: this.$route.params.signup_hash,
         mobile_phone: this.newUser.mobile_phone.replace(/[-,(,),+]/g, ''),
       };
-      backApi.post('/agent/new-agent/send-code', data)
-        .then(() => {
-          this.showToast(this.$t('СМС потверждение'), this.$t('На ваш телефон придет смс с кодом для потверждения'), 'success');
-          this.codeCome = true;
-        });
+      backApi.post('/agent/new-agent/send-code', data).then(() => {
+        this.showToast(
+          this.$t('СМС потверждение'),
+          this.$t('На ваш телефон придет смс с кодом для потверждения'),
+          'success',
+        );
+        this.codeCome = true;
+      });
     },
     phoneCodeCheck() {
       const data = {
@@ -151,12 +159,13 @@ export default {
         // eslint-disable-next-line radix
         sms_code: parseInt(this.mobile_phone_code),
       };
-      backApi.post('/agent/signup-end', data)
+      backApi
+        .post('/agent/signup-end', data)
         .then(() => {
           this.phoneCheck = false;
           this.showToast(this.$t('СМС потверждение'), this.$t('Ваш код потвержден'), 'success');
         })
-        .catch((error) => {
+        .catch(error => {
           this.showToast(this.$t('СМС потверждение'), error.response.data.detail, 'danger');
         });
     },
@@ -165,19 +174,21 @@ export default {
         hash_content: this.$route.params.signup_hash,
         sms_code: this.mobile_phone_code,
       };
-      backApi
-        .post('/agent/signup-end', params)
-        .then((resp) => {
-          const data = JSON.stringify(resp.data);
-          const token = resp.data.access_token;
-          localStorage.setItem('access_token', data);
-          backApi.defaults.headers.common['access-token'] = token;
-          this.register(resp).then(() => {
-            // this.$router.push('/');
-            this.registeration = true;
-            this.showToast(this.$t('Регистриция'), this.$t('Вы успешно прошли регистрацию'), 'success');
-          });
+      backApi.post('/agent/signup-end', params).then(resp => {
+        const data = JSON.stringify(resp.data);
+        const token = resp.data.access_token;
+        localStorage.setItem('access_token', data);
+        backApi.defaults.headers.common['access-token'] = token;
+        this.register(resp).then(() => {
+          // this.$router.push('/');
+          this.registeration = true;
+          this.showToast(
+            this.$t('Регистриция'),
+            this.$t('Вы успешно прошли регистрацию'),
+            'success',
+          );
         });
+      });
     },
     clearPhone() {
       this.newUser.mobile_phone = '+';
@@ -196,32 +207,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.posr{
+.posr {
   position: relative;
   display: inline-block;
 }
-.chval{
-    position: absolute;
-    background: url('../assets/imgs/chval.svg') no-repeat;
-    width: 12px;
-    height: 12px;
-    top: 8px;
-    right: -40px;
-    // top: 80%;
+.chval {
+  position: absolute;
+  background: url('../assets/imgs/chval.svg') no-repeat;
+  width: 12px;
+  height: 12px;
+  top: 8px;
+  right: -40px;
+  // top: 80%;
 }
-p{
-    margin: 0;
-    padding: 0;
+p {
+  margin: 0;
+  padding: 0;
 }
 .custom_input {
-  margin-top: 10px;;
-    width: 50%;
+  margin-top: 10px;
+  width: 50%;
   input {
     // width: 50%;
     padding-left: 0px;
   }
-  & label{
-      left: 0;
+  & label {
+    left: 0;
   }
 }
 button:nth-of-type(1) {
@@ -233,10 +244,10 @@ button:nth-of-type(1) {
   padding: 4px 20px;
   margin-top: 30px;
   margin-bottom: 30px;
-  &.disabled{
-    color: #9A9A9A;
-    background-color: #DEE2F3;
-    border: 2px solid  #DEE2F3;
+  &.disabled {
+    color: #9a9a9a;
+    background-color: #dee2f3;
+    border: 2px solid #dee2f3;
   }
 }
 button:nth-of-type(2) {

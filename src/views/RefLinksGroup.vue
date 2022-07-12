@@ -23,8 +23,7 @@
           >
           </date-picker>
         </div>
-        <div class="col">
-        </div>
+        <div class="col"></div>
       </b-row>
       <!-- <div class="row">
         <div class="col">
@@ -54,16 +53,16 @@
           <b-button size="sm" @click="showRefTypeDetails(scope)" class="mr-2">
             <span>{{ scope.detailsShowing ? '-' : '+' }}</span>
           </b-button>
-          {{scope.item.reflink_type}}
+          {{ scope.item.reflink_type }}
         </template>
         <template v-slot:row-details>
           <b-table :fields="returnFields" :items="returnData" head-variant="light" sticky-header>
             <template v-slot:cell(cnt_reg)="scope">
               <span
-              style="color:#32aaa7; cursor: pointer;"
-              @click="openRegInfo(scope.item.reflink_id)"
+                style="color:#32aaa7; cursor: pointer;"
+                @click="openRegInfo(scope.item.reflink_id)"
               >
-                {{scope.item.cnt_reg}}
+                {{ scope.item.cnt_reg }}
               </span>
             </template>
           </b-table>
@@ -134,7 +133,7 @@
       <div class="container-md">
         <div class="organization__modal">
           <h3>
-            Реферальная ссылка {{currentRegInfo}}
+            Реферальная ссылка {{ currentRegInfo }}
             <span class="close_btn" @click="showNewUserModal = !showNewUserModal"></span>
           </h3>
           <b-table
@@ -156,7 +155,6 @@
 </template>
 
 <script>
-
 /* eslint-disable no-param-reassign */
 import DatePicker from 'vue2-datepicker';
 import { mapActions } from 'vuex';
@@ -225,7 +223,7 @@ export default {
         {
           key: 'cnt_links',
           label: 'Переходы',
-          formatter: (val) => {
+          formatter: val => {
             if (val === null) return 0;
             return val;
           },
@@ -233,7 +231,7 @@ export default {
         {
           key: 'cnt_reg',
           label: 'Регистрация',
-          formatter: (val) => {
+          formatter: val => {
             if (val === null) return 0;
             return val;
           },
@@ -241,7 +239,7 @@ export default {
         {
           key: 'conversion_pc',
           label: 'Конверсия в рег, %',
-          formatter: (val) => {
+          formatter: val => {
             if (val === null) return 0;
             return val;
           },
@@ -249,7 +247,7 @@ export default {
         {
           key: 'sale_cnt',
           label: 'Кол-во заказов (оплат)',
-          formatter: (val) => {
+          formatter: val => {
             if (val === null) return 0;
             return val;
           },
@@ -257,7 +255,7 @@ export default {
         {
           key: 'sale_sum',
           label: 'Сумма заказов (оплат)',
-          formatter: (val) => {
+          formatter: val => {
             if (val === null) return 0;
             return val;
           },
@@ -265,7 +263,7 @@ export default {
         {
           key: 'return_cnt',
           label: 'Кол-во возвратов',
-          formatter: (val) => {
+          formatter: val => {
             if (val === null) return 0;
             return val;
           },
@@ -273,7 +271,7 @@ export default {
         {
           key: 'return_sum',
           label: 'Сумма возвратов',
-          formatter: (val) => {
+          formatter: val => {
             if (val === null) return 0;
             return val;
           },
@@ -281,7 +279,7 @@ export default {
         {
           key: 'return_porcion',
           label: 'Доля возвратов',
-          formatter: (val) => {
+          formatter: val => {
             if (val === null) return 0;
             return val;
           },
@@ -289,7 +287,7 @@ export default {
         {
           key: 'retail_sum',
           label: 'Сумма розн. Возн.',
-          formatter: (val) => {
+          formatter: val => {
             if (val === null) return 0;
             return val;
           },
@@ -297,7 +295,7 @@ export default {
         {
           key: 'points',
           label: 'Сумма баллов',
-          formatter: (val) => {
+          formatter: val => {
             if (val === null) return 0;
             return val;
           },
@@ -345,7 +343,7 @@ export default {
         {
           key: 'cnt_links',
           label: 'Переходы',
-          formatter: (val) => {
+          formatter: val => {
             if (val === null) return 0;
             return val;
           },
@@ -353,7 +351,7 @@ export default {
         {
           key: 'cnt_reg',
           label: 'Регистрация',
-          formatter: (val) => {
+          formatter: val => {
             if (val === null) return 0;
             return val;
           },
@@ -361,7 +359,7 @@ export default {
         {
           key: 'conversion_pc',
           label: 'Конверсия в рег, %',
-          formatter: (val) => {
+          formatter: val => {
             if (val === null) return 0;
             return val;
           },
@@ -369,7 +367,7 @@ export default {
         {
           key: 'sale_cnt',
           label: 'Кол-во заказов (оплат)',
-          formatter: (val) => {
+          formatter: val => {
             if (val === null) return 0;
             return val;
           },
@@ -377,7 +375,7 @@ export default {
         {
           key: 'sale_sum',
           label: 'Сумма заказов (оплат)',
-          formatter: (val) => {
+          formatter: val => {
             if (val === null) return 0;
             return val;
           },
@@ -385,7 +383,7 @@ export default {
         {
           key: 'return_cnt',
           label: 'Кол-во возвратов',
-          formatter: (val) => {
+          formatter: val => {
             if (val === null) return 0;
             return val;
           },
@@ -393,7 +391,7 @@ export default {
         {
           key: 'return_sum',
           label: 'Сумма возвратов',
-          formatter: (val) => {
+          formatter: val => {
             if (val === null) return 0;
             return val;
           },
@@ -401,7 +399,7 @@ export default {
         {
           key: 'return_porcion',
           label: 'Доля возвратов',
-          formatter: (val) => {
+          formatter: val => {
             if (val === null) return 0;
             return val;
           },
@@ -409,7 +407,7 @@ export default {
         {
           key: 'retail_sum',
           label: 'Сумма розн. Возн.',
-          formatter: (val) => {
+          formatter: val => {
             if (val === null) return 0;
             return val;
           },
@@ -417,7 +415,7 @@ export default {
         {
           key: 'points',
           label: 'Сумма баллов',
-          formatter: (val) => {
+          formatter: val => {
             if (val === null) return 0;
             return val;
           },
@@ -461,8 +459,8 @@ export default {
     };
   },
   mounted() {
-    backAPI.get('/agent/reflinks-summary-by-agent').then((Response) => {
-      Response.data.entries.forEach((type) => {
+    backAPI.get('/agent/reflinks-summary-by-agent').then(Response => {
+      Response.data.entries.forEach(type => {
         // eslint-disable-next-line no-underscore-dangle
         type._showDetails = false;
       });
@@ -482,7 +480,7 @@ export default {
       this.currentRefData = [];
       this.currentRegInfo = '';
       this.returnData = [];
-      this.entries.forEach((ref) => {
+      this.entries.forEach(ref => {
         if (ref.reflink_type_id !== scope.item.reflink_type_id) {
           console.log('1');
           // eslint-disable-next-line no-underscore-dangle
@@ -500,7 +498,7 @@ export default {
               end_dte: this.rangeDate[1],
             },
           };
-          backAPI.get('/agent/reflinks-summary-by-type', params).then((Response) => {
+          backAPI.get('/agent/reflinks-summary-by-type', params).then(Response => {
             this.returnData = Response.data.entries;
           });
         } catch (error) {
@@ -524,7 +522,7 @@ export default {
           end_dte: this.rangeDate[1],
         },
       };
-      backAPI.get('/agent/reflink-reg-list', params).then((Response) => {
+      backAPI.get('/agent/reflink-reg-list', params).then(Response => {
         this.currentRefData = Response.data.entries;
       });
     },
@@ -541,8 +539,8 @@ export default {
           end_dte: this.rangeDate[1],
         },
       };
-      backAPI.get('/agent/reflinks-summary-by-agent', params).then((Response) => {
-        Response.data.entries.forEach((type) => {
+      backAPI.get('/agent/reflinks-summary-by-agent', params).then(Response => {
+        Response.data.entries.forEach(type => {
           // eslint-disable-next-line no-underscore-dangle
           type._showDetails = false;
         });

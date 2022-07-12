@@ -5,6 +5,11 @@ Vue.use(VueRouter);
 
 const routes = [
   {
+    path: '/test-page',
+    name: 'TestPage',
+    component: () => import('../views/TestPage.vue'),
+  },
+  {
     path: '/login',
     name: 'Auth',
     component: () => import('../views/Auth.vue'),
@@ -13,15 +18,59 @@ const routes = [
   },
   {
     path: '/',
-    name: 'MyInfo',
-    component: () => import('../views/AgentInfo.vue'),
-    meta: { requiresAuth: true },
-    // Видят все
+    redirect: '/profile',
+  },
+  // ПРОФИЛЬ
+  {
+    path: '/profile',
+    name: 'Profile',
+    redirect: '/profile/personal-data',
+    component: () => import('../views/Profile.vue'),
+    children: [
+      {
+        path: 'personal-data',
+        component: () => import('../views/PersonalData.vue'),
+      },
+      {
+        path: 'marketins-stats',
+        component: () => import('../views/MarketinsStats.vue'),
+      },
+    ],
+  },
+  // РЕФЕРАЛЬНЫЕ ССЫЛКИ
+  {
+    path: '/referal-links',
+    component: () => import('../views/ReferalLinks'),
+  },
+  // СТРУКТУРА
+  {
+    path: '/structure',
+    component: () => import('../views/Structure.vue'),
+  },
+  // ИСТОРИЯ БОНУСОВ
+  {
+    path: '/bonus-history',
+    component: () => import('../views/BonusHistory'),
+  },
+  // ИСТОРИЯ БАЛЛОВ
+  {
+    path: '/points-history',
+    component: () => import('../views/PointsHistory'),
+  },
+  // ИСТОРИЯ ЗАКАЗОВ
+  {
+    path: '/orders-history',
+    component: () => import('../views/OrdersHistory'),
+  },
+  // СОЗДАНИЕ НОВОГО ЗАКАЗА
+  {
+    path: '/new-order',
+    component: () => import('../views/NewOrder'),
   },
   {
     path: '/agent/:id',
-    name: 'AgentInfo',
-    component: () => import('../views/AgentInfo.vue'),
+    name: 'Profile',
+    component: () => import('../views/Profile.vue'),
     meta: { requiresAuth: true },
     // Видят все
   },
@@ -173,11 +222,6 @@ const routes = [
     component: () => import('../views/AuthIntegration.vue'),
   },
   {
-    path: '/ref-urls/',
-    name: 'RefURL',
-    component: () => import('../views/RefURL.vue'),
-  },
-  {
     path: '/ref-urls-report/',
     name: 'RefLinksGroup',
     component: () => import('../views/RefLinksGroup.vue'),
@@ -200,23 +244,9 @@ const router = new VueRouter({
   routes,
 });
 
-// router.beforeEach((to, from, next) => {
-//   if (to.matched.some((record) => record.meta.requiresAuth)) {
-//     if (!localStorage.getItem('access_token')) {
-//       next({
-//         path: '/login',
-//       });
-//     } else {
-//       next();
-//     }
-//   } else {
-//     next(); // всегда так или иначе нужно вызвать next()!
-//   }
-// });
-
 router.beforeEach((to, from, next) => {
   // Проверяем, требуется ли авторизация, чтоб пройти дальше по ссылке
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
     // Если требуется, то смотрим на наличее токена
     if (localStorage.getItem('access_token') === null) {
       // Если не залогинен, то отправляем на страницу авторизации
@@ -226,7 +256,7 @@ router.beforeEach((to, from, next) => {
     } else {
       // Если авторизировался и еще требуется проверка по Ролям для доступа к странице
       const user = JSON.parse(localStorage.getItem('access_token'));
-      if (to.matched.some((record) => record.meta.requiresRole)) {
+      if (to.matched.some(record => record.meta.requiresRole)) {
         // Если требуется, смотрим на права доступа
         if (user.role === to.meta.requiresRole) {
           // Если права доступа позволяют перейти по данной ссылке, осуществляем переход по ссылке
@@ -245,7 +275,7 @@ router.beforeEach((to, from, next) => {
   } else {
     // Есле не требуется авторизация, то осуществляем переход по ссылке
     // eslint-disable-next-line no-lonely-if
-    if (to.matched.some((record) => record.meta.requiresGuest)) {
+    if (to.matched.some(record => record.meta.requiresGuest)) {
       if (localStorage.getItem('access_token') === null) {
         next();
       }
