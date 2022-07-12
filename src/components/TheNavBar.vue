@@ -80,7 +80,6 @@
               </span>
             </li>
             <li v-if="role !== 'Клиент'">
-<<<<<<< Updated upstream
             <router-link to="/indicators">
             {{$t("Показатели")}}
             </router-link></li>
@@ -100,33 +99,6 @@
             {{$t("История показателей партнера по периодам")}}
             </router-link></li>
             <!-- <li>
-=======
-              <router-link to="/indicators">
-                {{ $t('Показатели') }}
-              </router-link>
-            </li>
-            <li v-show="role !== 'Клиент'">
-              <router-link to="/bonus-history">
-                {{ $t('История начисления бонусов') }}
-              </router-link>
-            </li>
-            <li v-show="role !== 'Клиент'">
-              <router-link to="/points-history">
-                {{ $t('История баллов') }}
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/account-detail">
-                {{ $t('Детализация лицевого счета') }}
-              </router-link>
-            </li>
-            <li v-show="role !== 'Клиент'">
-              <router-link to="/partnerindicators">
-                {{ $t('История показателей партнера по периодам') }}
-              </router-link>
-            </li>
-            <li>
->>>>>>> Stashed changes
               <router-link to="/ref-urls-report">
                 {{ $t('Отчет по реферальным ссылкам') }}
               </router-link>
