@@ -184,12 +184,26 @@
           <b-row align-v="end" class="row mb-4">
             <div class="col custom_input">
               <input
+                ref="prodSearchArticul"
+                type="text"
+                name="modalFilterArticul"
+                id="modalFilterArticul"
+                required
+                v-focus
+                @keydown.enter="setRowArticul"
+              />
+              <label for="modalFilterArticul">
+                {{$t("Поиск по артикулу")}}
+              </label>
+              <span class="clear_icon" @click="clearModalFilterArticul()"></span>
+            </div>
+            <div class="col custom_input">
+              <input
                 ref="prodSearch"
                 type="text"
                 name="modalFilter"
                 id="modalFilter"
                 required
-                v-focus
                 @keydown.enter="setRow"
               />
               <label for="modalFilter">
@@ -208,11 +222,9 @@
             outlined
             small
             sticky-header
-            :filter="modalFilter"
-            :filter-included-fields="['articul', 'name']"
             head-variant="light"
             :fields="modalFields"
-            :items="modalEntries"
+            :items="filteredEntries"
           >
             <template v-slot:cell(goods_count)="scope">
               <div class="custom_input col-md">
@@ -243,11 +255,18 @@
             <el-tab-pane :label="`${$t('КОМПЛЕКТЫ')}`" name="kits">
               <b-row align-v="end" class="row mb-4">
                 <div class="col custom_input">
+                  <input ref="prodSearchCompArticul" v-focus type="text" name="modalFilterCompArticul" id="modalFilterCompArticul" required @keydown.enter="setRow1Articul" />
+                  <label for="modalFilterCompArticul">
+                    {{$t("Поиск артикулу")}}
+                  </label>
+                  <span class="clear_icon" @click="clearModalFilterCompArticul()"></span>
+                </div>
+                <div class="col custom_input">
                   <input ref="prodSearchComp" v-focus type="text" name="modalFilterComp" id="modalFilterComp" required @keydown.enter="setRow1" />
                   <label for="modalFilterComp">
                     {{$t("Поиск по наименованию или артикулу")}}
                   </label>
-                  <span class="clear_icon" @click="clearModalFilter()"></span>
+                  <span class="clear_icon" @click="clearModalFilterComp()"></span>
                 </div>
                 <div class="col-md sponsor_bot_btns">
                   <button class="" @click="showModal = !showModal">
@@ -259,7 +278,7 @@
               <b-table
                 sticky-header
                 :fields="modalKitFileds"
-                :items="modalKitEntires"
+                :items="filteredEntriesComp"
                 head-variant="light"
                 class="sub_2"
                 responsive
@@ -352,6 +371,9 @@ export default {
         name: '',
       },
       modalFilter: '',
+      modalFilterArticul: '',
+      modalFilterComp: '',
+      modalFilterCompArticul: '',
       search_user: '',
       selectedStock: '',
       stockList: [],
@@ -736,7 +758,21 @@ export default {
       this.card = '';
     },
     clearModalFilter() {
+      this.$refs.prodSearch.value = '';
       this.modalFilter = '';
+      console.log();
+    },
+    clearModalFilterArticul() {
+      this.modalFilterArticul = '';
+      this.$refs.prodSearchArticul.value = '';
+    },
+    clearModalFilterComp() {
+      this.modalFilterComp = '';
+      this.$refs.prodSearchComp.value = '';
+    },
+    clearModalFilterCompArticul() {
+      this.modalFilterCompArticul = '';
+      this.$refs.prodSearchCompArticul.value = '';
     },
     clearCount(id) {
       const prod = this.modalEntries.find((item) => item.articul === id);
@@ -753,8 +789,10 @@ export default {
       prod.price_all = Number(e.target.value.replace(/\s/g, '')) * parseFloat(prod.price);
       prod.points_count = Number(e.target.value.replace(/\s/g, '')) * parseFloat(prod.points);
       this.modalFilter = '';
+      this.modalFilterArticul = '';
+      this.$refs.prodSearchArticul.value = '';
       this.$refs.prodSearch.value = '';
-      this.$refs.prodSearch.focus();
+      this.$refs.prodSearchArticul.focus();
     },
     changeCount1(e, id) {
       const prod = this.modalEntries.find((item) => item.articul === id);
@@ -767,9 +805,11 @@ export default {
       prod.goods_count = e.target.value;
       prod.price_all = Number(e.target.value.replace(/\s/g, '')) * parseFloat(prod.price);
       prod.points_count = Number(e.target.value.replace(/\s/g, '')) * parseFloat(prod.points);
-      this.modalFilter = '';
-      this.$refs.prodSearch.value = '';
-      this.$refs.prodSearch.focus();
+      this.modalFilterComp = '';
+      this.modalFilterCompArticul = '';
+      this.$refs.prodSearchCompArticul.value = '';
+      this.$refs.prodSearchComp.value = '';
+      this.$refs.prodSearchCompArticul.focus();
     },
     kitChangeCount1(e, id) {
       const prod = this.modalKitEntires.find((item) => item.id === id);
@@ -798,7 +838,20 @@ export default {
           console.log($('table > tbody').eq(1).find('.custom_input')[0]);
           $('table > tbody').eq(1).find('.custom_input').eq(0)
             .find('input')
-            .focus();
+            .select();
+        }
+      }, 200);
+    },
+    setRowArticul(e) {
+      console.log('Hi');
+      this.modalFilterArticul = e.target.value;
+      setTimeout(() => {
+        // eslint-disable-next-line dot-notation
+        if (this.$refs['row0']) {
+          console.log($('table > tbody').eq(1).find('.custom_input')[0]);
+          $('table > tbody').eq(1).find('.custom_input').eq(0)
+            .find('input')
+            .select();
         }
       }, 200);
     },
@@ -809,7 +862,18 @@ export default {
         // eslint-disable-next-line dot-notation
         if (this.$refs['row0']) {
           // eslint-disable-next-line dot-notation
-          this.$refs['row0'].focus();
+          this.$refs['row0'].select();
+        }
+      }, 100);
+    },
+    setRow1Articul(e) {
+      console.log('Hi2');
+      this.modalFilterCompArticul = e.target.value;
+      setTimeout(() => {
+        // eslint-disable-next-line dot-notation
+        if (this.$refs['row0']) {
+          // eslint-disable-next-line dot-notation
+          this.$refs['row0'].select();
         }
       }, 100);
     },
@@ -905,6 +969,30 @@ export default {
     ...mapState('auth', ['stock_id']),
     countCheck() {
       return this.newCart.some((item) => item.goods_count > item.items);
+    },
+    filteredEntries() {
+      if (/^\d{1,}$/.test(this.modalFilterArticul) || this.modalFilter) {
+        const filArray = this.modalEntries.filter((data) => {
+          if (/^\d{1,}$/.test(this.modalFilterArticul)) {
+            return data.articul === Number(this.modalFilterArticul);
+          }
+          return (String(data.articul) + String(data.name)).includes(String(this.modalFilter));
+        });
+        return filArray;
+      }
+      return this.modalEntries;
+    },
+    filteredEntriesComp() {
+      if (/^\d{1,}$/.test(this.modalFilterCompArticul || this.modalFilterComp)) {
+        const filArray = this.modalKitEntires.filter((data) => {
+          if (/^\d{1,}$/.test(this.modalFilterCompArticul)) {
+            return data.articul === Number(this.modalFilterCompArticul);
+          }
+          return (String(data.articul) + String(data.name)).includes(String(this.modalFilterComp));
+        });
+        return filArray;
+      }
+      return this.modalKitEntires;
     },
     newCart() {
       console.log(this.modalKitEntires);
