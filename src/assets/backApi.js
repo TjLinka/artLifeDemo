@@ -6,7 +6,7 @@ import Axios from 'axios';
 class PartnerApi {
   constructor() {
     this.backAPI = Axios.create({
-      baseURL: process.env.VUE_APP_BASEURL,
+      baseURL: 'http://ab.gleb.team',
       headers: {
         common: {
           'Content-Type': 'application/json',
