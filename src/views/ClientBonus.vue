@@ -1,62 +1,68 @@
 <template>
   <div class="sponsor__page">
     <div v-loading="loading">
-    <div class="container" v-show="!loading">
-      <h2 class="page__title">
-                              <p class="mobile_back" @click="back">
-        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7"/>
-        </svg>
-      </p>
-        <!-- {{$t("Количество бонусных баллов")}} -->
+      <div class="container" v-show="!loading">
+        <h2 class="page__title">
+          <p class="mobile_back" @click="back">
+            <svg
+              width="18"
+              height="12"
+              viewBox="0 0 18 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
+            </svg>
+          </p>
+          <!-- {{$t("Количество бонусных баллов")}} -->
         </h2>
-      <br>
-      <h5>
-        {{$t("Накопленный объем")}}
-      </h5>
-      <div class="sponsor__page__description">
-        <div class="container top__info">
-          <div class="row">
-            <div class="col-md-6">
-            <el-select v-model="area" placeholder="Регион" @change="update">
-              <el-option
-                v-for="item in areaList"
-                :key="item.area_id"
-                :label="item.area_name"
-                :value="item.area_id"
+        <br />
+        <h5>
+          {{ $t('Накопленный объем') }}
+        </h5>
+        <div class="sponsor__page__description">
+          <div class="container top__info">
+            <div class="row">
+              <div class="col-md-6">
+                <el-select v-model="area" placeholder="Регион" @change="update">
+                  <el-option
+                    v-for="item in areaList"
+                    :key="item.area_id"
+                    :label="item.area_name"
+                    :value="item.area_id"
+                  >
+                  </el-option>
+                </el-select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <h4><strong>Клиентские скидки</strong></h4>
+                <b-table
+                  :items="clientDiscount"
+                  :fields="clientDiscountFields"
+                  responsive
+                  border
+                  outlined
+                  small
+                  head-variant="light"
                 >
-              </el-option>
-            </el-select>
+                </b-table>
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-6">
-              <h4><strong>Клиентские скидки</strong></h4>
-              <b-table
-              :items="clientDiscount"
-              :fields="clientDiscountFields"
-              responsive
-              border
-              outlined
-              small
-              head-variant="light"
-              >
-              </b-table>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 mt-3">
-              <p>{{$t("Объем покупок")}}:</p>
-              <p>{{bonusInfo.ngo}}</p>
-            </div>
-            <div class="col-md-6 mt-3">
-              <p>{{$t("Скидка")}}:</p>
-              <p>{{bonusInfo.discount_pc ? bonusInfo.discount_pc : '-'}}</p>
+            <div class="row">
+              <div class="col-md-6 mt-3">
+                <p>{{ $t('Объем покупок') }}:</p>
+                <p>{{ bonusInfo.ngo }}</p>
+              </div>
+              <div class="col-md-6 mt-3">
+                <p>{{ $t('Скидка') }}:</p>
+                <p>{{ bonusInfo.discount_pc ? bonusInfo.discount_pc : '-' }}</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   </div>
 </template>
@@ -94,18 +100,22 @@ export default {
     };
   },
   mounted() {
-    backApi.get('/agent/area-by-currency').then((Response) => {
+    backApi.get('/agent/area-by-currency').then(Response => {
       this.areaList = Response.data.entries;
       // eslint-disable-next-line prefer-destructuring
       this.area = Response.data.entries[0].area_id;
-      backApi.get(`/agent/client-discount-by-area-get/${this.area}`).then((Response1) => {
+      backApi.get(`/agent/client-discount-by-area-get/${this.area}`).then(Response1 => {
         this.clientDiscount = Response1.data.entries;
       });
-      backApi.get('/agent/bonuses', { params: { area_id: Response.data.entries[0].area_id } })
-        .then((response) => {
+      backApi
+        .get('/agent/bonuses', { params: { area_id: Response.data.entries[0].area_id } })
+        .then(response => {
           this.bonusInfo = response.data;
-        }).then(() => {
-          setTimeout(() => { this.loading = false; });
+        })
+        .then(() => {
+          setTimeout(() => {
+            this.loading = false;
+          });
         });
     });
   },
@@ -121,11 +131,10 @@ export default {
     },
     async update() {
       console.log('123123');
-      await backApi.get('/agent/bonuses', { params: { area_id: this.area } })
-        .then((response) => {
-          this.bonusInfo = response.data;
-        });
-      backApi.get(`/agent/client-discount-by-area-get/${this.area}`).then((Response1) => {
+      await backApi.get('/agent/bonuses', { params: { area_id: this.area } }).then(response => {
+        this.bonusInfo = response.data;
+      });
+      backApi.get(`/agent/client-discount-by-area-get/${this.area}`).then(Response1 => {
         this.clientDiscount = Response1.data.entries;
       });
     },
@@ -134,8 +143,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-select{
-  width: 100%
+.el-select {
+  width: 100%;
 }
 .sponsor__page {
   margin-top: 40px;

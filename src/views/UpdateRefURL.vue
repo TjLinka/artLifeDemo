@@ -58,7 +58,13 @@
       <!-- Выбор товара -->
       <div class="row mt-3" v-if="ref_type === 1">
         <div class="col-6" v-if="ref_products_list.length > 0">
-          <el-select v-model="selected_product" placeholder="Товар" style="width: 100%;" clearable filterable>
+          <el-select
+            v-model="selected_product"
+            placeholder="Товар"
+            style="width: 100%;"
+            clearable
+            filterable
+          >
             <el-option
               v-for="data in ref_products_list"
               :key="data.id"
@@ -74,7 +80,13 @@
       </div>
       <div class="row mt-3" v-if="ref_type === 2">
         <div class="col-6" v-if="ref_landing_list.length > 0">
-          <el-select v-model="selected_landing" placeholder="Лендинг" style="width: 100%;" clearable filterable>
+          <el-select
+            v-model="selected_landing"
+            placeholder="Лендинг"
+            style="width: 100%;"
+            clearable
+            filterable
+          >
             <el-option
               v-for="data in ref_landing_list"
               :key="data.id"
@@ -91,8 +103,14 @@
       <!-- Комментарий для реф ссылки -->
       <div class="row mt-3" v-if="ref_type">
         <div class="col custom_input">
-          <input type="text" name="preview_info" id="preview_info" required v-model="preview_info" />
-          <label for="oppreview_infoepreview_inforType">{{$t("Комментарий")}}</label>
+          <input
+            type="text"
+            name="preview_info"
+            id="preview_info"
+            required
+            v-model="preview_info"
+          />
+          <label for="oppreview_infoepreview_inforType">{{ $t('Комментарий') }}</label>
           <span class="clear_icon" @click="clearInput()"></span>
         </div>
         <div class="col"></div>
@@ -101,19 +119,27 @@
         <div class="col-6">
           <button class="btn_type_2 w50 mr-2" @click="$router.push('/ref-urls')">Отмена</button>
           <button
-          :class="`btn_type_1 w50 fr ${canSaveRefLink ? '' : 'disabled'}`"
-          @click="saveEditRefLink"
-          :disabled="!canSaveRefLink"
-          >Сохранить</button>
+            :class="`btn_type_1 w50 fr ${canSaveRefLink ? '' : 'disabled'}`"
+            @click="saveEditRefLink"
+            :disabled="!canSaveRefLink"
+          >
+            Сохранить
+          </button>
         </div>
       </div>
     </div>
-    <b-modal id="bv-modal-example" hide-footer centered  :hide-header-close="true" :no-close-on-backdrop="true">
+    <b-modal
+      id="bv-modal-example"
+      hide-footer
+      centered
+      :hide-header-close="true"
+      :no-close-on-backdrop="true"
+    >
       <div class="d-block text-center">
         <h3>
-          {{$t('Сохранение изменений')}}
+          {{ $t('Сохранение изменений') }}
         </h3>
-        <p>{{$t("Пожалуйста подождите")}}...</p>
+        <p>{{ $t('Пожалуйста подождите') }}...</p>
       </div>
     </b-modal>
   </div>
@@ -175,18 +201,22 @@ export default {
     };
   },
   mounted() {
-    backAPI.get(`/agent/reflinks/get/${this.$route.params.id}`).then(async (Response) => {
+    backAPI.get(`/agent/reflinks/get/${this.$route.params.id}`).then(async Response => {
       this.ref_agrigment = Response.data.access_level;
       this.ref_type = Response.data.reflink_type;
       this.preview_info = Response.data.preview_info;
       if (this.ref_type === 1) {
-        backAPI.get('/agent/sales/catalog', { params: { stock_id: 0 } }).then((Response2) => {
-          this.ref_products_list = Response2.data.entries.map((product) => ({ id: product.id, articul: product.articul, name: product.name }));
+        backAPI.get('/agent/sales/catalog', { params: { stock_id: 0 } }).then(Response2 => {
+          this.ref_products_list = Response2.data.entries.map(product => ({
+            id: product.id,
+            articul: product.articul,
+            name: product.name,
+          }));
           this.selected_product = Response.data.catalog_id;
         });
       }
       if (this.ref_type === 2) {
-        backAPI.get('/agent/reflinks/landings/').then((Response2) => {
+        backAPI.get('/agent/reflinks/landings/').then(Response2 => {
           this.ref_landing_list = Response2.data.entries;
           this.selected_landing = Response.data.reflink_base_id;
         });
@@ -215,9 +245,7 @@ export default {
       const vNodesTitle = h(
         'div',
         { class: ['d-flex', 'flex-grow-1', 'align-items-baseline', 'mr-2'] },
-        [
-          h('p', { class: 'mr-2' }, title),
-        ],
+        [h('p', { class: 'mr-2' }, title)],
       );
       // Pass the VNodes as an array for message and title
       this.$bvToast.toast([vNodesMsg], {
@@ -229,12 +257,16 @@ export default {
     },
     getRefData(type) {
       if (type === 1) {
-        backAPI.get('/agent/sales/catalog', { params: { stock_id: 0 } }).then((Response) => {
-          this.ref_products_list = Response.data.entries.map((product) => ({ id: product.id, articul: product.articul, name: product.name }));
+        backAPI.get('/agent/sales/catalog', { params: { stock_id: 0 } }).then(Response => {
+          this.ref_products_list = Response.data.entries.map(product => ({
+            id: product.id,
+            articul: product.articul,
+            name: product.name,
+          }));
         });
       }
       if (type === 2) {
-        backAPI.get('/agent/reflinks/landings/').then((Response) => {
+        backAPI.get('/agent/reflinks/landings/').then(Response => {
           this.ref_landing_list = Response.data.entries;
         });
       }

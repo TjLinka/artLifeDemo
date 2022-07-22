@@ -2,7 +2,7 @@
   <div id="app">
     <TheNavBarTop class="nav_top"></TheNavBarTop>
     <TheNavBar v-show="is_authorized" class="noprint"></TheNavBar>
-    <main id="main">
+    <main id="main" :class="`${is_authorized ? 'isAuth' : ''}`">
       <transition name="fade" mode="out-in">
         <router-view />
       </transition>
@@ -29,6 +29,19 @@ export default {
 </script>
 
 <style lang="scss">
+body{
+  min-height: 100vh;
+  background: #f7f8fe;
+}
+:root {
+  --main-green: #32aaa7;
+  --text-gray: #9a9a9a;
+  --btn-gray: lightgray;
+  --btn-disabled-text: rgb(168, 168, 168);
+  --btn-disabled: rgb(204, 204, 204);
+  --label-gray: #9a9a9a;
+  --input-gray: #dee2f3;
+}
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
 @font-face {
   font-family: 'FuturaPTDemi';
@@ -52,9 +65,7 @@ url('/fonts/FuturaPT-Book.ttf') format('truetype');
     max-width: 1920px;
   }
 }
-// .el-loading-mask{
-//   background: red;
-// }
+// СТИЛЬ SCROLLBAR'а
 ::-webkit-scrollbar {
     width: 8px; /* ширина нового скроллбара */
     height: 5px;
@@ -72,6 +83,7 @@ url('/fonts/FuturaPT-Book.ttf') format('truetype');
     border-radius: 8px; /* скругление углов */
     // border: 3px solid #f5cdcd; /* толщина, стиль и цвет рамки */
 }
+// КОНЕЦ СТИЛЯ SCROLLBAR'а
 .el-loading-mask{
   position: fixed;
   z-index: 20;
@@ -80,77 +92,6 @@ url('/fonts/FuturaPT-Book.ttf') format('truetype');
 }
 #modal-scrollable .modal-content{
   height: unset !important;
-}
-.btn_type_1{
-      margin-top: 20px;
-      width: 100%;
-      border: 0;
-      padding: 5px 30px;
-      font-size: 16px;
-      background-color: #32aaa7;
-      border: 1px solid #32aaa7;
-      color: white;
-      &.w50{
-        width: 48% !important;
-      }
-      &.fr{
-        float: right;
-      }
-      &.w25{
-        width: 25% !important;
-      }
-      &.mr-2{
-        margin-right: 20px;
-      }
-      &.disabled{
-        color: #9a9a9a;
-        background: none;
-        border: 1px solid;
-        border-color: #c4c4c4;
-        cursor: auto;
-        &:hover{
-          background: none;
-          color: #9a9a9a !important;
-          border-color: #c4c4c4 !important;
-          cursor: auto !important;
-        }
-      }
-}
-.btn_type_2{
-      margin-top: 20px;
-      width: 100%;
-      border: 0;
-      padding: 5px 30px;
-      font-size: 16px;
-      background-color: white;
-      color: #32aaa7;
-      border: 1px solid #32aaa7;
-      transition: .1s ease-in-out;
-      // cursor: pointer;
-      &:hover{
-        background-color: #32aaa7;
-        color: white;
-      }
-      &.w50{
-        width: 48% !important;
-      }
-      &.fr{
-        float: right;
-      }
-      &.w25{
-        width: 25% !important;
-      }
-      &.disabled{
-        color: #9a9a9a;
-        border-color: #c4c4c4;
-        cursor: auto;
-        &:hover{
-          background: none;
-          color: #9a9a9a !important;
-          border-color: #c4c4c4 !important;
-          cursor: auto !important;
-        }
-      }
 }
 .modal-content {
     position: relative;
@@ -210,10 +151,6 @@ url('/fonts/FuturaPT-Book.ttf') format('truetype');
     background: #727272; /* ползунок меняет цвет при наведении */
 }
 input.mx-input::placeholder{
-  color: #9a9a9a;
-  font-size: 16px;
-}
-input.mx-input{
   color: #9a9a9a;
   font-size: 16px !important;
 }
@@ -356,9 +293,14 @@ input[type="checkbox"]{
 main {
   // margin-top: 40px;
   padding-bottom: 70px;
-  padding-left: 120px;
+  &.isAuth{
+    padding-left: 120px;
+  }
 }
-
+input{
+  background: transparent !important;
+  color: black !important;
+}
 // СТИЛИ ДЛЯ ЗАГОЛОВКА СТРАНИЦЫ
 .page__title {
   color: #383a41;
@@ -381,9 +323,21 @@ main {
     display: none;
     position: absolute;
     right: 12px;
-    top: 12px;
+    top: 10px;
     color: #32aaa7;
     cursor: pointer;
+    &.show_pass_icon {
+      top: 0;
+      right: 38px;
+      width: 40px;
+      height: 40px;
+    }
+    &.show_pass_icon_close {
+      top: 0;
+      right: 38px;
+      width: 40px;
+      height: 40px;
+    }
   }
   label {
     position: absolute;
@@ -423,7 +377,7 @@ main {
   }
 }
 .el-input__inner{
-  padding-left: 5px !important;
+  color: var(--label-gray);
   font-size: 16px;
 }
 .el-input__inner:hover{
@@ -443,21 +397,28 @@ main {
   width: 20px;
   height: 20px;
 }
-.sr-only{
-  display: none;
-}
-.close_btn{
-  background-image: url('assets/imgs/close_btn.svg');
+.show_pass_icon{
+  position: relative;
+  background-image: url('assets/imgs/show_pass_icon.svg');
   background-repeat: no-repeat;
-  background-size: 80%;
+  background-size: 55%;
   background-position: center;
   width: 20px;
   height: 20px;
-  display: inline-block;
-  position: absolute;
-  right: 0;
-  top: 0;
-  cursor: pointer;
+  right: 10px;
+}
+.show_pass_icon_close{
+  position: relative;
+  background-image: url('assets/imgs/show_pass_icon_close.svg');
+  background-repeat: no-repeat;
+  background-size: 55%;
+  background-position: center;
+  width: 20px;
+  height: 20px;
+  right: 10px;
+}
+.sr-only{
+  display: none;
 }
 // СТИЛЬ КНОПКИ ОЧИСТИ el-input
 .el-icon-circle-close:before{
@@ -466,11 +427,11 @@ main {
   display: block;
   background-image: url('assets/imgs/close_btn.svg');
   background-repeat: no-repeat;
-  background-size: 85%;
+  background-size: 100%;
   width: 13px;
   height: 13px;
   bottom: 15px;
-  right: -5px;
+  right: 8px;
 }
 .no_scroll {
   overflow: hidden;
@@ -556,47 +517,7 @@ main {
     color: white !important;
   }
 }
-// .depth-1 {
-//   background-color: #bebebe;
-//   background-color: lighten;
-//   color: black;
-// }
-// .depth-2 {
-//   background-color: #c4c5c6 !important;
-//   color: black;
-// }
-// .depth-3 {
-//   background-color: #cecfd0 !important;
-//   color: black;
-// }
-// .depth-4 {
-//   background-color: #d4d5d7 !important;
-//   color: black;
-// }
-// .depth-5 {
-//   background-color: #e3e3e4 !important;
-//   color: black;
-// }
-// .depth-6 {
-//   background-color: #ebedf4 !important;
-//   color: black;
-// }
-// .depth-7 {
-//   background-color: #eceef3 !important;
-//   color: black;
-// }
-// .depth-8 {
-//   background-color: #f0f0f3 !important;
-//   color: black;
-// }
-// .depth-9 {
-//   background-color: #f0f1f6 !important;
-//   color: black;
-// }
-// .depth-10 {
-//   background-color: #eff0f5 !important;
-//   color: black;
-// }
+
 .b-table-row-selected{
   background-color: #3D8987 !important;
   color: white !important;
@@ -765,12 +686,6 @@ td[role='cell'] {
 .points_history_table td[role='cell'] {
   word-break: break-word;
 }
-td[aria-colindex='1']{
-  border: 1px solid #BABABA !important;
-}
-th[aria-colindex='1']{
-  border: 1px solid #BABABA !important;
-}
 .border{
   border: 1px solid #BABABA !important;
 }
@@ -783,14 +698,14 @@ th[aria-colindex='1']{
 .orgper .el-table_1_column_1{
   border-right: 1px solid #9A9A9A
 }
-.table th, .table td{
-  // padding: 6px !important;
-  border-top: 1px solid #BABABA !important;
-  border-bottom: 1px solid #BABABA !important;
-  font-family: 'FuturaPTDemi' !important;
-  // font-weight: 500 !important;
-  color: black ;
-}
+// .table th, .table td{
+//   // padding: 6px !important;
+//   border-top: 1px solid #BABABA !important;
+//   border-bottom: 1px solid #BABABA !important;
+//   font-family: 'FuturaPTDemi' !important;
+//   // font-weight: 500 !important;
+//   color: black ;
+// }
 .exp_print {
     span {
       color: #32aaa7;
@@ -801,7 +716,7 @@ th[aria-colindex='1']{
 //   font-family: 'FuturaPTDemi' !important;
 // }
 .table .thead-light th{
-  background: #DEE2F3;
+  // background: #DEE2F3;
 }
 .b-table-sticky-header, .table-responsive, [class*="table-responsive-"]{
   margin-bottom: 0;
@@ -830,15 +745,6 @@ th[aria-colindex='1']{
   background: #FFFFFF;
   box-shadow: 0px 4px 12px 2px rgba(0, 0, 0, 0.24);
 }
-.search__btn {
-    padding-top: 20px;
-    cursor: pointer;
-    text-transform: uppercase;
-    font-weight: bold;
-    & .search_icon {
-      color: #32aaa7;
-    }
-  }
 // СТИЛЬ ДЛЯ СТРАНИЦ С ТАБЛИЦАМИ БОЛЬШЕ 1920PX
 @media (min-width: 1920px) {
   .table_container{

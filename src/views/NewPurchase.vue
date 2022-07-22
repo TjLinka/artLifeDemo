@@ -3,32 +3,32 @@
     <h2 class="page_title">
       <!-- {{$t("Создание покупки")}} -->
     </h2>
-    <h4 class="mt-3">
-      {{userInfo.id}} - {{userInfo.name}}
-    </h4>
+    <h4 class="mt-3">{{ userInfo.id }} - {{ userInfo.name }}</h4>
     <div class="row mt-3">
       <div class="col-md-4">
         <span class="custom_label" v-if="search_user">
-          {{$t("Склад")}}
+          {{ $t('Склад') }}
         </span>
         <el-select
-        v-model="selectedStock"
-        clearable
-        filterable
-        @change="getCatalog"
-        @clear="clearStock"
-        @focus="focusQ"
-        style="width: 100%"
-        :placeholder="`${$t('Склад')}`">
+          v-model="selectedStock"
+          clearable
+          filterable
+          @change="getCatalog"
+          @clear="clearStock"
+          @focus="focusQ"
+          style="width: 100%"
+          :placeholder="`${$t('Склад')}`"
+        >
           <el-option
             v-for="stock in stockList"
             :key="stock.stock_id"
             :label="`${stock.stock_id} - ${stock.stock_name}`"
-            :value="stock.stock_id">
+            :value="stock.stock_id"
+          >
           </el-option>
         </el-select>
         <p v-show="selectedStock === ''" style="color: red">
-          {{$t("Для работы с каталогом выберите склад")}}
+          {{ $t('Для работы с каталогом выберите склад') }}
         </p>
       </div>
     </div>
@@ -58,112 +58,124 @@
       </div>
     </div> -->
     <h3 class="mt-3">
-      {{$t("Корзина")}}
+      {{ $t('Корзина') }}
     </h3>
     <div v-show="newCart.length > 0">
-    <div class="row mt-4">
-      <div class="col">
-        <p class="p-0 m-0 lbl">{{$t("Сумма продажи")}}:</p>
-        <span>{{cartInfo.priceAm | localInt}}</span>
-      </div>
-      <div class="col">
-        <p class="p-0 m-0 lbl">{{$t("Всего едениц товара")}}:</p>
-        <span>{{cartInfo.prodAm | localInt}}</span>
-      </div>
-    </div>
-    <div class="row mt-4">
-      <div class="col">
-        <p class="p-0 m-0 lbl">{{$t("Сумма баллов")}}:</p>
-        <span>{{cartInfo.pointsAm | localInt}}</span>
-      </div>
-      <div class="col">
-        <p class="p-0 m-0 lbl">{{$t("Всего наименований")}}:</p>
-        <span>{{cartInfo.nameAm | localInt}}</span>
-      </div>
-    </div>
-    <div class="row">
-    </div>
-    <b-table
-    responsive
-    border
-    outlined
-    small
-    class="mt-4"
-    head-variant="light"
-    :fields="cartFields"
-    :tbody-tr-class="rowClass"
-    :items="newCart">
-      <template v-slot:cell(goods_count)="scope">
-        <div v-if="!scope.item.isKit" class="custom_input col-md">
-          <input
-            type="text"
-            :name="`status${scope.item.goods_id}`"
-            :id="`status${scope.item.goods_id}`"
-            required
-            :placeholder="`${$t('Количество')}`"
-            @keypress="checkInput($event, scope.item.goods_article)"
-            @change="changeCount1($event, scope.item.articul)"
-            :value="scope.item.goods_count"
-          />
-          <span class="clear_icon" @click="clearCount(scope.item.articul)"></span>
-          <p class="countError" v-show="scope.item.goods_count.replace(/\s/g, '') > scope.item.items">Товаров недостаточно</p>
+      <div class="row mt-4">
+        <div class="col">
+          <p class="p-0 m-0 lbl">{{ $t('Сумма продажи') }}:</p>
+          <span>{{ cartInfo.priceAm | localInt }}</span>
         </div>
-        <div v-else class="custom_input col-md">
-          <input
-            type="text"
-            :name="`status${scope.item.id}`"
-            :id="`status${scope.item.id}`"
-            required
-            :placeholder="`${$t('Количество')}`"
-            @keypress="checkInput($event, scope.item.id)"
-            @change="kitChangeCount1($event, scope.item.id)"
-            :value="scope.item.goods_count"
-          />
-          <span class="clear_icon" @click="clearCountKit(scope.item.id)"></span>
-          <p class="countError" v-show="scope.item.goods_count.replace(/\s/g, '') > scope.item.items">Товаров недостаточно</p>
+        <div class="col">
+          <p class="p-0 m-0 lbl">{{ $t('Всего едениц товара') }}:</p>
+          <span>{{ cartInfo.prodAm | localInt }}</span>
         </div>
-      </template>
-      <template v-slot:cell(price_all)="scope">
-        {{scope.item.price_all | localInt}}
-      </template>
-      <template v-slot:cell(points_count)="scope">
-        {{scope.item.points_count | localInt}}
-      </template>
-        <template v-slot:cell(articul)="row">
-          <span>{{row.item.articul}}</span> <br>
-          <span @click="show_details(row)" v-if="row.item.isKit" style="color: #32aaa7; cursor: pointer; display:inline-block; border-bottom: 1px dotted #32aaa7">
-            {{ row.detailsShowing ? $t('Свернуть') : $t('Раскрыть') }}</span>
+      </div>
+      <div class="row mt-4">
+        <div class="col">
+          <p class="p-0 m-0 lbl">{{ $t('Сумма баллов') }}:</p>
+          <span>{{ cartInfo.pointsAm | localInt }}</span>
+        </div>
+        <div class="col">
+          <p class="p-0 m-0 lbl">{{ $t('Всего наименований') }}:</p>
+          <span>{{ cartInfo.nameAm | localInt }}</span>
+        </div>
+      </div>
+      <div class="row"></div>
+      <b-table
+        responsive
+        border
+        outlined
+        small
+        class="mt-4"
+        head-variant="light"
+        :fields="cartFields"
+        :tbody-tr-class="rowClass"
+        :items="newCart"
+      >
+        <template v-slot:cell(goods_count)="scope">
+          <div v-if="!scope.item.isKit" class="custom_input col-md">
+            <input
+              type="text"
+              :name="`status${scope.item.goods_id}`"
+              :id="`status${scope.item.goods_id}`"
+              required
+              :placeholder="`${$t('Количество')}`"
+              @keypress="checkInput($event, scope.item.goods_article)"
+              @change="changeCount1($event, scope.item.articul)"
+              :value="scope.item.goods_count"
+            />
+            <span class="clear_icon" @click="clearCount(scope.item.articul)"></span>
+            <p class="countError" v-show="scope.item.goods_count > scope.item.items">
+              Товаров недостаточно
+            </p>
+          </div>
+          <div v-else class="custom_input col-md">
+            <input
+              type="text"
+              :name="`status${scope.item.id}`"
+              :id="`status${scope.item.id}`"
+              required
+              :placeholder="`${$t('Количество')}`"
+              @keypress="checkInput($event, scope.item.id)"
+              @change="kitChangeCount1($event, scope.item.id)"
+              :value="scope.item.goods_count"
+            />
+            <span class="clear_icon" @click="clearCountKit(scope.item.id)"></span>
+            <p class="countError" v-show="scope.item.goods_count > scope.item.items">
+              Товаров недостаточно
+            </p>
+          </div>
         </template>
-      <template v-slot:row-details="row">
-        <b-table
-          :fields="returnFields"
-          :items="return_details[row.item.id]"
-          head-variant="light"
-        >
-          <template #cell()="data">
-            {{ data.value }}
-          </template>
-        </b-table>
-      </template>
-    </b-table>
-    <div class="row mt-3">
-      <div class="col custom_input">
+        <template v-slot:cell(price_all)="scope">
+          {{ scope.item.price_all | localInt }}
+        </template>
+        <template v-slot:cell(points_count)="scope">
+          {{ scope.item.points_count | localInt }}
+        </template>
+        <template v-slot:cell(articul)="row">
+          <span>{{ row.item.articul }}</span> <br />
+          <span
+            @click="show_details(row)"
+            v-if="row.item.isKit"
+            style="color: #32aaa7; cursor: pointer; display:inline-block; border-bottom: 1px dotted #32aaa7"
+          >
+            {{ row.detailsShowing ? $t('Свернуть') : $t('Раскрыть') }}</span
+          >
+        </template>
+        <template v-slot:row-details="row">
+          <b-table :fields="returnFields" :items="return_details[row.item.id]" head-variant="light">
+            <template #cell()="data">
+              {{ data.value }}
+            </template>
+          </b-table>
+        </template>
+      </b-table>
+      <div class="row mt-3">
+        <div class="col custom_input">
           <input type="text" name="comm" id="comm" required v-model="comm" />
           <label for="comm">
-            {{$t('Комментарий')}}
+            {{ $t('Комментарий') }}
           </label>
           <span class="clear_icon" @click="clearComm()"></span>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-md-6 sponsor_bot_btns">
+          <button
+            @click="createSale"
+            :disabled="countCheck"
+            :class="`${countCheck ? 'disabled' : ''}`"
+          >
+            {{ $t('Зарезервировать') }}
+          </button>
+        </div>
       </div>
     </div>
-    <div class="row mt-4">
-      <div class="col-md-6 sponsor_bot_btns">
-        <button @click="createSale" :disabled="countCheck" :class="`${countCheck ? 'disabled' : ''}`">
-          {{$t("Зарезервировать")}}
-        </button>
-      </div>
-    </div>
-    </div>
-    <footer class="container-fluid cust_modal sale_footer" :style="selectedStock !== '' ? '' : 'pointer-events: none;'">
+    <footer
+      class="container-fluid cust_modal sale_footer"
+      :style="selectedStock !== '' ? '' : 'pointer-events: none;'"
+    >
       <div class="container-md">
         <div class="row desktop_search">
           <div
@@ -171,118 +183,49 @@
             @click="showModal = !showModal"
             v-if="!showModal"
           >
-            {{$t("Каталог")}} <i class="el-icon-search search_icon"></i>
+            {{ $t('Каталог') }} <i class="el-icon-search search_icon"></i>
           </div>
         </div>
         <div v-if="showModal" class="organization__modal">
           <h3>
-            {{$t("Каталог")}} {{activeTab === 'goods' ? 'товаров' : 'комплектов'}}
+            {{ $t('Каталог') }} {{ activeTab === 'goods' ? 'товаров' : 'комплектов' }}
             <span class="close_btn" @click="showModal = !showModal"></span>
           </h3>
           <el-tabs v-model="activeTab">
-            <el-tab-pane :label="`${$t('ТОВАРЫ')}`" name='goods'>
-          <b-row align-v="end" class="row mb-4">
-            <div class="col custom_input">
-              <input
-                ref="prodSearch"
-                type="text"
-                name="modalFilter"
-                id="modalFilter"
-                required
-                v-focus
-                @keydown.enter="setRow"
-              />
-              <label for="modalFilter">
-                {{$t("Поиск по наименованию или артикулу")}}
-              </label>
-              <span class="clear_icon" @click="clearModalFilter()"></span>
-            </div>
-            <div class="col-md sponsor_bot_btns">
-                <button class="" @click="showModal = !showModal">
-                  {{$t("Добавить")}}
-                </button>
-            </div>
-          </b-row>
-          <b-table
-            responsive
-            outlined
-            small
-            sticky-header
-            :filter="modalFilter"
-            :filter-included-fields="['articul', 'name']"
-            head-variant="light"
-            :fields="modalFields"
-            :items="modalEntries"
-          >
-            <template v-slot:cell(goods_count)="scope">
-              <div class="custom_input col-md">
-                <input
-                  :ref="`row${scope.index}`"
-                  type="text"
-                  :name="`status${scope.item.id}`"
-                  :id="`status${scope.item.id}`"
-                  required
-                  v-currency="{
-                    precision: 0,
-                    currency: null,
-                    valueAsInteger: false,
-                    distractionFree: false,
-                    allowNegative: false
-                  }"
-                  :placeholder="`${$t('Количество')}`"
-                  @keydown.enter="changeCount($event, scope.item.articul)"
-                  @keypress="checkInput($event, scope.item.goods_article)"
-                  @change="changeCount1($event, scope.item.articul)"
-                  :value="scope.item.goods_count"
-                />
-                <span class="clear_icon" @click="clearCount(scope.item.articul)"></span>
-              </div>
-            </template>
-          </b-table>
-            </el-tab-pane>
-            <el-tab-pane :label="`${$t('КОМПЛЕКТЫ')}`" name="kits">
+            <el-tab-pane :label="`${$t('ТОВАРЫ')}`" name="goods">
               <b-row align-v="end" class="row mb-4">
                 <div class="col custom_input">
-                  <input ref="prodSearchComp" v-focus type="text" name="modalFilterComp" id="modalFilterComp" required @keydown.enter="setRow1" />
-                  <label for="modalFilterComp">
-                    {{$t("Поиск по наименованию или артикулу")}}
+                  <input
+                    ref="prodSearch"
+                    type="text"
+                    name="modalFilter"
+                    id="modalFilter"
+                    required
+                    v-focus
+                    @keydown.enter="setRow"
+                  />
+                  <label for="modalFilter">
+                    {{ $t('Поиск по наименованию или артикулу') }}
                   </label>
                   <span class="clear_icon" @click="clearModalFilter()"></span>
                 </div>
                 <div class="col-md sponsor_bot_btns">
                   <button class="" @click="showModal = !showModal">
-                    {{$t("Добавить")}}
+                    {{ $t('Добавить') }}
                   </button>
                 </div>
               </b-row>
-              <div class="compecty">
               <b-table
-                sticky-header
-                :fields="modalKitFileds"
-                :items="modalKitEntires"
-                head-variant="light"
-                class="sub_2"
                 responsive
                 outlined
                 small
+                sticky-header
+                :filter="modalFilter"
+                :filter-included-fields="['articul', 'name']"
+                head-variant="light"
+                :fields="modalFields"
+                :items="modalEntries"
               >
-                <template v-slot:cell(articul)="row">
-                  <span>{{row.item.articul}}</span> <br>
-                  <span @click="show_details(row)" style="color: #32aaa7; cursor: pointer; display:inline-block; border-bottom: 1px dotted #32aaa7">
-                    {{ row.detailsShowing ? $t('Свернуть') : $t('Раскрыть') }}</span>
-                </template>
-                <template v-slot:row-details="row">
-                  <b-table
-                  :fields="returnFields"
-                  :items="return_details[row.item.id]"
-                  :sort-compare-options="{ numeric: false, sensitivity: 'base' }"
-                  head-variant="light"
-                  >
-                    <template #cell()="data">
-                      {{ data.value }}
-                    </template>
-                  </b-table>
-                </template>
                 <template v-slot:cell(goods_count)="scope">
                   <div class="custom_input col-md">
                     <input
@@ -296,32 +239,119 @@
                         currency: null,
                         valueAsInteger: false,
                         distractionFree: false,
-                        allowNegative: false
+                        allowNegative: false,
                       }"
                       :placeholder="`${$t('Количество')}`"
-                      @keydown.enter="kitChangeCount($event, scope.item.id)"
-                      @keypress="checkInput($event, scope.item.id)"
-                      @change="kitChangeCount1($event, scope.item.id)"
+                      @keydown.enter="changeCount($event, scope.item.articul)"
+                      @keypress="checkInput($event, scope.item.goods_article)"
+                      @change="changeCount1($event, scope.item.articul)"
                       :value="scope.item.goods_count"
                     />
-                    <span class="clear_icon" @click="clearCountKit(scope.item.id)"></span>
+                    <span class="clear_icon" @click="clearCount(scope.item.articul)"></span>
                   </div>
                 </template>
               </b-table>
+            </el-tab-pane>
+            <el-tab-pane :label="`${$t('КОМПЛЕКТЫ')}`" name="kits">
+              <b-row align-v="end" class="row mb-4">
+                <div class="col custom_input">
+                  <input
+                    ref="prodSearchComp"
+                    v-focus
+                    type="text"
+                    name="modalFilterComp"
+                    id="modalFilterComp"
+                    required
+                    @keydown.enter="setRow1"
+                  />
+                  <label for="modalFilterComp">
+                    {{ $t('Поиск по наименованию или артикулу') }}
+                  </label>
+                  <span class="clear_icon" @click="clearModalFilter()"></span>
+                </div>
+                <div class="col-md sponsor_bot_btns">
+                  <button class="" @click="showModal = !showModal">
+                    {{ $t('Добавить') }}
+                  </button>
+                </div>
+              </b-row>
+              <div class="compecty">
+                <b-table
+                  sticky-header
+                  :fields="modalKitFileds"
+                  :items="modalKitEntires"
+                  head-variant="light"
+                  class="sub_2"
+                  responsive
+                  outlined
+                  small
+                >
+                  <template v-slot:cell(articul)="row">
+                    <span>{{ row.item.articul }}</span> <br />
+                    <span
+                      @click="show_details(row)"
+                      style="color: #32aaa7; cursor: pointer; display:inline-block; border-bottom: 1px dotted #32aaa7"
+                    >
+                      {{ row.detailsShowing ? $t('Свернуть') : $t('Раскрыть') }}</span
+                    >
+                  </template>
+                  <template v-slot:row-details="row">
+                    <b-table
+                      :fields="returnFields"
+                      :items="return_details[row.item.id]"
+                      :sort-compare-options="{ numeric: false, sensitivity: 'base' }"
+                      head-variant="light"
+                    >
+                      <template #cell()="data">
+                        {{ data.value }}
+                      </template>
+                    </b-table>
+                  </template>
+                  <template v-slot:cell(goods_count)="scope">
+                    <div class="custom_input col-md">
+                      <input
+                        :ref="`row${scope.index}`"
+                        type="text"
+                        :name="`status${scope.item.id}`"
+                        :id="`status${scope.item.id}`"
+                        required
+                        v-currency="{
+                          precision: 0,
+                          currency: null,
+                          valueAsInteger: false,
+                          distractionFree: false,
+                          allowNegative: false,
+                        }"
+                        :placeholder="`${$t('Количество')}`"
+                        @keydown.enter="kitChangeCount($event, scope.item.id)"
+                        @keypress="checkInput($event, scope.item.id)"
+                        @change="kitChangeCount1($event, scope.item.id)"
+                        :value="scope.item.goods_count"
+                      />
+                      <span class="clear_icon" @click="clearCountKit(scope.item.id)"></span>
+                    </div>
+                  </template>
+                </b-table>
               </div>
             </el-tab-pane>
           </el-tabs>
         </div>
       </div>
     </footer>
-  <b-modal id="bv-modal-example" hide-footer centered  :hide-header-close="true" :no-close-on-backdrop="true">
-    <div class="d-block text-center">
-      <h3>
-        {{$t('Создание покупки')}}
-      </h3>
-      <p>{{$t("Пожалуйста подождите")}}...</p>
-    </div>
-  </b-modal>
+    <b-modal
+      id="bv-modal-example"
+      hide-footer
+      centered
+      :hide-header-close="true"
+      :no-close-on-backdrop="true"
+    >
+      <div class="d-block text-center">
+        <h3>
+          {{ $t('Создание покупки') }}
+        </h3>
+        <p>{{ $t('Пожалуйста подождите') }}...</p>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -364,7 +394,7 @@ export default {
           key: 'articul',
           label: this.$t('Артикул'),
           sortable: true,
-          formatter: (v) => String(v),
+          formatter: v => String(v),
           sortByFormatted: true,
         },
         {
@@ -397,11 +427,11 @@ export default {
           label: this.$t('Размер скидки, %'),
           sortable: true,
         },
-        // {
-        //   key: 'items',
-        //   label: this.$t('В наличии'),
-        //   sortable: true,
-        // },
+        {
+          key: 'items',
+          label: this.$t('В наличии'),
+          sortable: true,
+        },
         {
           key: 'goods_count',
           label: this.$t('Количество'),
@@ -494,7 +524,7 @@ export default {
         {
           key: 'articul',
           label: this.$t('Артикул'),
-          formatter: (v) => String(v),
+          formatter: v => String(v),
           sortByFormatted: true,
           sortable: true,
         },
@@ -544,7 +574,7 @@ export default {
           key: 'item_article',
           label: this.$t('Артикул'),
           sortable: true,
-          formatter: (v) => v,
+          formatter: v => v,
           sortByFormatted: true,
         },
         {
@@ -612,34 +642,38 @@ export default {
   },
   mounted() {
     this.return_details = new Array(this.total_rows).fill(undefined);
-    backAPI.get('/agent/sales/available-stocks').then((Response) => {
+    backAPI.get('/agent/sales/available-stocks').then(Response => {
       this.stockList = Response.data.entries;
     });
-    backAPI.get('/agent/profile').then((Response) => {
+    backAPI.get('/agent/profile').then(Response => {
       this.userInfo = Response.data;
       this.selectedStock = Response.data.stock_id;
-      backAPI.get('/agent/sales/catalog', { params: { stock_id: Response.data.stock_id } }).then((Response2) => {
-        Response2.data.entries.forEach((i) => {
-        // eslint-disable-next-line no-param-reassign
-          i.goods_count = '';
+      backAPI
+        .get('/agent/sales/catalog', { params: { stock_id: Response.data.stock_id } })
+        .then(Response2 => {
+          Response2.data.entries.forEach(i => {
+            // eslint-disable-next-line no-param-reassign
+            i.goods_count = '';
+          });
+          this.modalEntries = Response2.data.entries;
         });
-        this.modalEntries = Response2.data.entries;
-      });
-      backAPI.get('/agent/sales/complect-catalog', { params: { stock_id: Response.data.stock_id } }).then((Response2) => {
-        // eslint-disable-next-line no-unused-expressions
-        Response2.data.entries.forEach((kit) => {
-          // eslint-disable-next-line no-param-reassign
-          kit.goods_count = '';
-          // eslint-disable-next-line no-param-reassign
-          kit.isKit = true;
+      backAPI
+        .get('/agent/sales/complect-catalog', { params: { stock_id: Response.data.stock_id } })
+        .then(Response2 => {
+          // eslint-disable-next-line no-unused-expressions
+          Response2.data.entries.forEach(kit => {
+            // eslint-disable-next-line no-param-reassign
+            kit.goods_count = '';
+            // eslint-disable-next-line no-param-reassign
+            kit.isKit = true;
+          });
+          this.modalKitEntires = Response2.data.entries;
         });
-        this.modalKitEntires = Response2.data.entries;
-      });
     });
   },
   directives: {
     focus: {
-      inserted: (el) => {
+      inserted: el => {
         el.focus();
       },
     },
@@ -666,23 +700,25 @@ export default {
     },
     getCatalog(stock) {
       if (stock !== '') {
-        backAPI.get('/agent/sales/catalog', { params: { stock_id: stock } }).then((Response) => {
-          Response.data.entries.forEach((i) => {
-          // eslint-disable-next-line no-param-reassign
+        backAPI.get('/agent/sales/catalog', { params: { stock_id: stock } }).then(Response => {
+          Response.data.entries.forEach(i => {
+            // eslint-disable-next-line no-param-reassign
             i.goods_count = '';
           });
           this.modalEntries = Response.data.entries;
         });
-        backAPI.get('/agent/sales/complect-catalog', { params: { stock_id: stock } }).then((Response) => {
-          // eslint-disable-next-line no-unused-expressions
-          Response.data.entries.forEach((kit) => {
-            // eslint-disable-next-line no-param-reassign
-            kit.goods_count = '';
-            // eslint-disable-next-line no-param-reassign
-            kit.isKit = true;
+        backAPI
+          .get('/agent/sales/complect-catalog', { params: { stock_id: stock } })
+          .then(Response => {
+            // eslint-disable-next-line no-unused-expressions
+            Response.data.entries.forEach(kit => {
+              // eslint-disable-next-line no-param-reassign
+              kit.goods_count = '';
+              // eslint-disable-next-line no-param-reassign
+              kit.isKit = true;
+            });
+            this.modalKitEntires = Response.data.entries;
           });
-          this.modalKitEntires = Response.data.entries;
-        });
       }
     },
     rowClass(item, type) {
@@ -696,10 +732,12 @@ export default {
       if (row.detailsShowing === true) {
         row.toggleDetails();
       } else if (!this.return_details[row.item.id]) {
-        backAPI.get('/agent/sales/complect-catalog/detail/', { params: { complect_id: row.item.id } }).then((response) => {
-          this.return_details[row.item.id] = response.data.entries;
-          row.toggleDetails();
-        });
+        backAPI
+          .get('/agent/sales/complect-catalog/detail/', { params: { complect_id: row.item.id } })
+          .then(response => {
+            this.return_details[row.item.id] = response.data.entries;
+            row.toggleDetails();
+          });
       } else {
         row.toggleDetails();
       }
@@ -724,8 +762,7 @@ export default {
     dd() {
       this.search_user = this.selectedUserInfo.value;
     },
-    setCash() {
-    },
+    setCash() {},
     clearComm() {
       this.comm = '';
     },
@@ -739,16 +776,16 @@ export default {
       this.modalFilter = '';
     },
     clearCount(id) {
-      const prod = this.modalEntries.find((item) => item.articul === id);
+      const prod = this.modalEntries.find(item => item.articul === id);
       prod.goods_count = '';
     },
     clearCountKit(id) {
       console.log(id);
-      const prod = this.modalKitEntires.find((item) => item.id === id);
+      const prod = this.modalKitEntires.find(item => item.id === id);
       prod.goods_count = '';
     },
     changeCount(e, id) {
-      const prod = this.modalEntries.find((item) => item.articul === id);
+      const prod = this.modalEntries.find(item => item.articul === id);
       prod.goods_count = e.target.value;
       prod.price_all = Number(e.target.value.replace(/\s/g, '')) * parseFloat(prod.price);
       prod.points_count = Number(e.target.value.replace(/\s/g, '')) * parseFloat(prod.points);
@@ -757,13 +794,13 @@ export default {
       this.$refs.prodSearch.focus();
     },
     changeCount1(e, id) {
-      const prod = this.modalEntries.find((item) => item.articul === id);
+      const prod = this.modalEntries.find(item => item.articul === id);
       prod.goods_count = e.target.value;
       prod.price_all = Number(e.target.value.replace(/\s/g, '')) * parseFloat(prod.price);
       prod.points_count = Number(e.target.value.replace(/\s/g, '')) * parseFloat(prod.points);
     },
     kitChangeCount(e, id) {
-      const prod = this.modalKitEntires.find((item) => item.id === id);
+      const prod = this.modalKitEntires.find(item => item.id === id);
       prod.goods_count = e.target.value;
       prod.price_all = Number(e.target.value.replace(/\s/g, '')) * parseFloat(prod.price);
       prod.points_count = Number(e.target.value.replace(/\s/g, '')) * parseFloat(prod.points);
@@ -772,7 +809,7 @@ export default {
       this.$refs.prodSearch.focus();
     },
     kitChangeCount1(e, id) {
-      const prod = this.modalKitEntires.find((item) => item.id === id);
+      const prod = this.modalKitEntires.find(item => item.id === id);
       prod.goods_count = e.target.value;
       prod.price_all = Number(e.target.value.replace(/\s/g, '')) * parseFloat(prod.price);
       prod.points_count = Number(e.target.value.replace(/\s/g, '')) * parseFloat(prod.points);
@@ -795,8 +832,15 @@ export default {
       setTimeout(() => {
         // eslint-disable-next-line dot-notation
         if (this.$refs['row0']) {
-          console.log($('table > tbody').eq(1).find('.custom_input')[0]);
-          $('table > tbody').eq(1).find('.custom_input').eq(0)
+          console.log(
+            $('table > tbody')
+              .eq(1)
+              .find('.custom_input')[0],
+          );
+          $('table > tbody')
+            .eq(1)
+            .find('.custom_input')
+            .eq(0)
             .find('input')
             .focus();
         }
@@ -815,10 +859,15 @@ export default {
     },
     async createSale() {
       console.log(this.cash, this.card);
-      const res = await this.createMessageBox(this.$t('Вы уверены, что хотите зарезервировать покупку?'));
+      const res = await this.createMessageBox(
+        this.$t('Вы уверены, что хотите зарезервировать покупку?'),
+      );
       if (res) {
         this.$bvModal.show('bv-modal-example');
-        const goodsMass = this.newCart.map((item) => ({ goods_id: item.id, goods_quantity: Number(item.goods_count.replace(/\s/g, '')) }));
+        const goodsMass = this.newCart.map(item => ({
+          goods_id: item.id,
+          goods_quantity: Number(item.goods_count.replace(/\s/g, '')),
+        }));
         try {
           const reuslt = await backAPI.post('/agent/sales/sale-create', {
             positions: goodsMass,
@@ -827,7 +876,9 @@ export default {
           });
           if (reuslt.status === 200) {
             this.$bvModal.hide('bv-modal-example');
-            await this.createMessageBoxError(this.$t("Покупка создана успешно. Вы будете перенаправлены на страницу 'Продажи'"));
+            await this.createMessageBoxError(
+              this.$t("Покупка создана успешно. Вы будете перенаправлены на страницу 'Продажи'"),
+            );
             this.$router.push('/purchases-history');
           } else {
             this.$bvModal.hide('bv-modal-example');
@@ -848,10 +899,9 @@ export default {
     createMessageBox(messageText) {
       const h = this.$createElement;
       // More complex structure
-      const messageVNode = h('div', { class: ['foobar'] },
-        [
-          h('h3', { class: ['text-center'] }, [messageText]),
-        ]);
+      const messageVNode = h('div', { class: ['foobar'] }, [
+        h('h3', { class: ['text-center'] }, [messageText]),
+      ]);
       // We must pass the generated VNodes as arrays
       return this.$bvModal.msgBoxConfirm([messageVNode], {
         buttonSize: 'md',
@@ -873,9 +923,7 @@ export default {
       const vNodesTitle = h(
         'div',
         { class: ['d-flex', 'flex-grow-1', 'align-items-baseline', 'mr-2'] },
-        [
-          h('strong', { class: 'mr-2' }, title),
-        ],
+        [h('strong', { class: 'mr-2' }, title)],
       );
       // Pass the VNodes as an array for message and title
       this.$bvToast.toast([vNodesMsg], {
@@ -904,23 +952,39 @@ export default {
   computed: {
     ...mapState('auth', ['stock_id']),
     countCheck() {
-      return this.newCart.some((item) => item.goods_count > item.items);
+      return this.newCart.some(item => item.goods_count > item.items);
     },
     newCart() {
       console.log(this.modalKitEntires);
-      return [...this.modalEntries.filter((item) => Number(item.goods_count.replace(/\s/g, '')) > 0), ...this.modalKitEntires.filter((kit) => Number(kit.goods_count.replace(/\s/g, '') > 0))];
+      return [
+        ...this.modalEntries.filter(item => Number(item.goods_count.replace(/\s/g, '')) > 0),
+        ...this.modalKitEntires.filter(kit => Number(kit.goods_count.replace(/\s/g, '') > 0)),
+      ];
     },
     cartInfo() {
       // eslint-disable-next-line radix
-      const prodAmount = this.newCart.reduce((sum, elem) => sum + Number(elem.goods_count.replace(/\s/g, '')), 0);
+      const prodAmount = this.newCart.reduce(
+        (sum, elem) => sum + Number(elem.goods_count.replace(/\s/g, '')),
+        0,
+      );
       // eslint-disable-next-line radix
-      const pointsAmount = this.newCart.reduce((sum, elem) => sum + (parseFloat(elem.points) * Number(elem.goods_count.replace(/\s/g, ''))), 0);
+      const pointsAmount = this.newCart.reduce(
+        (sum, elem) => sum + parseFloat(elem.points) * Number(elem.goods_count.replace(/\s/g, '')),
+        0,
+      );
       const nameAmount = this.newCart.length;
       // eslint-disable-next-line radix
-      const priceAmount = this.newCart.reduce((sum, elem) => sum + (parseFloat(elem.price) * Number(elem.goods_count.replace(/\s/g, ''))), 0);
-      const licShet = ((this.cash === '' ? 0 : parseFloat(this.cash.replace(/\s/g, '').replace(/[,]/g, '.'))) + (this.card === '' ? 0 : parseFloat(this.card.replace(/\s/g, '').replace(/[,]/g, '.')))) - priceAmount;
+      const priceAmount = this.newCart.reduce(
+        (sum, elem) => sum + parseFloat(elem.price) * Number(elem.goods_count.replace(/\s/g, '')),
+        0,
+      );
+      const licShet = (this.cash === '' ? 0 : parseFloat(this.cash.replace(/\s/g, '').replace(/[,]/g, '.'))) + (this.card === '' ? 0 : parseFloat(this.card.replace(/\s/g, '').replace(/[,]/g, '.'))) - priceAmount;
       const cartData = {
-        prodAm: prodAmount, pointsAm: pointsAmount, nameAm: nameAmount, priceAm: priceAmount, ls: licShet,
+        prodAm: prodAmount,
+        pointsAm: pointsAmount,
+        nameAm: nameAmount,
+        priceAm: priceAmount,
+        ls: licShet,
       };
       return cartData;
     },
@@ -929,28 +993,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.close_btn{
+.close_btn {
   top: unset;
 }
-.countError{
+.countError {
   padding: 0;
   margin: 0;
   color: red;
   font-weight: bold;
 }
-.red{
+.red {
   color: red;
   font-weight: bold;
   & a {
     color: red;
   }
 }
-.pay{
+.pay {
   margin-left: 15px;
   margin-right: 10px;
   margin-bottom: 4px;
 }
-.act{
+.act {
   color: black;
   font-size: 14px;
 }
@@ -958,7 +1022,7 @@ export default {
   position: relative;
   padding-top: 30px;
 }
-.link_part{
+.link_part {
   color: black;
 }
 .organization__modal {
@@ -993,10 +1057,10 @@ export default {
     }
   }
 }
-.lbl{
-    font-size: 14px;
-    line-height: 12px;
-    color: #9A9A9A;
+.lbl {
+  font-size: 14px;
+  line-height: 12px;
+  color: #9a9a9a;
 }
 .sponsor_bot_btns {
   display: flex;
@@ -1012,7 +1076,7 @@ export default {
       font-weight: 500;
       border: 0;
       padding: 7px 50px;
-      &.disabled{
+      &.disabled {
         color: #9a9a9a;
         background-color: #dee2f3;
       }
@@ -1028,47 +1092,47 @@ export default {
 }
 </style>
 <style>
-.compecty .table .thead-light th{
-  background-color: #32aaa7 !important
+.compecty .table .thead-light th {
+  background-color: #32aaa7 !important;
 }
-.compecty tbody td{
-  background-color: #AED9D8 !important
+.compecty tbody td {
+  background-color: #aed9d8 !important;
 }
 .compecty table table {
   margin: 0;
 }
-.compecty input{
+.compecty input {
   background: transparent;
   border-bottom-color: black;
 }
-.compecty input::placeholder{
+.compecty input::placeholder {
   color: black;
 }
 /* КОРЗИНА КОМПЛЕКТЫ */
-.compectyCart td{
-  background-color: #AED9D8 !important
+.compectyCart td {
+  background-color: #aed9d8 !important;
 }
-.compectyCart ~ .b-table-details .table .thead-light th{
-  background-color: #32aaa7 !important
+.compectyCart ~ .b-table-details .table .thead-light th {
+  background-color: #32aaa7 !important;
 }
-.compectyCart ~ .b-table-details .table td{
-  background-color: #AED9D8 !important
+.compectyCart ~ .b-table-details .table td {
+  background-color: #aed9d8 !important;
 }
-.compectyCart ~ .b-table-details .table{
+.compectyCart ~ .b-table-details .table {
   margin: 0;
 }
-.compectyCart input{
+.compectyCart input {
   background: transparent;
   border-bottom-color: black;
 }
-.compectyCart input::placeholder{
+.compectyCart input::placeholder {
   color: black;
 }
-.sale_footer > .container-md.open{
-    max-height: 70vh;
-    min-height: 50vh;
+.sale_footer > .container-md.open {
+  max-height: 70vh;
+  min-height: 50vh;
 }
-.sale_footer .b-table-sticky-header{
-  max-height: calc(100vh/3) !important;
+.sale_footer .b-table-sticky-header {
+  max-height: calc(100vh / 3) !important;
 }
 </style>

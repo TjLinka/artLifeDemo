@@ -62,7 +62,7 @@ Vue.use(VueTheMask);
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
 
-Vue.filter('localInt', (value) => {
+Vue.filter('localInt', value => {
   const formatter = new Intl.NumberFormat('ru');
   // eslint-disable-next-line no-restricted-globals
   if (isNaN(value)) {
@@ -70,7 +70,7 @@ Vue.filter('localInt', (value) => {
   }
   return formatter.format(value);
 });
-Vue.filter('localDate', (value) => {
+Vue.filter('localDate', value => {
   const formatter = new Intl.DateTimeFormat('ru');
   // eslint-disable-next-line no-restricted-globals
   try {
@@ -84,5 +84,5 @@ new Vue({
   i18n,
   router,
   store,
-  render: (h) => h(App),
+  render: h => h(App),
 }).$mount('#app');

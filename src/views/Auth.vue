@@ -5,87 +5,78 @@
         <img src="../assets/imgs/logo_1.png" alt="Артлайф" />
       </div>
       <h1 class="text-center mb-5">
-        {{$t("Авторизация")}}
+        {{ $t('Авторизация') }}
       </h1>
       <h4 class="text-center mb-5 error_log" v-if="badLogin">
-        {{$t("Логин или пароль введён неверно")}} !
+        {{ $t('Логин или пароль введён неверно') }} !
       </h4>
       <h4 class="text-center mb-5 error_log" v-if="isTerm">
-        {{$t("Данный Агент терминирован, если это ошибка - обратитесь к сотрудникам Компании")}} !
+        {{ $t('Данный Агент терминирован, если это ошибка - обратитесь к сотрудникам Компании') }} !
       </h4>
       <h4 class="text-center mb-5 error_log" v-if="isLVL1">
-        {{$t("К сожалению, у Вас нет возможности начать работу в ЛК Партнёра, так как при регистрации личного кабинета на сайте Вы отказались от статуса Партнёра.")}} <br>
-        {{$t(`В случае, если Вы захотите принять участие в программе и стать Партнёром компании \"Артлайф\"`)}} <br>
-        {{$t(`необходимо в личном кабинете на сайте www.artlife.ru дать согласие на участие в партнёрской программе.`)}}
+        {{
+          $t(
+            'К сожалению, у Вас нет возможности начать работу в ЛК Партнёра, так как при регистрации личного кабинета на сайте Вы отказались от статуса Партнёра.',
+          )
+        }}
+        <br />
+        {{
+          $t(
+            `В случае, если Вы захотите принять участие в программе и стать Партнёром компании \"Артлайф\"`,
+          )
+        }}
+        <br />
+        {{
+          $t(
+            `необходимо в личном кабинете на сайте www.artlife.ru дать согласие на участие в партнёрской программе.`,
+          )
+        }}
       </h4>
       <div class="auth__page__form">
-        <div class="row">
-          <div class="col mb-4 text-center switch">
-            <div class="auth_switch">
-              <el-switch
-                style="display: block"
-                v-model="value2"
-                :active-text="`${$t('ЛОГИН ТЕЛЕФОН')}`"
-                :inactive-text="`${$t('ЛОГИН ID')}`"
-              >
-              </el-switch>
-            </div>
-          </div>
-        </div>
-        <form method="post">
-          <div class="custom_input login_input" v-show="!value2">
-            <input
-            type="number"
-            name="login"
-            id="login"
-            required
-            @keydown="checkInput($event)"
-            v-model="log.login_ID" />
-            <label for="login">ID</label>
-            <span class="clear_icon" @click="clearInput('login_ID')"></span>
-          </div>
-          <div class="custom_input login_input" v-show="value2">
-            <input
-              type="text"
-              v-mask="'+###############'"
-              name="phone"
-              id="phone"
-              required
-              v-model="log.login_phone"
-            />
-            <label for="phone">
-              {{$t("Телефон в международном формате")}}
-            </label>
-            <span class="clear_icon" @click="clearInput('login_phone')"></span>
-          </div>
-          <div class="custom_input password_input">
-            <input type="password" name="password" id="password" required v-model="log.password" />
-            <label for="password">
-              {{$t("Пароль")}}
-            </label>
-            <span class="clear_icon" @click="clearInput('password')"></span>
-          </div>
-          <vue-recaptcha
-            ref="recaptcha"
-            size="invisible"
-            :sitekey="sitekey"
-            @verify="sf"
-            @expired="onCaptchaExpired"
+        <form method="post" @submit.prevent="sf" class="auth_form">
+          <g-switch
+            style="margin: 0 auto;"
+            :not_active_value="'ЛОГИН ID'"
+            :active_value="'ЛОГИН ТЕЛЕФОН'"
+            v-model="value2"
           />
-          <button class="btn__login" type="submit" @click.prevent="sf">
-            {{$t("Войти")}}
-          </button>
+          <g-input
+            class="mt-4"
+            :id="'login_id'"
+            :placeholder="'ID'"
+            :type="'number'"
+            v-model="log.login_ID"
+            v-show="!value2"
+          />
+          <g-phone-input class="mt-4" v-show="value2" v-model="log.login_phone" />
+          <g-input
+            class="mt-4"
+            :id="'password'"
+            :placeholder="'Пароль'"
+            :type="'password'"
+            v-model="log.password"
+          />
+          <g-button class="mt-5" primary @click="sf">
+            Войти
+          </g-button>
         </form>
       </div>
       <div class="auth__page__help">
         <p>
-          {{$t("Забыли пароль?")}}
+          {{ $t('Забыли пароль?') }}
           <router-link to="/remind-password" class="remind_link">
-          {{$t("Напомнить")}}
+            {{ $t('Напомнить') }}
           </router-link>
         </p>
       </div>
     </div>
+    <vue-recaptcha
+      ref="recaptcha"
+      size="invisible"
+      :sitekey="sitekey"
+      @verify="sf"
+      @expired="onCaptchaExpired"
+    />
   </div>
 </template>
 
@@ -95,11 +86,19 @@ import md5 from 'md5';
 import { mapActions } from 'vuex';
 import $ from 'jquery';
 import backAPI from '../assets/backApi';
+import GSwitch from '../components/Forms/GSwitch.vue';
+import GInput from '../components/Forms/GInput.vue';
+import GButton from '../components/Forms/GButton.vue';
+import GPhoneInput from '../components/Forms/GPhoneInput.vue';
 
 export default {
   name: 'Home',
   components: {
     VueRecaptcha,
+    GSwitch,
+    GInput,
+    GButton,
+    GPhoneInput,
   },
   data() {
     return {
@@ -107,6 +106,7 @@ export default {
       badLogin: false,
       isTerm: false,
       isLVL1: false,
+      isPassHide: true,
       sitekey: '6LdD2c8aAAAAAOQXfujlkoLbR_bQyxI4kKLifnCU',
       log: {
         login: '',
@@ -123,9 +123,16 @@ export default {
     // eslint-disable-next-line consistent-return
     checkInput(e) {
       console.log(e.which);
-      if (e.which === 189 || e.which === 109 || e.which === 107
-      || e.which === 187 || e.which === 190 || e.which === 191
-      || e.which === 188 || e.which === 110) {
+      if (
+        e.which === 189
+        || e.which === 109
+        || e.which === 107
+        || e.which === 187
+        || e.which === 190
+        || e.which === 191
+        || e.which === 188
+        || e.which === 110
+      ) {
         // eslint-disable-next-line no-restricted-globals
         e.preventDefault();
         return false;
@@ -152,9 +159,6 @@ export default {
         variant: status,
       });
     },
-    clearInput(name) {
-      this.log[name] = '';
-    },
     ...mapActions('auth', ['login']),
     validate() {
       this.$refs.recaptcha.execute();
@@ -178,18 +182,19 @@ export default {
           };
           backAPI
             .post('/agent/login/id', params)
-            .then((resp) => {
+            .then(resp => {
+              console.log('Good Login');
               const data = JSON.stringify(resp.data);
               const token = resp.data.access_token;
               localStorage.setItem('access_token', data);
-              backAPI.defaults.headers.common['access-token'] = token;
-              this.login(resp)
-                .then(() => {
-                  this.badLogin = false;
-                  this.$router.push('/');
-                });
+              backAPI.backAPI.defaults.headers.common['access-token'] = token;
+              this.login(resp).then(() => {
+                this.badLogin = false;
+                this.$router.push('/');
+              });
             })
-            .catch((error) => {
+            .catch(error => {
+              console.log('error');
               if (!error.response) {
                 this.isTerm = false;
                 this.badLogin = true;
@@ -220,37 +225,39 @@ export default {
           };
           backAPI
             .post('/agent/login/phone', params)
-            .then((resp) => {
+            .then(resp => {
               const data = JSON.stringify(resp.data);
               const token = resp.data.access_token;
               localStorage.setItem('access_token', data);
               backAPI.defaults.headers.common['access-token'] = token;
-              this.login(resp)
-                .then(() => {
-                  this.badLogin = false;
-                  this.$router.push('/');
-                });
+              this.login(resp).then(() => {
+                this.badLogin = false;
+                this.$router.push('/');
+              });
             })
-            .catch((error) => {
+            .catch(error => {
               if (!error.response) {
                 this.isTerm = false;
                 this.badLogin = true;
                 return;
               }
+              if (error.response.data.detail === 'LVL1') {
+                this.isLVL1 = true;
+                this.isTerm = false;
+                this.badLogin = false;
+                return;
+              }
               if (error.response.data.detail.toLowerCase() === 'agent is terminated') {
                 this.isTerm = true;
                 this.badLogin = false;
+                this.isLVL1 = false;
               } else {
                 this.isTerm = false;
                 this.badLogin = true;
+                this.isLVL1 = false;
               }
             });
         }
-        // this.login(data)
-        //   .then(() => {
-        //     this.badLogin = false;
-        //     this.$router.push('/');
-        //   });
       }
       $('.login_input, .password_input').removeClass('error');
       if (this.log.login_ID === '') {
@@ -262,12 +269,27 @@ export default {
         this.showToast('Ошибка!', `${this.$t('Заполните поле Пароль')}`, 'danger');
       }
     },
+    showPass() {
+      // console.log(this.$refs.password.getAttribute('type'));
+      if (this.$refs.password.getAttribute('type') === 'password') {
+        // console.log('1');
+        this.isPassHide = false;
+        this.$refs.password.setAttribute('type', 'text');
+      } else {
+        // console.log('2');
+        this.isPassHide = true;
+        this.$refs.password.setAttribute('type', 'password');
+      }
+    },
   },
   computed: {},
 };
 </script>
 
 <style lang="scss" scoped>
+.auth_form {
+  width: 80%;
+}
 .remind_link {
   color: #32aaa7;
 }
@@ -303,31 +325,10 @@ export default {
   // margin-left:-200px;
   &__form {
     & form {
-      width: 100%;
+      width: 40%;
       display: flex;
+      margin: 0 auto;
       flex-direction: column;
-      align-items: center;
-
-      .log_in {
-        width: 60%;
-        // height: 45px;
-        // border: 0;
-        // border-bottom: 1px solid lightgray;
-        margin-bottom: 50px;
-        // outline: none;
-      }
-
-      .btn__login {
-        width: 60%;
-        height: 45px;
-        border: 0;
-        border-radius: 5px;
-        margin-top: 30px;
-        background-color: darken($color: cyan, $amount: 15%);
-        outline: none;
-        color: white;
-        font-weight: bold;
-      }
     }
   }
 
