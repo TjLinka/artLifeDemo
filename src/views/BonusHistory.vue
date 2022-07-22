@@ -2,20 +2,6 @@
   <div class="licevoischet__page">
     <div v-loading="loading">
       <div class="container-fluid table_container" v-show="!loading">
-        <h2 class="page__title">
-          <p class="mobile_back noprint" @click="back">
-            <svg
-              width="18"
-              height="12"
-              viewBox="0 0 18 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
-            </svg>
-          </p>
-          <!-- {{$t("История начисления бонусов")}}: {{agentData.id}} - {{agentData.name}} -->
-        </h2>
         <div class="row mt-3 mb-3">
           <div class="col-md-6 perioad__picker">
             <BasePeriodPicker
@@ -120,7 +106,7 @@ export default {
         },
         {
           key: 'monthly_bonus',
-          label: this.$t('Ежемесячные бонусы'),
+          label: this.$t('Личный бонус'),
           formatter(v) {
             if (v !== null) {
               const formatter = new Intl.NumberFormat('ru');
@@ -131,11 +117,7 @@ export default {
         },
         {
           key: 'autodom',
-          label: this.$t('Автодом'),
-        },
-        {
-          key: 'otpusk',
-          label: this.$t('Отпускной фонд'),
+          label: this.$t('Групповой бонус'),
         },
         {
           key: 'lo',
@@ -160,19 +142,8 @@ export default {
           },
         },
         {
-          key: 'ngo',
-          label: this.$t('НГО'),
-          formatter(v) {
-            if (v !== null) {
-              const formatter = new Intl.NumberFormat('ru');
-              return formatter.format(v);
-            }
-            return null;
-          },
-        },
-        {
           key: 'oo',
-          label: this.$t('ОО'),
+          label: this.$t('СО'),
           formatter(v) {
             if (v !== null) {
               const formatter = new Intl.NumberFormat('ru');
@@ -182,8 +153,8 @@ export default {
           },
         },
         {
-          key: 'ko',
-          label: this.$t('КО'),
+          key: 'ngo',
+          label: this.$t('НСО'),
           formatter(v) {
             if (v !== null) {
               const formatter = new Intl.NumberFormat('ru');
@@ -191,6 +162,14 @@ export default {
             }
             return null;
           },
+        },
+        {
+          key: 'Активность',
+          label: this.$t('Расчетный ранг'),
+        },
+        {
+          key: 'rank_beg',
+          label: this.$t('Расчетный ранг'),
         },
         {
           key: 'rank_calc',
@@ -214,24 +193,16 @@ export default {
             return null;
           },
         },
-        {
-          key: 'accumulated',
-          label: this.$t('Итого накоплено бонусов'),
-        },
-        {
-          key: 'acc_month',
-          label: this.$t('Месяцев накопления'),
-        },
       ],
       returnFields: [
         {
-          key: 'agent_from_name',
-          label: this.$t('ФИО'),
+          key: 'agent_from',
+          label: this.$t('ID партнера'),
           sortable: true,
         },
         {
-          key: 'agent_from',
-          label: this.$t('Номер партнера'),
+          key: 'agent_from_name',
+          label: this.$t('ФИО'),
           sortable: true,
         },
         {

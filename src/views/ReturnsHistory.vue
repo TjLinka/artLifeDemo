@@ -277,7 +277,7 @@ export default {
         },
         {
           key: 'dte',
-          label: this.$t('Дата сервера'),
+          label: this.$t('Дата'),
           sortable: true,
           formatter(v) {
             return dateFormat(v);

@@ -67,6 +67,19 @@
           <span class="mr-3" @click="downloadPdf">{{ $t('Экспорт в pdf') }}</span>
           <span class="mr-3" @click="downloadXls">{{ $t('Экспорт в xlsx') }}</span>
         </p>
+        <div class="row mb-3">
+          <div class="col-6">
+            <g-grouped-button>
+              <g-button :primary="true">Пополнение лицевого счёта </g-button>
+              <g-button :primary="true">Вывод средств </g-button>
+            </g-grouped-button>
+          </div>
+          <div class="col-6">
+            <g-grouped-button>
+              <g-button :width="'50%'">Перевод другому партнёру </g-button>
+            </g-grouped-button>
+          </div>
+        </div>
         <b-table
           :fields="fields"
           :items="entries"
@@ -136,10 +149,12 @@ import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/ru';
 import backApi from '../assets/backApi';
 import dateFormat from '../assets/localDateFunc';
+import GGroupedButton from '../components/Forms/GGroupedButton.vue';
+import GButton from '../components/Forms/GButton.vue';
 
 export default {
   name: 'AccountDetail',
-  components: { DatePicker },
+  components: { DatePicker, GGroupedButton, GButton },
   data() {
     return {
       tags: [],
@@ -237,16 +252,16 @@ export default {
     ];
     backApi
       .get('agent/account-detail', {
-        params: {
-          beg_dte: this.$moment()
-            .subtract(1, 'months')
-            .startOf('month')
-            .format('YYYY-MM-DD'),
-          end_dte: this.$moment()
-            .subtract(0, 'months')
-            .endOf('month')
-            .format('YYYY-MM-DD'),
-        },
+        // params: {
+        //   beg_dte: this.$moment()
+        //     .subtract(1, 'months')
+        //     .startOf('month')
+        //     .format('YYYY-MM-DD'),
+        //   end_dte: this.$moment()
+        //     .subtract(0, 'months')
+        //     .endOf('month')
+        //     .format('YYYY-MM-DD'),
+        // },
       })
       .then(Response => {
         this.entries = Response.data.entries;

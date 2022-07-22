@@ -47,6 +47,7 @@ export default {
     padding: 6px 0px;
     border-bottom: 1px solid var(--input-gray);
     outline: none;
+    background: transparent;
     &:focus ~ label {
       font-size: 14px;
       top: -14px;

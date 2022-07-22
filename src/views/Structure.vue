@@ -2,20 +2,6 @@
   <div class="licevoischet__page">
     <div v-loading="loading">
       <div class="container-fluid table_container" v-show="!loading">
-        <h2 class="page__title">
-          <p class="mobile_back noprint" @click="back">
-            <svg
-              width="18"
-              height="12"
-              viewBox="0 0 18 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M18 5H3.83L7.41 1.41L6 0L0 6L6 12L7.41 10.59L3.83 7H18V5Z" fill="#32AAA7" />
-            </svg>
-          </p>
-          <!-- {{$t("История организации по периодам")}} -->
-        </h2>
         <div class="row mb-1">
           <div class="col-md-6">
             <el-autocomplete
@@ -30,17 +16,39 @@
             ></el-autocomplete>
           </div>
         </div>
-        <div class="col search__btn mobile noprint" @click="toggleSearch">
+        <!-- <div class="col search__btn mobile noprint" @click="toggleSearch">
           {{ $t('Настройки дерева') }} <span class="search_icons mobi"></span>
-        </div>
-        <div class="perioad__picker mb-3 mt-3">
+        </div> -->
+        <div class="perioad__picker mt-3">
           <BasePeriodPicker
             :currentPeriod="currentPeriod"
             v-on:next-period="nextPeriod"
             class="period_picker"
           />
         </div>
-        <div class="noprint">
+        <b-row align-v="center" class="row">
+          <div class="col-3 mt-3">
+            <b-form-group :label="`${$t('Выбор дерева')}`">
+              <b-form-radio
+                v-model="tree_type"
+                name="some-radios-1"
+                value="full"
+                class="radio mr-3"
+                inline
+                >{{ $t('Полное дерево') }}</b-form-radio
+              >
+              <b-form-radio
+                v-model="tree_type"
+                name="some-radios-1"
+                value="compres"
+                class="radio mr-3"
+                inline
+                >{{ $t('С компресией по неактивным') }}</b-form-radio
+              >
+            </b-form-group>
+          </div>
+        </b-row>
+        <!-- <div class="noprint">
           <el-tag
             v-for="tag in tags"
             :key="tag.name"
@@ -51,8 +59,8 @@
           >
             {{ tag.name }}
           </el-tag>
-        </div>
-        <p class="exp_print mt-3 noprint">
+        </div> -->
+        <p class="exp_print noprint">
           <span class="mr-3" @click="downloadPdf">{{ $t('Экспорт в pdf') }}</span>
           <span class="mr-3" @click="downloadXls">{{ $t('Экспорт в xlsx') }}</span>
           <span class="mr-3" v-b-modal.modal-scrollable>{{ $t('Легенда') }}</span>
@@ -89,13 +97,9 @@
                 {{ column.label }}
               </template>
               <template slot-scope="scope">
-                <span v-if="column.property === 'id'">
+                <span v-if="column.property === 'depth'">
                   <div v-if="!colHide" style="display: inline">
-                    <span>{{ scope.row.depth }}</span>
-                    <!-- <span class="user_id" @click="agentCard(scope.row.id)">{{ scope.row.id }}</span> -->
-                    <!-- <router-link :to="`/agent/${scope.row.id}`">
-                      <span class="user_id">{{ scope.row.id }}</span>
-                    </router-link> -->
+                    <span style="margin-left: 7px; display: inline-block;">{{ scope.row.depth }}</span>
                   </div>
                   <div v-else style="text-align: center; margin-top: -25px;">
                     <img
@@ -113,6 +117,9 @@
                 </span>
                 <span v-if="column.property === 'name'">
                   {{ scope.row.name }}
+                </span>
+                <span v-if="column.property === 'id'">
+                  {{ scope.row.id }}
                 </span>
                 <span v-if="column.property === 'lo'">
                   {{ column.formater(scope.row) }}
@@ -313,9 +320,13 @@ export default {
     const rows = [];
     const columns = [
       {
-        property: 'id',
+        property: 'depth',
         label: this.$t('Уровень'),
         formater: item => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
+      },
+      {
+        property: 'id',
+        label: this.$t('ID'),
       },
       {
         property: 'name',
@@ -339,7 +350,7 @@ export default {
       },
       {
         property: 'ngo',
-        label: this.$t('НГО'),
+        label: this.$t('НСО'),
         formater: item => {
           const formatter = new Intl.NumberFormat('ru');
           return formatter.format(item.ngo);
@@ -347,34 +358,21 @@ export default {
       },
       {
         property: 'oo',
-        label: this.$t('ОО'),
+        label: this.$t('СО'),
         formater: item => {
           const formatter = new Intl.NumberFormat('ru');
           return formatter.format(item.oo);
         },
       },
       {
-        property: 'ko',
-        label: this.$t('КО'),
-        formater: item => {
-          const formatter = new Intl.NumberFormat('ru');
-          return formatter.format(item.ko);
-        },
-      },
-      {
         property: 'noact',
-        label: this.$t('Неактивность'),
+        label: this.$t('Активность'),
         formater: item => item.noact,
       },
       {
         property: 'rank_beg',
         label: this.$t('Ранг на начало'),
         formater: item => item.rank_beg,
-      },
-      {
-        property: 'rank_calc',
-        label: this.$t('Расчетный ранг'),
-        formater: item => item.rank_calc,
       },
       {
         property: 'rank_end',

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>Профиль</h1>
+    <!-- <h1>Профиль</h1> -->
     <div class="row">
       <div class="col">
         <g-tabs>

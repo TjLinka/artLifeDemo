@@ -40,28 +40,28 @@
           <a class="nav_parent" href="#">
             <span class="ico"><img src="../assets/imgs/i2.png" alt=""/></span>
             <span class="ico_t">
-              {{ $t('Структура') }}
+              {{ $t('Маркетинг') }}
             </span>
           </a>
           <ul class="sub_menu">
             <li class="mobilis">
               <span class="i_m">
-                {{ $t('Структура') }}
+                {{ $t('Маркетинг') }}
               </span>
             </li>
-            <li v-if="role === 'Клиент'">
-              <router-link to="/organization-period">
-                {{ $t('Организация текущего периода') }}
+            <li>
+              <router-link to="/structure">
+                {{ $t('Структура') }}
               </router-link>
             </li>
-            <li v-if="role !== 'Клиент'">
-              <router-link to="/organization-by-period">
-                {{ $t('История организации по периодам') }}
+            <li>
+              <router-link to="/points-history">
+                {{ $t('История баллов') }}
               </router-link>
             </li>
-            <li v-if="role !== 'Клиент'">
-              <router-link to="/transfermanagement">
-                {{ $t('Управление трансфертами структуры(плоское дерево)') }}
+            <li>
+              <router-link to="/promotion">
+                {{ $t('Промоушены') }}
               </router-link>
             </li>
           </ul>
@@ -70,51 +70,26 @@
           <a class="nav_parent" href="#">
             <span class="ico"><img src="../assets/imgs/i3.png" alt=""/></span>
             <span class="ico_t">
-              {{ $t('Отчеты') }}
+              {{ $t('Финансы') }}
             </span>
           </a>
           <ul class="sub_menu">
             <li class="mobilis">
               <span class="i_m">
-                {{ $t('Отчеты') }}
+                {{ $t('Финансы') }}
               </span>
             </li>
-            <li v-if="role !== 'Клиент'">
-            <router-link to="/indicators">
-            {{$t("Показатели")}}
-            </router-link></li>
             <li
             v-show="role !== 'Клиент'">
             <router-link to="/bonus-history">
-            {{$t("История начисления бонусов")}}
+            {{$t("История бонусов")}}
             </router-link></li>
-            <li v-show="role !== 'Клиент'"><router-link to="/points-history"
-            >
-            {{$t("История баллов")}}
+            <li v-if="role !== 'Клиент'">
+            <router-link to="/account-detail">
+            {{$t("Лицевой счёт")}}
             </router-link></li>
-            <li><router-link to="/account-detail">
-            {{$t("Детализация лицевого счета")}}
-            </router-link></li>
-            <li  v-show="role !== 'Клиент'"><router-link to="/partnerindicators">
-            {{$t("История показателей партнера по периодам")}}
-            </router-link></li>
-            <!-- <li>
-              <router-link to="/ref-urls-report">
-                {{ $t('Отчет по реферальным ссылкам') }}
-              </router-link>
-            </li> -->
           </ul>
         </li>
-        <!-- <li>
-          <a class="nav_parent" href="#">
-            <span class="ico"><img src="../assets/imgs/i4.png" alt=""/></span>
-            <span class="ico_t">Операции</span>
-          </a>
-          <ul class="sub_menu">
-            <li class="mobilis"><span class="i_m">Операции</span></li>
-            <li><router-link to="/registration">Регистрация партнера</router-link></li>
-          </ul>
-        </li> -->
         <li class="hover">
           <a class="nav_parent" href="#">
             <span class="ico"><img src="../assets/imgs/i5.png" alt=""/></span>
@@ -123,15 +98,51 @@
             </span>
           </a>
           <ul class="sub_menu">
-            <!-- <li class="mobilis"><span class="i_m">{{$t("Покупки")}}</span></li> -->
+            <li class="mobilis"><span class="i_m">{{$t("Покупки")}}</span></li>
             <li>
-              <router-link to="/purchases-history">
-                {{ $t('История покупок') }}
+              <router-link to="/shop">
+                {{ $t('Интернет-магазин') }}
               </router-link>
             </li>
             <li>
               <router-link to="/returns-history">
                 {{ $t('История возвратов') }}
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/purchases-history">
+                {{ $t('История заказов') }}
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/favourites">
+                {{ $t('Избранное') }}
+              </router-link>
+            </li>
+          </ul>
+        </li>
+        <li class="hover">
+          <a class="nav_parent" href="#">
+            <span class="ico"><img src="../assets/imgs/i5.png" alt=""/></span>
+            <span class="ico_t">
+              {{ $t('Информация') }}
+            </span>
+          </a>
+          <ul class="sub_menu">
+            <li class="mobilis"><span class="i_m">{{$t("Информация")}}</span></li>
+            <li>
+              <router-link to="/news">
+                {{ $t('Новости') }}
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/marketing-plan">
+                {{ $t('Маркетинг план') }}
+              </router-link>
+            </li>
+            <li>
+              <router-link to="/purchases-history">
+                {{ $t('Публичная оферта') }}
               </router-link>
             </li>
           </ul>

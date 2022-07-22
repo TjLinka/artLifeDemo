@@ -381,21 +381,16 @@ export default {
       fields: [
         {
           key: 'nomer',
-          label: this.$t('Номер накладной'),
+          label: this.$t('Дата создания'),
           sortable: true,
           thStyle: {
             width: '150px',
             minWidth: '150px',
           },
         },
-        // {
-        //   key: 'webshop_id',
-        //   label: 'Номер соглашения',
-        //   sortable: true,
-        // },
         {
           key: 'amount',
-          label: this.$t('Сумма'),
+          label: this.$t('Дата окончания резерва'),
           formatter(v) {
             if (v > 0) {
               const formatter = new Intl.NumberFormat('ru');
@@ -407,7 +402,7 @@ export default {
         },
         {
           key: 'dte',
-          label: this.$t('Дата сервера'),
+          label: this.$t('Дата оплаты'),
           sortable: true,
           formatter(v) {
             return dateFormat(v);
@@ -415,36 +410,17 @@ export default {
         },
         {
           key: 'delivery',
-          label: this.$t('Доставка'),
+          label: this.$t('Дата завершения'),
+          sortable: true,
+        },
+        {
+          key: 'summ',
+          label: this.$t('Сумма'),
           sortable: true,
         },
         {
           key: 'status',
-          label: this.$t('Статус'),
-          sortable: true,
-        },
-        {
-          key: 'address',
-          label: this.$t('Адрес'),
-          sortable: true,
-        },
-        {
-          key: 'points',
-          label: this.$t('Сумма баллов'),
-          sortable: true,
-          formatter: v => {
-            const formatter = new Intl.NumberFormat('ru');
-            // eslint-disable-next-line no-restricted-globals
-            if (isNaN(v)) {
-              return '-';
-            }
-            return formatter.format(v);
-          },
-        },
-        {
-          key: 'stock_name',
-          label: this.$t('Склад покупки'),
-          sortable: true,
+          label: 'Статус',
         },
       ],
     };

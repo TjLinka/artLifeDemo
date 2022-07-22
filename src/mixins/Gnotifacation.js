@@ -7,7 +7,7 @@ const GNotification = {
       // Increment the toast count
       // Create the message
       const vNodesMsg = h('p', { class: ['text-center', 'mb-0'] }, [
-        h('pre', { class: ['mr-2', 'mb-0'] }, message),
+        h('strong', { class: ['mr-2', 'mb-0'] }, message),
       ]);
       // Create the title
       const vNodesTitle = h(

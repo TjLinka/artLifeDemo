@@ -1,7 +1,12 @@
 <template>
   <div class="container">
-    <h1>Реферальные ссылки</h1>
-    <div class="row mt-3">
+    <!-- <h1>Реферальные ссылки</h1> -->
+    <div class="row col-6">
+      <g-button :primary="true" :width="'50%'">
+        Создать реферальную ссылку
+      </g-button>
+    </div>
+    <b-row align-v="center" class="row mt-3">
       <div class="col">
         <g-radio
           :label="'Статус ссылки'"
@@ -9,8 +14,23 @@
           v-model="referalLinkStatus"
         />
       </div>
-    </div>
-    <b-table :fields="fields" :items="filteredTableData" bordered responsive head-variant="light">
+      <div class="col" v-show="selectedRow">
+        <g-grouped-button>
+          <g-button :primary="true">Активировать</g-button>
+          <g-button :primary="true">В архив</g-button>
+        </g-grouped-button>
+      </div>
+    </b-row>
+    <b-table
+      select-mode="single"
+      selectable
+      @row-selected="onRowSelected"
+      :fields="fields"
+      :items="filteredTableData"
+      bordered
+      responsive
+      head-variant="light"
+    >
       <template v-slot:cell(url)="scope">
         <div class="referal_url_block">
           <a
@@ -29,7 +49,13 @@
         </div>
       </template>
     </b-table>
-    <g-modal-ref-link v-if="refLinkModalShow" :qrURL="urlForModal" :size="'sm'" :noCloseByClick="true" @close="refLinkModalShow = false"/>
+    <g-modal-ref-link
+      v-if="refLinkModalShow"
+      :qrURL="urlForModal"
+      :size="'sm'"
+      :noCloseByClick="true"
+      @close="refLinkModalShow = false"
+    />
   </div>
 </template>
 
@@ -42,6 +68,8 @@ import GRadio from '../components/Forms/GRadio.vue';
 import ShareIcon from '../components/Icons/ShareIcon.vue';
 import CopyIcon from '../components/Icons/CopyIcon.vue';
 import GModalRefLink from '../components/Modals/GModalRefLink.vue';
+import GGroupedButton from '../components/Forms/GGroupedButton.vue';
+import GButton from '../components/Forms/GButton.vue';
 
 export default {
   components: {
@@ -49,13 +77,16 @@ export default {
     ShareIcon,
     CopyIcon,
     GModalRefLink,
+    GGroupedButton,
+    GButton,
   },
   name: 'ReferalLinks',
   data() {
     return {
       refLinkModalShow: false,
+      selectedRow: null,
       urlForModal: '',
-      referalLinkStatus: 0,
+      referalLinkStatus: 1,
       referalLinkStatusList: [
         {
           key: 1,
@@ -144,6 +175,10 @@ export default {
     showRefLinkModal(url) {
       this.refLinkModalShow = true;
       this.urlForModal = url;
+    },
+    onRowSelected(rows) {
+      // eslint-disable-next-line prefer-destructuring
+      this.selectedRow = rows[0];
     },
   },
   computed: {

@@ -1,12 +1,12 @@
 <template>
   <div>
     <h4 class="mt-4 mb-4">
-      Основная информация
+      Данные партнёра
       <span class="colapse_btn" @click="isMainInfoShow = !isMainInfoShow">
         {{ isMainInfoShow ? 'Скрыть' : 'Развернуть' }}</span
       >
     </h4>
-    <!-- ОСНОВНАЯ ИНФОРМАЦИЯ -->
+    <!-- Данные партнёра -->
     <div v-show="isMainInfoShow">
       <div class="row mt-4">
         <div class="col">
@@ -22,44 +22,6 @@
         </div>
         <div class="col">
           <g-caption title="Дата рождения" text="10.10.1990" />
-        </div>
-      </div>
-    </div>
-    <!-- ДОПОЛНИТЕЛЬНАЯ ИНФОРМАЦИЯ -->
-    <h4 class="mt-5 mb-4">
-      Дополнительная информация
-      <span class="colapse_btn" @click="isExtraInfoShow = !isExtraInfoShow">
-        {{ isExtraInfoShow ? 'Скрыть' : 'Развернуть' }}</span
-      >
-    </h4>
-    <div v-show="isExtraInfoShow">
-      <div class="row">
-        <div class="col">
-          <g-caption title="Дата регистрации" text="10.10.2010" />
-        </div>
-        <div class="col">
-          <g-caption title="Страна" text="Россия" />
-          <span @click="editCountry" class="edit_btn">Редактировать</span>
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col">
-          <g-caption title="Город" text="Мск" />
-          <span @click="editCity" class="edit_btn">Редактировать</span>
-        </div>
-        <div class="col">
-          <g-caption title="Телефон" text="8-(888)-888-88-88" />
-          <span @click="editPhone" class="edit_btn">Редактировать</span>
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col">
-          <g-caption title="Электронная почта" text="mail@mail.ru" />
-          <span @click="editEmail" class="edit_btn">Редактировать</span>
-        </div>
-        <div class="col">
-          <g-caption title="Паспортные данные" text="11 11 111111" />
-          <span @click="editPassport" class="edit_btn">Редактировать</span>
         </div>
       </div>
     </div>
@@ -85,22 +47,6 @@
         </div>
         <div class="col">
           <g-caption title="Дата рождения" :text="new Date().toLocaleDateString()" />
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col">
-          <g-caption title="Телефон" text="8-(888)-888-88-88" />
-        </div>
-        <div class="col">
-          <g-caption title="Электронная почта" text="someemail@mail.com" />
-        </div>
-      </div>
-      <div class="row mt-4">
-        <div class="col">
-          <g-caption title="Страна" text="Россия" />
-        </div>
-        <div class="col">
-          <g-caption title="Город" text="Москва" />
         </div>
       </div>
     </div>
@@ -165,7 +111,7 @@ export default {
     }),
   },
   mixins: [GNotification],
-  name: 'PersonalData',
+  name: 'PartnerPersonalData',
   data() {
     return {
       isMainInfoShow: true,

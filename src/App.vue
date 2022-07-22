@@ -29,6 +29,10 @@ export default {
 </script>
 
 <style lang="scss">
+body{
+  min-height: 100vh;
+  background: #f7f8fe;
+}
 :root {
   --main-green: #32aaa7;
   --text-gray: #9a9a9a;
@@ -293,7 +297,10 @@ main {
     padding-left: 120px;
   }
 }
-
+input{
+  background: transparent !important;
+  color: black !important;
+}
 // СТИЛИ ДЛЯ ЗАГОЛОВКА СТРАНИЦЫ
 .page__title {
   color: #383a41;

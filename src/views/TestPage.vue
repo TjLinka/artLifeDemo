@@ -1,16 +1,14 @@
 <template>
   <div class="container">
-    <g-period :currentPeriod="currentPeriod" @next="next" @prev="prev" />
+    <!-- <g-period :currentPeriod="currentPeriod" @next="next" @prev="prev" /> -->
   </div>
 </template>
 
 <script>
 import GApi from '../assets/backApi';
-import GPeriod from '../components/Forms/GPeriod.vue';
 
 export default {
   components: {
-    GPeriod,
   },
   name: 'TestPage',
   data() {

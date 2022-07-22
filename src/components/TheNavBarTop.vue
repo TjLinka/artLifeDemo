@@ -1,5 +1,5 @@
 <template>
-  <b-navbar type="dark" variant="grey" :class="is_authorized ? 'main_color' : 'auth_page'">
+  <!-- <b-navbar type="dark" variant="grey" :class="is_authorized ? 'main_color' : 'auth_page'">
     <div class="container">
       <span class="page__title_nav" v-if="is_authorized" >{{ pageTitle }}</span>
       <b-navbar-brand to="/" v-if="!is_authorized">
@@ -18,14 +18,6 @@
       </b-collapse>
       <b-collapse v-if="is_authorized" id="nav-collapse" is-nav>
         <b-navbar-nav class="ml-auto">
-          <a href="https://www.artlife.ru/" class="siteBtn">
-            {{ $t('Перейти на сайт') }}
-          </a>
-          <div class="chLangBlock" @click="changeLang">
-            <flag v-if="$i18n.locale === 'en'" :iso="'gb'" />
-            <flag v-else :iso="$i18n.locale" />
-          </div>
-          <div class="d-lg-flex"></div>
           <b-nav-item-dropdown right>
             <template v-slot:button-content>
               <span class="mr-3 username">{{self_agent_id}} - {{ agentname }}</span>
@@ -47,7 +39,28 @@
         </b-navbar-nav>
       </b-collapse>
     </div>
-  </b-navbar>
+  </b-navbar> -->
+  <nav class="nav_bar_top shadow-sm">
+    <div class="container">
+      <div class="navbar_info">
+        <div class="current_page">Текущая страница</div>
+        <div class="balance">Баланс: 100000</div>
+        <div class="date">
+          {{ new Date().toLocaleDateString() }}
+        </div>
+        <div class="period">Период</div>
+        <div class="prev_period_status">Статус пред. периода: Не выплачен</div>
+        <div class="icons">
+          <div class="cart" @click="$router.push('/cart')">
+            <img src="../assets/imgs/cart_icon.svg" alt="" />
+          </div>
+          <div class="dialog" @click="$router.push('/dialogs')">
+            <img src="../assets/imgs/message_icon.svg" alt="" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
 </template>
 
 <script>
@@ -57,7 +70,13 @@ import backAPI from '../assets/backApi';
 export default {
   name: 'TheNavBarTop',
   computed: {
-    ...mapState('auth', ['is_authorized', 'agentname', 'role', 'self_agreementsystem', 'self_agent_id']),
+    ...mapState('auth', [
+      'is_authorized',
+      'agentname',
+      'role',
+      'self_agreementsystem',
+      'self_agent_id',
+    ]),
     ...mapState('currentPage', ['pageTitle']),
   },
   methods: {
@@ -87,52 +106,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.page__title_nav {
-  color: #fff;
-  font-size: 32px;
-  padding-left: 15px;
+.nav_bar_top {
+  padding-left: 120px;
+  background: white;
+  padding: 20px 0px 20px 120px;
+  margin-bottom: 20px;
 }
-.chLangBlock {
+.navbar_info {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  cursor: pointer;
-}
-.chLangBlock2 {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  color: #e60c0c;
-  & span {
-    background: white;
-    padding: 5px;
-    color: #ff0000b3;
-    font-weight: 500;
+  & .icons{
+    display: flex;
   }
-}
-.siteBtn {
-  position: relative;
-  top: 8px;
-  margin-right: 20px;
-  font-weight: 500;
-  font-size: 14px;
-  text-align: center;
-  width: 204px;
-  height: 34px;
-  background: #ffffff;
-  color: #ED8C96;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #ffffff;
-}
-.username {
-  position: relative;
-  top: 2.4px;
-  text-transform: uppercase;
-  color: white;
+  & .cart {
+    width: 40px;
+    height: 40px;
+    margin-right: 30px;
+    & img {
+      cursor: pointer;
+    }
+  }
+  & .dialog {
+    width: 35px;
+    height: 35px;
+    position: relative;
+    top: 3px;
+    & img {
+      cursor: pointer;
+    }
+  }
 }
 </style>
 <style>
@@ -141,7 +144,7 @@ export default {
   min-height: 70px;
 }
 .main_color {
-  background-color: #ED8C96;
+  background-color: #ed8c96;
   padding: 0 !important;
   padding-left: 120px !important;
 }

@@ -37,6 +37,79 @@ const routes = [
       },
     ],
   },
+  // ИЗБРАННОЕ
+  {
+    path: '/favourites',
+    name: 'Favourites',
+    redirect: '/favourites/products-list',
+    component: () => import('../views/Favourites.vue'),
+    children: [
+      {
+        path: 'products-list',
+        component: () => import('../views/FavouritesProductsList.vue'),
+      },
+      {
+        path: 'products',
+        component: () => import('../views/FavouritesProducts.vue'),
+      },
+    ],
+  },
+  // КОРЗИНА
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: () => import('../views/Cart.vue'),
+  },
+  // ИНТЕРНЕТ-МАГАЗИН
+  {
+    path: '/shop',
+    name: 'Shop',
+    component: () => import('../views/Shop.vue'),
+  },
+  // КАРТОЧКА ТОВАРА
+  {
+    path: '/product/:id',
+    component: () => import('../views/ProductPage.vue'),
+  },
+  // КАРТОЧКА ПАРТНЁРА
+  {
+    path: '/partner-card',
+    component: () => import('../views/PartnerCard.vue'),
+    children: [
+      {
+        path: 'personal-data',
+        component: () => import('../views/PartnerPersonalData.vue'),
+      },
+      {
+        path: 'marketins-stats',
+        component: () => import('../views/PartnerMarketinsStats.vue'),
+      },
+      {
+        path: 'structure',
+        // component: () => import('../views/PartnerStructure.vue'),
+      },
+    ],
+  },
+  // ДИАЛОГИ
+  {
+    path: '/dialogs',
+    component: () => import('../views/Dialogs.vue'),
+  },
+  // ПРОСМОТР ДИАЛОГА
+  {
+    path: '/dialog/:id',
+    component: () => import('../views/Dialog.vue'),
+  },
+  // МАРКЕТИНГ ПЛАН MarketingPlan
+  {
+    path: '/marketing-plan',
+    component: () => import('../views/MarketingPlan.vue'),
+  },
+  // ПРОМОУШЕНЫ
+  {
+    path: '/promotion',
+    component: () => import('../views/Promotion.vue'),
+  },
   // РЕФЕРАЛЬНЫЕ ССЫЛКИ
   {
     path: '/referal-links',
@@ -235,6 +308,11 @@ const routes = [
     path: '/ref-urls-update/:id',
     name: 'UpdateRefURL',
     component: () => import('../views/UpdateRefURL.vue'),
+  },
+  {
+    path: '/news',
+    name: 'News',
+    component: () => import('../views/News.vue'),
   },
 ];
 
