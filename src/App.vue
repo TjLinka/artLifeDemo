@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <TheNavBarTop class="nav_top"></TheNavBarTop>
-    <TheNavBar v-show="is_authorized" class="noprint"></TheNavBar>
+    <TheNavBar class="noprint"></TheNavBar>
     <main id="main" :class="`${is_authorized ? 'isAuth' : ''}`">
       <transition name="fade" mode="out-in">
         <router-view />
