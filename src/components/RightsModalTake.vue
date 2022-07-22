@@ -57,7 +57,7 @@ export default {
     };
   },
   mounted() {
-    backApi.get('/agent/profile').then((Response) => {
+    backApi.get('/agent/profile').then(Response => {
       this.transfertInfo = Response.data;
     });
   },
@@ -72,12 +72,12 @@ export default {
     // },
     querySearchAsync(queryString, cb) {
       const qr = queryString === '' ? 'а' : queryString;
-      backApi.get('/agent/distr-agents-list', { params: { q: qr } }).then((Response) => {
-        Response.data.entries.forEach((u) => {
+      backApi.get('/agent/distr-agents-list', { params: { q: qr } }).then(Response => {
+        Response.data.entries.forEach(u => {
           // eslint-disable-next-line no-param-reassign
           u.value = `${u.agent_id}-${u.name}`;
         });
-        const newMass = Response.data.entries.filter((u) => u.agent_id > 0);
+        const newMass = Response.data.entries.filter(u => u.agent_id > 0);
         cb(newMass.slice(0, 10));
       });
     },
@@ -102,7 +102,7 @@ export default {
       if (res) {
         if (this.selectedUser !== null && this.selectedUser !== '') {
           await backApi.post('/agent/share-transfert', { agent_to: this.selectedUser.agent_id });
-          await backApi.get('/agent/profile/').then((Response) => {
+          await backApi.get('/agent/profile/').then(Response => {
             this.$emit('rulegiver', Response.data.agent2transfer_name);
           });
           this.$emit('enlarge-text');

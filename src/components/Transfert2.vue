@@ -102,10 +102,10 @@ export default {
     },
   },
   mounted() {
-    backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then((response) => {
+    backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then(response => {
       this.transfertInfo = response.data;
     });
-    backApi.get('/agent/get-open-periods').then((Response) => {
+    backApi.get('/agent/get-open-periods').then(Response => {
       this.periods = Response.data.entries.sort((a, b) => {
         const result = a.comdte > b.comdte ? 1 : -1;
         return result;
@@ -161,7 +161,7 @@ export default {
           .catch(() => {
             this.createMessageBoxError(this.$t('Что-то пошло не так'));
           });
-        backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then((Response) => {
+        backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then(Response => {
           this.transfertInfo = Response.data;
         });
         this.$emit('action');
@@ -181,7 +181,7 @@ export default {
           .catch(() => {
             this.createMessageBoxError(this.$t('Что-то пошло не так'));
           });
-        backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then((Response) => {
+        backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then(Response => {
           this.transfertInfo = Response.data;
         });
         this.$emit('action');

@@ -74,8 +74,8 @@ export default {
     // },
     querySearchAsync(queryString, cb) {
       const qr = queryString === '' ? 'а' : queryString;
-      backApi.get('/agent/agent-list', { params: { q: qr } }).then((Response) => {
-        Response.data.entries.forEach((u) => {
+      backApi.get('/agent/agent-list', { params: { q: qr } }).then(Response => {
+        Response.data.entries.forEach(u => {
           // eslint-disable-next-line no-param-reassign
           u.value = `${u.agent_id}-${u.name}`;
         });

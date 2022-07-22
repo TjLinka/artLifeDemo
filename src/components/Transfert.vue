@@ -97,7 +97,7 @@ export default {
     },
   },
   mounted() {
-    backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then((response) => {
+    backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then(response => {
       this.transfertInfo = response.data;
     });
   },
@@ -147,7 +147,7 @@ export default {
             this.$bvToast.show('my-toast');
             this.createMessageBoxError(this.$t('Что-то пошло не так'));
           });
-        backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then((Response) => {
+        backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then(Response => {
           this.transfertInfo = Response.data;
         });
         this.$emit('action');
@@ -168,7 +168,7 @@ export default {
             this.$bvToast.show('my-toast');
             this.createMessageBoxError(this.$t('Что-то пошло не так'));
           });
-        backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then((Response) => {
+        backApi.get('/agent/transfer-info', { params: { another_agent_id: this.id } }).then(Response => {
           this.transfertInfo = Response.data;
         });
       }

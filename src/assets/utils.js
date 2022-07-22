@@ -1,5 +1,5 @@
 export function ReplaceNull(data) {
-  Object.keys(data).forEach((e) => {
+  Object.keys(data).forEach(e => {
     // eslint-disable-next-line no-param-reassign
     data[e] = ['', null].includes(data[e]) ? '-' : data[e];
   });
