@@ -94,9 +94,9 @@ import GNotification from '../mixins/Gnotifacation';
 export default {
   components: {
     GCaption,
-    GModalEditCountry: () => ({
-      component: import(/* webpackChunkName: "AsyncCountry" */ '../components/Modals/GModalEditCountry.vue'),
-    }),
+    // GModalEditCountry: () => ({
+    //   component: import(/* webpackChunkName: "AsyncCountry" */ '../components/Modals/GModalEditCountry.vue'),
+    // }),
     GModalEditCity: () => ({
       component: import(/* webpackChunkName: "AsyncCity" */ '../components/Modals/GModalEditCity.vue'),
     }),

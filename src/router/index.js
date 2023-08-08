@@ -41,7 +41,7 @@ const routes = [
   {
     path: '/favourites',
     name: 'Favourites',
-    redirect: '/favourites/products-list',
+    redirect: '/favourites/products',
     component: () => import('../views/Favourites.vue'),
     children: [
       {
@@ -314,6 +314,11 @@ const routes = [
     name: 'News',
     component: () => import('../views/News.vue'),
   },
+  {
+    path: '/news/:id',
+    name: 'NewsPage',
+    component: () => import('../views/NewsPage.vue'),
+  },
 ];
 
 const router = new VueRouter({
@@ -324,7 +329,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   // Проверяем, требуется ли авторизация, чтоб пройти дальше по ссылке
-  if (to.matched.some(record => record.meta.requiresAuth)) {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
     // Если требуется, то смотрим на наличее токена
     if (localStorage.getItem('access_token') === null) {
       // Если не залогинен, то отправляем на страницу авторизации
@@ -334,7 +339,7 @@ router.beforeEach((to, from, next) => {
     } else {
       // Если авторизировался и еще требуется проверка по Ролям для доступа к странице
       const user = JSON.parse(localStorage.getItem('access_token'));
-      if (to.matched.some(record => record.meta.requiresRole)) {
+      if (to.matched.some((record) => record.meta.requiresRole)) {
         // Если требуется, смотрим на права доступа
         if (user.role === to.meta.requiresRole) {
           // Если права доступа позволяют перейти по данной ссылке, осуществляем переход по ссылке
@@ -353,7 +358,7 @@ router.beforeEach((to, from, next) => {
   } else {
     // Есле не требуется авторизация, то осуществляем переход по ссылке
     // eslint-disable-next-line no-lonely-if
-    if (to.matched.some(record => record.meta.requiresGuest)) {
+    if (to.matched.some((record) => record.meta.requiresGuest)) {
       if (localStorage.getItem('access_token') === null) {
         next();
       }

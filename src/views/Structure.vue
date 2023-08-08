@@ -99,7 +99,9 @@
               <template slot-scope="scope">
                 <span v-if="column.property === 'depth'">
                   <div v-if="!colHide" style="display: inline">
-                    <span style="margin-left: 7px; display: inline-block;">{{ scope.row.depth }}</span>
+                    <span style="margin-left: 7px; display: inline-block;">{{
+                      scope.row.depth
+                    }}</span>
                   </div>
                   <div v-else style="text-align: center; margin-top: -25px;">
                     <img
@@ -308,8 +310,9 @@
 /* eslint-disable quote-props */
 import $ from 'jquery';
 import { mapActions } from 'vuex';
-import backApi from '../assets/backApi';
+// import GApi from '../assets/GApi';
 import BasePeriodPicker from '../components/BasePeriodPicker.vue';
+import GApi from '../assets/backApi';
 
 export default {
   name: 'OrganizationByPeriod',
@@ -322,7 +325,7 @@ export default {
       {
         property: 'depth',
         label: this.$t('Уровень'),
-        formater: item => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
+        formater: (item) => `УР ${item.depth}<br>${item.rank_beg}<br>${item.id}<br>${item.name}`,
       },
       {
         property: 'id',
@@ -335,7 +338,7 @@ export default {
       {
         property: 'lo',
         label: this.$t('ЛО'),
-        formater: item => {
+        formater: (item) => {
           const formatter = new Intl.NumberFormat('ru');
           return formatter.format(item.lo);
         },
@@ -343,7 +346,7 @@ export default {
       {
         property: 'go',
         label: this.$t('ГО'),
-        formater: item => {
+        formater: (item) => {
           const formatter = new Intl.NumberFormat('ru');
           return formatter.format(item.go);
         },
@@ -351,7 +354,7 @@ export default {
       {
         property: 'ngo',
         label: this.$t('НСО'),
-        formater: item => {
+        formater: (item) => {
           const formatter = new Intl.NumberFormat('ru');
           return formatter.format(item.ngo);
         },
@@ -359,7 +362,7 @@ export default {
       {
         property: 'oo',
         label: this.$t('СО'),
-        formater: item => {
+        formater: (item) => {
           const formatter = new Intl.NumberFormat('ru');
           return formatter.format(item.oo);
         },
@@ -367,17 +370,17 @@ export default {
       {
         property: 'noact',
         label: this.$t('Активность'),
-        formater: item => item.noact,
+        formater: (item) => item.noact,
       },
       {
         property: 'rank_beg',
         label: this.$t('Ранг на начало'),
-        formater: item => item.rank_beg,
+        formater: (item) => item.rank_beg,
       },
       {
         property: 'rank_end',
         label: this.$t('Ранг на конец'),
-        formater: item => item.rank_end,
+        formater: (item) => item.rank_end,
       },
     ];
     return {
@@ -425,40 +428,47 @@ export default {
     };
   },
   mounted() {
-    backApi.get('agent/bonus-detail/periods').then(Response => {
-      this.periods = Response.data.entries.sort((a, b) => {
-        const result = a.comdte > b.comdte ? 1 : -1;
+    GApi.get('/api/Structure/get-agent-structure')
+      .then((response) => {
+        this.rows = response.data;
+        this.rows.forEach((e) => {
+          e.depth = 0;
+          e.children = [];
+        });
+      })
+      .then(() => {
+        setTimeout(() => {
+          this.loading = false;
+        });
+      });
+    GApi.getAllPeriods().then((Response) => {
+      this.periods = Response.data.sort((a, b) => {
+        console.log(a, b);
+        const result = new Date(a.comdte) > new Date(b.comdte) ? 1 : -1;
         return result;
       });
       this.periodIndex = this.periods.length - 1;
-      const data = {
-        params: {
-          filter: this.tree_type,
-          get_root: true,
-          period: this.currentPeriod,
-        },
-      };
-      backApi
-        .get('/agents-tree-hist/period', data)
-        .then(response => {
-          this.rows = response.data.entries;
-          this.rows.forEach(e => {
-            e.depth = 0;
-            e.children = [];
-          });
-        })
-        .then(() => {
-          setTimeout(() => {
-            this.loading = false;
-          });
-        });
-    });
-    backApi.get('/agent/profile').then(Response => {
-      this.state = `${Response.data.id} - ${Response.data.name}`;
-      this.currentUserID = Response.data.id;
-      this.currentUserIDName = { id: Response.data.id, agentname: Response.data.name };
-    });
-    this.tags.push({ name: 'Полное дерево', key: 'tree_type' });
+    })
+      // GApi.get('agent/bonus-detail/periods').then((Response) => {
+      //   this.periods = Response.data.entries.sort((a, b) => {
+      //     const result = a.comdte > b.comdte ? 1 : -1;
+      //     return result;
+      //   });
+      //   this.periodIndex = this.periods.length - 1;
+      //   const data = {
+      //     params: {
+      //       filter: this.tree_type,
+      //       get_root: true,
+      //       period: this.currentPeriod,
+      //     },
+      //   };
+      // });
+      // GApi.get('/agent/profile').then((Response) => {
+      //   this.state = `${Response.data.id} - ${Response.data.name}`;
+      //   this.currentUserID = Response.data.id;
+      //   this.currentUserIDName = { id: Response.data.id, agentname: Response.data.name };
+      // });
+      .this.tags.push({ name: 'Полное дерево', key: 'tree_type' });
   },
   computed: {
     disabled() {
@@ -487,9 +497,9 @@ export default {
             this.modal_agent.agent_id !== '' ? this.modal_agent.agent_id : this.currentUserID,
         },
       };
-      backApi.get('/agents-tree-hist/period', data).then(response => {
+      GApi.get('/agents-tree-hist/period', data).then((response) => {
         this.rows = response.data.entries;
-        this.rows.forEach(e => {
+        this.rows.forEach((e) => {
           e.depth = 0;
           e.children = [];
         });
@@ -500,16 +510,15 @@ export default {
   methods: {
     ...mapActions('currentPage', ['setPageTitle']),
     agentCard(id) {
-      backApi
-        .get('/agent/profile/child', {
-          params: {
-            another_agent_id: id,
-          },
-        })
+      GApi.get('/agent/profile/child', {
+        params: {
+          another_agent_id: id,
+        },
+      })
         .then(() => {
           this.$router.push(`/agent/${id}`);
         })
-        .catch(error => {
+        .catch((error) => {
           this.showToast('Ошибка', error.response.data.detail, 'danger');
         });
     },
@@ -559,14 +568,14 @@ export default {
           period: this.currentPeriod,
         },
       };
-      backApi.get('/agents-tree-hist/period', data).then(response => {
+      GApi.get('/agents-tree-hist/period', data).then((response) => {
         this.rows = response.data.entries;
-        this.rows.forEach(e => {
+        this.rows.forEach((e) => {
           e.depth = 0;
           e.children = [];
         });
       });
-      backApi.get('/agent/profile').then(Response => {
+      GApi.get('/agent/profile').then((Response) => {
         this.state = `${Response.data.id} - ${Response.data.name}`;
         this.currentUserID = Response.data.id;
         this.currentUserIDName = { id: Response.data.id, agentname: Response.data.name };
@@ -582,9 +591,9 @@ export default {
           agent_id: this.currentUserID,
         },
       };
-      backApi.get('/agents-tree-hist/period', data).then(response => {
+      GApi.get('/agents-tree-hist/period', data).then((response) => {
         this.rows = response.data.entries;
-        this.rows.forEach(e => {
+        this.rows.forEach((e) => {
           e.depth = 0;
           e.children = [];
         });
@@ -594,12 +603,12 @@ export default {
     },
     querySearchAsync(queryString, cb) {
       // const qr = queryString === '' ? 'а' : queryString;
-      backApi.get('/agent/share-transfert-list', { params: { show_root: 1 } }).then(Response2 => {
+      GApi.get('/agent/share-transfert-list', { params: { show_root: 1 } }).then((Response2) => {
         // eslint-disable-next-line no-param-reassign
         // Response.data.agentname = Response.data.name;
         // // Response2.data.entries.push
         // Response2.data.entries.push(Response.data);
-        Response2.data.entries.forEach(u => {
+        Response2.data.entries.forEach((u) => {
           // eslint-disable-next-line no-param-reassign
           u.value = `${u.id}-${u.agentname}`;
         });
@@ -616,9 +625,9 @@ export default {
           agent_id: item.id,
         },
       };
-      backApi.get('/agents-tree-hist/period', data).then(response => {
+      GApi.get('/agents-tree-hist/period', data).then((response) => {
         this.rows = response.data.entries;
-        this.rows.forEach(e => {
+        this.rows.forEach((e) => {
           e.depth = 0;
           e.children = [];
         });
@@ -642,8 +651,8 @@ export default {
           comdte: this.currentPeriod,
         },
       };
-      backApi.get('/agent/tree-agents-list', data).then(Response2 => {
-        Response2.data.entries.forEach(u => {
+      GApi.get('/agent/tree-agents-list', data).then((Response2) => {
+        Response2.data.entries.forEach((u) => {
           // eslint-disable-next-line no-param-reassign
           u.value = `${u.agent_id}-${u.name}`;
         });
@@ -660,9 +669,9 @@ export default {
           agent_id: item.id,
         },
       };
-      backApi.get('/agents-tree-hist/period', data).then(response => {
+      GApi.get('/agents-tree-hist/period', data).then((response) => {
         this.rows = response.data.entries;
-        this.rows.forEach(e => {
+        this.rows.forEach((e) => {
           e.depth = 0;
           e.children = [];
         });
@@ -674,58 +683,54 @@ export default {
       this.agent_id = null;
     },
     downloadXls() {
-      backApi
-        .get('/agents-tree-hist/period/excel', {
-          params: {
-            agent_id: this.modal_agent.agent_id !== '' ? this.modal_agent.agent_id : null,
-            period: this.currentPeriod,
-            filter: this.tree_type,
-            get_root: true,
-            context: this.currentUserID,
-          },
-          responseType: 'blob',
-        })
-        .then(({ data }) => {
-          const filename = `${this.$t('История организации по периодам')}.xlsx`;
-          const url = window.URL.createObjectURL(
-            new Blob([data], {
-              type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            }),
-          );
-          const link = document.createElement('a');
-          link.href = url;
-          link.setAttribute('download', filename);
-          document.body.appendChild(link);
-          link.click();
-          link.remove();
-        });
+      GApi.get('/agents-tree-hist/period/excel', {
+        params: {
+          agent_id: this.modal_agent.agent_id !== '' ? this.modal_agent.agent_id : null,
+          period: this.currentPeriod,
+          filter: this.tree_type,
+          get_root: true,
+          context: this.currentUserID,
+        },
+        responseType: 'blob',
+      }).then(({ data }) => {
+        const filename = `${this.$t('История организации по периодам')}.xlsx`;
+        const url = window.URL.createObjectURL(
+          new Blob([data], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          }),
+        );
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      });
     },
     downloadPdf() {
-      backApi
-        .get('/agents-tree-hist/period/pdf', {
-          params: {
-            agent_id: this.modal_agent.agent_id !== '' ? this.modal_agent.agent_id : null,
-            period: this.currentPeriod,
-            filter: this.tree_type,
-            get_root: true,
-            context: this.currentUserID,
-          },
-          responseType: 'blob',
-        })
-        .then(({ data }) => {
-          const filename = `${this.$t('История организации по периодам')}.pdf`;
-          const url = window.URL.createObjectURL(
-            new Blob([data], {
-              type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            }),
-          );
-          const link = document.createElement('a');
-          link.href = url;
-          link.setAttribute('download', filename);
-          document.body.appendChild(link);
-          link.click();
-          link.remove();
-        });
+      GApi.get('/agents-tree-hist/period/pdf', {
+        params: {
+          agent_id: this.modal_agent.agent_id !== '' ? this.modal_agent.agent_id : null,
+          period: this.currentPeriod,
+          filter: this.tree_type,
+          get_root: true,
+          context: this.currentUserID,
+        },
+        responseType: 'blob',
+      }).then(({ data }) => {
+        const filename = `${this.$t('История организации по периодам')}.pdf`;
+        const url = window.URL.createObjectURL(
+          new Blob([data], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          }),
+        );
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      });
     },
     back() {
       const navEl = document.getElementsByClassName('router-link-exact-active router-link-active');
@@ -784,8 +789,8 @@ export default {
           period: this.currentPeriod,
         },
       };
-      backApi.get('/agents-tree-hist/period', data).then(Response => {
-        Response.data.entries.forEach(e => {
+      GApi.get('/agents-tree-hist/period', data).then((Response) => {
+        Response.data.entries.forEach((e) => {
           e.depth = tree.depth + 1;
           e.children = [];
         });
@@ -803,9 +808,9 @@ export default {
           get_root: true,
         },
       };
-      backApi.get('/agents-tree-hist/period', data).then(Response => {
+      GApi.get('/agents-tree-hist/period', data).then((Response) => {
         this.rows = Response.data.entries;
-        this.rows.forEach(e => {
+        this.rows.forEach((e) => {
           e.depth = 0;
         });
       });
@@ -828,7 +833,7 @@ export default {
       };
       if (this.tree_type !== null) {
         const treeName = treeNameTranslate[this.tree_type];
-        const tag = this.tags.find(t => t.key === 'tree_type');
+        const tag = this.tags.find((t) => t.key === 'tree_type');
         if (tag) {
           tag.name = treeName;
         } else if (this.tree_type !== 'full') {
@@ -838,7 +843,7 @@ export default {
         }
       }
       if (this.modal_agent.agent_id !== null && this.modal_agent.agent_id !== '') {
-        const tag = this.tags.find(t => t.key === 'modal_agent_id');
+        const tag = this.tags.find((t) => t.key === 'modal_agent_id');
         if (tag) {
           tag.name = `${this.modal_agent.agent_id} - ${this.modal_agent.name}`;
         } else {
@@ -850,9 +855,9 @@ export default {
         // data.params.modal_agent_id = this.modal_agent.agent_id;
       }
       this.searchActive = false;
-      backApi.get('/agents-tree-hist/period', data).then(response => {
+      GApi.get('/agents-tree-hist/period', data).then((response) => {
         this.rows = response.data.entries;
-        this.rows.forEach(e => {
+        this.rows.forEach((e) => {
           e.depth = 0;
           e.children = [];
         });

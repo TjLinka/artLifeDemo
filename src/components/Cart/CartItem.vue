@@ -1,31 +1,28 @@
 <template>
-  <div class="cart_item_wrapper" :data-id="id">
+  <div class="cart_item_wrapper">
     <div class="cart_item">
       <div class="cart_item_img">
         <img src="../../assets/imgs/no-image.png" alt="" />
       </div>
       <div class="cart_item_articul">Артикул: <span>12345</span></div>
       <div class="cart_item_name">
-        Lorem, ipsum dolor. <br />
-        <span v-if="isComplect" class="show_complect" @click="isComplectOpen = !isComplectOpen">
-          {{ isComplectOpen ? 'Свернуть' : 'Просмотреть' }}
-        </span>
+        <router-link :to="`product/${prod.id}`" target="_blank">
+          {{ prod.name }}
+        </router-link>
       </div>
       <div class="cart_item_price">
-        4000 руб.
+        {{ prod.price }} руб.
       </div>
       <div class="cart_item_points">
-        15
+        Баллов: {{ prod.points }}
       </div>
-      <div class="cart_item_count">
-        5
-      </div>
+      <g-count :count="prod.count" :id="prod.id"/>
       <div class="cart_item_total_prods_price">
-        20000 руб.
+        {{ prod.price }} руб.
       </div>
-      <div class="cart_item_total_points">
-        75
-      </div>
+      <!-- <div class="cart_item_total_points">
+        {{ prod.totalPoints}}
+      </div> -->
       <div class="cart_item_add_to_favourites">
         <img
           :src="`../icons/favourites${inFavourite ? '' : '_no_added'}.svg`"
@@ -34,86 +31,43 @@
         />
       </div>
       <div class="cart_item_delete">
-        <img src="../../assets/imgs/remove.png" alt="" @click="isDeleted = !isDeleted" />
-      </div>
-    </div>
-    <div class="cart_item_complect">
-      <div class="cart_item">
-        <div class="cart_item_img">
-          <img src="../../assets/imgs/no-image.png" alt="" />
-        </div>
-        <div class="cart_item_articul">Артикул: <span>12345</span></div>
-        <div class="cart_item_name">
-          Lorem, ipsum dolor.
-        </div>
-        <div class="cart_item_price">
-          4000 руб.
-        </div>
-        <div class="cart_item_points">
-          15
-        </div>
-        <div class="cart_item_count">
-          5
-        </div>
-        <div class="cart_item_total_prods_price">
-          20000 руб.
-        </div>
-        <div class="cart_item_total_points">
-          75
-        </div>
-        <div class="cart_item_add_to_favourites">
-          <img
-            :src="`../icons/favourites${inFavourite ? '' : '_no_added'}.svg`"
-            alt=""
-            @click="inFavourite = !inFavourite"
-          />
-        </div>
-        <div class="cart_item_delete">
-          <img src="../../assets/imgs/remove.png" alt="" @click="isDeleted = !isDeleted" />
-        </div>
+        <img src="../../assets/imgs/remove.png" alt="" @click="removeFromCart(prod.id)"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import $ from 'jquery';
+import { mapActions } from 'vuex';
+import GCount from '../Forms/GCount.vue';
 
 export default {
+  components: { GCount },
   name: 'CartItem',
-  props: ['id'],
+  props: ['prod'],
+  comments: {
+    GCount,
+  },
   data() {
     return {
       isComplect: true,
       isComplectOpen: false,
       inFavourite: false,
-      isDeleted: false,
     };
   },
   mounted() {
-    $('div')
-      .find(`[data-id='${this.id}']`)
-      .find('.show_complect')
-      .click(function () {
-        console.log(
-          $(this)
-            .parent()
-            .parent(),
-        );
-        $(this)
-          .parent()
-          .parent()
-          .parent()
-          .find('.cart_item_complect')
-          .slideToggle();
-      });
+  },
+  methods: {
+    ...mapActions('cart', ['removeFromCart']),
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .cart_item {
-  display: flex;
+  // display: flex;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr) 50px 50px;
   width: 100%;
   align-items: center;
   justify-content: space-between;

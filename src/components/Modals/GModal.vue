@@ -46,7 +46,6 @@ export default {
   },
   mounted() {
     if (!this.noCloseByClick) {
-      console.log('1');
       document.addEventListener('click', this.closeModal);
     }
   },

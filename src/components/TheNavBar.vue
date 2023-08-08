@@ -31,9 +31,9 @@
                 {{ $t('Профиль') }}
               </router-link>
             </li>
-            <li>
+            <!-- <li>
               <router-link to="/referal-links/">{{ $t('Реферальные ссылки') }}</router-link>
-            </li>
+            </li> -->
           </ul>
         </li>
         <li>
@@ -104,11 +104,11 @@
                 {{ $t('Интернет-магазин') }}
               </router-link>
             </li>
-            <li>
+            <!-- <li>
               <router-link to="/returns-history">
                 {{ $t('История возвратов') }}
               </router-link>
-            </li>
+            </li> -->
             <li>
               <router-link to="/purchases-history">
                 {{ $t('История заказов') }}

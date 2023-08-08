@@ -175,13 +175,11 @@ export default {
         let params = {};
         if (!this.value2) {
           params = {
-            login: this.log.login_ID,
-            pwd_hash: md5(this.log.password),
-            authMethod: this.value2,
-            recaptchaToken: recaptchaToken1,
+            id: Number(this.log.login_ID),
+            password: this.log.password,
           };
           backAPI
-            .post('/agent/login/id', params)
+            .post('/api/Agent/login', params)
             .then(resp => {
               console.log('Good Login');
               const data = JSON.stringify(resp.data);

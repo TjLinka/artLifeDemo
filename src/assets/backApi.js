@@ -6,13 +6,16 @@ import Axios from 'axios';
 class PartnerApi {
   constructor() {
     this.backAPI = Axios.create({
-      baseURL: 'http://ab.gleb.team',
+      baseURL: 'http://162.55.80.164:8017',
       headers: {
         common: {
           'Content-Type': 'application/json',
+          Authorization: JSON.parse(localStorage.getItem('access_token'))
+            ? `Bearer ${JSON.parse(localStorage.getItem('access_token')).access_token}`
+            : null,
           'access-token': JSON.parse(localStorage.getItem('access_token'))
-            ? JSON.parse(localStorage.getItem('access_token')).access_token
-            : '5e2eeb1626c60a4e5313248c7f8a6d0a',
+            ? `Bearer ${JSON.parse(localStorage.getItem('access_token')).access_token}`
+            : null,
         },
       },
     });
@@ -21,6 +24,11 @@ class PartnerApi {
   // Получение данных по Партнёру
   getAgentProfile() {
     return this.backAPI.get('/agent/profile');
+  }
+
+  // Получение всех периодов
+  getAllPeriods() {
+    return this.backAPI.post('/api/Misc/get-comdte-list');
   }
 
   // Получение информации по спонсору
@@ -41,6 +49,10 @@ class PartnerApi {
   // Дефеолтный пост запрос
   post(url, params = {}) {
     return this.backAPI.post(url, params);
+  }
+
+  delete(url, params = {}) {
+    return this.backAPI.delete(url, params);
   }
 }
 

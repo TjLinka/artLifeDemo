@@ -1,7 +1,7 @@
 <template>
   <div class="licevoischet__page">
-    <div v-loading="loading">
-      <div class="container-fluid table_container" v-show="!loading">
+    <div>
+      <div class="container-fluid table_container">
         <h2 class="page__title">
           <p class="mobile_back noprint" @click="back">
             <svg
@@ -37,7 +37,6 @@
               @change="getSelectedDataRange"
               format="DD.MM.YYYY"
               placeholder="дд.мм.гггг - дд.мм.гггг"
-              value-type="YYYY-MM-DD"
               style="width: 100%"
             >
             </date-picker>
@@ -80,6 +79,11 @@
             </g-grouped-button>
           </div>
         </div>
+        <h2 class="licevoischet__page__summ">
+          <span class="mr-4">{{ $t('НАЧИСЛЕНИЕ') }} = {{ incomes | localInt }} </span>
+          <span class="mr-4">{{ $t('СПИСАНИЕ') }} = {{ outcomes | localInt }} </span>
+          <span class="mr-4">{{ $t('ИЗМЕНЕНИЕ') }} = {{ changes | localInt }} </span>
+        </h2>
         <b-table
           :fields="fields"
           :items="entries"
@@ -92,14 +96,9 @@
             <b class="text-info">{{ data.value }}</b>
           </template>
         </b-table>
-        <h2 class="licevoischet__page__summ">
-          <span class="mr-4">{{ $t('НАЧИСЛЕНИЕ') }} = {{ incomes | localInt }} </span>
-          <span class="mr-4">{{ $t('СПИСАНИЕ') }} = {{ outcomes | localInt }} </span>
-          <span class="mr-4">{{ $t('ИЗМЕНЕНИЕ') }} = {{ changes | localInt }} </span>
-        </h2>
       </div>
     </div>
-    <footer class="container-fluid cust_modal">
+    <!-- <footer class="container-fluid cust_modal">
       <div class="container-md">
         <div class="row desktop_search">
           <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
@@ -137,7 +136,7 @@
           </div>
         </div>
       </div>
-    </footer>
+    </footer> -->
   </div>
 </template>
 
@@ -147,10 +146,11 @@ import { mapActions } from 'vuex';
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/ru';
-import backApi from '../assets/backApi';
+// import GApi from '../assets/GApi';
 import dateFormat from '../assets/localDateFunc';
 import GGroupedButton from '../components/Forms/GGroupedButton.vue';
 import GButton from '../components/Forms/GButton.vue';
+import GApi from '../assets/backApi';
 
 export default {
   name: 'AccountDetail',
@@ -219,7 +219,7 @@ export default {
           },
         },
         {
-          key: 'account_type',
+          key: 'typname',
           label: 'Тип операции',
           sortable: true,
         },
@@ -240,49 +240,61 @@ export default {
     };
   },
   mounted() {
-    this.rangeDate = [
-      this.$moment()
-        .subtract(1, 'months')
-        .startOf('month')
-        .format('YYYY-MM-DD'),
-      this.$moment()
-        .subtract(0, 'months')
-        .endOf('month')
-        .format('YYYY-MM-DD'),
-    ];
-    backApi
-      .get('agent/account-detail', {
-        // params: {
-        //   beg_dte: this.$moment()
-        //     .subtract(1, 'months')
-        //     .startOf('month')
-        //     .format('YYYY-MM-DD'),
-        //   end_dte: this.$moment()
-        //     .subtract(0, 'months')
-        //     .endOf('month')
-        //     .format('YYYY-MM-DD'),
-        // },
-      })
-      .then(Response => {
-        this.entries = Response.data.entries;
-        this.income = this.entries.filter(i => i.amount >= 0);
-        this.outcome = this.entries.filter(i => i.amount <= 0);
-        this.entries.forEach(i => {
-          // eslint-disable-next-line no-param-reassign
-          i.income = i.amount;
-          // eslint-disable-next-line no-param-reassign
-          i.outcome = i.amount;
-        });
-      })
-      .then(() => {
-        setTimeout(() => {
-          this.loading = false;
-        });
+    GApi.post('/api/Account/get-operations').then((Response) => {
+      this.entries = Response.data;
+      this.income = this.entries.filter((i) => i.amount >= 0);
+      this.outcome = this.entries.filter((i) => i.amount <= 0);
+      this.entries.forEach((i) => {
+        // eslint-disable-next-line no-param-reassign
+        i.income = i.amount;
+        // eslint-disable-next-line no-param-reassign
+        i.outcome = i.amount;
       });
-    backApi.get('/agent/profile').then(Response => {
-      this.agentData = Response.data;
-      this.balance = Response.data.balance;
     });
+    GApi.get('/api/Account/get-short-info');
+    // this.rangeDate = [
+    //   this.$moment()
+    //     .subtract(1, 'months')
+    //     .startOf('month')
+    //     .format('YYYY-MM-DD'),
+    //   this.$moment()
+    //     .subtract(0, 'months')
+    //     .endOf('month')
+    //     .format('YYYY-MM-DD'),
+    // ];
+    // GApi
+    //   .get('agent/account-detail', {
+    //     // params: {
+    //     //   beg_dte: this.$moment()
+    //     //     .subtract(1, 'months')
+    //     //     .startOf('month')
+    //     //     .format('YYYY-MM-DD'),
+    //     //   end_dte: this.$moment()
+    //     //     .subtract(0, 'months')
+    //     //     .endOf('month')
+    //     //     .format('YYYY-MM-DD'),
+    //     // },
+    //   })
+    //   .then((Response) => {
+    //     this.entries = Response.data.entries;
+    //     this.income = this.entries.filter((i) => i.amount >= 0);
+    //     this.outcome = this.entries.filter((i) => i.amount <= 0);
+    //     this.entries.forEach((i) => {
+    //       // eslint-disable-next-line no-param-reassign
+    //       i.income = i.amount;
+    //       // eslint-disable-next-line no-param-reassign
+    //       i.outcome = i.amount;
+    //     });
+    //   })
+    //   .then(() => {
+    //     setTimeout(() => {
+    //       this.loading = false;
+    //     });
+    //   });
+    // GApi.get('/agent/profile').then((Response) => {
+    //   this.agentData = Response.data;
+    //   this.balance = Response.data.balance;
+    // });
   },
   computed: {
     isDisabled() {
@@ -295,21 +307,21 @@ export default {
     },
     incomes() {
       let summ = 0;
-      this.income.forEach(item => {
+      this.income.forEach((item) => {
         summ += item.amount;
       });
       return summ.toFixed(2);
     },
     outcomes() {
       let summ = 0;
-      this.outcome.forEach(item => {
+      this.outcome.forEach((item) => {
         summ += item.amount;
       });
       return summ.toFixed(2);
     },
     changes() {
       let summ = 0;
-      this.entries.forEach(item => {
+      this.entries.forEach((item) => {
         summ += item.amount;
       });
       return summ.toFixed(2);
@@ -319,7 +331,7 @@ export default {
     ...mapActions('currentPage', ['setPageTitle']),
     clearDP() {},
     downloadXls() {
-      backApi
+      GApi
         .get('/agent/account-detail/excel', {
           params: {
             beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
@@ -345,7 +357,7 @@ export default {
         });
     },
     downloadPdf() {
-      backApi
+      GApi
         .get('/agent/account-detail/pdf', {
           params: {
             beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
@@ -390,7 +402,7 @@ export default {
         },
       };
       if (this.filter.operType !== null && this.filter.operType !== '') {
-        const tag = this.tags.find(t => t.key === 'operType');
+        const tag = this.tags.find((t) => t.key === 'operType');
         if (tag) {
           tag.name = this.filter.operType;
         } else {
@@ -398,7 +410,7 @@ export default {
         }
       }
       if (this.filter.comment !== null && this.filter.comment !== '') {
-        const tag = this.tags.find(t => t.key === 'comment');
+        const tag = this.tags.find((t) => t.key === 'comment');
         if (tag) {
           tag.name = this.filter.comment;
         } else {
@@ -406,11 +418,11 @@ export default {
         }
         data.params.comment = this.comment;
       }
-      backApi.get('agent/account-detail', data).then(Response => {
+      GApi.get('agent/account-detail', data).then((Response) => {
         this.entries = Response.data.entries;
-        this.income = this.entries.filter(i => i.amount > 0);
-        this.outcome = this.entries.filter(i => i.amount < 0);
-        this.entries.forEach(i => {
+        this.income = this.entries.filter((i) => i.amount > 0);
+        this.outcome = this.entries.filter((i) => i.amount < 0);
+        this.entries.forEach((i) => {
           // eslint-disable-next-line no-param-reassign
           i.income = i.amount;
           // eslint-disable-next-line no-param-reassign
@@ -437,32 +449,31 @@ export default {
       this.filter[name] = '';
     },
     getSelectedDataRange() {
-      if (this.rangeDate.some(d => d === null)) {
+      if (this.rangeDate.some((d) => d === null)) {
+        console.log('awda');
         this.rangeDate = [
           this.$moment()
             .subtract(1, 'months')
-            .startOf('month')
-            .format('YYYY-MM-DD'),
+            .startOf('month'),
           this.$moment()
             .subtract(0, 'months')
-            .endOf('month')
-            .format('YYYY-MM-DD'),
+            .endOf('month'),
         ];
       }
-      backApi
-        .get('agent/account-detail', {
+      GApi
+        .post('/api/Account/get-operations', {
           params: {
-            beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
-            end_dte: this.rangeDate[1] ? this.rangeDate[1] : null,
-            find_comm: this.filter.comment,
-            find_type: this.filter.operType,
+            from: this.rangeDate[0] ? this.rangeDate[0] : null,
+            to: this.rangeDate[1] ? this.rangeDate[1] : null,
+            // find_comm: this.filter.comment,
+            // find_type: this.filter.operType,
           },
         })
-        .then(Response => {
+        .then((Response) => {
           this.entries = Response.data.entries;
-          this.income = this.entries.filter(i => i.amount > 0);
-          this.outcome = this.entries.filter(i => i.amount < 0);
-          this.entries.forEach(i => {
+          this.income = this.entries.filter((i) => i.amount > 0);
+          this.outcome = this.entries.filter((i) => i.amount < 0);
+          this.entries.forEach((i) => {
             // eslint-disable-next-line no-param-reassign
             i.income = i.amount;
             // eslint-disable-next-line no-param-reassign

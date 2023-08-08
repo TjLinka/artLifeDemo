@@ -1,41 +1,79 @@
 <template>
   <div class="product_card shadow-sm">
     <div class="product_card_img">
-      <img src="../../assets/imgs/no-image.png" alt=""  @click="$router.push('/product/1')"/>
+      <img
+        src="../../assets/imgs/bud2.jpg"
+        alt=""
+        @click="$router.push(`/product/${prod.id}`)"
+      />
     </div>
-    <div class="product_card_name" @click="$router.push('/product/1')">Lorem, ipsum dolor.</div>
-    <div class="product_card_price">1000 руб.</div>
-    <div class="product_card_points">Баллов: 15</div>
+    <div class="product_card_name" @click="$router.push(`/product/${prod.id}`)">
+      {{ prod.name }}
+    </div>
+    <div class="product_card_price">{{ prod.price }} руб.</div>
+    <div class="product_card_points">Баллов: {{ prod.points }}</div>
     <div class="product_card_discription">
-      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi reiciendis ipsum quis
-      quibusdam repudiandae repellat.
+      {{ prod.short_desc }}
     </div>
     <div class="product_card_btns">
       <div class="product_card_add_to_favourites">
         <img
-          :src="`../icons/favourites${inFavourite ? '' : '_no_added'}.svg`"
+          :src="`../icons/favourites${prod.inFavor ? '' : '_no_added'}.svg`"
           alt=""
-          @click="inFavourite = !inFavourite"
+          @click="favorAction(prod.id)"
         />
       </div>
-      <g-button :primary="true" :right="true" :width="'30%'">В коризну</g-button>
+      <div>
+        <g-button
+          :primary="true"
+          :right="true"
+          :width="'30%'"
+          @click="addToCart(prod)"
+          v-if="!getProduct(prod.id)"
+          >В коризну</g-button
+        >
+        <g-count v-if="getProduct(prod.id)" :count="getProduct(prod.id).count" :id="prod.id"/>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+import GApi from '../../assets/backApi';
 import GButton from '../Forms/GButton.vue';
+import GCount from '../Forms/GCount.vue';
 
 export default {
   components: {
     GButton,
-  },
-  data() {
-    return {
-      inFavourite: false,
-    };
+    GCount,
   },
   name: 'ProductCard',
+  props: ['prod'],
+  data() {
+    return {};
+  },
+  methods: {
+    randomImg() {
+      return Math.floor(Math.random() * (3 - 1 + 1)) + 1;
+    },
+    ...mapActions('cart', ['addToCart']),
+    async favorAction(id) {
+      if (this.prod.inFavor) {
+        await GApi.delete(`/api/Favourites/delete/${Number(id)}`);
+        this.$emit('favor', id);
+        return;
+      }
+      await GApi.post('/api/Favourites/add', {
+        item_id: id,
+      });
+      this.$emit('favor', id);
+    },
+  },
+  computed: {
+    ...mapGetters('cart', ['getProduct']),
+  },
 };
 </script>
 
@@ -45,6 +83,9 @@ export default {
   // border: 1px solid black;
   padding: 15px;
   background: white;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
   &_btns {
     display: flex;
     align-items: center;

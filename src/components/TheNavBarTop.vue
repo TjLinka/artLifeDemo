@@ -1,45 +1,4 @@
 <template>
-  <!-- <b-navbar type="dark" variant="grey" :class="is_authorized ? 'main_color' : 'auth_page'">
-    <div class="container">
-      <span class="page__title_nav" v-if="is_authorized" >{{ pageTitle }}</span>
-      <b-navbar-brand to="/" v-if="!is_authorized">
-        <img :src="`../icons/${$i18n.locale}lc.png`" alt="" srcset="" />
-      </b-navbar-brand>
-
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-      <b-collapse v-if="!is_authorized" id="nav-collapse" is-nav>
-        <b-navbar-nav class="ml-auto">
-          <div class="chLangBlock" @click="changeLang">
-            <flag v-if="$i18n.locale === 'en'" :iso="'gb'" />
-            <flag v-else :iso="$i18n.locale" />
-          </div>
-          <div class="d-lg-flex"></div>
-        </b-navbar-nav>
-      </b-collapse>
-      <b-collapse v-if="is_authorized" id="nav-collapse" is-nav>
-        <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown right>
-            <template v-slot:button-content>
-              <span class="mr-3 username">{{self_agent_id}} - {{ agentname }}</span>
-              <img class="mb-1" src="../assets/imgs/UserIcon.svg" alt="" />
-            </template>
-            <b-dropdown-item to="/">{{ agentname }}</b-dropdown-item>
-            <b-dropdown-item disabled>
-              <span
-                ><small style="color: grey; font-size: 12px;">
-                  {{ $t('Тип соглашения') }}
-                </small></span
-              ><br />
-              {{ role }}
-            </b-dropdown-item>
-            <b-dropdown-item class="logout" v-on:click="out">
-              {{ $t('Выйти') }}
-            </b-dropdown-item>
-          </b-nav-item-dropdown>
-        </b-navbar-nav>
-      </b-collapse>
-    </div>
-  </b-navbar> -->
   <nav class="nav_bar_top shadow-sm">
     <div class="container">
       <div class="navbar_info">
@@ -53,6 +12,9 @@
         <div class="icons">
           <div class="cart" @click="$router.push('/cart')">
             <img src="../assets/imgs/cart_icon.svg" alt="" />
+            <div class="cart_prod_count" v-show="cartProdCount">
+              {{ cartProdCount }}
+            </div>
           </div>
           <div class="dialog" @click="$router.push('/dialogs')">
             <img src="../assets/imgs/message_icon.svg" alt="" />
@@ -64,7 +26,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import backAPI from '../assets/backApi';
 
 export default {
@@ -78,6 +40,7 @@ export default {
       'self_agent_id',
     ]),
     ...mapState('currentPage', ['pageTitle']),
+    ...mapGetters('cart', ['cartProdCount']),
   },
   methods: {
     changeLang() {
@@ -116,15 +79,28 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  & .icons{
+  & .icons {
     display: flex;
   }
   & .cart {
+    position: relative;
     width: 40px;
     height: 40px;
     margin-right: 30px;
     & img {
       cursor: pointer;
+    }
+    .cart_prod_count {
+      display: flex;
+      justify-content: center;
+      position: absolute;
+      top: -5px;
+      right: -7px;
+      width: 25px;
+      height: 25px;
+      color: white;
+      background: red;
+      border-radius: 50%;
     }
   }
   & .dialog {

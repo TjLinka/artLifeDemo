@@ -1,7 +1,3 @@
-/* eslint-disable no-shadow */
-/* eslint-disable prefer-destructuring */
-// import backApi from '../assets/backApi';
-
 export default {
   namespaced: true,
   state: {

@@ -60,8 +60,9 @@
 // import DatePicker from 'vue2-datepicker';
 import $ from 'jquery';
 import { mapActions } from 'vuex';
-import backApi from '../assets/backApi';
+// import backApi from '../assets/backApi';
 import BasePeriodPicker from '../components/BasePeriodPicker.vue';
+import GApi from '../assets/backApi';
 
 export default {
   name: 'BonusHistory',
@@ -256,32 +257,41 @@ export default {
     };
   },
   mounted() {
-    backApi.get('/agent/profile').then(Response => {
-      this.agentData = Response.data;
+    GApi.get('/api/CalculationHistory/get').then((Response) => {
+      this.topTableData = Response.data;
+      this.loading = false;
     });
-    backApi.get('/agent/get-current-period').then(Response2 => {
-      this.currentPeriodTop = Response2.data;
+    GApi.post('/api/CalculationHistory/get-detail').then((Response) => {
+      // this.topTableData = Response.data;
+      // this.loading = false;
+      console.log(Response.data);
     });
-    backApi.get('agent/bonus-detail/periods').then(Response => {
-      this.periods = Response.data.entries.sort((a, b) => {
-        const result = a.comdte > b.comdte ? 1 : -1;
-        return result;
-      });
-      this.periodIndex = this.periods.length - 1;
-      backApi
-        .get('agent/bonus-detail-new', { params: { comdte: this.currentPeriod } })
-        .then(response => {
-          this.bonus = response.data.entries;
-          // eslint-disable-next-line no-param-reassign
-          response.data.header.period = this.currentPeriod;
-          this.topTableData = [response.data.header];
-        })
-        .then(() => {
-          setTimeout(() => {
-            this.loading = false;
-          });
-        });
-    });
+    // backApi.get('/agent/profile').then((Response) => {
+    //   this.agentData = Response.data;
+    // });
+    // backApi.get('/agent/get-current-period').then((Response2) => {
+    //   this.currentPeriodTop = Response2.data;
+    // });
+    // backApi.get('agent/bonus-detail/periods').then((Response) => {
+    //   this.periods = Response.data.entries.sort((a, b) => {
+    //     const result = a.comdte > b.comdte ? 1 : -1;
+    //     return result;
+    //   });
+    //   this.periodIndex = this.periods.length - 1;
+    //   backApi
+    //     .get('agent/bonus-detail-new', { params: { comdte: this.currentPeriod } })
+    //     .then((response) => {
+    //       this.bonus = response.data.entries;
+    //       // eslint-disable-next-line no-param-reassign
+    //       response.data.header.period = this.currentPeriod;
+    //       this.topTableData = [response.data.header];
+    //     })
+    //     .then(() => {
+    //       setTimeout(() => {
+    //         this.loading = false;
+    //       });
+    //     });
+    // });
   },
   computed: {
     periodStatus() {
@@ -297,7 +307,7 @@ export default {
   },
   watch: {
     currentPeriod(v) {
-      backApi.get('agent/bonus-detail-new', { params: { comdte: v } }).then(response => {
+      GApi.get('agent/bonus-detail-new', { params: { comdte: v } }).then((response) => {
         this.bonus = response.data.entries;
         // eslint-disable-next-line no-param-reassign
         response.data.header.period = this.currentPeriod;
@@ -308,7 +318,7 @@ export default {
   methods: {
     ...mapActions('currentPage', ['setPageTitle']),
     downloadXls() {
-      backApi
+      GApi
         .get('/agent/bonus-detail/excel', {
           params: {
             comdte: this.currentPeriod,
@@ -331,7 +341,7 @@ export default {
         });
     },
     downloadPdf() {
-      backApi
+      GApi
         .get('/agent/bonus-detail/pdf', {
           params: {
             comdte: this.currentPeriod,

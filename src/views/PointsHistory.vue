@@ -16,11 +16,11 @@
           </p>
           <!-- {{$t("История баллов")}}: {{agentData.id}} - {{agentData.name}} -->
         </h2>
-        <p>
+        <!-- <p>
           <span class="transInfo">{{ $t('Состояние лицевого счета') }}:</span>
           <span class="lo">{{ $t('ЛО') }}: {{ transInfo.lo }}</span>
           <span class="res">{{ $t('Резерв') }}: {{ transInfo.reserve }}</span>
-        </p>
+        </p> -->
         <p class="p-0 m-0 history_title">{{ $t('Период от и до') }}</p>
         <div class="row">
           <div class="col-md-6">
@@ -38,7 +38,7 @@
             </date-picker>
           </div>
         </div>
-        <div class="row mt-4 noprint">
+        <!-- <div class="row mt-4 noprint">
           <div class="col">
             <el-tag
               v-for="tag in tags"
@@ -51,23 +51,27 @@
               {{ tag.name }}
             </el-tag>
           </div>
-        </div>
-        <div class="row mobile_search noprint">
+        </div> -->
+        <!-- <div class="row mobile_search noprint">
           <div class="col search__btn noprint" @click="toggleSearch">
             {{ $t('Фильтры') }} <span class="search_icons mobi"></span>
           </div>
-        </div>
-        <p class="exp_print mt-3 noprint">
-          <!-- <span class="mr-3">Печать</span> -->
+        </div> -->
+        <!-- <p class="exp_print mt-3 noprint">
           <span class="mr-3" @click="downloadPdf">{{ $t('Экспорт в pdf') }}</span>
           <span class="mr-3" @click="downloadXls">{{ $t('Экспорт в xlsx') }}</span>
-        </p>
+        </p> -->
+        <h2 class="licevoischet__page__summ mt-4">
+          <span class="mr-4">{{ $t('НА СЧЕТ') }} = {{ summIncome | localInt }} </span>
+          <span class="mr-4">{{ $t('СО СЧЕТА') }} = {{ summOutcome | localInt }} </span>
+          <span class="mr-4">{{ $t('ИЗМЕНЕНИЯ') }} = {{ changes | localInt }} </span>
+        </h2>
         <b-table
           responsive
           :fields="fields"
           :items="entries"
           head-variant="light"
-          class="points_history_table mt-4"
+          class="points_history_table mt-1"
           outlined
         >
           <template #table-colgroup="scope">
@@ -83,14 +87,9 @@
             {{ data.value | localInt }}
           </template>
         </b-table>
-        <h2 class="licevoischet__page__summ">
-          <span class="mr-4">{{ $t('НА СЧЕТ') }} = {{ summIncome | localInt }} </span>
-          <span class="mr-4">{{ $t('СО СЧЕТА') }} = {{ summOutcome | localInt }} </span>
-          <span class="mr-4">{{ $t('ИЗМЕНЕНИЯ') }} = {{ changes | localInt }} </span>
-        </h2>
       </div>
     </div>
-    <footer class="container-fluid cust_modal pb-4">
+    <!-- <footer class="container-fluid cust_modal pb-4">
       <div class="row desk_trans">
         <div class="col text-center search__btn" @click="toggleSearch" v-if="!searchActive">
           {{ $t('Фильтры') }} <span class="search_icons"></span>
@@ -140,9 +139,6 @@
               <label for="operType">{{ $t('Тип операции') }}</label>
               <span class="clear_icon" @click="clearOperType('operType')"></span>
             </div>
-            <!-- <div class="col-md-6">
-            <button class="mr-2 update" @click="updateData">Показать</button>
-          </div> -->
           </div>
           <div class="row edit mt-4">
             <div class="col-md-6"></div>
@@ -152,7 +148,7 @@
           </div>
         </div>
       </div>
-    </footer>
+    </footer> -->
     <div :class="`mobile_modal_mask ${searchActive ? 'active' : ''}`"></div>
   </div>
 </template>
@@ -161,9 +157,10 @@
 import $ from 'jquery';
 import { mapActions } from 'vuex';
 import DatePicker from 'vue2-datepicker';
+import GApi from '../assets/backApi';
 import 'vue2-datepicker/index.css';
 import 'vue2-datepicker/locale/ru';
-import backApi from '../assets/backApi';
+// import GApi from '../assets/GApi';
 // import { ReplaceNull } from '../assets/utils';
 import dateFormat from '../assets/localDateFunc';
 // import formatDate from '../assets/localDateFuncEng';
@@ -256,21 +253,21 @@ export default {
           },
         },
         {
-          key: 'opertype',
+          key: 'typname',
           label: this.$t('Тип операции'),
           sortable: true,
           thStyle: {
             minWidth: '150px',
           },
         },
-        {
-          key: 'pointstype',
-          label: this.$t('Тип баллов'),
-          sortable: true,
-          thStyle: {
-            minWidth: '130px',
-          },
-        },
+        // {
+        //   key: 'pointstype',
+        //   label: this.$t('Тип баллов'),
+        //   sortable: true,
+        //   thStyle: {
+        //     minWidth: '130px',
+        //   },
+        // },
         {
           key: 'comm',
           label: this.$t('Комментарий'),
@@ -289,45 +286,27 @@ export default {
     };
   },
   async mounted() {
-    const response = await backApi.get('/agent/profile');
+    const response = await GApi.get('/api/Agent/get-agent-profile-info');
     this.agentData = response.data;
-    backApi
-      .get('/agent/transfer-info', {
-        params: {
-          another_agent_id: response.data.id,
-        },
-      })
-      .then(Response => {
-        this.transInfo = Response.data;
-      });
     this.rangeDate = [
       this.$moment()
         .subtract(1, 'months')
-        .startOf('month')
-        .format('YYYY-MM-DD'),
+        .startOf('month').format('YYYY-MM-DD'),
       this.$moment()
         .subtract(0, 'months')
-        .endOf('month')
-        .format('YYYY-MM-DD'),
+        .endOf('month').format('YYYY-MM-DD'),
     ];
-    // console.log(this.$moment().format('Y-MM-DD'));
-    backApi
-      .get('agent/points-detail', {
-        params: {
-          beg_dte: this.$moment()
-            .subtract(1, 'months')
-            .startOf('month')
-            .format('YYYY-MM-DD'),
-          end_dte: this.$moment()
-            .subtract(0, 'months')
-            .endOf('month')
-            .format('YYYY-MM-DD'),
-        },
-      })
-      .then(Response => {
-        this.entries = Response.data.entries;
-        this.loading = false;
-      });
+    GApi.post('/api/PointsHistory/get', {
+      from: this.$moment()
+        .subtract(1, 'months')
+        .startOf('month'),
+      to: this.$moment()
+        .subtract(0, 'months')
+        .endOf('month'),
+    }).then((Response) => {
+      this.entries = Response.data;
+      this.loading = false;
+    });
     const treeNameTranslate = { 0: 'Резерв', 1: 'ЛО', null: 'Все' };
     const treeName = treeNameTranslate.null;
     this.tags.push({ name: `Тип баллов: ${treeName}`, key: 'points_type' });
@@ -335,14 +314,14 @@ export default {
   computed: {
     summIncome() {
       let summIncome = 0;
-      this.entries.forEach(item => {
+      this.entries.forEach((item) => {
         summIncome += item.income;
       });
       return summIncome.toFixed(2);
     },
     summOutcome() {
       let summOutcome = 0;
-      this.entries.forEach(item => {
+      this.entries.forEach((item) => {
         summOutcome += item.outcome;
       });
       return summOutcome.toFixed(2);
@@ -354,58 +333,54 @@ export default {
   methods: {
     ...mapActions('currentPage', ['setPageTitle']),
     downloadXls() {
-      backApi
-        .get('/agent/points-detail/excel', {
-          params: {
-            beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
-            end_dte: this.rangeDate[1] ? this.rangeDate[1] : null,
-            points_type: this.points_type,
-            comm_find: this.comment,
-            operation_type: this.operType,
-          },
-          responseType: 'blob',
-        })
-        .then(({ data }) => {
-          const filename = `${this.$t('История баллов')}.xlsx`;
-          const url = window.URL.createObjectURL(
-            new Blob([data], {
-              type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            }),
-          );
-          const link = document.createElement('a');
-          link.href = url;
-          link.setAttribute('download', filename);
-          document.body.appendChild(link);
-          link.click();
-          link.remove();
-        });
+      GApi.get('/agent/points-detail/excel', {
+        params: {
+          beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
+          end_dte: this.rangeDate[1] ? this.rangeDate[1] : null,
+          points_type: this.points_type,
+          comm_find: this.comment,
+          operation_type: this.operType,
+        },
+        responseType: 'blob',
+      }).then(({ data }) => {
+        const filename = `${this.$t('История баллов')}.xlsx`;
+        const url = window.URL.createObjectURL(
+          new Blob([data], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          }),
+        );
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      });
     },
     downloadPdf() {
-      backApi
-        .get('/agent/points-detail/pdf', {
-          params: {
-            beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
-            end_dte: this.rangeDate[1] ? this.rangeDate[1] : null,
-            points_type: this.points_type,
-            comm_find: this.comment,
-            operation_type: this.operType,
-          },
-          responseType: 'blob',
-        })
-        .then(({ data }) => {
-          const filename = `${this.$t('История баллов')}.pdf`;
-          const url = window.URL.createObjectURL(
-            new Blob([data], {
-              type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            }),
-          );
-          const link = document.createElement('a');
-          link.href = url;
-          link.setAttribute('download', filename);
-          document.body.appendChild(link);
-          link.click();
-          link.remove();
-        });
+      GApi.get('/agent/points-detail/pdf', {
+        params: {
+          beg_dte: this.rangeDate[0] ? this.rangeDate[0] : null,
+          end_dte: this.rangeDate[1] ? this.rangeDate[1] : null,
+          points_type: this.points_type,
+          comm_find: this.comment,
+          operation_type: this.operType,
+        },
+        responseType: 'blob',
+      }).then(({ data }) => {
+        const filename = `${this.$t('История баллов')}.pdf`;
+        const url = window.URL.createObjectURL(
+          new Blob([data], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          }),
+        );
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      });
     },
     handleClose(event, tag) {
       if (tag.key === 'points_type') {
@@ -456,14 +431,14 @@ export default {
       if (this.points_type !== null) {
         const treeNameTranslate = { 0: 'Резерв', 1: 'ЛО', null: 'Все' };
         const treeName = treeNameTranslate[this.points_type];
-        const tag = this.tags.find(t => t.key === 'points_type');
+        const tag = this.tags.find((t) => t.key === 'points_type');
         if (tag) {
           tag.name = `Тип баллов: ${treeName}`;
         } else {
           this.tags.push({ name: `Тип баллов: ${treeName}`, key: 'points_type' });
         }
       } else {
-        const tag = this.tags.find(t => t.key === 'points_type');
+        const tag = this.tags.find((t) => t.key === 'points_type');
         if (tag) {
           tag.name = 'Тип баллов: Все';
         } else {
@@ -471,7 +446,7 @@ export default {
         }
       }
       if (this.comment !== null && this.comment !== '') {
-        const tag = this.tags.find(t => t.key === 'comment');
+        const tag = this.tags.find((t) => t.key === 'comment');
         if (tag) {
           tag.name = `Комментарий: ${this.comment}`;
         } else {
@@ -480,14 +455,14 @@ export default {
         // data.params.comment = this.comment;
       }
       if (this.operType !== null && this.operType !== '') {
-        const tag = this.tags.find(t => t.key === 'operType');
+        const tag = this.tags.find((t) => t.key === 'operType');
         if (tag) {
           tag.name = `Тип операции: ${this.operType}`;
         } else {
           this.tags.push({ name: `Тип операции: ${this.operType}`, key: 'operType' });
         }
       }
-      backApi.get('/agent/points-detail', data).then(Response => {
+      GApi.get('/agent/points-detail', data).then((Response) => {
         this.entries = Response.data.entries;
       });
       if (tagsDelete) {
@@ -505,47 +480,35 @@ export default {
     getSelectedDataRange() {
       // eslint-disable-next-line max-len
       if (this.rangeDate[0] != null && this.rangeDate[1] != null) {
-        backApi
-          .get('agent/points-detail', {
-            params: {
-              beg_dte: String(this.rangeDate[0]),
-              end_dte: String(this.rangeDate[1]),
-              points_type: this.points_type,
-              comm_find: this.comment,
-            },
-          })
-          .then(Response => {
-            this.entries = Response.data.entries;
-          });
+        GApi.post('/api/PointsHistory/get', {
+          from: String(new Date(this.rangeDate[0]).toISOString()),
+          to: String(new Date(this.rangeDate[1]).toISOString()),
+          // points_type: this.points_type,
+          // comm_find: this.comment,
+        }).then((Response) => {
+          this.entries = Response.data;
+        });
       } else {
         this.rangeDate = [
           this.$moment()
             .subtract(1, 'months')
-            .startOf('month')
-            .format('YYYY-MM-DD'),
+            .startOf('month').format('YYYY-MM-DD'),
           this.$moment()
-            .subtract(1, 'months')
-            .endOf('month')
-            .format('YYYY-MM-DD'),
+            .subtract(0, 'months')
+            .endOf('month').format('YYYY-MM-DD'),
         ];
-        backApi
-          .get('agent/points-detail', {
-            params: {
-              points_type: this.points_type,
-              comm_find: this.comment,
-              beg_dte: this.$moment()
-                .subtract(1, 'months')
-                .startOf('month')
-                .format('YYYY-MM-DD'),
-              end_dte: this.$moment()
-                .subtract(1, 'months')
-                .endOf('month')
-                .format('YYYY-MM-DD'),
-            },
-          })
-          .then(Response => {
-            this.entries = Response.data.entries;
-          });
+        GApi.post('/api/PointsHistory/get', {
+          // points_type: this.points_type,
+          // comm_find: this.comment,
+          from: this.$moment()
+            .subtract(1, 'months')
+            .startOf('month'),
+          to: this.$moment()
+            .subtract(0, 'months')
+            .endOf('month'),
+        }).then((Response) => {
+          this.entries = Response.data;
+        });
       }
     },
   },

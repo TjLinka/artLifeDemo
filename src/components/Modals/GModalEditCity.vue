@@ -7,7 +7,13 @@
         </h3>
         <div class="g_modal_content_body" v-if="!inAction">
           <g-caption title="Текущий город" text="Мск" />
-          <g-input class="mt-4" :placeholder="'Новый город'" :type="'text'" :id="'city'" v-model="newCity"/>
+          <g-input
+            class="mt-4"
+            :placeholder="'Новый город'"
+            :type="'text'"
+            :id="'city'"
+            v-model="newCity"
+          />
         </div>
         <div v-else>
           <h4 style="text-align: center;">Операция выполняется...</h4>
@@ -76,10 +82,8 @@ export default {
     },
     saveCity() {
       this.inAction = true;
-      setTimeout(() => {
-        this.inAction = false;
-        this.$emit('edit');
-      }, 2000);
+      this.inAction = false;
+      this.$emit('edit', this.newCity);
     },
   },
 };

@@ -6,14 +6,20 @@
       responsive
       head-variant="light"
       class="mt-3"
+      :items="marketingStats"
       :fields="topTableFields"
     ></b-table>
     <!-- РЕЗЕРВИРОВАНИЕ ЛО -->
     <h4 class="mt-3">Резервирование ЛО</h4>
-    <g-caption :title="'Состояние баллового счёта'" :text="'ЛО:45 Резерв: 15'"/>
+    <g-caption :title="'Состояние баллового счёта'" :text="'ЛО:45 Резерв: 15'" />
     <div class="row mt-3">
       <div class="col-6">
-        <g-input :id="'reservlo'" :placeholder="'Введите значение ЛО'" :type="'text'" v-model="reserve_lo"/>
+        <g-input
+          :id="'reservlo'"
+          :placeholder="'Введите значение ЛО'"
+          :type="'text'"
+          v-model="reserve_lo"
+        />
       </div>
     </div>
     <div class="row mt-3">
@@ -36,6 +42,7 @@
         <div class="col-2">
           <el-select
             v-model="selectedRankForInfo"
+            @change="selecteRank"
             clearable
             style="width: 100%"
             placeholder="Выберите ранг"
@@ -43,23 +50,32 @@
             <el-option
               v-for="rank in rankList"
               :key="rank.id"
-              :label="rank.name"
-              :value="rank.value"
+              :label="rank.title"
+              :value="rank.id"
             ></el-option>
           </el-select>
-          <span>
-          </span>
+          <span> </span>
         </div>
       </div>
       <div class="row mt-3">
         <div class="col-6">
-          <b-table :items="demoDataConidtionForRank" :fields="rankConditionFields" bordered responsive head-variant="light">
-            <template v-slot:cell(condition_check)="scope">
-              <span v-if="scope.item.current_value >= scope.item.required_value">
-                <img src="../assets/imgs/check_icon.svg" alt="">
+          <b-table
+            :items="demoDataConidtionForRank"
+            :fields="rankConditionFields"
+            bordered
+            responsive
+            head-variant="light"
+          >
+            <template v-slot:cell(cond_met)="scope">
+              <span v-if="scope.item.cond_met">
+                <img src="../assets/imgs/check_icon.svg" alt="" />
               </span>
-              <span >
-                {{scope.item.current_value >= scope.item.required_value ? 'Условие выполнено' : 'Условие не выполнено'}}
+              <span>
+                {{
+                  scope.item.cond_met
+                    ? 'Условие выполнено'
+                    : 'Условие не выполнено'
+                }}
               </span>
             </template>
           </b-table>
@@ -76,13 +92,13 @@
     <div v-if="isStuctureInfoShow">
       <div class="row">
         <div class="col-2">
-          <g-caption :title="'Партнёров в сети'" :text="'235456'"/>
+          <g-caption :title="'Партнёров в сети'" :text="netGrowth.partners_cnt_curr" />
         </div>
         <div class="col-2">
-          <g-caption :title="'Активных партнёров в сети'" :text="'254'"/>
+          <g-caption :title="'Активных партнёров в сети'" :text="netGrowth.partners_cnt_history" />
         </div>
         <div class="col-2">
-          <g-caption :title="'Прирост партнёров'" :text="'41'"/>
+          <g-caption :title="'Прирост партнёров'" :text="netGrowth.delta" />
         </div>
       </div>
     </div>
@@ -90,6 +106,7 @@
 </template>
 
 <script>
+import GApi from '../assets/backApi';
 import GButton from '../components/Forms/GButton.vue';
 import GGroupedButton from '../components/Forms/GGroupedButton.vue';
 import GInput from '../components/Forms/GInput.vue';
@@ -105,62 +122,16 @@ export default {
   },
   data() {
     return {
+      netGrowth: {
+        delta: '',
+        partners_cnt_curr: '',
+        partners_cnt_history: '',
+      },
       selectedRankForInfo: null,
       reserve_lo: null,
       isRankInfoShow: false,
       isStuctureInfoShow: false,
-      rankList: [
-        {
-          id: 1,
-          name: 'Привилегированный клиент',
-          value: 1,
-        },
-        {
-          id: 2,
-          name: 'Консультант',
-          value: 2,
-        },
-        {
-          id: 3,
-          name: 'Мастер',
-          value: 3,
-        },
-        {
-          id: 4,
-          name: 'Управляющий',
-          value: 4,
-        },
-        {
-          id: 5,
-          name: 'Директор',
-          value: 5,
-        },
-        {
-          id: 6,
-          name: 'Серебряный Директор',
-          value: 6,
-        },
-        {
-          id: 7,
-          name: 'Золотой Директор',
-          value: 7,
-        },
-        {
-          id: 8,
-          name: 'Рубиновый Директор',
-          value: 8,
-        },
-        {
-          id: 9,
-          name: 'Бриллиантовый Директор',
-          value: 9,
-        },
-        {
-          id: 10,
-          name: 'Президент',
-          value: 10,
-        },
-      ],
+      rankList: [],
       topTableFields: [
         {
           key: 'lo',
@@ -179,25 +150,25 @@ export default {
           label: 'НСО',
         },
         {
-          key: 'activity',
+          key: 'activ',
           label: 'Активность',
         },
         {
-          key: 'rank_beg',
+          key: 'rank_beg_title',
           label: 'Ранг на начало',
         },
         {
-          key: 'rank_end',
+          key: 'rank_end_title',
           label: 'Ранг на конец',
         },
       ],
       rankConditionFields: [
         {
-          key: 'parametr',
+          key: 'param_name',
           label: 'Пареметр',
         },
         {
-          key: 'current_value',
+          key: 'curr_value',
           label: 'Текущеее значение',
           // eslint-disable-next-line consistent-return
           formatter: (val, key, item) => {
@@ -208,7 +179,7 @@ export default {
           },
         },
         {
-          key: 'required_value',
+          key: 'need_value',
           label: 'Необходимое значение',
           // eslint-disable-next-line consistent-return
           formatter: (val, key, item) => {
@@ -219,36 +190,39 @@ export default {
           },
         },
         {
-          key: 'condition_check',
+          key: 'cond_met',
           label: 'Выполнение условия',
         },
       ],
-      demoDataConidtionForRank: [
-        {
-          parametr: 'ЛО',
-          current_value: 35,
-          required_value: 45,
-        },
-        {
-          parametr: 'ГО',
-          current_value: 35,
-          required_value: 1000,
-        },
-        {
-          parametr: 'НСО',
-          current_value: 3000,
-          required_value: 2000,
-        },
-        {
-          parametr: 'Активность',
-          current_value: 1,
-          required_value: 1,
-        },
-      ],
+      marketingStats: [],
+      demoDataConidtionForRank: [],
     };
   },
-  computed: {
+  async mounted() {
+    await GApi.get('/api/Agent/get-next-ranks').then((Response) => {
+      this.rankList = Response.data;
+    });
+    GApi.post('/api/Misc/get-comdte-list').then(async (Response) => {
+      GApi.get('/api/Agent/get-net-growth', { comdte: Response.data[0].comdte }).then((Response2) => {
+        this.netGrowth = Response2.data;
+      });
+      GApi.post('/api/Agent/get-indicators', { comdte: Response.data[0].comdte }).then((Response3) => {
+        this.marketingStats = [Response3.data];
+      });
+    });
   },
+  methods: {
+    async selecteRank(val) {
+      if (!val) {
+        this.demoDataConidtionForRank = [];
+        return;
+      }
+      await GApi.get(`/api/Agent/get-rank-achiev-info/${val}`).then((Response) => {
+        this.demoDataConidtionForRank = Response.data;
+      });
+    },
+  },
+  computed: {},
 };
 </script>
 

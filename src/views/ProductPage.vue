@@ -7,7 +7,7 @@
     </div>
     <div class="top_section">
       <div class="product_gallery col-4">
-        <img src="../assets/imgs/no-image.png" alt="" />
+        <img src="../assets/imgs/bud1.jpg" alt="" />
       </div>
       <div class="product_info col-6">
         <div class="product_info_articul"><strong>Артикул:</strong><span>12345</span></div>
@@ -51,6 +51,7 @@
 </template>
 
 <script>
+// import GApi from '../assets/backApi';
 import GButton from '../components/Forms/GButton.vue';
 import Counter from '../components/Shop/Counter.vue';
 
@@ -65,6 +66,10 @@ export default {
       inFavourite: false,
       inCart: false,
     };
+  },
+  mounted() {
+    // console.log(this.$route.params.id);
+    // GApi.get(`/api/Catalog/get-single/{${Number(this.$route.params.id)}}`);
   },
 };
 </script>
@@ -98,5 +103,11 @@ export default {
 }
 .discription{
   // margin-top: 70px;
+}
+.product_gallery{
+  img{
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>

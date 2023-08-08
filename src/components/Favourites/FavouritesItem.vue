@@ -1,19 +1,18 @@
 <template>
-  <div class="favourites_item_wrapper shadow-sm" :data-id="id">
+  <div class="favourites_item_wrapper shadow-sm">
     <div class="favourites_item">
       <div class="favourites_item_img">
         <img src="../../assets/imgs/no-image.png" alt="no-image" />
       </div>
       <div class="favourites_item_name">
-        <strong>Наименование:</strong> <span>Lorem, ipsum.</span><br />
-        <span class="show_complect" @click="isComplectOpen = !isComplectOpen">Просмотреть</span>
+        <strong>Наименование:</strong> <router-link target="_blank" :to="`/product/${prod.id}`"><span> {{ prod.name}} </span></router-link>
       </div>
-      <div class="favourites_item_price"><strong>Цена:</strong> <span>1000 руб.</span></div>
-      <div class="favourites_item_points"><strong>Баллов:</strong> <span>15.4</span></div>
+      <div class="favourites_item_price"><strong>Цена:</strong> <span>{{prod.price}} руб.</span></div>
+      <div class="favourites_item_points"><strong>Баллов:</strong> <span>{{prod.points}}</span></div>
       <div class="favourites_item_add_to_cart_btn">
-        <g-button :primary="true">В корзину</g-button>
+        <g-button :primary="true" @click="addToCart(prod)">В корзину</g-button>
       </div>
-      <div class="favourites_item_delete_btn">
+      <div class="favourites_item_delete_btn" @click="removeFromFavor(prod.id)">
         <img src="../../assets/imgs/remove.png" alt="" />
       </div>
     </div>
@@ -26,7 +25,7 @@
 </template>
 
 <script>
-// import $ from 'jquery';
+import { mapActions } from 'vuex';
 import GButton from '../Forms/GButton.vue';
 import FavouritesItemComplect from './FavouritesItemComplect.vue';
 
@@ -36,7 +35,7 @@ export default {
     FavouritesItemComplect,
   },
   name: 'FavouritesItem',
-  props: ['id'],
+  props: ['prod'],
   data() {
     return {
       inFavourite: false,
@@ -44,6 +43,12 @@ export default {
     };
   },
   mounted() {},
+  methods: {
+    ...mapActions('cart', ['addToCart']),
+    removeFromFavor(id) {
+      this.$emit('delete', id);
+    },
+  },
 };
 </script>
 
@@ -53,7 +58,9 @@ export default {
 }
 .favourites_item {
   padding: 15px;
-  display: flex;
+  display: grid;
+  grid-template-columns: 120px repeat(3, 1fr ) 200px 50px;
+  grid-gap: 20px;
   align-items: center;
   justify-content: space-between;
   // margin-bottom: 20px;

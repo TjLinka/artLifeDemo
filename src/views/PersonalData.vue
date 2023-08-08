@@ -10,10 +10,10 @@
     <div v-show="isMainInfoShow">
       <div class="row mt-4">
         <div class="col">
-          <g-caption title="ID Партнёра" :text="'1010101'" />
+          <g-caption title="ID Партнёра" :text="agentInfo.id" />
         </div>
         <div class="col">
-          <g-caption title="ФИО" text="Иванов Иван Иванович" />
+          <g-caption title="ФИО" :text="agentInfo.name" />
         </div>
       </div>
       <div class="row mt-4">
@@ -21,7 +21,10 @@
           <g-caption title="Пол" text="Муж." />
         </div>
         <div class="col">
-          <g-caption title="Дата рождения" text="10.10.1990" />
+          <g-caption
+            title="Дата рождения"
+            :text="new Date(agentInfo.birth_date).toLocaleDateString()"
+          />
         </div>
       </div>
     </div>
@@ -35,26 +38,29 @@
     <div v-show="isExtraInfoShow">
       <div class="row">
         <div class="col">
-          <g-caption title="Дата регистрации" text="10.10.2010" />
+          <g-caption
+            title="Дата регистрации"
+            :text="new Date(agentInfo.signup_date).toLocaleDateString()"
+          />
         </div>
         <div class="col">
-          <g-caption title="Страна" text="Россия" />
+          <g-caption title="Страна" :text="agentInfo.country" />
           <span @click="editCountry" class="edit_btn">Редактировать</span>
         </div>
       </div>
       <div class="row mt-4">
         <div class="col">
-          <g-caption title="Город" text="Мск" />
+          <g-caption title="Город" :text="agentInfo.city" />
           <span @click="editCity" class="edit_btn">Редактировать</span>
         </div>
         <div class="col">
-          <g-caption title="Телефон" text="8-(888)-888-88-88" />
+          <g-caption title="Телефон" :text="agentInfo.mobile_phone" />
           <span @click="editPhone" class="edit_btn">Редактировать</span>
         </div>
       </div>
       <div class="row mt-4">
         <div class="col">
-          <g-caption title="Электронная почта" text="mail@mail.ru" />
+          <g-caption title="Электронная почта" :text="agentInfo.email" />
           <span @click="editEmail" class="edit_btn">Редактировать</span>
         </div>
         <div class="col">
@@ -73,10 +79,10 @@
     <div v-show="isSponsorInfoShow">
       <div class="row mt-4">
         <div class="col">
-          <g-caption title="ID Партнёра" text="12345" />
+          <g-caption title="ID Партнёра" :text="sponsorInfo.id" />
         </div>
         <div class="col">
-          <g-caption title="ФИО" text="Иванов Иван Иванович" />
+          <g-caption title="ФИО" :text="sponsorInfo.fullname" />
         </div>
       </div>
       <div class="row mt-4">
@@ -84,23 +90,26 @@
           <g-caption title="Пол" text="Муж." />
         </div>
         <div class="col">
-          <g-caption title="Дата рождения" :text="new Date().toLocaleDateString()" />
+          <g-caption
+            title="Дата рождения"
+            :text="new Date(sponsorInfo.bthdte).toLocaleDateString()"
+          />
         </div>
       </div>
       <div class="row mt-4">
         <div class="col">
-          <g-caption title="Телефон" text="8-(888)-888-88-88" />
+          <g-caption title="Телефон" :text="sponsorInfo.phone" />
         </div>
         <div class="col">
-          <g-caption title="Электронная почта" text="someemail@mail.com" />
+          <g-caption title="Электронная почта" :text="sponsorInfo.email" />
         </div>
       </div>
       <div class="row mt-4">
         <div class="col">
-          <g-caption title="Страна" text="Россия" />
+          <g-caption title="Страна" :text="sponsorInfo.country" />
         </div>
         <div class="col">
-          <g-caption title="Город" text="Москва" />
+          <g-caption title="Город" :text="sponsorInfo.city" />
         </div>
       </div>
     </div>
@@ -142,26 +151,37 @@
 </template>
 
 <script>
+import GApi from '../assets/backApi';
 import GCaption from '../components/Text/GCaption.vue';
 import GNotification from '../mixins/Gnotifacation';
 
 export default {
   components: {
     GCaption,
-    GModalEditCountry: () => ({
-      component: import(/* webpackChunkName: "AsyncCountry" */ '../components/Modals/GModalEditCountry.vue'),
-    }),
+    // GModalEditCountry: () => ({
+    //   component: import(
+    //     /* webpackChunkName: "AsyncCountry" */ '../components/Modals/GModalEditCountry.vue'
+    //   ),
+    // }),
     GModalEditCity: () => ({
-      component: import(/* webpackChunkName: "AsyncCity" */ '../components/Modals/GModalEditCity.vue'),
+      component: import(
+        /* webpackChunkName: "AsyncCity" */ '../components/Modals/GModalEditCity.vue'
+      ),
     }),
     GModalEditEmail: () => ({
-      component: import(/* webpackChunkName: "AsyncEmail" */ '../components/Modals/GModalEditEmail.vue'),
+      component: import(
+        /* webpackChunkName: "AsyncEmail" */ '../components/Modals/GModalEditEmail.vue'
+      ),
     }),
     GModalEditPassport: () => ({
-      component: import(/* webpackChunkName: "AsyncEmail" */ '../components/Modals/GModalEditPassport.vue'),
+      component: import(
+        /* webpackChunkName: "AsyncEmail" */ '../components/Modals/GModalEditPassport.vue'
+      ),
     }),
     GModalEditPhone: () => ({
-      component: import(/* webpackChunkName: "AsyncEmail" */ '../components/Modals/GModalEditPhone.vue'),
+      component: import(
+        /* webpackChunkName: "AsyncEmail" */ '../components/Modals/GModalEditPhone.vue'
+      ),
     }),
   },
   mixins: [GNotification],
@@ -176,9 +196,38 @@ export default {
       isEmailEdit: false,
       isPassportEdit: false,
       isPhoneEdit: false,
+      agentInfo: {
+        id: '',
+        lastname: '',
+        name: '',
+        birth_date: '',
+        signup_date: '',
+        country: '',
+        city: '',
+        mobile_phone: '',
+        email: '',
+      },
+      sponsorInfo: {
+        id: '',
+        fullname: '',
+        bthdte: '',
+        phone: '',
+        email: '',
+        city: '',
+        country: '',
+      },
     };
   },
+  async mounted() {
+    await this.getData();
+  },
   methods: {
+    async getData() {
+      const response = await GApi.get('/api/Agent/get-agent-profile-info');
+      const response2 = await GApi.get('/api/Agent/sponsor-get');
+      this.agentInfo = response.data;
+      this.sponsorInfo = response2.data;
+    },
     editCity() {
       this.isCityEdit = true;
     },
@@ -198,8 +247,11 @@ export default {
       this.isCountryEdit = false;
       this.showToast('Редактирование страны', 'Страна успешно изменена', 'success');
     },
-    editCityAction() {
+    async editCityAction(val) {
+      this.agentInfo.city = val;
       this.isCityEdit = false;
+      await this.editPartnerInfo();
+      await this.getData();
       this.showToast('Редактирование города', 'Город успешно изменен', 'success');
     },
     editEmailAction() {
@@ -220,6 +272,16 @@ export default {
         this.inAction = false;
         this.isCountryEdit = false;
       }, 2000);
+    },
+    async editPartnerInfo() {
+      GApi.post('/api/Agent/edit-agent-profile-info', {
+        webpwd: '2',
+        country: this.agentInfo.country,
+        city: this.agentInfo.city,
+        mobile_phone: '',
+        email: this.agentInfo.email,
+        passport: '11 11',
+      });
     },
   },
 };

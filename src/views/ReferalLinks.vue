@@ -120,17 +120,17 @@ export default {
         {
           key: 'created',
           label: 'Дата создания',
-          formatter: val => dateFormat(val),
+          formatter: (val) => dateFormat(val),
         },
         {
           key: 'last_link',
           label: 'Дата последнего перехода',
-          formatter: val => dateFormat(val),
+          formatter: (val) => dateFormat(val),
         },
         {
           key: 'last_reg_dte',
           label: 'Дата последней регистрации',
-          formatter: val => dateFormat(val),
+          formatter: (val) => dateFormat(val),
         },
         {
           key: 'state_name',
@@ -145,9 +145,9 @@ export default {
     };
   },
   mounted() {
-    GApi.getReferalLinks().then(Response => {
-      Response.data.entries.forEach(data => {
-        Object.keys(data).forEach(key => {
+    GApi.getReferalLinks().then((Response) => {
+      Response.data.entries.forEach((data) => {
+        Object.keys(data).forEach((key) => {
           data[key] = removeNull(data[key]);
         });
       });
@@ -186,7 +186,7 @@ export default {
       if (this.referalLinkStatus === 0) {
         return this.tableData;
       }
-      return this.tableData.filter(link => link.state === this.referalLinkStatus);
+      return this.tableData.filter((link) => link.state === this.referalLinkStatus);
     },
   },
 };

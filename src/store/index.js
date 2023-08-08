@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import auth from './auth';
-import transStore from './transStore';
+import cart from './cart';
 import currentPage from './currentPage';
 
 Vue.use(Vuex);
@@ -13,7 +13,7 @@ export default new Vuex.Store({
   getters: {},
   modules: {
     currentPage,
-    transStore,
     auth,
+    cart,
   },
 });
