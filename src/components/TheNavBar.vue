@@ -140,11 +140,11 @@
                 {{ $t('Маркетинг план') }}
               </router-link>
             </li>
-            <li>
+            <!-- <li>
               <router-link to="/purchases-history">
                 {{ $t('Публичная оферта') }}
               </router-link>
-            </li>
+            </li> -->
           </ul>
         </li>
       </ul>

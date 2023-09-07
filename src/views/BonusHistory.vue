@@ -257,14 +257,19 @@ export default {
     };
   },
   mounted() {
+    this.loading = false;
     GApi.get('/api/CalculationHistory/get').then((Response) => {
       this.topTableData = Response.data;
-      this.loading = false;
     });
-    GApi.post('/api/CalculationHistory/get-detail').then((Response) => {
-      // this.topTableData = Response.data;
-      // this.loading = false;
-      console.log(Response.data);
+    GApi.post('/api/Misc/get-comdte-list').then((Response) => {
+      this.periods = Response.data.sort((a, b) => {
+        const result = a.comdte > b.comdte ? 1 : -1;
+        return result;
+      });
+      this.periodIndex = this.periods.length - 1;
+      GApi.post('/api/CalculationHistory/get-detail', { comdte: this.currentPeriod }).then((Response2) => {
+        console.log(Response2.data);
+      });
     });
     // backApi.get('/agent/profile').then((Response) => {
     //   this.agentData = Response.data;
@@ -307,11 +312,8 @@ export default {
   },
   watch: {
     currentPeriod(v) {
-      GApi.get('agent/bonus-detail-new', { params: { comdte: v } }).then((response) => {
-        this.bonus = response.data.entries;
-        // eslint-disable-next-line no-param-reassign
-        response.data.header.period = this.currentPeriod;
-        this.topTableData = [response.data.header];
+      GApi.post('/api/CalculationHistory/get-detail', { comdte: v }).then((Response2) => {
+        this.bonus = Response2.data;
       });
     },
   },

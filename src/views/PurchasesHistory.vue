@@ -65,7 +65,7 @@
               <b-button size="sm" @click="show_details(row)" class="mr-2">
                 {{ row.detailsShowing ? '-' : '+' }}
               </b-button>
-              <span>{{ row.item.sale_id }}</span>
+              <span>{{ row.item.id }}</span>
             </template>
             <template v-slot:cell(delivery)="row">
               <span>{{ row.item.delivery }}</span>
@@ -78,7 +78,7 @@
               <div class="sub_table">
                 <b-table
                   :fields="returnFields"
-                  :items="return_details[row.item.webshop_id]"
+                  :items="return_details[row.item.id]"
                   head-variant="light"
                 >
                   <template #cell()="data">
@@ -743,7 +743,7 @@ export default {
       this.searchActive = !this.searchActive;
     },
     show_details(row) {
-      console.log(row);
+      console.log(row.item);
       if (!row.detailsShowing) {
         this.printNakAccess = true;
       } else {
@@ -753,9 +753,11 @@ export default {
         row.toggleDetails();
       } else if (!this.return_details[row.item.id]) {
         GApi
-          .get('/api/Webshop/get', { params: { webshopId: row.item.id } })
+          .get(`/api/Webshop/get/${row.item.id}`)
           .then((response) => {
-            this.return_details[row.item.id] = response.data.entries;
+            console.log(response.data);
+            this.$set(this.return_details, this.return_details[row.item.id], response.data);
+            // this.return_details[row.item.id] = response.data;
             row.toggleDetails();
           });
       } else {

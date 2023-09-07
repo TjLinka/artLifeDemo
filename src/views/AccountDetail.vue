@@ -66,7 +66,7 @@
           <span class="mr-3" @click="downloadPdf">{{ $t('Экспорт в pdf') }}</span>
           <span class="mr-3" @click="downloadXls">{{ $t('Экспорт в xlsx') }}</span>
         </p>
-        <div class="row mb-3">
+        <div class="row mb-3" hidden>
           <div class="col-6">
             <g-grouped-button>
               <g-button :primary="true">Пополнение лицевого счёта </g-button>
@@ -187,6 +187,15 @@ export default {
           },
         },
         {
+          key: 'name',
+          label: 'Название',
+          sortable: true,
+          thStyle: {
+            width: '150px',
+            minWidth: '120px',
+          },
+        },
+        {
           key: 'income',
           label: 'Начисление',
           sortable: true,
@@ -240,7 +249,7 @@ export default {
     };
   },
   mounted() {
-    GApi.post('/api/Account/get-operations').then((Response) => {
+    GApi.post(`/api/Account/get-operations/${-1}`).then((Response) => {
       this.entries = Response.data;
       this.income = this.entries.filter((i) => i.amount >= 0);
       this.outcome = this.entries.filter((i) => i.amount <= 0);
@@ -462,12 +471,10 @@ export default {
       }
       GApi
         .post('/api/Account/get-operations', {
-          params: {
-            from: this.rangeDate[0] ? this.rangeDate[0] : null,
-            to: this.rangeDate[1] ? this.rangeDate[1] : null,
-            // find_comm: this.filter.comment,
-            // find_type: this.filter.operType,
-          },
+          from: this.rangeDate[0] ? this.rangeDate[0] : null,
+          to: this.rangeDate[1] ? this.rangeDate[1] : null,
+          // find_comm: this.filter.comment,
+          // find_type: this.filter.operType,
         })
         .then((Response) => {
           this.entries = Response.data.entries;
