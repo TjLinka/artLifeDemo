@@ -3,8 +3,8 @@
     <div class="left_menu_top">
       <div class="logo">
         <a href="/">
-          <img src="../assets/imgs/logo.png" alt="Артлайф" />
-          <img class="lhid" :src="`../icons/${$i18n.locale}logo_1.png`" alt="Артлайф" />
+          <img src="../assets/imgs/logo_hippo.svg" alt="Артлайф" />
+          <!-- <img class="lhid" :src="`../icons/${$i18n.locale}logo_1.png`" alt="Артлайф" /> -->
         </a>
       </div>
     </div>

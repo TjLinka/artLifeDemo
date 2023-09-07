@@ -132,7 +132,7 @@
                 <span v-if="column.property === 'ngo'">
                   {{ column.formater(scope.row) }}
                 </span>
-                <span v-if="column.property === 'oo'">
+                <span v-if="column.property === 'so'">
                   {{ column.formater(scope.row) }}
                 </span>
                 <span v-if="column.property === 'ko'">
@@ -141,15 +141,15 @@
                 <span v-if="column.property === 'noact'">
                   {{ scope.row.noact }}
                 </span>
-                <span v-if="column.property === 'rank_beg'">
-                  <img
+                <span v-if="column.property === 'rankname'">
+                  <!-- <img
                     :src="
                       `../icons/${scope.row.rank_beg}${scope.row.depth === 0 ? '_white' : ''}.svg`
                     "
                     :title="scope.row.rank_beg"
                     class="rank_icon_rank"
-                  />
-                  {{ scope.row.rank_beg }}
+                  /> -->
+                  {{ scope.row.rankname }}
                 </span>
                 <span v-if="column.property === 'rank_calc'">
                   <img
@@ -175,7 +175,7 @@
             </el-table-column>
           </el-table>
         </div>
-        <footer class="cust_modal noprint">
+        <!-- <footer class="cust_modal noprint">
           <div class="row">
             <div
               class="col text-center search__btn desktop"
@@ -241,7 +241,7 @@
               </div>
             </div>
           </div>
-        </footer>
+        </footer> -->
       </div>
     </div>
     <b-modal v-model="show" id="modal-scrollable" centered scrollable title="Легенда">
@@ -351,37 +351,37 @@ export default {
           return formatter.format(item.go);
         },
       },
+      // {
+      //   property: 'ngo',
+      //   label: this.$t('НСО'),
+      //   formater: (item) => {
+      //     const formatter = new Intl.NumberFormat('ru');
+      //     return formatter.format(item.ngo);
+      //   },
+      // },
       {
-        property: 'ngo',
-        label: this.$t('НСО'),
-        formater: (item) => {
-          const formatter = new Intl.NumberFormat('ru');
-          return formatter.format(item.ngo);
-        },
-      },
-      {
-        property: 'oo',
+        property: 'so',
         label: this.$t('СО'),
         formater: (item) => {
           const formatter = new Intl.NumberFormat('ru');
-          return formatter.format(item.oo);
+          return formatter.format(item.so);
         },
       },
+      // {
+      //   property: 'noact',
+      //   label: this.$t('Активность'),
+      //   formater: (item) => item.noact,
+      // },
       {
-        property: 'noact',
-        label: this.$t('Активность'),
-        formater: (item) => item.noact,
-      },
-      {
-        property: 'rank_beg',
-        label: this.$t('Ранг на начало'),
+        property: 'rankname',
+        label: this.$t('Ранг'),
         formater: (item) => item.rank_beg,
       },
-      {
-        property: 'rank_end',
-        label: this.$t('Ранг на конец'),
-        formater: (item) => item.rank_end,
-      },
+      // {
+      //   property: 'rank_end',
+      //   label: this.$t('Ранг на конец'),
+      //   formater: (item) => item.rank_end,
+      // },
     ];
     return {
       show: false,
@@ -745,7 +745,7 @@ export default {
         || col.property === 'lo'
         || col.property === 'go'
         || col.property === 'ngo'
-        || col.property === 'oo'
+        || col.property === 'so'
         || col.property === 'ko'
       ) {
         return 50;
