@@ -56,7 +56,7 @@
             :type="'password'"
             v-model="log.password"
           />
-          <g-button class="mt-5" primary @click="sf">
+          <g-button class="mt-5" primary>
             Войти
           </g-button>
         </form>
@@ -180,18 +180,19 @@ export default {
           };
           backAPI
             .post('/api/Agent/login', params)
-            .then(resp => {
+            .then((resp) => {
               console.log('Good Login');
               const data = JSON.stringify(resp.data);
               const token = resp.data.access_token;
               localStorage.setItem('access_token', data);
-              backAPI.backAPI.defaults.headers.common['access-token'] = token;
+              backAPI.backAPI.defaults.headers.common['access-token'] = `Bearer ${token}`;
+              backAPI.backAPI.defaults.headers.common.Authorization = `Bearer ${token}`;
               this.login(resp).then(() => {
                 this.badLogin = false;
                 this.$router.push('/');
               });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log('error');
               if (!error.response) {
                 this.isTerm = false;
@@ -223,7 +224,7 @@ export default {
           };
           backAPI
             .post('/agent/login/phone', params)
-            .then(resp => {
+            .then((resp) => {
               const data = JSON.stringify(resp.data);
               const token = resp.data.access_token;
               localStorage.setItem('access_token', data);
@@ -233,7 +234,7 @@ export default {
                 this.$router.push('/');
               });
             })
-            .catch(error => {
+            .catch((error) => {
               if (!error.response) {
                 this.isTerm = false;
                 this.badLogin = true;

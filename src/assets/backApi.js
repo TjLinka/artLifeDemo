@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import Axios from 'axios';
-// import router from '../router';
-// import store from '../store';
+import router from '../router';
+import store from '../store';
 
 class PartnerApi {
   constructor() {
@@ -18,6 +18,16 @@ class PartnerApi {
             : null,
         },
       },
+    });
+    this.backAPI.interceptors.response.use((response) => response, (error) => {
+      if (error.response?.status === 401) {
+        store.dispatch('auth/logout');
+        router.push('/login');
+      }
+      if (error.response?.status === 422) {
+        return Promise.reject(error.response);
+      }
+      return Promise.reject(error);
     });
   }
 
